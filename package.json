@@ -1,0 +1,19 @@
+{
+  "name": "medical-agenda",
+  "version": "1.0.0",
+  "description": "# CONVENTIONS / How to contribute  ## Branch naming",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-2-Team-C"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-2-Team-C/issues"
+  },
+  "homepage": "https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-2-Team-C#readme"
+}

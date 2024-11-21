@@ -1,15 +1,17 @@
 # JS-CDA-Projet-2-Team-C
 
-# CONVENTIONS / How to contribute 
-## Branch naming  
+# CONVENTIONS / How to contribute
+
+## Branch naming
 
 ```bash
-[BUGFIX/HOTFIX/REFACTO/FEATURE/SETUP/CHORE]/US[USnumber]/[featureName]  
+[BUGFIX/HOTFIX/REFACTO/FEATURE/SETUP/CHORE]/US[USnumber]/[featureName]
 >> DEV/US23/SignUpForm
 >> BUGFIX/US103/CSSisBroken
 ```
 
-[BUGFIX/HOTFIX/REFACTO/FEATURE/SETUP/CHORE]  # Type of task or work being done:
+[BUGFIX/HOTFIX/REFACTO/FEATURE/SETUP/CHORE] # Type of task or work being done:
+
 - BUGFIX: Fixing an issue or bug
 - HOTFIX: Urgent fix for a production issue
 - REFACTO: Code refactoring (improving structure, not functionality)
@@ -17,11 +19,12 @@
 - SETUP: Environment setup or configuration work
 - CHORE: Routine tasks (e.g., dependency updates, minor maintenance)
 
-US[USnumber]  # Related User Story number (e.g., US1234) from project management tool (e.g., Jira)
+US[USnumber] # Related User Story number (e.g., US1234) from project management tool (e.g., Jira)
 
-[featureName]  # A short description of the feature or task being worked on  
+[featureName] # A short description of the feature or task being worked on
 
-## Commits 
+## Commits
+
 - in lowercase
 - format scope/commit-subject: add commit description using present tense verbs
 - The scope part is optional; it can be used to better clarify the scope of the commit within the codebase.
@@ -32,6 +35,7 @@ US[USnumber]  # Related User Story number (e.g., US1234) from project management
 ```
 
 ## FrontEnd structure
+
 ```
 └── src/
     ├── contexts/
@@ -59,6 +63,7 @@ US[USnumber]  # Related User Story number (e.g., US1234) from project management
 ```
 
 ## BackEnd structure
+
 ```
 ├── src/
 │   ├── modules/

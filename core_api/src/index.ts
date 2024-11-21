@@ -1,1 +1,1 @@
-console.info("gégé");
+console.info('gégé');

@@ -8,12 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-2-Team-C"
+    "url": "git+https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-2-Team-C.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-2-Team-C/issues"
   },
-  "homepage": "https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-2-Team-C#readme"
+  "homepage": "https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-2-Team-C#readme",
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
 }

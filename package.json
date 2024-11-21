@@ -16,7 +16,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
-    "lint": "lint-staged"
+    "lint": "lint-staged",
+    "dev-restart": "make devdown && make prune && make rebuild && make dev"
   },
   "repository": {
     "type": "git",

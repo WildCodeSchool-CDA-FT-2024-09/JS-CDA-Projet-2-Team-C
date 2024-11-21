@@ -28,6 +28,9 @@
   "dependencies": {
     "@apollo/server": "^4.11.2",
     "dotenv": "^16.4.5",
-    "graphql": "^16.9.0"
+    "graphql": "^16.9.0",
+    "sqlite3": "^5.1.7",
+    "type-graphql": "^2.0.0-rc.2",
+    "typeorm": "^0.3.20"
   }
 }

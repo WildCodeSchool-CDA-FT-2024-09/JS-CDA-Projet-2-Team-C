@@ -1,4 +1,21 @@
 services:
+  medapi_postgres:
+    image: postgres
+    ports:
+      - 5566:5432
+    env_file: ./postgres/.env
+    volumes:
+      # Mount for postgres data persistence e.g.
+      # - ./prod_postgres_data:/var/lib/postgresql/data
+      # Mount host folder for seed - postgres will run all .sql files in this folder on startup
+      # If a db already exists, init files will not run - so to reseed, the container / volume need to be removed and recreated
+      - ./postgres/seed_data:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d postgres -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   api:
     build: ./core_api
     env_file: ./core_api/.env
@@ -8,7 +25,6 @@ services:
     # volumes:
     #   - ./api/src/:/app/src/
     command: npm run dev
-
 
   # client:
   #   env_file: ./client/.env
@@ -29,4 +45,3 @@ services:
     depends_on:
       # - client
       - api
-

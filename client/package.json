@@ -9,7 +9,7 @@
     "lint": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write \"*/**/*.{js,jsx,ts,tsx}\"",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "react": "^18.3.1",

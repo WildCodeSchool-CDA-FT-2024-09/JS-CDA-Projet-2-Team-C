@@ -5,7 +5,5 @@ import '@testing-library/jest-dom';
 
 // runs a clean after each test case (e.g. clearing jsdom)
 afterEach(() => {
-  console.log('aftereach');
-
   cleanup();
 });

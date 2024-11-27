@@ -6,7 +6,7 @@ rebuild:
 	docker compose -f docker-compose.dev.yml build --no-cache
 
 dev:
-	docker compose -f docker-compose.dev.yml up -d
+	docker compose -f docker-compose.dev.yml up
 
 devdown:
 	docker compose -f docker-compose.dev.yml down

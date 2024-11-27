@@ -1,7 +1,7 @@
 export default function App() {
   return (
     <>
-      <h1>This is Chocolateam</h1>
+      <h1 className="text-3xl font-bold underline">This is Chocolateam</h1>
     </>
   );
 }

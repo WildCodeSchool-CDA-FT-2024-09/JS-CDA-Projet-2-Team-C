@@ -1,0 +1,43 @@
+{
+  "name": "core_api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --config ./jest.config.ts",
+    "dev": "ts-node-dev --respawn ./src/index.ts",
+    "lint": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write \"*/**/*.{js,jsx,ts,tsx}\""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.15.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.9.1",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "graphql-tag": "^2.12.6",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "reflect-metadata": "^0.2.2",
+    "ts-jest": "^29.2.5",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.2",
+    "class-validator": "^0.14.1",
+    "dotenv": "^16.4.5",
+    "graphql": "^16.9.0",
+    "graphql-scalars": "^1.23.0",
+    "pg": "^8.13.1",
+    "sqlite3": "^5.1.7",
+    "type-graphql": "^2.0.0-rc.2",
+    "typeorm": "^0.3.20"
+  }
+}

@@ -13,12 +13,8 @@
       "npm run lint --prefix client"
     ]
   },
-  "workspaces": [
-    "client",
-    "core_api"
-  ],
   "scripts": {
-    "test": "npm run test --workspace=client && npm run test --workspace=core_api",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
     "lint": "lint-staged",
     "dev-restart": "make devdown && make prune && make rebuild && make dev"

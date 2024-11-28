@@ -5,6 +5,8 @@ import { Resolver, Query } from 'type-graphql';
 export default class RoleResolver {
   @Query(() => [Role])
   async roles() {
-    return await Role.find();
+    return await Role.find({
+      relations: ['users']
+    });
   }
 }

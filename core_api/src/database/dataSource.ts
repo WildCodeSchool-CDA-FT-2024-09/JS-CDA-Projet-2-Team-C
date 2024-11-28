@@ -6,12 +6,13 @@ dotenv.config();
 const { NODE_ENV } = process.env;
 
 let dataSource: DataSource;
+const entities = [Role];
 
 if (NODE_ENV === 'test') {
   dataSource = new DataSource({
     type: 'sqlite',
     database: ':memory:',
-    entities: [Role],
+    entities,
     synchronize: true
   });
 } else {
@@ -22,7 +23,7 @@ if (NODE_ENV === 'test') {
     username: 'postgres',
     password: process.env.POSTGRES_PASSWORD,
     database: 'postgres',
-    entities: [Role],
+    entities,
     synchronize: true
   });
 }

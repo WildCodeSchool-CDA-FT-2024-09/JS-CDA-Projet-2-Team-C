@@ -27,5 +27,8 @@ jobs:
       - name: Install package dependencies
         run: npm i
 
-      - name: Run Component test
-        run: npm run test
+      - name: Run FrontEnd tests
+        run: npm run testclient 
+
+      - name: Run Core API tests
+        run: npm run testcoreapi

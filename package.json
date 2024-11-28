@@ -14,7 +14,9 @@
     ]
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run test --prefix client && npm run test --prefix core_api",
+    "testclient": "npm run test --prefix client",
+    "testcoreapi": "npm run test --prefix core_api",
     "prepare": "husky",
     "lint": "lint-staged",
     "dev-restart": "make devdown && make prune && make rebuild && make dev"

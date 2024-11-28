@@ -4,7 +4,9 @@ WORKDIR /app
 
 COPY *.json ./
 
-RUN npm install --loglevel verbose 
+RUN npm ping
+
+RUN npm install 
 
 COPY . .
 

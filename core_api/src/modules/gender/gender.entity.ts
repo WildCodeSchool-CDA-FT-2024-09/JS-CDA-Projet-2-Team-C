@@ -10,7 +10,7 @@ import { User } from '../user/user.entity';
 
 @ObjectType()
 @Entity()
-export class Role extends BaseEntity {
+export class Gender extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;

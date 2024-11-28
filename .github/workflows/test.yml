@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    name: Run integration test on front
+    name: Run Linter, Client unit tests, Core API Unit tests
     runs-on: ubuntu-latest
 
     steps:

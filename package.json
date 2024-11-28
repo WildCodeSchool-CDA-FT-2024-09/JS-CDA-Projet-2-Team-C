@@ -13,15 +13,14 @@
       "npm run lint --prefix client"
     ]
   },
-  "workspaces": [
-    "client",
-    "core_api"
-  ],
   "scripts": {
-    "test": "npm run test --workspace=client && npm run test --workspace=core_api",
+    "test": "npm run test --prefix client && npm run test --prefix core_api",
+    "testclient": "npm run test --prefix client",
+    "testcoreapi": "npm run test --prefix core_api",
     "prepare": "husky",
     "lint": "lint-staged",
-    "dev-restart": "make devdown && make prune && make rebuild && make dev"
+    "dev-restart": "make devdown && make prune && make rebuild && make dev",
+    "install": "npm install --prefix client && npm install --prefix core_api"
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as dotenv from 'dotenv';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { dataSource } from './database/dataSource';
+import dataSource from './database/dataSource';
 import getSchema from './schema';
 
 dotenv.config();

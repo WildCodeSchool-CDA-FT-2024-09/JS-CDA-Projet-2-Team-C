@@ -15,4 +15,4 @@ stopall:
 	@docker stop $(shell docker ps -q)
 
 prune:
-	docker system prune -af
+	docker system prune -af --volumes

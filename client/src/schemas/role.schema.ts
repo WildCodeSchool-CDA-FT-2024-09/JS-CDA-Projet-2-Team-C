@@ -8,3 +8,17 @@ export const GET_ROLES = gql`
     }
   }
 `;
+
+export const GET_ROLES_WITH_USERS = gql`
+  query RolesWithUsers {
+    roles {
+      id
+      label
+      users {
+        id
+        firstname
+        lastname
+      }
+    }
+  }
+`;

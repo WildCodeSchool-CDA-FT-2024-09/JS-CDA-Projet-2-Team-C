@@ -1,12 +1,32 @@
 import * as dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
-import { Role } from '../modules/role/role.entity';
+import {
+  Attachment,
+  Consultation,
+  ConsultationSubject,
+  Department,
+  Gender,
+  Patient,
+  Role,
+  User,
+  WorkingHours
+} from '../modules/entities.index';
 
 dotenv.config();
 const { NODE_ENV } = process.env;
 
 let dataSource: DataSource;
-const entities = [Role];
+const entities = [
+  User,
+  Role,
+  Department,
+  Gender,
+  WorkingHours,
+  Consultation,
+  ConsultationSubject,
+  Attachment,
+  Patient
+];
 
 if (NODE_ENV === 'test') {
   dataSource = new DataSource({

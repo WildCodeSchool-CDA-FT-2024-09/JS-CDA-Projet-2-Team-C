@@ -42,7 +42,7 @@ export class User extends BaseEntity {
   password: string;
 
   @Field(() => String)
-  @Column({ nullable: false, type: 'bool', default: false })
+  @Column({ nullable: false, type: 'boolean', default: false })
   isArchived: boolean;
 
   @Field(() => Role)

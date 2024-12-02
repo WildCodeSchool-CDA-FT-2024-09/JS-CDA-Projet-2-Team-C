@@ -39,6 +39,20 @@ export type Role = {
   __typename?: 'Role';
   id: Scalars['Int']['output'];
   label: Scalars['String']['output'];
+  users: Array<User>;
+};
+
+export type User = {
+  __typename?: 'User';
+  createdAt: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  firstname: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  isArchived: Scalars['String']['output'];
+  lastname: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  role: Role;
+  updatedAt: Scalars['String']['output'];
 };
 
 export type RolesQueryVariables = Exact<{ [key: string]: never }>;
@@ -46,6 +60,23 @@ export type RolesQueryVariables = Exact<{ [key: string]: never }>;
 export type RolesQuery = {
   __typename?: 'Query';
   roles: Array<{ __typename?: 'Role'; id: number; label: string }>;
+};
+
+export type RolesWithUsersQueryVariables = Exact<{ [key: string]: never }>;
+
+export type RolesWithUsersQuery = {
+  __typename?: 'Query';
+  roles: Array<{
+    __typename?: 'Role';
+    id: number;
+    label: string;
+    users: Array<{
+      __typename?: 'User';
+      id: number;
+      firstname: string;
+      lastname: string;
+    }>;
+  }>;
 };
 
 export const RolesDocument = gql`
@@ -112,4 +143,87 @@ export type RolesSuspenseQueryHookResult = ReturnType<
 export type RolesQueryResult = Apollo.QueryResult<
   RolesQuery,
   RolesQueryVariables
+>;
+export const RolesWithUsersDocument = gql`
+  query RolesWithUsers {
+    roles {
+      id
+      label
+      users {
+        id
+        firstname
+        lastname
+      }
+    }
+  }
+`;
+
+/**
+ * __useRolesWithUsersQuery__
+ *
+ * To run a query within a React component, call `useRolesWithUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRolesWithUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRolesWithUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRolesWithUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    RolesWithUsersQuery,
+    RolesWithUsersQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<RolesWithUsersQuery, RolesWithUsersQueryVariables>(
+    RolesWithUsersDocument,
+    options
+  );
+}
+export function useRolesWithUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    RolesWithUsersQuery,
+    RolesWithUsersQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<RolesWithUsersQuery, RolesWithUsersQueryVariables>(
+    RolesWithUsersDocument,
+    options
+  );
+}
+export function useRolesWithUsersSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RolesWithUsersQuery,
+        RolesWithUsersQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    RolesWithUsersQuery,
+    RolesWithUsersQueryVariables
+  >(RolesWithUsersDocument, options);
+}
+export type RolesWithUsersQueryHookResult = ReturnType<
+  typeof useRolesWithUsersQuery
+>;
+export type RolesWithUsersLazyQueryHookResult = ReturnType<
+  typeof useRolesWithUsersLazyQuery
+>;
+export type RolesWithUsersSuspenseQueryHookResult = ReturnType<
+  typeof useRolesWithUsersSuspenseQuery
+>;
+export type RolesWithUsersQueryResult = Apollo.QueryResult<
+  RolesWithUsersQuery,
+  RolesWithUsersQueryVariables
 >;

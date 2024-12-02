@@ -1,12 +1,14 @@
 import { useRolesQuery } from './generated/graphql-types';
 import Logo from '../public/images/logo-main-black.png';
 
-export default function App() {
-  const { loading } = useRolesQuery();
+import { useRolesWithUsersQuery } from './generated/graphql-types';
 
+export default function App() {
+  const { loading, data } = useRolesWithUsersQuery();
   if (loading) return <div>loading</div>;
 
   return (
+
     <section className="flex w-80 flex-col place-items-center place-self-center">
       <h1 className="text-center text-4xl font-medium">Agenda Médical</h1>
       <section className="flex w-full flex-col place-items-center gap-4">
@@ -24,6 +26,12 @@ export default function App() {
         />
         <button className="btn w-40 bg-primary">CONNEXION</button>
       </section>
+            <h1 className="text-3xl font-bold underline">This is Chocolateam</h1>
+      {data?.roles.map((role) => (
+        <div key={role.id}>
+          <h2>{role.label}</h2>
+        </div>
+      ))}
     </section>
   );
 }

@@ -10,13 +10,13 @@ import { User } from '../entities.index';
 
 @ObjectType()
 @Entity()
-export class Role extends BaseEntity {
+export class Department extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
   @Field(() => String)
-  @Column({ nullable: false, unique: true, type: 'varchar', length: 30 })
+  @Column({ nullable: false, unique: true, type: 'varchar', length: 50 })
   label: string;
 
   @Field(() => [User])

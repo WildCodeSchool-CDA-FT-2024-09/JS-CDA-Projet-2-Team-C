@@ -6,11 +6,11 @@ import {
   OneToMany
 } from 'typeorm';
 import { Field, ObjectType, Int } from 'type-graphql';
-import { User } from '../entities.index';
+import { User, Patient } from '../entities.index';
 
 @ObjectType()
 @Entity()
-export class Role extends BaseEntity {
+export class Gender extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,4 +22,8 @@ export class Role extends BaseEntity {
   @Field(() => [User])
   @OneToMany(() => User, (user) => user.role)
   users: User[];
+
+  @Field(() => [Patient])
+  @OneToMany(() => Patient, (patient) => patient.gender)
+  patients: Patient[];
 }

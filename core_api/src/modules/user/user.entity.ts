@@ -38,7 +38,7 @@ export class User extends BaseEntity {
   email: string;
 
   @Field(() => String)
-  @Column({ nullable: false, type: 'varchar', length: 100 })
+  @Column({ nullable: false, type: 'varchar', length: 255 })
   password: string;
 
   @Field(() => String)

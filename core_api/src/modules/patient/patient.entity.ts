@@ -31,7 +31,7 @@ export class Patient extends BaseEntity {
   email: string;
 
   @Field(() => String)
-  @Column({ nullable: false, unique: true, type: 'varchar', length: 100 })
+  @Column({ nullable: false, unique: true, type: 'varchar', length: 15 })
   ssn: string;
 
   @Field(() => String)
@@ -39,7 +39,7 @@ export class Patient extends BaseEntity {
   town: string;
 
   @Field(() => String)
-  @Column({ nullable: false, type: 'varchar', length: 100 })
+  @Column({ nullable: false, type: 'varchar', length: 16 })
   postcode: string;
 
   @Field(() => Date)

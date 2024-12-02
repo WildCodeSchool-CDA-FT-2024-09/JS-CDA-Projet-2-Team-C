@@ -1,4 +1,4 @@
-import { Role } from './role.entity';
+import { Role } from '../entities.index';
 import { Resolver, Query } from 'type-graphql';
 
 @Resolver(Role)

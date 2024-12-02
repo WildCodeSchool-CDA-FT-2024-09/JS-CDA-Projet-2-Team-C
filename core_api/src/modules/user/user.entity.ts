@@ -9,13 +9,14 @@ import {
   OneToMany
 } from 'typeorm';
 import { Field, ObjectType, Int } from 'type-graphql';
-
-import { Role } from '../role/role.entity';
-import { Department } from '../department/department.entity';
-import { Gender } from '../gender/gender.entity';
-import { WorkingHours } from '../working_hours/workingHours.entity';
-import { Attachment } from '../attachment/attachment.entity';
-import { Consultation } from '../consultation/consultation.entity';
+import {
+  Role,
+  Department,
+  Gender,
+  WorkingHours,
+  Attachment,
+  Consultation
+} from '../entities.index';
 
 @ObjectType()
 @Entity()

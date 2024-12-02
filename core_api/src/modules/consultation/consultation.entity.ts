@@ -9,10 +9,12 @@ import {
   OneToMany
 } from 'typeorm';
 import { Field, ObjectType, Int } from 'type-graphql';
-import { ConsultationSubject } from '../consultation_subject/consultationSubject.entity';
-import { User } from '../user/user.entity';
-import { Patient } from '../patient/patient.entity';
-import { Attachment } from '../entities.index';
+import {
+  ConsultationSubject,
+  User,
+  Patient,
+  Attachment
+} from '../entities.index';
 
 @ObjectType()
 @Entity()

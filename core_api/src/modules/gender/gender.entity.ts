@@ -6,8 +6,7 @@ import {
   OneToMany
 } from 'typeorm';
 import { Field, ObjectType, Int } from 'type-graphql';
-import { User } from '../user/user.entity';
-import { Patient } from '../patient/patient.entity';
+import { User, Patient } from '../entities.index';
 
 @ObjectType()
 @Entity()

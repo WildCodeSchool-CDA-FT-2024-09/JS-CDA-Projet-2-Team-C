@@ -1,6 +1,5 @@
 import { useRolesQuery } from './generated/graphql-types';
-
-import Logo from '../public/images/logo-agenda-medical-noir.png';
+import Logo from '../public/images/logo-main-black.png';
 
 export default function App() {
   const { loading } = useRolesQuery();

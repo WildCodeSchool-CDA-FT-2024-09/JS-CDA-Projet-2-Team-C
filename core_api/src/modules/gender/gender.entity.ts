@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Field, ObjectType, Int } from 'type-graphql';
 import { User } from '../user/user.entity';
+import { Patient } from '../patient/patient.entity';
 
 @ObjectType()
 @Entity()
@@ -22,4 +23,8 @@ export class Gender extends BaseEntity {
   @Field(() => [User])
   @OneToMany(() => User, (user) => user.role)
   users: User[];
+
+  @Field(() => [Patient])
+  @OneToMany(() => Patient, (patient) => patient.gender)
+  patients: Patient[];
 }

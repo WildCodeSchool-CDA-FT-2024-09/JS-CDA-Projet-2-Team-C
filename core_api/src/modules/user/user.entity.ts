@@ -14,6 +14,8 @@ import { Role } from '../role/role.entity';
 import { Department } from '../department/department.entity';
 import { Gender } from '../gender/gender.entity';
 import { WorkingHours } from '../working_hours/workingHours.entity';
+import { Attachment } from '../attachment/attachment.entity';
+import { Consultation } from '../consultation/consultation.entity';
 
 @ObjectType()
 @Entity()
@@ -31,7 +33,7 @@ export class User extends BaseEntity {
   lastname: string;
 
   @Field(() => String)
-  @Column({ nullable: false, type: 'varchar', length: 100 })
+  @Column({ nullable: false, unique: true, type: 'varchar', length: 100 })
   email: string;
 
   @Field(() => String)
@@ -57,6 +59,18 @@ export class User extends BaseEntity {
   @Field(() => [WorkingHours])
   @OneToMany(() => WorkingHours, (workingHours) => workingHours.doctor)
   workingHours: WorkingHours[];
+
+  @Field(() => [Attachment])
+  @OneToMany(() => Attachment, (attachment) => attachment.author)
+  attachmentsCreated: Attachment[];
+
+  @Field(() => [Consultation])
+  @OneToMany(() => Consultation, (consultation) => consultation.author)
+  consultationsCreated: Consultation[];
+
+  @Field(() => [Consultation])
+  @OneToMany(() => Consultation, (consultation) => consultation.author)
+  doctorConsultations: Consultation[];
 
   @Field(() => String)
   @CreateDateColumn()

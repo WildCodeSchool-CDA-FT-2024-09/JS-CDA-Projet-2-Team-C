@@ -13,7 +13,7 @@ export default function ConsultationsTimelineEvent({
 }: ConsultationsTimelineEventProps) {
   // console.log('consult', consultation);
 
-  const { id, consultationDate, description } = consultation;
+  const { consultationDate, description, doctor } = consultation;
 
   // TO DEBATE : Does this need to be a utility function ? Outside of this component ?
   let date = 'date inconnue';
@@ -25,8 +25,10 @@ export default function ConsultationsTimelineEvent({
     });
   }
 
+  // className="collapse collapse-arrow bg-base-200"
+
   return (
-    <li key={`${id}-${consultationDate}`}>
+    <>
       {!isFirst && <hr />}
       <div className="timeline-start">{date}</div>
       <div className="timeline-middle">
@@ -43,8 +45,17 @@ export default function ConsultationsTimelineEvent({
           />
         </svg>
       </div>
-      <article className="timeline-end timeline-box">{description}</article>
+      <article className="collapse timeline-end collapse-plus timeline-box">
+        <input type="radio" name="my-accordion-2" />
+        <div className="collapse-title text-xl font-medium">
+          <h3>{description}</h3>
+          <div className="badge badge-neutral">{doctor?.department.label}</div>
+        </div>
+        <div className="collapse-content">
+          <p>hello</p>
+        </div>
+      </article>
       {!isLast && <hr />}
-    </li>
+    </>
   );
 }

@@ -13,11 +13,13 @@ export default function ConsultationTimeline({
   return (
     <ul className="timeline timeline-vertical">
       {consultations.map((consultation, index) => (
-        <ConsultationsTimelineEvent
-          consultation={consultation as Consultation}
-          isFirst={index === 0}
-          isLast={index === consultations?.length - 1}
-        />
+        <li key={`${consultation.id}-${consultation.consultationDate}`}>
+          <ConsultationsTimelineEvent
+            consultation={consultation as Consultation}
+            isFirst={index === 0}
+            isLast={index === consultations?.length - 1}
+          />
+        </li>
       ))}
     </ul>
   );

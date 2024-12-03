@@ -1,87 +1,97 @@
 {
-    "data": {
-      "dossier": {
-        "patient": {
-          "firstname": "John",
-          "lastname": "Doe",
-          "gender": {
-            "label": "Male"
-          }
+  "data": {
+    "dossier": {
+      "patient": {
+        "firstname": "Jane",
+        "lastname": "Doe",
+        "gender": {
+          "label": "Female"
         },
-        "consultations": [
-          {
-            "consultationDate": "2024-12-01T14:00:00Z",
-            "description": "Routine check-up and blood pressure monitoring.",
-            "doctor": {
-              "firstname": "Alice",
-              "lastname": "Smith",
-              "department": {
-                "label": "General Medicine",
-                "id": 1
-              }
-            },
-            "attachments": [
-              {
-                "note": "Blood pressure readings attached.",
-                "filePath": "/attachments/blood_pressure_2024-12-01.pdf",
-                "fileDisplayName": "Blood Pressure Report",
-                "author": {
-                  "role": {
-                    "label": "Nurse"
-                  }
-                }
-              }
-            ]
+        "dateOfBirth": "1985-06-15",
+        "ssn": "123-45-6789",
+        "postcode": "90210",
+        "town": "Beverly Hills"
+      },
+      "consultations": [
+        {
+          "consultationDate": "2024-11-30T09:00:00Z",
+          "description": "Annual physical examination.",
+          "doctor": {
+            "firstname": "Mark",
+            "lastname": "Johnson",
+            "department": {
+              "label": "General Medicine",
+              "id": 1
+            }
           },
-          {
-            "consultationDate": "2024-11-20T10:30:00Z",
-            "description": "Follow-up for Type 2 Diabetes management.",
-            "doctor": {
-              "firstname": "James",
-              "lastname": "Brown",
-              "department": {
-                "label": "Endocrinology",
-                "id": 2
-              }
-            },
-            "attachments": [
-              {
-                "note": "Blood sugar levels from the last test.",
-                "filePath": "/attachments/blood_sugar_test_2024-11-20.pdf",
-                "fileDisplayName": "Blood Sugar Test",
-                "author": {
-                  "role": {
-                    "label": "Lab Technician"
-                  }
+          "attachments": [
+            {
+              "note": "Routine lab results attached.",
+              "filePath": "/attachments/lab_results_2024-11-30.pdf",
+              "fileDisplayName": "Lab Results",
+              "author": {
+                "firstname": "Sarah",
+                "lastname": "Miller",
+                "role": {
+                  "label": "Lab Technician"
                 }
               }
-            ]
+            }
+          ]
+        },
+        {
+          "consultationDate": "2024-10-25T15:30:00Z",
+          "description": "Consultation for recurring migraines.",
+          "doctor": {
+            "firstname": "Anna",
+            "lastname": "Taylor",
+            "department": {
+              "label": "Neurology",
+              "id": 2
+            }
           },
-          {
-            "consultationDate": "2024-10-15T16:45:00Z",
-            "description": "Post-operative evaluation for knee surgery.",
-            "doctor": {
-              "firstname": "Emily",
-              "lastname": "Davis",
-              "department": {
-                "label": "Orthopedics",
-                "id": 3
-              }
-            },
-            "attachments": [
-              {
-                "note": "X-ray images post-surgery.",
-                "filePath": "/attachments/knee_xray_2024-10-15.jpg",
-                "fileDisplayName": "Knee X-ray",
-                "author": {
-                  "role": {
-                    "label": "Radiologist"
-                  }
+          "attachments": [
+            {
+              "note": "Brain scan results uploaded.",
+              "filePath": "",
+              "fileDisplayName": "",
+              "author": {
+                "firstname": "Michael",
+                "lastname": "Brown",
+                "role": {
+                  "label": "Radiologist"
                 }
               }
-            ]
-          }
-        ]
-      }
+            }
+          ]
+        },
+        {
+          "consultationDate": "2024-09-12T11:00:00Z",
+          "description": "Follow-up on recovery from shoulder surgery.",
+          "doctor": {
+            "firstname": "Emily",
+            "lastname": "Clark",
+            "department": {
+              "label": "Orthopedics",
+              "id": 3
+            }
+          },
+          "attachments": [
+            {
+              "note": "Physical therapy progress notes.",
+              "filePath": "/attachments/therapy_progress_2024-09-12.docx",
+              "fileDisplayName": "Therapy Progress Notes",
+              "author": {
+                "firstname": "Tom",
+                "lastname": "Wilson",
+                "role": {
+                  "label": "Physiotherapist"
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   }
+}

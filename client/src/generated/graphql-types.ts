@@ -146,6 +146,10 @@ export type DossierQuery = {
       __typename?: 'Patient';
       firstname: string;
       lastname: string;
+      dateOfBirth: Date;
+      ssn: string;
+      postcode: string;
+      town: string;
       gender: { __typename?: 'Gender'; label: string };
     };
     doctor: {
@@ -161,6 +165,8 @@ export type DossierQuery = {
       fileDisplayName: string;
       author: {
         __typename?: 'User';
+        firstname: string;
+        lastname: string;
         role: { __typename?: 'Role'; label: string };
       };
     }>;
@@ -200,6 +206,10 @@ export const DossierDocument = gql`
         gender {
           label
         }
+        dateOfBirth
+        ssn
+        postcode
+        town
       }
       consultationDate
       description
@@ -216,6 +226,8 @@ export const DossierDocument = gql`
         filePath
         fileDisplayName
         author {
+          firstname
+          lastname
           role {
             label
           }

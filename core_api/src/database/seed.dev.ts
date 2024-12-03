@@ -413,7 +413,49 @@ import dataSource from './dataSource';
       (item: { id: number }) => item.id
     );
 
-    console.info(consultationIds);
+    // 6. ATTACHMENTS
+    type Attachment = {
+      note: string;
+      filePath: string;
+      fileDisplayName: string;
+      authorId: number;
+      consultationId: number;
+    };
+
+    const doctorAndSecretaryIds = doctorIds.concat(secretaryIds);
+
+    const attachments: Attachment[] = consultationIds.map(
+      (consultationId: number): Attachment => {
+        const authorId =
+          doctorAndSecretaryIds[
+            Math.floor(Math.random() * doctorAndSecretaryIds.length)
+          ];
+        const note =
+          'This is a fake attachment note concerning private medical details. Do not share or copy this information.';
+        const filePath = 'fake/path/to/file.pdf';
+        const fileDisplayName = 'Fake Medical Attachment';
+        return {
+          note,
+          filePath,
+          fileDisplayName,
+          authorId,
+          consultationId
+        };
+      }
+    );
+
+    const attachmentValues = attachments
+      .map(
+        (attachment) =>
+          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', ${attachment.authorId}, ${attachment.consultationId})`
+      )
+      .join(', ');
+
+    await queryRunner.manager.query(`
+      INSERT INTO "attachment"
+      ("note", "filePath", "fileDisplayName", "authorId", "consultationId")
+      VALUES ${attachmentValues}
+    `);
 
     // COMMIT TRANSACTION
     await queryRunner.commitTransaction();

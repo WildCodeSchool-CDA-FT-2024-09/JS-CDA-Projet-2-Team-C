@@ -2,10 +2,14 @@ import { Consultation } from '../../generated/graphql-types';
 
 interface ConsultationsTimelineEventProps {
   consultation: Partial<Consultation>;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
 export default function ConsultationsTimelineEvent({
-  consultation
+  consultation,
+  isFirst,
+  isLast
 }: ConsultationsTimelineEventProps) {
   // console.log('consult', consultation);
 
@@ -23,7 +27,7 @@ export default function ConsultationsTimelineEvent({
 
   return (
     <li key={`${id}-${consultationDate}`}>
-      <hr />
+      {!isFirst && <hr />}
       <div className="timeline-start">{date}</div>
       <div className="timeline-middle">
         <svg
@@ -40,7 +44,7 @@ export default function ConsultationsTimelineEvent({
         </svg>
       </div>
       <article className="timeline-end timeline-box">{description}</article>
-      <hr />
+      {!isLast && <hr />}
     </li>
   );
 }

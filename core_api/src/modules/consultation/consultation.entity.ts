@@ -29,7 +29,7 @@ export class Consultation extends BaseEntity {
 
   @Field(() => Date)
   @Column({ nullable: false, type: 'date' })
-  consulationDate: Date;
+  consultationDate: Date;
 
   @Field(() => String)
   @Column({ nullable: false, type: 'time' })

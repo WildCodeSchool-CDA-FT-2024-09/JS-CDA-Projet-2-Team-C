@@ -92,45 +92,151 @@ import dataSource from './dataSource';
     const genderIdMap = await makeLabelIdMap('gender');
 
     // 2. USERS
+    // Fake email utilty
+    // Add min one milisecond tick to avoid duplicate emails
+    async function fakeEmail(): Promise<string> {
+      const time = Date.now();
+      await new Promise((resolve) => setTimeout(resolve, 1));
+      return `fake${time}@fake.com`;
+    }
+
     // DOCTORS
-    await queryRunner.manager.query(
-      `INSERT INTO "user" 
+    const doctors = [
+      {
+        firstname: 'Cyril',
+        lastname: 'Convergence',
+        email: await fakeEmail(),
+        password: 'fake1234hash',
+        roleId: roleIdMap.doctor,
+        genderId: genderIdMap.male,
+        departmentId: Math.floor(Math.random() * departments.length) + 1
+      },
+      {
+        firstname: 'Diana',
+        lastname: 'Divergence',
+        email: await fakeEmail(),
+        password: 'fake1234hash',
+        roleId: roleIdMap.doctor,
+        genderId: genderIdMap.female,
+        departmentId: Math.floor(Math.random() * departments.length) + 1
+      }
+    ];
+
+    const doctorValues = doctors
+      .map(
+        (doctor) =>
+          `('${doctor.firstname}', '${doctor.lastname}', '${doctor.email}', '${doctor.password}', ${doctor.roleId}, ${doctor.genderId}, ${doctor.departmentId})`
+      )
+      .join(', ');
+
+    await queryRunner.manager.query(`
+      INSERT INTO "user"
       (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
-      VALUES
-      ('Cyril', 'Convergence', 'test1@test.com', 'fake1234hash', '${roleIdMap.doctor}', '${genderIdMap.male}', ${Math.floor(Math.random() * departments.length) + 1}),
-      ('Diana', 'Divergence', 'test2@test.com', 'fake1234hash', '${roleIdMap.doctor}', '${genderIdMap.female}', ${Math.floor(Math.random() * departments.length) + 1})
-      `
-    );
+      VALUES ${doctorValues}
+    `);
 
     // AGENTS
-    await queryRunner.manager.query(
-      `INSERT INTO "user" 
+    const agents = [
+      {
+        firstname: 'Arnold',
+        lastname: 'Agent',
+        email: await fakeEmail(),
+        password: 'fake1234hash',
+        roleId: roleIdMap.agent,
+        genderId: genderIdMap.na
+      },
+      {
+        firstname: 'Anna',
+        lastname: 'Agent',
+        email: await fakeEmail(),
+        password: 'fake1234hash',
+        roleId: roleIdMap.agent,
+        genderId: genderIdMap.na
+      }
+    ];
+
+    const agentValues = agents
+      .map(
+        (agent) =>
+          `('${agent.firstname}', '${agent.lastname}', '${agent.email}', '${agent.password}', ${agent.roleId}, ${agent.genderId})`
+      )
+      .join(', ');
+
+    await queryRunner.manager.query(`
+      INSERT INTO "user"
       (firstname, lastname, email, password, "roleId", "genderId")
-      VALUES
-      ('Arnold', 'Agent', 'test3@test.com', 'fake1234hash', '${roleIdMap.agent}', '${genderIdMap.na}'),
-      ('Anna', 'Agent', 'test4@test.com', 'fake1234hash', '${roleIdMap.agent}', '${genderIdMap.na}')
-      `
-    );
+      VALUES ${agentValues}
+    `);
 
     // ADMINS
-    await queryRunner.manager.query(
-      `INSERT INTO "user" 
+    const admins = [
+      {
+        firstname: 'Alice',
+        lastname: 'Admin',
+        email: await fakeEmail(),
+        password: 'fake1234hash',
+        roleId: roleIdMap.admin,
+        genderId: genderIdMap.na
+      },
+      {
+        firstname: 'Albert',
+        lastname: 'Admin',
+        email: await fakeEmail(),
+        password: 'fake1234hash',
+        roleId: roleIdMap.admin,
+        genderId: genderIdMap.na
+      }
+    ];
+
+    const adminValues = admins
+      .map(
+        (admin) =>
+          `('${admin.firstname}', '${admin.lastname}', '${admin.email}', '${admin.password}', ${admin.roleId}, ${admin.genderId})`
+      )
+      .join(', ');
+
+    await queryRunner.manager.query(`
+      INSERT INTO "user"
       (firstname, lastname, email, password, "roleId", "genderId")
-      VALUES
-      ('Alice', 'Admin', 'test5@test.com', 'fake1234hash', '${roleIdMap.admin}', '${genderIdMap.na}'),
-      ('Albert', 'Admin', 'test6@test.com', 'fake1234hash', '${roleIdMap.admin}', '${genderIdMap.na}')
-      `
-    );
+      VALUES ${adminValues}
+    `);
 
     // SECRETARIES
-    await queryRunner.manager.query(
-      `INSERT INTO "user" 
+    const secretaries = [
+      {
+        firstname: 'Samuel',
+        lastname: 'Secretary',
+        email: await fakeEmail(),
+        password: 'fake1234hash',
+        roleId: roleIdMap.secretary,
+        genderId: genderIdMap.na,
+        departmentId: Math.floor(Math.random() * departments.length) + 1
+      },
+      {
+        firstname: 'Sally',
+        lastname: 'Secretary',
+        email: await fakeEmail(),
+        password: 'fake1234hash',
+        roleId: roleIdMap.secretary,
+        genderId: genderIdMap.na,
+        departmentId: Math.floor(Math.random() * departments.length) + 1
+      }
+    ];
+
+    const secretaryValues = secretaries
+      .map(
+        (secretary) =>
+          `('${secretary.firstname}', '${secretary.lastname}', '${secretary.email}', '${secretary.password}', ${secretary.roleId}, ${secretary.genderId}, ${secretary.departmentId})`
+      )
+      .join(', ');
+
+    await queryRunner.manager.query(`
+      INSERT INTO "user"
       (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
-      VALUES
-      ('Samuel', 'Secretary', 'test7@test.com', 'fake1234hash', '${roleIdMap.secretary}', '${genderIdMap.na}', ${Math.floor(Math.random() * departments.length) + 1}),
-      ('Sally', 'Secretary', 'test8@test.com', 'fake1234hash', '${roleIdMap.secretary}', '${genderIdMap.na}', ${Math.floor(Math.random() * departments.length) + 1})
-      `
-    );
+      VALUES ${secretaryValues}
+    `);
+
+    // 3. WORKING HOURS
 
     // COMMIT TRANSACTION
     await queryRunner.commitTransaction();

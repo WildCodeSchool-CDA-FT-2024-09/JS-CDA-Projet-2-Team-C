@@ -7,8 +7,9 @@ import dataSource from './dataSource';
   const queryRunner = dataSource.createQueryRunner();
 
   try {
+    // START TRANSACTION
     await queryRunner.startTransaction();
-    // Truncate tables here
+    // TRUNCATE TABLES / RESET INDEXES
     await queryRunner.query(
       'TRUNCATE consultation_subject RESTART IDENTITY CASCADE'
     );
@@ -21,99 +22,117 @@ import dataSource from './dataSource';
     await queryRunner.query('TRUNCATE patient RESTART IDENTITY CASCADE');
     await queryRunner.query('TRUNCATE "user" RESTART IDENTITY CASCADE');
 
-    // Seed tables here
+    // SEED TABLES
+    // 1. UNIQUE LABELS
     // Roles
+    const roles = ['Admin', 'Doctor', 'Agent', 'Secretary'];
     await queryRunner.manager.query(
-      `INSERT INTO "role" (label) VALUES ('Admin'), ('Doctor'), ('Agent'), ('Secretary')`
+      `INSERT INTO "role" (label) VALUES ('${roles.join("'), ('")}')`
     );
 
     // Genders
+    const genders = ['Male', 'Female', 'NA'];
     await queryRunner.manager.query(
-      `INSERT INTO "gender" (label) VALUES ('Male'), ('Female'), ('N/A')`
+      `INSERT INTO "gender" (label) VALUES ('${genders.join("'), ('")}')`
     );
 
     // Departments
+    const departments = [
+      'Cardiology',
+      'Dermatology',
+      'Endocrinology',
+      'Gastroenterology',
+      'Hematology',
+      'Infectious diseases',
+      'Nephrology',
+      'Neurology',
+      'Oncology',
+      'Pulmonology',
+      'Rheumatology',
+      'Urology'
+    ];
     await queryRunner.manager.query(
-      `INSERT INTO "department" (label) VALUES ('Cardiology'), ('Dermatology'), ('Endocrinology'), ('Gastroenterology'), ('Hematology'), ('Infectious diseases'), ('Nephrology'), ('Neurology'), ('Oncology'), ('Pulmonology'), ('Rheumatology'), ('Urology')`
+      `INSERT INTO "department" (label) VALUES ('${departments.join("'), ('")}')`
     );
 
     // Consultation subjects
+    const consultationSubjects = [
+      'General consultation',
+      'Follow-up consultation',
+      'Emergency consultation',
+      'Preoperative consultation',
+      'Postoperative consultation',
+      'Routine check-up'
+    ];
     await queryRunner.manager.query(
-      `INSERT INTO "consultation_subject" (label) VALUES ('General consultation'), ('Follow-up consultation'), ('Emergency consultation'), ('Preoperative consultation'), ('Postoperative consultation'), ('Routine check-up')`
+      `INSERT INTO "consultation_subject" (label) VALUES ('${consultationSubjects.join("'), ('")}')`
     );
 
-    // Doctors
-    const doctorRoleResult = await queryRunner.manager.query(
-      `SELECT id FROM "role" WHERE label = 'Doctor'`
-    );
-    const doctorRoleId = doctorRoleResult[0].id;
-    const maleGenderResult = await queryRunner.manager.query(
-      `SELECT id FROM "gender" WHERE label = 'Male'`
-    );
-    const maleGenderId = maleGenderResult[0].id;
-    const femaleGenderResult = await queryRunner.manager.query(
-      `SELECT id FROM "gender" WHERE label = 'Female'`
-    );
-    const femaleGenderId = femaleGenderResult[0].id;
+    // Make utility maps of unique labels to their ids
+    type UniqueLabel = {
+      id: number;
+      label: string;
+    };
 
-    await queryRunner.manager.query(
-      `INSERT INTO "user" 
-      (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
-      VALUES
-      ('Cyril', 'Convergence', 'test1@test.com', 'fake1234hash', '${doctorRoleId}', '${maleGenderId}', ${Math.floor(Math.random() * 12) + 1}),
-      ('Diana', 'Divergence', 'test2@test.com', 'fake1234hash', '${doctorRoleId}', '${femaleGenderId}', ${Math.floor(Math.random() * 12) + 1})
-      `
-    );
+    type LabelIdMap = {
+      [key: string]: number;
+    };
 
-    // Agents
-    const agentRoleResult = await queryRunner.manager.query(
-      `SELECT id FROM "role" WHERE label = 'Agent'`
-    );
-    const agentRoleId = agentRoleResult[0].id;
-    const notApplicableGenderResult = await queryRunner.manager.query(
-      `SELECT	id FROM "gender" WHERE label = 'N/A'`
-    );
-    const notApplicableGenderId = notApplicableGenderResult[0].id;
+    async function makeLabelIdMap(table: string): Promise<LabelIdMap> {
+      const result: UniqueLabel[] = await queryRunner.manager.query(
+        `SELECT id, label FROM ${table}`
+      );
+      return result.reduce((acc: LabelIdMap, item: UniqueLabel) => {
+        acc[item.label.toLowerCase()] = item.id;
+        return acc;
+      }, {});
+    }
 
-    await queryRunner.manager.query(
-      `INSERT INTO "user" 
-      (firstname, lastname, email, password, "roleId", "genderId")
-      VALUES
-      ('Arnold', 'Agent', 'test3@test.com', 'fake1234hash', '${agentRoleId}', '${notApplicableGenderId}'),
-      ('Anna', 'Agent', 'test4@test.com', 'fake1234hash', '${agentRoleId}', '${notApplicableGenderId}')
-      `
-    );
+    const roleIdMap = await makeLabelIdMap('role');
+    const genderIdMap = await makeLabelIdMap('gender');
 
-    // Admins
-    const adminRoleResult = await queryRunner.manager.query(
-      `SELECT id FROM "role" WHERE label = 'Admin'`
-    );
-    const adminRoleId = adminRoleResult[0].id;
-
-    await queryRunner.manager.query(
-      `INSERT INTO "user" 
-      (firstname, lastname, email, password, "roleId", "genderId")
-      VALUES
-      ('Alice', 'Admin', 'test5@test.com', 'fake1234hash', '${adminRoleId}', '${notApplicableGenderId}'),
-      ('Albert', 'Admin', 'test6@test.com', 'fake1234hash', '${adminRoleId}', '${notApplicableGenderId}')
-      `
-    );
-
-    // Secretaries
-    const secretaryRoleResult = await queryRunner.manager.query(
-      `SELECT id FROM "role" WHERE label = 'Secretary'`
-    );
-    const secretaryRoleId = secretaryRoleResult[0].id;
-
+    // 2. USERS
+    // DOCTORS
     await queryRunner.manager.query(
       `INSERT INTO "user" 
       (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
       VALUES
-      ('Samuel', 'Secretary', 'test7@test.com', 'fake1234hash', '${secretaryRoleId}', '${notApplicableGenderId}', ${Math.floor(Math.random() * 12) + 1}),
-      ('Sally', 'Secretary', 'test8@test.com', 'fake1234hash', '${secretaryRoleId}', '${notApplicableGenderId}', ${Math.floor(Math.random() * 12) + 1})
+      ('Cyril', 'Convergence', 'test1@test.com', 'fake1234hash', '${roleIdMap.doctor}', '${genderIdMap.male}', ${Math.floor(Math.random() * departments.length) + 1}),
+      ('Diana', 'Divergence', 'test2@test.com', 'fake1234hash', '${roleIdMap.doctor}', '${genderIdMap.female}', ${Math.floor(Math.random() * departments.length) + 1})
       `
     );
 
+    // AGENTS
+    await queryRunner.manager.query(
+      `INSERT INTO "user" 
+      (firstname, lastname, email, password, "roleId", "genderId")
+      VALUES
+      ('Arnold', 'Agent', 'test3@test.com', 'fake1234hash', '${roleIdMap.agent}', '${genderIdMap.na}'),
+      ('Anna', 'Agent', 'test4@test.com', 'fake1234hash', '${roleIdMap.agent}', '${genderIdMap.na}')
+      `
+    );
+
+    // ADMINS
+    await queryRunner.manager.query(
+      `INSERT INTO "user" 
+      (firstname, lastname, email, password, "roleId", "genderId")
+      VALUES
+      ('Alice', 'Admin', 'test5@test.com', 'fake1234hash', '${roleIdMap.admin}', '${genderIdMap.na}'),
+      ('Albert', 'Admin', 'test6@test.com', 'fake1234hash', '${roleIdMap.admin}', '${genderIdMap.na}')
+      `
+    );
+
+    // SECRETARIES
+    await queryRunner.manager.query(
+      `INSERT INTO "user" 
+      (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
+      VALUES
+      ('Samuel', 'Secretary', 'test7@test.com', 'fake1234hash', '${roleIdMap.secretary}', '${genderIdMap.na}', ${Math.floor(Math.random() * departments.length) + 1}),
+      ('Sally', 'Secretary', 'test8@test.com', 'fake1234hash', '${roleIdMap.secretary}', '${genderIdMap.na}', ${Math.floor(Math.random() * departments.length) + 1})
+      `
+    );
+
+    // COMMIT TRANSACTION
     await queryRunner.commitTransaction();
   } catch (error) {
     console.error('Seed error: ', error);

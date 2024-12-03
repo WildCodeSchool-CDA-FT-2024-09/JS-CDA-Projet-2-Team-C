@@ -1,0 +1,87 @@
+{
+    "data": {
+      "dossier": {
+        "patient": {
+          "firstname": "John",
+          "lastname": "Doe",
+          "gender": {
+            "label": "Male"
+          }
+        },
+        "consultations": [
+          {
+            "consultationDate": "2024-12-01T14:00:00Z",
+            "description": "Routine check-up and blood pressure monitoring.",
+            "doctor": {
+              "firstname": "Alice",
+              "lastname": "Smith",
+              "department": {
+                "label": "General Medicine",
+                "id": 1
+              }
+            },
+            "attachments": [
+              {
+                "note": "Blood pressure readings attached.",
+                "filePath": "/attachments/blood_pressure_2024-12-01.pdf",
+                "fileDisplayName": "Blood Pressure Report",
+                "author": {
+                  "role": {
+                    "label": "Nurse"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "consultationDate": "2024-11-20T10:30:00Z",
+            "description": "Follow-up for Type 2 Diabetes management.",
+            "doctor": {
+              "firstname": "James",
+              "lastname": "Brown",
+              "department": {
+                "label": "Endocrinology",
+                "id": 2
+              }
+            },
+            "attachments": [
+              {
+                "note": "Blood sugar levels from the last test.",
+                "filePath": "/attachments/blood_sugar_test_2024-11-20.pdf",
+                "fileDisplayName": "Blood Sugar Test",
+                "author": {
+                  "role": {
+                    "label": "Lab Technician"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "consultationDate": "2024-10-15T16:45:00Z",
+            "description": "Post-operative evaluation for knee surgery.",
+            "doctor": {
+              "firstname": "Emily",
+              "lastname": "Davis",
+              "department": {
+                "label": "Orthopedics",
+                "id": 3
+              }
+            },
+            "attachments": [
+              {
+                "note": "X-ray images post-surgery.",
+                "filePath": "/attachments/knee_xray_2024-10-15.jpg",
+                "fileDisplayName": "Knee X-ray",
+                "author": {
+                  "role": {
+                    "label": "Radiologist"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }

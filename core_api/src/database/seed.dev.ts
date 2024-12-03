@@ -26,13 +26,13 @@ import dataSource from './dataSource';
     // 1. UNIQUE LABELS
     // Roles
     const roles = ['Admin', 'Doctor', 'Agent', 'Secretary'];
-    await queryRunner.manager.query(
+    await queryRunner.query(
       `INSERT INTO "role" (label) VALUES ('${roles.join("'), ('")}')`
     );
 
     // Genders
     const genders = ['Male', 'Female', 'NA'];
-    await queryRunner.manager.query(
+    await queryRunner.query(
       `INSERT INTO "gender" (label) VALUES ('${genders.join("'), ('")}')`
     );
 
@@ -51,7 +51,7 @@ import dataSource from './dataSource';
       'Rheumatology',
       'Urology'
     ];
-    await queryRunner.manager.query(
+    await queryRunner.query(
       `INSERT INTO "department" (label) VALUES ('${departments.join("'), ('")}')`
     );
 
@@ -64,7 +64,7 @@ import dataSource from './dataSource';
       'Postoperative consultation',
       'Routine check-up'
     ];
-    await queryRunner.manager.query(
+    await queryRunner.query(
       `INSERT INTO "consultation_subject" (label) VALUES ('${consultationSubjects.join("'), ('")}')`
     );
 
@@ -79,7 +79,7 @@ import dataSource from './dataSource';
     };
 
     async function makeLabelIdMap(table: string): Promise<LabelIdMap> {
-      const result: UniqueLabel[] = await queryRunner.manager.query(
+      const result: UniqueLabel[] = await queryRunner.query(
         `SELECT id, label FROM ${table}`
       );
       return result.reduce((acc: LabelIdMap, item: UniqueLabel) => {
@@ -129,7 +129,7 @@ import dataSource from './dataSource';
       )
       .join(', ');
 
-    const doctorResult = await queryRunner.manager.query(`
+    const doctorResult = await queryRunner.query(`
       INSERT INTO "user"
       (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
       VALUES ${doctorValues}
@@ -165,7 +165,7 @@ import dataSource from './dataSource';
       )
       .join(', ');
 
-    await queryRunner.manager.query(`
+    await queryRunner.query(`
       INSERT INTO "user"
       (firstname, lastname, email, password, "roleId", "genderId")
       VALUES ${agentValues}
@@ -198,7 +198,7 @@ import dataSource from './dataSource';
       )
       .join(', ');
 
-    await queryRunner.manager.query(`
+    await queryRunner.query(`
       INSERT INTO "user"
       (firstname, lastname, email, password, "roleId", "genderId")
       VALUES ${adminValues}
@@ -233,7 +233,7 @@ import dataSource from './dataSource';
       )
       .join(', ');
 
-    const secretaryResult = await queryRunner.manager.query(`
+    const secretaryResult = await queryRunner.query(`
       INSERT INTO "user"
       (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
       VALUES ${secretaryValues}
@@ -283,7 +283,7 @@ import dataSource from './dataSource';
       )
       .join(', ');
 
-    await queryRunner.manager.query(`
+    await queryRunner.query(`
         INSERT INTO "working_hours"
         ("doctorId", "weekday", "startTime", "endTime")
         VALUES ${workingHoursValues}
@@ -345,7 +345,7 @@ import dataSource from './dataSource';
       )
       .join(', ');
 
-    const patientResult = await queryRunner.manager.query(`
+    const patientResult = await queryRunner.query(`
       INSERT INTO "patient"
       (firstname, lastname, email, ssn, town, postcode
       , "dateOfBirth", "genderId")
@@ -402,7 +402,7 @@ import dataSource from './dataSource';
       )
       .join(', ');
 
-    const consultationResult = await queryRunner.manager.query(`
+    const consultationResult = await queryRunner.query(`
       INSERT INTO "consultation"
       ("description", "consultationDate", "startTime", "durationMinutes", "subjectId", "doctorId", "authorId", "patientId")
       VALUES ${consultationValues}
@@ -424,14 +424,14 @@ import dataSource from './dataSource';
 
     const doctorAndSecretaryIds = doctorIds.concat(secretaryIds);
 
-    const attachments: Attachment[] = consultationIds.map(
+    const attachmentsWithFiles: Attachment[] = consultationIds.map(
       (consultationId: number): Attachment => {
         const authorId =
           doctorAndSecretaryIds[
             Math.floor(Math.random() * doctorAndSecretaryIds.length)
           ];
         const note =
-          'This is a fake attachment note concerning private medical details. Do not share or copy this information.';
+          'Fake medical scan results. This is a fake attachment note.';
         const filePath = 'fake/path/to/file.pdf';
         const fileDisplayName = 'Fake Medical Attachment';
         return {
@@ -444,6 +444,28 @@ import dataSource from './dataSource';
       }
     );
 
+    const attachmentsWithoutFiles: Attachment[] = consultationIds.map(
+      (consultationId: number): Attachment => {
+        const authorId =
+          doctorAndSecretaryIds[
+            Math.floor(Math.random() * doctorAndSecretaryIds.length)
+          ];
+        const note =
+          'Fake medical consulation notes related to the consultation. This is private medical information and should not be shared with unauthorized persons.';
+        const filePath = '';
+        const fileDisplayName = '';
+        return {
+          note,
+          filePath,
+          fileDisplayName,
+          authorId,
+          consultationId
+        };
+      }
+    );
+
+    const attachments = attachmentsWithFiles.concat(attachmentsWithoutFiles);
+
     const attachmentValues = attachments
       .map(
         (attachment) =>
@@ -451,7 +473,7 @@ import dataSource from './dataSource';
       )
       .join(', ');
 
-    await queryRunner.manager.query(`
+    await queryRunner.query(`
       INSERT INTO "attachment"
       ("note", "filePath", "fileDisplayName", "authorId", "consultationId")
       VALUES ${attachmentValues}

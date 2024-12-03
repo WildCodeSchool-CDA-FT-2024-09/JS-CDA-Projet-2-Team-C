@@ -5,6 +5,7 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from './services/client';
 import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
+import Dossier from './pages/Dossier/Dossier.tsx';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'patient/:patientId/dossier',
-        element: <h1>Dossier</h1>
+        element: <Dossier />
       }
     ]
   }

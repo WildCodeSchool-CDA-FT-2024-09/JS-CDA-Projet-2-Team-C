@@ -129,11 +129,14 @@ import dataSource from './dataSource';
       )
       .join(', ');
 
-    await queryRunner.manager.query(`
+    const doctorResult = await queryRunner.manager.query(`
       INSERT INTO "user"
       (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
       VALUES ${doctorValues}
+      RETURNING id
     `);
+
+    const doctorIds = doctorResult.map((item: { id: number }) => item.id);
 
     // AGENTS
     const agents = [
@@ -237,68 +240,38 @@ import dataSource from './dataSource';
     `);
 
     // 3. WORKING HOURS
-    const workingHours = [
-      {
-        doctorId: 1,
-        weekday: 1,
-        startTime: '08:00',
-        endTime: '16:00'
-      },
-      {
-        doctorId: 1,
-        weekday: 2,
-        startTime: '08:00',
-        endTime: '16:00'
-      },
-      {
-        doctorId: 1,
-        weekday: 3,
-        startTime: '08:00',
-        endTime: '16:00'
-      },
-      {
-        doctorId: 1,
-        weekday: 4,
-        startTime: '08:00',
-        endTime: '16:00'
-      },
-      {
-        doctorId: 1,
-        weekday: 5,
-        startTime: '08:00',
-        endTime: '16:00'
-      },
-      {
-        doctorId: 2,
-        weekday: 1,
-        startTime: '09:00',
-        endTime: '17:00'
-      },
-      {
-        doctorId: 2,
-        weekday: 2,
-        startTime: '09:00',
-        endTime: '17:00'
-      },
-      {
-        doctorId: 2,
-        weekday: 3,
-        startTime: '09:00',
-        endTime: '17:00'
-      },
-      {
-        doctorId: 2,
-        weekday: 4,
-        startTime: '09:00',
-        endTime: '17:00'
-      },
-      {
-        doctorId: 2,
-        weekday: 5,
-        startTime: '09:00',
-        endTime: '17:00'
-      }
-    ];
+    type WorkdayHours = {
+      doctorId: number;
+      weekday: number;
+      startTime: string;
+      endTime: string;
+    };
+
+    function generateWorkingHours(doctorIds: number[]): WorkdayHours[] {
+      const workdays = [0, 1, 2, 3, 4, 5, 6];
+      const daysWorked = 5;
+      const possibleShifts = [
+        ['06:00', '14:00'],
+        ['08:00', '16:00'],
+        ['10:00', '18:00'],
+        ['12:00', '20:00']
+      ];
+      const workingHours: WorkdayHours[] = [];
+      doctorIds.forEach((doctorId) => {
+        const startDay = Math.floor(
+          Math.random() * (workdays.length - daysWorked)
+        );
+        const [startTime, endTime] =
+          possibleShifts[Math.floor(Math.random() * possibleShifts.length)];
+        for (let i = startDay; i < startDay + daysWorked; i++) {
+          const weekday = i;
+          workingHours.push({ doctorId, weekday, startTime, endTime });
+        }
+      });
+      return workingHours;
+    }
+
+    const workingHours = generateWorkingHours(doctorIds);
 
     const workingHoursValues = workingHours
       .map(
@@ -306,6 +279,9 @@ import dataSource from './dataSource';
           `(${workingHour.doctorId}, ${workingHour.weekday}, '${workingHour.startTime}', '${workingHour.endTime}')`
       )
       .join(', ');
+
+    // 4. PATIENTS
+    // TODO
 
     await queryRunner.manager.query(`
       INSERT INTO "working_hours"

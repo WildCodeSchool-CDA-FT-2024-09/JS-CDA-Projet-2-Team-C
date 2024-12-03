@@ -237,6 +237,81 @@ import dataSource from './dataSource';
     `);
 
     // 3. WORKING HOURS
+    const workingHours = [
+      {
+        doctorId: 1,
+        weekday: 1,
+        startTime: '08:00',
+        endTime: '16:00'
+      },
+      {
+        doctorId: 1,
+        weekday: 2,
+        startTime: '08:00',
+        endTime: '16:00'
+      },
+      {
+        doctorId: 1,
+        weekday: 3,
+        startTime: '08:00',
+        endTime: '16:00'
+      },
+      {
+        doctorId: 1,
+        weekday: 4,
+        startTime: '08:00',
+        endTime: '16:00'
+      },
+      {
+        doctorId: 1,
+        weekday: 5,
+        startTime: '08:00',
+        endTime: '16:00'
+      },
+      {
+        doctorId: 2,
+        weekday: 1,
+        startTime: '09:00',
+        endTime: '17:00'
+      },
+      {
+        doctorId: 2,
+        weekday: 2,
+        startTime: '09:00',
+        endTime: '17:00'
+      },
+      {
+        doctorId: 2,
+        weekday: 3,
+        startTime: '09:00',
+        endTime: '17:00'
+      },
+      {
+        doctorId: 2,
+        weekday: 4,
+        startTime: '09:00',
+        endTime: '17:00'
+      },
+      {
+        doctorId: 2,
+        weekday: 5,
+        startTime: '09:00',
+        endTime: '17:00'
+      }
+    ];
+
+    const workingHoursValues = workingHours
+      .map(
+        (workingHour) =>
+          `(${workingHour.doctorId}, ${workingHour.weekday}, '${workingHour.startTime}', '${workingHour.endTime}')`
+      )
+      .join(', ');
+
+    await queryRunner.manager.query(`
+      INSERT INTO "working_hours"
+      ("doctorId", "weekday", "startTime", "endTime")
+      VALUES ${workingHoursValues}
+    `);
 
     // COMMIT TRANSACTION
     await queryRunner.commitTransaction();

@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
-    "format": "prettier --write \"*/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "eslint",
+    "lint-full": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write",
+    "format-full": "prettier --write \"*/**/*.{js,jsx,ts,tsx}\"",
     "preview": "vite preview",
     "test": "vitest run",
     "codegen": "graphql-codegen --config codegen.ts"

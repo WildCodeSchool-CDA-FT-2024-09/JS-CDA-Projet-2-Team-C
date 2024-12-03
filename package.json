@@ -19,6 +19,7 @@
     "testcoreapi": "npm run test --prefix core_api",
     "prepare": "husky",
     "lint": "lint-staged",
+    "lint-full": "npm run lint-full --prefix client && npm run lint-full --prefix core_api",
     "dev-restart": "make devdown && make prune && make rebuild && make dev",
     "install": "npm install --prefix client && npm install --prefix core_api"
   },

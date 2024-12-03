@@ -22,11 +22,11 @@ export class Attachment extends BaseEntity {
   note: string;
 
   @Field(() => String)
-  @Column({ nullable: false, type: 'varchar', length: 150 })
+  @Column({ nullable: true, type: 'varchar', length: 150 })
   filePath: string;
 
   @Field(() => String)
-  @Column({ nullable: false, type: 'varchar', length: 100 })
+  @Column({ nullable: true, type: 'varchar', length: 100 })
   fileDisplayName: string;
 
   @Field(() => User)

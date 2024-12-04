@@ -1,23 +1,16 @@
-import { Consultation } from '../../generated/graphql-types';
 import ConsultationsTimelineEvent from '../ConsultationsTimelineEvent/ConsultationsTimelineEvent';
+import { ConsultationsTimelineProps } from './ConsultationsTimeline.types';
 import './ConsultationsTimeline.css';
 
-interface ConsultationsTimelineProps {
-  consultations: Partial<Consultation[]>;
-}
+// See https://daisyui.com/components/timeline/ for vertical timeline
 
-// See https://daisyui.com/components/timeline/
-
-export default function ConsultationTimeline({
+export default function ConsultationsTimeline({
   consultations
 }: ConsultationsTimelineProps) {
   return (
     <ul className="timeline timeline-vertical">
       {consultations.map((consultation, index) => (
-        <li
-          key={`${consultation?.id}-${consultation?.consultationDate}`}
-          className=""
-        >
+        <li key={`${consultation?.id}-${consultation?.consultationDate}`}>
           <ConsultationsTimelineEvent
             consultation={consultation as Consultation}
             isFirst={index === 0}

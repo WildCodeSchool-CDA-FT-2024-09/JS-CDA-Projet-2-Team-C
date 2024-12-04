@@ -6,10 +6,10 @@ import ConsultationTimeline from '../../components/ConsultationsTimeline/Consult
 import fakeData from './sampleDossier.json';
 
 export default function Dossier() {
-  const params = useParams();
+  const { patientId } = useParams() as { patientId: string };
 
   const { data, loading, error } = useDossierQuery({
-    variables: { patientId: parseInt(params.patientId as string) }
+    variables: { patientId: parseInt(patientId) }
   });
 
   if (loading) return <h1>Chargement ...</h1>;

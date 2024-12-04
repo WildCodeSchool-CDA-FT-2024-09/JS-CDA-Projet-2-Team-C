@@ -12,7 +12,6 @@ export const GET_DOSSIER_BY_PATIENT_ID = gql`
         }
         dateOfBirth
         ssn
-
         postcode
         town
       }

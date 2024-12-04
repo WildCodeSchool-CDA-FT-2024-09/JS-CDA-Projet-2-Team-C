@@ -1,4 +1,5 @@
 import { Consultation } from '../../generated/graphql-types';
+import { frenchLargeDate } from '../../utils/dates.utils';
 
 interface ConsultationsTimelineEventProps {
   consultation: Partial<Consultation>;
@@ -17,20 +18,15 @@ export default function ConsultationsTimelineEvent({
   const files = attachments?.filter((attachment) => attachment.filePath);
   const notes = attachments?.filter((attachment) => !attachment.filePath);
 
-  // OPEN TO DEBATE : Does this need to be a utility function ? Outside of this component ?
-  let date = 'date inconnue';
-  if (consultationDate) {
-    date = new Date(consultationDate).toLocaleDateString('fr-FR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  }
+  // See https://daisyui.com/components/accordion/ for accordion behaviour
+  // See
 
   return (
     <>
       {!isFirst && <hr />}
-      <div className="text-grey timeline-start">{date}</div>
+      <div className="text-grey timeline-start">
+        {frenchLargeDate(consultationDate)}
+      </div>
       <div className="timeline-middle h-8 w-8 rounded-2xl bg-primary-lighter"></div>
       <article className="flex-2 collapse timeline-end collapse-plus timeline-box bg-primary-lighter">
         <input type="radio" name="my-accordion-2" />

@@ -1,3 +1,7 @@
+/* used to overwrite default centered timeline layout
+in order to make "end" side larger that "start" side 
+See https://daisyui.com/components/timeline/ */
+
 :root {
   --timeline-col-end: 6fr;
 }

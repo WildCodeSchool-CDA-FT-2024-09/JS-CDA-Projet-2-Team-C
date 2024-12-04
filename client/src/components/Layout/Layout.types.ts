@@ -14,7 +14,7 @@ type KnownRoutes =
   | '/admin'
   | '/consultations';
 
-type PageRoutes = KnownRoutes | string;
+export type PageRoutes = KnownRoutes | string;
 
 export type PageNames = {
   [key in PageRoutes]: string;

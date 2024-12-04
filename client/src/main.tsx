@@ -5,8 +5,9 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from './services/client';
 import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
-import './index.css';
 import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
+import './index.css';
+import AgentDepartment from './pages/AgentDepartment/AgentDepartment.tsx';
 
 const router = createBrowserRouter([
   {
@@ -22,8 +23,12 @@ const router = createBrowserRouter([
         element: <h1>Planning</h1>
       },
       {
-        path: 'quicksearch',
+        path: 'rechercher',
         element: <QuickSearch />
+      },
+      {
+        path: 'rechercher/service',
+        element: <AgentDepartment />
       },
       {
         path: 'patient/:patientId/dossier',

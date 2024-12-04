@@ -6,7 +6,7 @@ import { client } from './services/client';
 import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
 import './index.css';
-import AgentHome from './pages/AgentHome/AgentHome.tsx';
+import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
 
 const router = createBrowserRouter([
   {
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'quicksearch',
-        element: <AgentHome />
+        element: <QuickSearch />
       },
       {
         path: 'patient/:patientId/dossier',

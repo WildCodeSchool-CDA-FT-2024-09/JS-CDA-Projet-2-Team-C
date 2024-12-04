@@ -6,7 +6,9 @@ export const pageNames: PageNames = {
   '/consultation': 'Consultation',
   '/dossiers': 'Liste des dossiers patient',
   '/dossier:id': 'Dossier patient',
+  '/planning/patient/:patientId/dossier': 'Dossier patient',
   '/patient/:patientId/dossier': 'Dossier patient',
   '/admin': 'Administrateur',
-  '/consultations': 'Liste consultations'
+  '/consultations': 'Liste consultations',
+  '/quicksearch': 'Recherche rapide'
 };

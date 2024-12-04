@@ -7,7 +7,7 @@ export const PageLayout = ({ children, page }: PageLayoutProps) => {
   const loginPage = page === '/';
 
   return (
-    <section>
+    <>
       {loginPage ? (
         <header className="navbar bg-base-100"></header>
       ) : (
@@ -21,6 +21,6 @@ export const PageLayout = ({ children, page }: PageLayoutProps) => {
         </section>
         {children}
       </main>
-    </section>
+    </>
   );
 };

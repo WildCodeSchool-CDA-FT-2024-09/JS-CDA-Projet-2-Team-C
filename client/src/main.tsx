@@ -6,6 +6,7 @@ import { client } from './services/client';
 import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
 import './index.css';
+import AgentHome from './pages/AgentHome/AgentHome.tsx';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: 'planning',
         element: <h1>Planning</h1>
+      },
+      {
+        path: 'home/agent',
+        element: <AgentHome />
       },
       {
         path: 'patient/:patientId/dossier',

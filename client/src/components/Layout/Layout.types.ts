@@ -1,7 +1,8 @@
-export type PageLayoutProps = {
-  children: React.ReactNode;
+import { PropsWithChildren } from 'react';
+
+export type PageLayoutProps = PropsWithChildren<{
   page: PageRoutes;
-};
+}>;
 
 type KnownRoutes =
   | '/'

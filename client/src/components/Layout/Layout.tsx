@@ -13,7 +13,7 @@ const pageNames: PageNames = {
   '/consultations': 'Liste consultations'
 };
 
-export const PageLayout: React.FC<PageLayoutProps> = ({ children, page }) => {
+export const PageLayout = ({ children, page }: PageLayoutProps) => {
   const currentRole = 'doctor';
   const navigate = useNavigate();
 
@@ -51,11 +51,11 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ children, page }) => {
   return (
     <section>
       {loginPage ? (
-        <div className="navbar bg-base-100"></div>
+        <header className="navbar bg-base-100"></header>
       ) : (
-        <div className="navbar bg-base-100 bg-primary">
-          <div className="dropdown block md:hidden">
-            <div
+        <header className="navbar bg-base-100 bg-primary">
+          <nav className="dropdown block md:hidden">
+            <button
               tabIndex={0}
               role="button"
               className="btn btn-circle btn-ghost"
@@ -74,31 +74,31 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ children, page }) => {
                   d="M4 6h16M4 12h16M4 18h7"
                 />
               </svg>
-            </div>
+            </button>
             <ul
               tabIndex={0}
               className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
             >
               {navItems}
             </ul>
-          </div>
-          <div className="navbar-start">
+          </nav>
+          <section className="navbar-start">
             <img src={Logo} className="w-16" />
-          </div>
+          </section>
           <title className="navbar-center text-2xl">{currentPageName}</title>
-          <div className="navbar-end">
+          <nav className="navbar-end">
             <ul className="menu menu-horizontal hidden px-1 md:flex">
               {navItems}
             </ul>
-          </div>
-        </div>
+          </nav>
+        </header>
       )}
       <main className="layout-content container mx-auto">
-        <div className="flex flex-col items-center">
+        <section className="flex flex-col items-center">
           <p className="text-center text-2xl">
             current role: <span className="text-primary">{currentRole}</span>
           </p>
-        </div>
+        </section>
         {children}
       </main>
     </section>

@@ -22,7 +22,7 @@ const router = createBrowserRouter([
         element: <h1>Planning</h1>
       },
       {
-        path: 'quicksearche',
+        path: 'quicksearch',
         element: <AgentHome />
       },
       {

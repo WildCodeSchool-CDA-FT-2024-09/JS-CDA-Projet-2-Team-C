@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Logo from '/images/logo-main-white.png';
 import { useNavigate } from 'react-router-dom';
 import { PageLayoutProps, PageNames } from './Layout.types';
@@ -15,7 +14,7 @@ const pageNames: PageNames = {
 };
 
 export const PageLayout: React.FC<PageLayoutProps> = ({ children, page }) => {
-  const [currentRole, setCurrentRole] = useState('doctor');
+  const currentRole = 'doctor';
   const navigate = useNavigate();
 
   const loginPage = page === '/';
@@ -99,44 +98,6 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ children, page }) => {
           <p className="text-center text-2xl">
             current role: <span className="text-primary">{currentRole}</span>
           </p>
-          <div className="flex items-center">
-            <button
-              className="btn btn-sm"
-              onClick={() => {
-                setCurrentRole('secretary');
-                navigate('/planning');
-              }}
-            >
-              Be a secretary
-            </button>
-            <button
-              className="btn btn-sm"
-              onClick={() => {
-                setCurrentRole('agent');
-                navigate('/consultations');
-              }}
-            >
-              Be an agent
-            </button>
-            <button
-              className="btn btn-sm"
-              onClick={() => {
-                setCurrentRole('doctor');
-                navigate('/planning');
-              }}
-            >
-              Be a doctor
-            </button>
-            <button
-              className="btn btn-sm"
-              onClick={() => {
-                setCurrentRole('admin');
-                navigate('/admin');
-              }}
-            >
-              Be an admin
-            </button>
-          </div>
         </div>
         {children}
       </main>

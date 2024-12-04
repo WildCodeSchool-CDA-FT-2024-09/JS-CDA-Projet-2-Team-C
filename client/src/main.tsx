@@ -18,11 +18,19 @@ const router = createBrowserRouter([
       },
       {
         path: 'planning',
-        element: <h1>Planning</h1>
+        element: <h3 className="text-center">[contenu du planning]</h3>
       },
       {
         path: 'patient/:patientId/dossier',
-        element: <h1>Dossier</h1>
+        element: <h3 className="text-center">[contenu du dossier]</h3>
+      },
+      {
+        path: 'admin',
+        element: <h3 className="text-center">[contenu admin]</h3>
+      },
+      {
+        path: 'consultations',
+        element: <h3 className="text-center">[liste consultations]</h3>
       }
     ]
   }

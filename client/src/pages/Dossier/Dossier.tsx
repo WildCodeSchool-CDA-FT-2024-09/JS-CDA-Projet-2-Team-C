@@ -4,6 +4,7 @@ import ConsultationTimeline from '../../components/ConsultationsTimeline/Consult
 
 // only for dev
 import fakeData from './sampleDossier.json';
+import { PartialConsultation } from '../../components/ConsultationsTimeline/ConsultationsTimeline.types';
 
 export default function Dossier() {
   const { patientId } = useParams() as { patientId: string };
@@ -21,7 +22,9 @@ export default function Dossier() {
       <>
         <h1>Dossier patient</h1>
         <ConsultationTimeline
-          consultations={fakeData.data.dossier.consultations}
+          consultations={
+            fakeData.data.dossier.consultations as PartialConsultation[]
+          }
         />
       </>
     );

@@ -1,6 +1,6 @@
 import { Consultation } from '../../generated/graphql-types';
 
-type PartialConsultation = Pick<
+export type PartialConsultation = Pick<
   Consultation,
   'id' | 'consultationDate' | 'description' | 'doctor' | 'attachments'
 >;

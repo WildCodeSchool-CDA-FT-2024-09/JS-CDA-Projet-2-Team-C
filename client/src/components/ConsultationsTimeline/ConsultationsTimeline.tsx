@@ -12,7 +12,7 @@ export default function ConsultationsTimeline({
       {consultations.map((consultation, index) => (
         <li key={`${consultation?.id}-${consultation?.consultationDate}`}>
           <ConsultationsTimelineEvent
-            consultation={consultation as Consultation}
+            consultation={consultation}
             isFirst={index === 0}
             isLast={index === consultations?.length - 1}
           />

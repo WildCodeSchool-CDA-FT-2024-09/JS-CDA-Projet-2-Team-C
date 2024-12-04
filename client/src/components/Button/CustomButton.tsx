@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface CustomButtonProps {
@@ -7,11 +6,7 @@ interface CustomButtonProps {
   className?: string;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({
-  label,
-  path,
-  className
-}) => {
+const CustomButton = ({ label, path, className }: CustomButtonProps) => {
   const navigate = useNavigate();
 
   return (

@@ -1,12 +1,17 @@
-import Logo from '/images/logo-main-white.png';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../contexts/user/useUser';
 import { HeaderProps } from './Header.types';
+import Logo from '/images/logo-main-white.png';
 
 export const Header = ({ page, pageNames }: HeaderProps) => {
-  const currentRole = 'doctor';
+  const { user, setUser } = useUser();
+  const currentRole = user?.role.label;
   const navigate = useNavigate();
-
   const currentPageName = pageNames[page];
+  const handeLogout = () => {
+    setUser(null);
+    navigate('/');
+  };
 
   const navItems = (
     <>
@@ -31,15 +36,18 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
         </li>
       )}
       <li>
-        <a onClick={() => navigate('/')}>Déconnexion</a>
+        <button onClick={handeLogout}>Déconnexion</button>
       </li>
     </>
   );
 
   return (
-    <header className="navbar bg-base-100 bg-primary">
+    <header className="navbar bg-primary">
       <section className="navbar-start">
         <img src={Logo} className="navbar-start w-16" />
+        {currentRole && (
+          <span className="text-xs">Connecté en tant que {currentRole}</span>
+        )}
       </section>
       <title className="navbar-center text-2xl">{currentPageName}</title>
       <nav className="navbar-end hidden md:flex">

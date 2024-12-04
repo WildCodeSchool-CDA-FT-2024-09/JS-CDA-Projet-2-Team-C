@@ -2,6 +2,8 @@ import { StrictMode } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
+import { UserProvider } from './contexts/user/UserContext';
+import RedirectWrapper from './components/RedirectWrapper/RedirectWrapper.tsx';
 import { client } from './services/client';
 import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
@@ -11,7 +13,12 @@ import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: (
+      <RedirectWrapper>
+        <App />
+      </RedirectWrapper>
+    ),
+
     children: [
       {
         index: true,
@@ -44,7 +51,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ApolloProvider client={client}>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </ApolloProvider>
   </StrictMode>
 );

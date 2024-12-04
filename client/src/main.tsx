@@ -6,6 +6,7 @@ import { client } from './services/client';
 import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
 import './index.css';
+import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: 'planning',
         element: <h3 className="text-center">[contenu du planning]</h3>
+      },
+      {
+        path: 'quicksearch',
+        element: <QuickSearch />
       },
       {
         path: 'patient/:patientId/dossier',

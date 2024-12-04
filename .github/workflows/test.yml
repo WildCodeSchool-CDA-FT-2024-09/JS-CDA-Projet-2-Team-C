@@ -28,8 +28,11 @@ jobs:
       - name: Install package dependencies
         run: npm i
 
+      - name: Run Linter
+        run: npm run lint-full
+
       - name: Run FrontEnd tests
-        run: npm run testclient 
+        run: npm run testclient
 
       - name: Run Core API tests
         run: npm run testcoreapi

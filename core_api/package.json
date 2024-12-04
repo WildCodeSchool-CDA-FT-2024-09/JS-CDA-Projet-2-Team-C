@@ -5,8 +5,10 @@
   "scripts": {
     "test": "jest --config ./jest.config.ts",
     "dev": "ts-node-dev --respawn ./src/index.ts",
-    "lint": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
-    "format": "prettier --write \"*/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "eslint",
+    "lint-full": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write",
+    "format-full": "prettier --write \"*/**/*.{js,jsx,ts,tsx}\"",
     "seed-dev": "ts-node-dev ./src/database/seed.dev.ts"
   },
   "author": "",

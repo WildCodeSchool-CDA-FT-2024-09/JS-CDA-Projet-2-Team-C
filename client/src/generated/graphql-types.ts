@@ -55,7 +55,15 @@ export type Consultation = {
   id: Scalars['Int']['output'];
   patient: Patient;
   startTime: Scalars['String']['output'];
+  subject: ConsultationSubject;
   updatedAt: Scalars['String']['output'];
+};
+
+export type ConsultationSubject = {
+  __typename?: 'ConsultationSubject';
+  consultations: Array<Consultation>;
+  id: Scalars['Int']['output'];
+  label: Scalars['String']['output'];
 };
 
 export type Department = {
@@ -143,6 +151,7 @@ export type DossierQuery = {
     id: number;
     consultationDate: any;
     description: string;
+    subject: { __typename?: 'ConsultationSubject'; label: string };
     doctor: {
       __typename?: 'User';
       firstname: string;
@@ -193,6 +202,9 @@ export const DossierDocument = gql`
     dossier(patientId: $patientId) {
       id
       consultationDate
+      subject {
+        label
+      }
       description
       doctor {
         firstname

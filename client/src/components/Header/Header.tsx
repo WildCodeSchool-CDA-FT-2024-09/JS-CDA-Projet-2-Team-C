@@ -41,12 +41,14 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
       <section className="navbar-start">
         <img src={Logo} className="navbar-start w-16" />
       </section>
-      <title className="navbar-center text-2xl">{currentPageName}</title>
-      <nav className="navbar-end hidden md:flex">
+      <h1 role="title" className="navbar-center text-2xl">
+        {currentPageName}
+      </h1>
+      <nav role="navigation-desktop" className="navbar-end hidden md:flex">
         <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </nav>
       <div className="navbar-end gap-2 md:hidden">
-        <nav className="dropdown dropdown-end">
+        <nav role="navigation-mobile" className="dropdown dropdown-end">
           <button
             tabIndex={0}
             role="button"

@@ -6,10 +6,10 @@ function AgentDepartment() {
   const { loading, error, data } = useDepartmentsQuery();
   const navigate = useNavigate();
 
-  if (loading) return <h1>Loading ...</h1>;
-  if (error) return <p>Error</p>;
+  if (loading) return <h1>Chargement ...</h1>;
+  if (error) return <p>Erreur</p>;
   if (!data) {
-    return <p>No data available</p>;
+    return <p>Pas de data valide</p>;
   }
 
   const handleNavigation = (label: string) => {

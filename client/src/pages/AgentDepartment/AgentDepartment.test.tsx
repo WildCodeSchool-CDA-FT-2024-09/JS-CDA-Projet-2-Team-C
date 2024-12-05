@@ -66,17 +66,17 @@ describe('Test AgentDepartment component', () => {
     // Simule un clic et vérifie que la navigation est appelée avec les bons paramètres
     fireEvent.click(cardiologyLink);
     expect(mockNavigate).toHaveBeenCalledWith(
-      '/rechercher/service/Cardiology?label=Cardiology'
+      '/rechercher/service/docteur?label=Cardiology'
     );
 
     fireEvent.click(neurologyLink);
     expect(mockNavigate).toHaveBeenCalledWith(
-      '/rechercher/service/Neurology?label=Neurology'
+      '/rechercher/service/docteur?label=Neurology'
     );
 
     fireEvent.click(orthopedicsLink);
     expect(mockNavigate).toHaveBeenCalledWith(
-      '/rechercher/service/Orthopedics?label=Orthopedics'
+      '/rechercher/service/docteur?label=Orthopedics'
     );
   });
 
@@ -94,7 +94,7 @@ describe('Test AgentDepartment component', () => {
       </MemoryRouter>
     );
 
-    // Vérifie que le message "No data available" est affiché
-    expect(screen.getByText(/No data available/i)).toBeInTheDocument();
+    // Vérifie que le message "Pas de data valide" est affiché
+    expect(screen.getByText(/Pas de data valide/i)).toBeInTheDocument();
   });
 });

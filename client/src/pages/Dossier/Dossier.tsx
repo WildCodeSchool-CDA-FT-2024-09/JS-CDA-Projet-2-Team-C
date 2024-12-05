@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useDossierQuery } from '../../generated/graphql-types';
 import ConsultationTimeline from '../../components/ConsultationsTimeline/ConsultationsTimeline';
+import PatientDetails from '../../components/PatientDetails/PatientDetails';
 
 export default function Dossier() {
   const { patientId } = useParams() as { patientId: string };
@@ -17,6 +18,7 @@ export default function Dossier() {
     return (
       <>
         <h1>Dossier patient</h1>
+        <PatientDetails patientId={parseInt(patientId)} />
         <ConsultationTimeline consultations={data.dossier} />
       </>
     );

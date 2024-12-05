@@ -1,5 +1,5 @@
 import SearchBarProps from './SearchBar.type';
-import Loupe from './Loupe.svg';
+import LoupeIcon from '../../icons/LoupeIcon';
 
 export default function SearchBar({ handleChange }: SearchBarProps) {
   return (
@@ -8,7 +8,7 @@ export default function SearchBar({ handleChange }: SearchBarProps) {
         htmlFor="search-input"
         className="flex w-96 gap-4 rounded-lg border border-primary-dark p-1"
       >
-        <Loupe aria-hidden="true" />
+        <LoupeIcon aria-hidden="true" />
         <input
           id="search-input"
           type="text"

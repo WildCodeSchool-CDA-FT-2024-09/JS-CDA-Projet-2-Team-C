@@ -1,7 +1,7 @@
 import UserProps from './UserList.types';
 import roleMap from './roleMap';
-import Modifer from './Modifer.svg';
-import Archive from './Archive.svg';
+import EditeIcon from '../../icons/EditeIcon';
+import ArchiveIcon from '../../icons/ArchiveIcon';
 
 export default function UserList({
   id,
@@ -24,14 +24,14 @@ export default function UserList({
           type="button"
           className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark hover:text-white"
         >
-          <Modifer />
+          <EditeIcon />
           Modifier
         </button>
         <button
           type="button"
           className="m-0 inline-flex items-center gap-2 rounded-lg bg-danger-lighter p-2 hover:bg-danger-dark hover:text-white"
         >
-          <Archive />
+          <ArchiveIcon />
           Archiver
         </button>
       </td>

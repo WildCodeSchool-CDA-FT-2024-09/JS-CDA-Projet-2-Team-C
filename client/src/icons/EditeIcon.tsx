@@ -1,4 +1,4 @@
-export default function Modifier() {
+export default function EditeIcon() {
   return (
     <svg
       width="16px"

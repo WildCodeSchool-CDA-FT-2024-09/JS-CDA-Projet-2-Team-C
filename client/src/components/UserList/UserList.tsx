@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import UserProps from './UserList.types';
 import roleMap from './roleMap';
 import Modifer from './Modifer.svg';
@@ -21,20 +20,20 @@ export default function UserList({
       <td>{lastName}</td>
       <td>{email}</td>
       <td className="flex gap-2">
-        <Link
-          to="/admin"
+        <button
+          type="button"
           className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark hover:text-white"
         >
           <Modifer />
           Modifier
-        </Link>
-        <Link
-          to="/admin"
+        </button>
+        <button
+          type="button"
           className="m-0 inline-flex items-center gap-2 rounded-lg bg-danger-lighter p-2 hover:bg-danger-dark hover:text-white"
         >
           <Archive />
           Archiver
-        </Link>
+        </button>
       </td>
     </tr>
   );

@@ -7,7 +7,7 @@ describe('Test du composant Layout', () => {
   it('Should display the Header component on /planning', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <PageLayout page="/planning">Hello</PageLayout>
+        <PageLayout page="/planning">Composant planning</PageLayout>
       </MemoryRouter>
     );
 
@@ -18,7 +18,7 @@ describe('Test du composant Layout', () => {
   it('Should not display the Header component on /', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <PageLayout page="/">Hello</PageLayout>
+        <PageLayout page="/">Composant login</PageLayout>
       </MemoryRouter>
     );
 
@@ -29,7 +29,7 @@ describe('Test du composant Layout', () => {
   it('Should display the correct text in header', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <PageLayout page="/planning">Hello</PageLayout>
+        <PageLayout page="/planning">Composant planning</PageLayout>
       </MemoryRouter>
     );
 

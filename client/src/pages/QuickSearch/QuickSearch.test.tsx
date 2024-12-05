@@ -13,7 +13,7 @@ describe('Test du composant QuickSearch', () => {
       </MemoryRouter>
     );
 
-    // Le i permet d'accepter les minuscule ou majuscule pour eviter la casse
+    // Le i permet d'accepter les minuscules ou majuscules pour eviter la casse
     const serviceLink = screen.getByRole('link', { name: /Service/i });
     const doctorLink = screen.getByRole('link', { name: /Docteur/i });
     const patientLink = screen.getByRole('link', { name: /Patient/i });

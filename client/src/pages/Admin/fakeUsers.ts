@@ -3,7 +3,7 @@ import UserProps from '../../components/UserList/UserList.types.ts';
 const users: UserProps[] = [
   {
     id: 1,
-    role: 'medecin',
+    role: 'doctor',
     name: 'DeTaches',
     lastName: 'Maxime',
     email: 'maxim.detaches@secretaria.com'
@@ -17,7 +17,7 @@ const users: UserProps[] = [
   },
   {
     id: 3,
-    role: 'secretaire',
+    role: 'secretary',
     name: 'Papier',
     lastName: 'Clara',
     email: 'clara.papier@secretaria.com'
@@ -31,7 +31,7 @@ const users: UserProps[] = [
   },
   {
     id: 5,
-    role: 'medecin',
+    role: 'doctor',
     name: 'Docteur',
     lastName: 'House',
     email: 'docteur.house@secretaria.com'
@@ -45,7 +45,7 @@ const users: UserProps[] = [
   },
   {
     id: 7,
-    role: 'secretaire',
+    role: 'secretary',
     name: 'ÀLettre',
     lastName: 'Sophie',
     email: 'sophie.alettre@secretaria.com'
@@ -59,14 +59,14 @@ const users: UserProps[] = [
   },
   {
     id: 9,
-    role: 'medecin',
+    role: 'doctor',
     name: 'Cure',
     lastName: 'Jean',
     email: 'jean.cure@secretaria.com'
   },
   {
     id: 10,
-    role: 'secretaire',
+    role: 'secretary',
     name: "DeL'Agenda",
     lastName: 'Camille',
     email: 'camille.delagenda@secretaria.com'

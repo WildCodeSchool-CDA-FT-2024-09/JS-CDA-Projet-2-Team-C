@@ -13,7 +13,7 @@ function AgentDepartment() {
   }
 
   const handleNavigation = (label: string) => {
-    navigate(`/rechercher/service/${label}?label=${encodeURIComponent(label)}`);
+    navigate(`/rechercher/service/docteur?label=${encodeURIComponent(label)}`);
   };
 
   return (

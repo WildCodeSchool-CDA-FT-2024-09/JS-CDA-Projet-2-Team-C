@@ -18,7 +18,7 @@ export default function PatientDetails({ patientId }: PatientDetailsProps) {
 
   if (data)
     return (
-      <section className="rounded-xl bg-primary p-3">
+      <section className="rounded-2xl bg-primary-lighter p-4">
         <h3>
           <strong>
             {data.patient.firstname} {data.patient.lastname}

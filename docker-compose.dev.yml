@@ -19,9 +19,6 @@ services:
   coreapi:
     build: ./core_api
     env_file: ./core_api/.env
-    restart: always
-    ports:
-      - 4000:4000
     volumes:
       - ./core_api/src/:/app/src/
     command: npm run dev
@@ -31,10 +28,7 @@ services:
     build: ./client
     volumes:
       - ./client/src:/app/src
-    restart: always
     command: npm run dev
-    ports:
-      - 5173:5173
 
   gateway:
     image: nginx

@@ -7,6 +7,7 @@ import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
 import Admin from './pages/Admin/Admin.tsx';
 import './index.css';
+import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
 
 const router = createBrowserRouter([
   {
@@ -19,15 +20,23 @@ const router = createBrowserRouter([
       },
       {
         path: 'planning',
-        element: <h1>Planning</h1>
+        element: <h3 className="text-center">[contenu du planning]</h3>
+      },
+      {
+        path: 'quicksearch',
+        element: <QuickSearch />
       },
       {
         path: 'patient/:patientId/dossier',
-        element: <h1>Dossier</h1>
+        element: <h3 className="text-center">[contenu du dossier]</h3>
       },
       {
         path: 'admin',
         element: <Admin />
+      },
+      {
+        path: 'consultations',
+        element: <h3 className="text-center">[liste consultations]</h3>
       }
     ]
   }

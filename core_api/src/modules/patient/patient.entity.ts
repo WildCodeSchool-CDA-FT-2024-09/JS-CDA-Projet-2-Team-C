@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Field, ObjectType, Int } from 'type-graphql';
 import { Gender, Consultation } from '../entities.index';
+import { GraphQLDate } from 'graphql-scalars';
 
 @ObjectType()
 @Entity()
@@ -42,7 +43,7 @@ export class Patient extends BaseEntity {
   @Column({ nullable: false, type: 'varchar', length: 16 })
   postcode: string;
 
-  @Field(() => Date)
+  @Field(() => GraphQLDate)
   @Column({ nullable: false, type: 'date' })
   dateOfBirth: Date;
 

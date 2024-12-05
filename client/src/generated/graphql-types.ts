@@ -91,6 +91,7 @@ export type Patient = {
 
 export type Query = {
   __typename?: 'Query';
+  departments: Array<Department>;
   dossier: Array<Consultation>;
   roles: Array<Role>;
 };
@@ -186,6 +187,13 @@ export type RolesWithUsersQuery = {
       lastname: string;
     }>;
   }>;
+};
+
+export type DepartmentsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type DepartmentsQuery = {
+  __typename?: 'Query';
+  departments: Array<{ __typename?: 'Department'; id: number; label: string }>;
 };
 
 export const DossierDocument = gql`

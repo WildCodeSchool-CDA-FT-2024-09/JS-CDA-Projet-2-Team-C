@@ -1,7 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { useDepartmentsQuery } from '../../generated/graphql-types';
+import { PartialDepartment } from '../AgentDepartment/AgentDepartment.type';
 
 function AgentDepartment() {
   const { loading, error, data } = useDepartmentsQuery();
+  const navigate = useNavigate();
 
   if (loading) return <h1>Loading ...</h1>;
   if (error) return <p>Error</p>;
@@ -9,15 +12,25 @@ function AgentDepartment() {
     return <p>No data available</p>;
   }
 
+  const handleNavigation = (label: string) => {
+    navigate(`/rechercher/service/${label}?label=${encodeURIComponent(label)}`);
+  };
+
   return (
-    <>
-      <div>AgentDepartment</div>
-      <div>
-        {data.departments?.map((department) => (
-          <div key={department.id}>{department.label}</div>
+    <section>
+      <h1 className="my-2 text-center text-[32px] font-bold">Service</h1>
+      <ul className="flex flex-col items-center justify-center gap-4">
+        {data.departments?.map((department: PartialDepartment) => (
+          <li
+            key={department.id}
+            className="flex h-[60px] w-full max-w-[calc(100%-40px)] cursor-pointer items-center justify-center rounded-[10px] bg-[rgba(24,121,205,0.6)] text-[24px] font-bold transition-opacity duration-300 hover:opacity-100"
+            onClick={() => handleNavigation(department.label)}
+          >
+            {department.label}
+          </li>
         ))}
-      </div>
-    </>
+      </ul>
+    </section>
   );
 }
 

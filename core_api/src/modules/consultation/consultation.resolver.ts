@@ -8,7 +8,12 @@ export default class ConsultationResolver {
   async dossier(@Arg('patientId') patientId: number) {
     return await Consultation.find({
       where: { patient: { id: patientId } },
-      relations: { attachments: true, subject: true, patient: true }
+      relations: {
+        doctor: { department: true },
+        attachments: { author: { role: true } },
+        subject: true,
+        patient: { gender: true }
+      }
     });
   }
 }

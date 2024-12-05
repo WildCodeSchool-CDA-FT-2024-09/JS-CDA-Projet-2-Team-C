@@ -6,5 +6,5 @@ export type PartialConsultation = Pick<
 >;
 
 export interface ConsultationsTimelineProps {
-  consultations: Array<PartialConsultation>;
+  consultations: PartialConsultation[];
 }

@@ -28,7 +28,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  DateTimeISO: { input: Date; output: Date };
+  Date: { input: any; output: any };
 };
 
 export type Attachment = {
@@ -47,7 +47,7 @@ export type Consultation = {
   __typename?: 'Consultation';
   attachments: Array<Attachment>;
   author: User;
-  consultationDate: Scalars['DateTimeISO']['output'];
+  consultationDate: Scalars['Date']['output'];
   createdAt: Scalars['String']['output'];
   description: Scalars['String']['output'];
   doctor: User;
@@ -77,7 +77,7 @@ export type Patient = {
   __typename?: 'Patient';
   consultations: Array<Consultation>;
   createdAt: Scalars['String']['output'];
-  dateOfBirth: Scalars['DateTimeISO']['output'];
+  dateOfBirth: Scalars['Date']['output'];
   email: Scalars['String']['output'];
   firstname: Scalars['String']['output'];
   gender: Gender;
@@ -140,18 +140,9 @@ export type DossierQuery = {
   __typename?: 'Query';
   dossier: Array<{
     __typename?: 'Consultation';
-    consultationDate: Date;
+    id: number;
+    consultationDate: any;
     description: string;
-    patient: {
-      __typename?: 'Patient';
-      firstname: string;
-      lastname: string;
-      dateOfBirth: Date;
-      ssn: string;
-      postcode: string;
-      town: string;
-      gender: { __typename?: 'Gender'; label: string };
-    };
     doctor: {
       __typename?: 'User';
       firstname: string;
@@ -200,17 +191,7 @@ export type RolesWithUsersQuery = {
 export const DossierDocument = gql`
   query Dossier($patientId: Float!) {
     dossier(patientId: $patientId) {
-      patient {
-        firstname
-        lastname
-        gender {
-          label
-        }
-        dateOfBirth
-        ssn
-        postcode
-        town
-      }
+      id
       consultationDate
       description
       doctor {

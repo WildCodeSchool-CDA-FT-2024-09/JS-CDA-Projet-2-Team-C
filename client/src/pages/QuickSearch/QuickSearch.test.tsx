@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import QuickSearch from './QuickSearch';
 
-describe('Test du composant QuickSearch', () => {
+describe('Test QuickSearch component', () => {
   it('Should render the QuickSearch component with links', () => {
     render(
       // Crée un faux router pour simuler les link

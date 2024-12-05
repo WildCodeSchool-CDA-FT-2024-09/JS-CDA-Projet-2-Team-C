@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import UserProps from './UserList.types';
-
-import Archive from './Archive.svg';
 import Modifer from './Modifer.svg';
+import Archive from './Archive.svg';
 
-export default function UsereList({
+export default function UserList({
   id,
   name,
   lastName,

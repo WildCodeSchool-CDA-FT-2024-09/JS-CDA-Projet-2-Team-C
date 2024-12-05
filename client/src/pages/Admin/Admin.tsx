@@ -1,5 +1,6 @@
 import UserList from '../../components/UserList/UserList';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import users from './fakeUsers';
 import { useState } from 'react';
 
@@ -48,7 +49,7 @@ export default function Admin() {
               }
             >
               <option value="">Tout les roles</option>
-
+              <OptionSelect />
               <option value="admin">Admin</option>
               <option value="agent">Agent</option>
               <option value="secretaire">Secrétaire</option>

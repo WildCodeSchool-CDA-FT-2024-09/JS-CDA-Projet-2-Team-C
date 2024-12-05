@@ -24,7 +24,6 @@ services:
     command: npm run dev
 
   client:
-    env_file: ./client/.env
     environment:
       - VITE_API_URL=http://localhost:5000/coreapi
     build: ./client

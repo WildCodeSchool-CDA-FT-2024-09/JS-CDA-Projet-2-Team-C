@@ -28,7 +28,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  DateTimeISO: { input: Date; output: Date };
+  Date: { input: any; output: any };
 };
 
 export type Attachment = {
@@ -47,7 +47,7 @@ export type Consultation = {
   __typename?: 'Consultation';
   attachments: Array<Attachment>;
   author: User;
-  consultationDate: Scalars['DateTimeISO']['output'];
+  consultationDate: Scalars['Date']['output'];
   createdAt: Scalars['String']['output'];
   description: Scalars['String']['output'];
   doctor: User;
@@ -77,7 +77,7 @@ export type Patient = {
   __typename?: 'Patient';
   consultations: Array<Consultation>;
   createdAt: Scalars['String']['output'];
-  dateOfBirth: Scalars['DateTimeISO']['output'];
+  dateOfBirth: Scalars['Date']['output'];
   email: Scalars['String']['output'];
   firstname: Scalars['String']['output'];
   gender: Gender;
@@ -91,8 +91,12 @@ export type Patient = {
 
 export type Query = {
   __typename?: 'Query';
-  departments: Array<Department>;
+  dossier: Array<Consultation>;
   roles: Array<Role>;
+};
+
+export type QueryDossierArgs = {
+  patientId: Scalars['Float']['input'];
 };
 
 export type Role = {
@@ -115,7 +119,6 @@ export type User = {
   id: Scalars['Int']['output'];
   isArchived: Scalars['String']['output'];
   lastname: Scalars['String']['output'];
-  password: Scalars['String']['output'];
   role: Role;
   updatedAt: Scalars['String']['output'];
   workingHours: Array<WorkingHours>;
@@ -127,6 +130,38 @@ export type WorkingHours = {
   id: Scalars['Int']['output'];
   startTime: Scalars['String']['output'];
   weekday: Scalars['Int']['output'];
+};
+
+export type DossierQueryVariables = Exact<{
+  patientId: Scalars['Float']['input'];
+}>;
+
+export type DossierQuery = {
+  __typename?: 'Query';
+  dossier: Array<{
+    __typename?: 'Consultation';
+    id: number;
+    consultationDate: any;
+    description: string;
+    doctor: {
+      __typename?: 'User';
+      firstname: string;
+      lastname: string;
+      department: { __typename?: 'Department'; label: string; id: number };
+    };
+    attachments: Array<{
+      __typename?: 'Attachment';
+      note: string;
+      filePath: string;
+      fileDisplayName: string;
+      author: {
+        __typename?: 'User';
+        firstname: string;
+        lastname: string;
+        role: { __typename?: 'Role'; label: string };
+      };
+    }>;
+  }>;
 };
 
 export type RolesQueryVariables = Exact<{ [key: string]: never }>;
@@ -153,13 +188,94 @@ export type RolesWithUsersQuery = {
   }>;
 };
 
-export type DepartmentsQueryVariables = Exact<{ [key: string]: never }>;
+export const DossierDocument = gql`
+  query Dossier($patientId: Float!) {
+    dossier(patientId: $patientId) {
+      id
+      consultationDate
+      description
+      doctor {
+        firstname
+        lastname
+        department {
+          label
+          id
+        }
+      }
+      attachments {
+        note
+        filePath
+        fileDisplayName
+        author {
+          firstname
+          lastname
+          role {
+            label
+          }
+        }
+      }
+    }
+  }
+`;
 
-export type DepartmentsQuery = {
-  __typename?: 'Query';
-  departments: Array<{ __typename?: 'Department'; id: number; label: string }>;
-};
-
+/**
+ * __useDossierQuery__
+ *
+ * To run a query within a React component, call `useDossierQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDossierQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDossierQuery({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *   },
+ * });
+ */
+export function useDossierQuery(
+  baseOptions: Apollo.QueryHookOptions<DossierQuery, DossierQueryVariables> &
+    ({ variables: DossierQueryVariables; skip?: boolean } | { skip: boolean })
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<DossierQuery, DossierQueryVariables>(
+    DossierDocument,
+    options
+  );
+}
+export function useDossierLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<DossierQuery, DossierQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<DossierQuery, DossierQueryVariables>(
+    DossierDocument,
+    options
+  );
+}
+export function useDossierSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<DossierQuery, DossierQueryVariables>
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<DossierQuery, DossierQueryVariables>(
+    DossierDocument,
+    options
+  );
+}
+export type DossierQueryHookResult = ReturnType<typeof useDossierQuery>;
+export type DossierLazyQueryHookResult = ReturnType<typeof useDossierLazyQuery>;
+export type DossierSuspenseQueryHookResult = ReturnType<
+  typeof useDossierSuspenseQuery
+>;
+export type DossierQueryResult = Apollo.QueryResult<
+  DossierQuery,
+  DossierQueryVariables
+>;
 export const RolesDocument = gql`
   query Roles {
     roles {

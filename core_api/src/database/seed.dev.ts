@@ -25,7 +25,7 @@ import dataSource from './dataSource';
     // SEED TABLES
     // 1. UNIQUE LABELS
     // Roles
-    const roles = ['Admin', 'Doctor', 'Agent', 'Secretary'];
+    const roles = ['admin', 'doctor', 'agent', 'secretary'];
     await queryRunner.query(
       `INSERT INTO "role" (label) VALUES ('${roles.join("'), ('")}')`
     );
@@ -370,8 +370,8 @@ import dataSource from './dataSource';
     // IMPORTANT NOTE - these start times are currently hardcoded to work with 4 fake patients and to fit within possible fake doctor working times on a single day. This is to avoid having to do lengthy checks of consistency that randomly generated consultations don't happen at the same time with the same doctor.
     const consultationStartTimes = ['12:00', '12:30', '13:00', '13:30'];
 
-    const consultations: Consultation[] = patientIds.map(
-      (patientId: number, index: number): Consultation => {
+    const consultations: Consultation[] = patientIds.flatMap(
+      (patientId: number, index: number): Consultation[] => {
         const doctorId =
           doctorIds[Math.floor(Math.random() * doctorIds.length)];
         const authorId =
@@ -382,7 +382,7 @@ import dataSource from './dataSource';
         const consultationDate = '2024-12-21';
         const startTime = consultationStartTimes[index];
         const durationMinutes = 30;
-        return {
+        const baseConsultation = {
           description,
           consultationDate,
           startTime,
@@ -392,6 +392,12 @@ import dataSource from './dataSource';
           authorId,
           patientId
         };
+        const consultation1 = { ...baseConsultation };
+        const consultation2 = { ...baseConsultation };
+        consultation2.consultationDate = '2024-11-22';
+        const consultation3 = { ...baseConsultation };
+        consultation3.consultationDate = '2024-11-13';
+        return [consultation1, consultation2, consultation3];
       }
     );
 

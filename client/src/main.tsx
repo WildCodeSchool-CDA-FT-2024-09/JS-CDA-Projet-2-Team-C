@@ -7,6 +7,7 @@ import RedirectWrapper from './components/RedirectWrapper/RedirectWrapper.tsx';
 import { client } from './services/client';
 import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
+import Dossier from './pages/Dossier/Dossier.tsx';
 import './index.css';
 import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
 
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'patient/:patientId/dossier',
-        element: <h3 className="text-center">[contenu du dossier]</h3>
+        element: <Dossier />
       },
       {
         path: 'admin',

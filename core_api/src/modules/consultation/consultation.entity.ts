@@ -15,6 +15,7 @@ import {
   Patient,
   Attachment
 } from '../entities.index';
+import { GraphQLDate } from 'graphql-scalars';
 
 @ObjectType()
 @Entity()
@@ -27,7 +28,7 @@ export class Consultation extends BaseEntity {
   @Column({ nullable: false, type: 'varchar', length: 255 })
   description: string;
 
-  @Field(() => Date)
+  @Field(() => GraphQLDate)
   @Column({ nullable: false, type: 'date' })
   consultationDate: Date;
 

@@ -1,0 +1,100 @@
+{
+  "data": {
+    "dossier": {
+      "patient": {
+        "firstname": "Jane",
+        "lastname": "Doe",
+        "gender": {
+          "label": "Female"
+        },
+        "dateOfBirth": "1985-06-15",
+        "ssn": "123-45-6789",
+        "postcode": "90210",
+        "town": "Beverly Hills"
+      },
+      "consultations": [
+        {
+          "id": 1,
+          "consultationDate": "2024-11-30T09:00:00Z",
+          "description": "Annual physical examination.",
+          "doctor": {
+            "firstname": "Mark",
+            "lastname": "Johnson",
+            "department": {
+              "label": "General Medicine",
+              "id": 1
+            }
+          },
+          "attachments": [
+            {
+              "note": "Routine lab results attached.",
+              "filePath": "/attachments/lab_results_2024-11-30.pdf",
+              "fileDisplayName": "Lab Results",
+              "author": {
+                "firstname": "Sarah",
+                "lastname": "Miller",
+                "role": {
+                  "label": "Lab Technician"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "consultationDate": "2024-10-25T15:30:00Z",
+          "description": "Consultation for recurring migraines.",
+          "doctor": {
+            "firstname": "Anna",
+            "lastname": "Taylor",
+            "department": {
+              "label": "Neurology",
+              "id": 2
+            }
+          },
+          "attachments": [
+            {
+              "note": "Brain scan results uploaded.",
+              "filePath": "",
+              "fileDisplayName": "",
+              "author": {
+                "firstname": "Michael",
+                "lastname": "Brown",
+                "role": {
+                  "label": "Radiologist"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "consultationDate": "2024-09-12T11:00:00Z",
+          "description": "Follow-up on recovery from shoulder surgery.",
+          "doctor": {
+            "firstname": "Emily",
+            "lastname": "Clark",
+            "department": {
+              "label": "Orthopedics",
+              "id": 3
+            }
+          },
+          "attachments": [
+            {
+              "note": "Physical therapy progress notes.",
+              "filePath": "/attachments/therapy_progress_2024-09-12.docx",
+              "fileDisplayName": "Therapy Progress Notes",
+              "author": {
+                "firstname": "Tom",
+                "lastname": "Wilson",
+                "role": {
+                  "label": "Physiotherapist"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

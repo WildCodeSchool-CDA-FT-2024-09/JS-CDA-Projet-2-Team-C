@@ -19,3 +19,6 @@ prune:
 
 seed-dev:
 	docker compose -f docker-compose.dev.yml run coreapi npm run seed-dev
+
+codegen:
+	docker compose -f docker-compose.dev.yml run client npm run codegen

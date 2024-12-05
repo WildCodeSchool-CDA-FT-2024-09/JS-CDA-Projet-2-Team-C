@@ -108,25 +108,25 @@ export type Role = {
   __typename?: 'Role';
   id: Scalars['Int']['output'];
   label: Scalars['String']['output'];
-  users: Array<User>;
+  users?: Maybe<Array<User>>;
 };
 
 export type User = {
   __typename?: 'User';
-  attachmentsCreated: Array<Attachment>;
-  consultationsCreated: Array<Consultation>;
-  createdAt: Scalars['String']['output'];
-  department: Department;
-  doctorConsultations: Array<Consultation>;
+  attachmentsCreated?: Maybe<Array<Attachment>>;
+  consultationsCreated?: Maybe<Array<Consultation>>;
+  createdAt?: Maybe<Scalars['String']['output']>;
+  department?: Maybe<Department>;
+  doctorConsultations?: Maybe<Array<Consultation>>;
   email: Scalars['String']['output'];
   firstname: Scalars['String']['output'];
-  gender: Gender;
+  gender?: Maybe<Gender>;
   id: Scalars['Int']['output'];
-  isArchived: Scalars['String']['output'];
+  isArchived: Scalars['Boolean']['output'];
   lastname: Scalars['String']['output'];
   role: Role;
-  updatedAt: Scalars['String']['output'];
-  workingHours: Array<WorkingHours>;
+  updatedAt?: Maybe<Scalars['String']['output']>;
+  workingHours?: Maybe<Array<WorkingHours>>;
 };
 
 export type WorkingHours = {
@@ -152,7 +152,11 @@ export type DossierQuery = {
       __typename?: 'User';
       firstname: string;
       lastname: string;
-      department: { __typename?: 'Department'; label: string; id: number };
+      department?: {
+        __typename?: 'Department';
+        label: string;
+        id: number;
+      } | null;
     };
     attachments: Array<{
       __typename?: 'Attachment';
@@ -204,12 +208,12 @@ export type RolesWithUsersQuery = {
     __typename?: 'Role';
     id: number;
     label: string;
-    users: Array<{
+    users?: Array<{
       __typename?: 'User';
       id: number;
       firstname: string;
       lastname: string;
-    }>;
+    }> | null;
   }>;
 };
 

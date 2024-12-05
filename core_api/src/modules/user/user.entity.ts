@@ -40,7 +40,7 @@ export class User extends BaseEntity {
   @Column({ nullable: false, type: 'varchar', length: 255 })
   password: string;
 
-  @Field(() => String)
+  @Field(() => Boolean)
   @Column({ nullable: false, type: 'boolean', default: false })
   isArchived: boolean;
 
@@ -48,35 +48,35 @@ export class User extends BaseEntity {
   @ManyToOne(() => Role, (role) => role.users)
   role: Role;
 
-  @Field(() => Department)
+  @Field(() => Department, { nullable: true })
   @ManyToOne(() => Department, (department) => department.users)
   department: Department;
 
-  @Field(() => Gender)
+  @Field(() => Gender, { nullable: true })
   @ManyToOne(() => Gender, (gender) => gender.users)
   gender: Gender;
 
-  @Field(() => [WorkingHours])
+  @Field(() => [WorkingHours], { nullable: true })
   @OneToMany(() => WorkingHours, (workingHours) => workingHours.doctor)
   workingHours: WorkingHours[];
 
-  @Field(() => [Attachment])
+  @Field(() => [Attachment], { nullable: true })
   @OneToMany(() => Attachment, (attachment) => attachment.author)
   attachmentsCreated: Attachment[];
 
-  @Field(() => [Consultation])
+  @Field(() => [Consultation], { nullable: true })
   @OneToMany(() => Consultation, (consultation) => consultation.author)
   consultationsCreated: Consultation[];
 
-  @Field(() => [Consultation])
+  @Field(() => [Consultation], { nullable: true })
   @OneToMany(() => Consultation, (consultation) => consultation.author)
   doctorConsultations: Consultation[];
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt: Date;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt: Date;
 }

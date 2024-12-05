@@ -15,7 +15,7 @@ export default function SearchBar({ handleChange }: SearchBarProps) {
           placeholder="rechercher"
           className="focus:outline-none"
           onChange={(e) => handleChange(e.target.value)}
-          aria-label="Champ de recherche d'utilisateur"
+          aria-label="champ de recherche"
         />
       </label>
     </section>

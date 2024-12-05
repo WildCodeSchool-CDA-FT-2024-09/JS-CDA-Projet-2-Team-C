@@ -1,9 +1,4 @@
-const roleMap = {
-  agent: 'Agent',
-  secretary: 'Secrétaire',
-  doctor: 'Médecin',
-  admin: 'Admin'
-};
+import roleMap from '../UserList/roleMap';
 
 export default function OptionSelect() {
   return (

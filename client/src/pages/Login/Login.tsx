@@ -1,11 +1,11 @@
-import { useUser } from '../../contexts/user/useUser';
+import { useAuth } from '../../contexts/auth/useAuth';
 import Logo from '/images/logo-main-black.png';
 import { useNavigate } from 'react-router-dom';
 import { roleLandingPages } from './roleLandingPages';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { user, setUser } = useUser();
+  const { user, setUser } = useAuth();
 
   const handleLogin = (role: 'agent' | 'secretary' | 'doctor' | 'admin') => {
     setUser({

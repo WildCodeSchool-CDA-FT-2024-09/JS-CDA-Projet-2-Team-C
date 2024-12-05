@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../contexts/user/useUser';
+import { useAuth } from '../../contexts/auth/useAuth';
 import { HeaderProps } from './Header.types';
 import Logo from '/images/logo-main-white.png';
 
 export const Header = ({ page, pageNames }: HeaderProps) => {
-  const { user, setUser } = useUser();
+  const { user, setUser } = useAuth();
   const currentRole = user?.role.label;
   const navigate = useNavigate();
   const currentPageName = pageNames[page];
@@ -28,7 +28,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
       {currentRole === 'doctor' && (
         <li>
           <a
-            onClick={() => navigate('patient/:patientId/dossier')}
+            onClick={() => navigate('patient/1/dossier')}
             className={currentPageName === 'Dossier patient' ? `underline` : ''}
           >
             Dossiers

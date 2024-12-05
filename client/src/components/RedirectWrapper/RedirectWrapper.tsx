@@ -1,12 +1,12 @@
 import { PropsWithChildren, useEffect } from 'react';
-import { useUser } from '../../contexts/user/useUser';
+import { useAuth } from '../../contexts/auth/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { roleLandingPages } from '../../pages/Login/roleLandingPages';
 
 const RedirectWrapper = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useUser();
+  const { user } = useAuth();
 
   useEffect(() => {
     // If user not logged in, redirect to login page
@@ -21,6 +21,7 @@ const RedirectWrapper = ({ children }: PropsWithChildren) => {
     }
   }, [user, navigate, location.pathname]);
 
+  // Remove fragments
   return <>{children}</>;
 };
 

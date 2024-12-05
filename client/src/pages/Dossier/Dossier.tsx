@@ -17,8 +17,10 @@ export default function Dossier() {
   if (data)
     return (
       <>
-        <h1>Dossier patient</h1>
-        <PatientDetails patientId={parseInt(patientId)} />
+        <section className="mb-8 mt-8 grid grid-cols-2 gap-8">
+          <p>research area placeholder</p>
+          <PatientDetails patientId={parseInt(patientId)} />
+        </section>
         <ConsultationTimeline consultations={data.dossier} />
       </>
     );

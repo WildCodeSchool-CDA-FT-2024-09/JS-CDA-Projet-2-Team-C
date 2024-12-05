@@ -2,12 +2,15 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { PageLayout } from './Layout';
 import { MemoryRouter } from 'react-router-dom';
+import { AuthProvider } from '../../contexts/auth/AuthContext';
 
 describe('Test du composant Layout', () => {
   it('Should display the Header component on /planning', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <PageLayout page="/planning">Composant planning</PageLayout>
+        <AuthProvider>
+          <PageLayout page="/planning">Composant planning</PageLayout>
+        </AuthProvider>
       </MemoryRouter>
     );
 
@@ -18,7 +21,9 @@ describe('Test du composant Layout', () => {
   it('Should not display the Header component on /', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <PageLayout page="/">Composant login</PageLayout>
+        <AuthProvider>
+          <PageLayout page="/">Composant login</PageLayout>
+        </AuthProvider>
       </MemoryRouter>
     );
 
@@ -29,7 +34,9 @@ describe('Test du composant Layout', () => {
   it('Should display the correct text in header', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <PageLayout page="/planning">Composant planning</PageLayout>
+        <AuthProvider>
+          <PageLayout page="/planning">Composant planning</PageLayout>
+        </AuthProvider>
       </MemoryRouter>
     );
 

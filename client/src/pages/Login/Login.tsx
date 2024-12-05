@@ -16,7 +16,8 @@ export default function Login() {
       role: {
         id: 1,
         label: role
-      }
+      },
+      isArchived: false
     });
     navigate(roleLandingPages[role]);
   };

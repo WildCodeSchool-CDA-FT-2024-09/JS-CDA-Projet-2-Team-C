@@ -100,10 +100,15 @@ export type Patient = {
 export type Query = {
   __typename?: 'Query';
   dossier: Array<Consultation>;
+  patient: Patient;
   roles: Array<Role>;
 };
 
 export type QueryDossierArgs = {
+  patientId: Scalars['Float']['input'];
+};
+
+export type QueryPatientArgs = {
   patientId: Scalars['Float']['input'];
 };
 
@@ -164,6 +169,7 @@ export type DossierQuery = {
     };
     attachments: Array<{
       __typename?: 'Attachment';
+      id: number;
       note: string;
       filePath: string;
       fileDisplayName: string;
@@ -175,6 +181,26 @@ export type DossierQuery = {
       };
     }>;
   }>;
+};
+
+export type PatientQueryVariables = Exact<{
+  patientId: Scalars['Float']['input'];
+}>;
+
+export type PatientQuery = {
+  __typename?: 'Query';
+  patient: {
+    __typename?: 'Patient';
+    id: number;
+    firstname: string;
+    lastname: string;
+    email: string;
+    dateOfBirth: any;
+    postcode: string;
+    ssn: string;
+    town: string;
+    gender: { __typename?: 'Gender'; label: string };
+  };
 };
 
 export type RolesQueryVariables = Exact<{ [key: string]: never }>;
@@ -219,6 +245,7 @@ export const DossierDocument = gql`
         }
       }
       attachments {
+        id
         note
         filePath
         fileDisplayName
@@ -291,6 +318,82 @@ export type DossierSuspenseQueryHookResult = ReturnType<
 export type DossierQueryResult = Apollo.QueryResult<
   DossierQuery,
   DossierQueryVariables
+>;
+export const PatientDocument = gql`
+  query Patient($patientId: Float!) {
+    patient(patientId: $patientId) {
+      id
+      firstname
+      lastname
+      email
+      dateOfBirth
+      gender {
+        label
+      }
+      postcode
+      ssn
+      town
+    }
+  }
+`;
+
+/**
+ * __usePatientQuery__
+ *
+ * To run a query within a React component, call `usePatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePatientQuery({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *   },
+ * });
+ */
+export function usePatientQuery(
+  baseOptions: Apollo.QueryHookOptions<PatientQuery, PatientQueryVariables> &
+    ({ variables: PatientQueryVariables; skip?: boolean } | { skip: boolean })
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<PatientQuery, PatientQueryVariables>(
+    PatientDocument,
+    options
+  );
+}
+export function usePatientLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<PatientQuery, PatientQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<PatientQuery, PatientQueryVariables>(
+    PatientDocument,
+    options
+  );
+}
+export function usePatientSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<PatientQuery, PatientQueryVariables>
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<PatientQuery, PatientQueryVariables>(
+    PatientDocument,
+    options
+  );
+}
+export type PatientQueryHookResult = ReturnType<typeof usePatientQuery>;
+export type PatientLazyQueryHookResult = ReturnType<typeof usePatientLazyQuery>;
+export type PatientSuspenseQueryHookResult = ReturnType<
+  typeof usePatientSuspenseQuery
+>;
+export type PatientQueryResult = Apollo.QueryResult<
+  PatientQuery,
+  PatientQueryVariables
 >;
 export const RolesDocument = gql`
   query Roles {

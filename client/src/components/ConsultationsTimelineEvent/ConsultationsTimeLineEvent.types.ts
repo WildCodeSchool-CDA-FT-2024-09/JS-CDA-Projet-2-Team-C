@@ -1,7 +1,7 @@
-import { PartialConsultation } from '../ConsultationsTimeline/ConsultationsTimeline.types';
+import { DossierQuery } from '../../generated/graphql-types';
 
 export interface ConsultationsTimelineEventProps {
-  consultation: PartialConsultation;
+  consultation: DossierQuery['dossier'][number];
   isFirst?: boolean;
   isLast?: boolean;
 }

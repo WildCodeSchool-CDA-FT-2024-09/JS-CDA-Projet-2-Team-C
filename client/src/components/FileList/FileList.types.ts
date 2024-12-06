@@ -1,6 +1,6 @@
-import { Attachment } from '../../generated/graphql-types';
+import { DossierQuery } from '../../generated/graphql-types';
 
 export interface FileListProps {
-  files: Array<Attachment>;
+  files: DossierQuery['dossier'][number]['attachments'];
   consultationId: number;
 }

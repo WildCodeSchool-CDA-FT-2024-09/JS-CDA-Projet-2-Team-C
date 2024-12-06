@@ -19,6 +19,7 @@ export const GET_DOSSIER_BY_PATIENT_ID = gql`
         }
       }
       attachments {
+        id
         note
         filePath
         fileDisplayName

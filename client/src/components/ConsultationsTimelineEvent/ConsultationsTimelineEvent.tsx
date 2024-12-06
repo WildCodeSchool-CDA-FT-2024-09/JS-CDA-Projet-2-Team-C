@@ -26,7 +26,7 @@ export default function ConsultationsTimelineEvent({
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title flex flex-wrap items-baseline gap-2 text-xl font-medium text-primary-darker">
           <h3>{subject.label}</h3>
-          <div className="badge badge-neutral">{doctor?.department.label}</div>
+          <div className="badge badge-neutral">{doctor?.department?.label}</div>
           <p>{description}</p>
         </div>
         <section className="collapse-content grid grid-cols-2 gap-4">

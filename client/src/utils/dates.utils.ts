@@ -19,20 +19,25 @@ export const frenchLargeDate = (
   }
 };
 
-export const getAge = (date: Date): string => {
-  const today = new Date();
-  const birthDate = new Date(date);
+export const getAge = (date: Date | string | undefined): string => {
+  try {
+    const today = new Date();
+    const birthDate = new Date(date as string); // the type is cast knowing we'll catch the eventual error later
+    if (birthDate.toDateString() === 'Invalid Date') throw new Error();
 
-  let age = today.getFullYear() - birthDate.getFullYear();
+    let age = today.getFullYear() - birthDate.getFullYear();
 
-  // Adjust for cases where the birthday hasn't occurred yet this year
-  const monthDifference = today.getMonth() - birthDate.getMonth();
-  if (
-    monthDifference < 0 ||
-    (monthDifference === 0 && today.getDate() < birthDate.getDate())
-  ) {
-    age--;
+    // Adjust for cases where the birthday hasn't occurred yet this year
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return `${age} an${age > 1 ? 's' : ''}`;
+  } catch {
+    return 'age inconnu';
   }
-
-  return `${age} ans`;
 };

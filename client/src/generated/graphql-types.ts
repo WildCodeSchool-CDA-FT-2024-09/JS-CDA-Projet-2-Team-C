@@ -169,6 +169,7 @@ export type DossierQuery = {
     };
     attachments: Array<{
       __typename?: 'Attachment';
+      id: number;
       note: string;
       filePath: string;
       fileDisplayName: string;
@@ -244,6 +245,7 @@ export const DossierDocument = gql`
         }
       }
       attachments {
+        id
         note
         filePath
         fileDisplayName

@@ -1,7 +1,14 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { PageLayout } from './Layout';
 import { MemoryRouter } from 'react-router-dom';
+
+vi.mock('../../contexts/auth/useAuth', () => ({
+  useAuth: () => ({
+    user: { role: { label: 'doctor' } },
+    setUser: vi.fn()
+  })
+}));
 
 describe('Test du composant Layout', () => {
   it('Should display the Header component on /planning', async () => {

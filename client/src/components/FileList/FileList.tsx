@@ -12,7 +12,7 @@ export default function FileList({ files }: FileListProps) {
         className="flex-grow rounded bg-white p-1"
       >
         {files?.map((file) => (
-          <li>
+          <li key={`file-${file.id}`}>
             <div className="card h-36 w-36 rounded bg-base-100 shadow-xl">
               <figure>
                 <img

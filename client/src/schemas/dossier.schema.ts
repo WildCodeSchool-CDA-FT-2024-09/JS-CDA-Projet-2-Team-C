@@ -6,6 +6,9 @@ export const GET_DOSSIER_BY_PATIENT_ID = gql`
     dossier(patientId: $patientId) {
       id
       consultationDate
+      subject {
+        label
+      }
       description
       doctor {
         firstname

@@ -1,4 +1,4 @@
-export default function LoupeIcon() {
+export default function SearchIcon() {
   return (
     <svg
       width="32"

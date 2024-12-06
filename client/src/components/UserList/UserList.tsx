@@ -1,6 +1,6 @@
 import UserProps from './UserList.types';
 import roleMap from './roleMap';
-import EditeIcon from '../../icons/EditeIcon';
+import EditIcon from '../../icons/EditIcon';
 import ArchiveIcon from '../../icons/ArchiveIcon';
 
 export default function UserList({
@@ -24,7 +24,7 @@ export default function UserList({
           type="button"
           className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark hover:text-white"
         >
-          <EditeIcon />
+          <EditIcon />
           Modifier
         </button>
         <button

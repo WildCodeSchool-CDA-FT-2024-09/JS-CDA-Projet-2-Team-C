@@ -1,5 +1,4 @@
 // this utility will convert a Date string from the api to a string like "01 décembre 2023"
-import { error } from 'console';
 
 export const frenchLargeDate = (
   consultationDate: Date | string | undefined
@@ -13,7 +12,7 @@ export const frenchLargeDate = (
         day: 'numeric'
       }
     );
-    if (localizedDate === 'Invalid Date') throw error;
+    if (localizedDate === 'Invalid Date') throw new Error();
     return localizedDate;
   } catch {
     return 'date inconnue';

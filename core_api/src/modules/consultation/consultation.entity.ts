@@ -40,6 +40,7 @@ export class Consultation extends BaseEntity {
   @Column({ nullable: false, type: 'int' })
   durationMinutes: number;
 
+  @Field(() => ConsultationSubject)
   @ManyToOne(() => ConsultationSubject, (subject) => subject.consultations)
   subject: ConsultationSubject;
 

@@ -7,7 +7,7 @@ export default function ConsultationsTimelineEvent({
   isFirst,
   isLast
 }: ConsultationsTimelineEventProps) {
-  const { id, consultationDate, description, doctor, attachments } =
+  const { id, consultationDate, subject, description, doctor, attachments } =
     consultation;
 
   const files = attachments?.filter((attachment) => attachment.filePath);
@@ -24,9 +24,10 @@ export default function ConsultationsTimelineEvent({
       <div className="timeline-middle h-8 w-8 rounded-2xl bg-primary-lighter"></div>
       <article className="flex-2 collapse timeline-end collapse-plus timeline-box bg-primary-lighter">
         <input type="radio" name="my-accordion-2" />
-        <div className="collapse-title text-xl font-medium text-primary-darker">
-          <h3>{description}</h3>
+        <div className="collapse-title flex flex-wrap items-baseline gap-2 text-xl font-medium text-primary-darker">
+          <h3>{subject.label}</h3>
           <div className="badge badge-neutral">{doctor?.department.label}</div>
+          <p>{description}</p>
         </div>
         <section className="collapse-content grid grid-cols-2 gap-4">
           <div className="flex flex-col">

@@ -7,6 +7,7 @@ import RedirectWrapper from './components/RedirectWrapper/RedirectWrapper.tsx';
 import { client } from './services/client';
 import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
+import Admin from './pages/Admin/Admin.tsx';
 import Dossier from './pages/Dossier/Dossier.tsx';
 import './index.css';
 import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'admin',
-        element: <h3 className="text-center">[contenu admin]</h3>
+        element: <Admin />
       },
       {
         path: 'consultations',

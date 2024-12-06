@@ -184,7 +184,6 @@ describe('Test AgentDepartment component', () => {
     expect(items[0]).toHaveTextContent('Cardiology');
     expect(items[1]).toHaveTextContent('Neurology');
     // Vérifie que items[2] n'existe pas
-
     expect(items[2]).toBeUndefined();
   });
   it('Should render an h1 with the text "Service"', () => {

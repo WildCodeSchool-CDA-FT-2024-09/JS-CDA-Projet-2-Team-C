@@ -1,15 +1,5 @@
-import { Consultation } from '../../generated/graphql-types';
-
-export type PartialConsultation = Pick<
-  Consultation,
-  | 'id'
-  | 'consultationDate'
-  | 'subject'
-  | 'description'
-  | 'doctor'
-  | 'attachments'
->;
+import { DossierQuery } from '../../generated/graphql-types';
 
 export interface ConsultationsTimelineProps {
-  consultations: PartialConsultation[];
+  consultations: DossierQuery['dossier'];
 }

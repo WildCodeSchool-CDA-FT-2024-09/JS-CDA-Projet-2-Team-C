@@ -1,6 +1,6 @@
 interface UserProps {
   id: number;
-  role: 'doctor' | 'agent' | 'secretary' | 'admin'; // Rôle limité aux valeurs possibles
+  role: 'doctor' | 'agent' | 'secretary' | 'admin';
   name: string;
   lastName: string;
   email: string;

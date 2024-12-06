@@ -6,5 +6,5 @@ export default interface Role {
 }
 
 export interface TranslatedRole extends Role {
-  labelFr: string; // Libellé en français
+  labelFr: string;
 }

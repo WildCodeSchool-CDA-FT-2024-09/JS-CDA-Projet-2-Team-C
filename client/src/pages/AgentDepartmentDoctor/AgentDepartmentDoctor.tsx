@@ -7,7 +7,7 @@ function AgentDepartmentDoctor() {
 
   return (
     <div>
-      <p>Label: {label}</p>
+      <p>Label : {label}</p>
     </div>
   );
 }

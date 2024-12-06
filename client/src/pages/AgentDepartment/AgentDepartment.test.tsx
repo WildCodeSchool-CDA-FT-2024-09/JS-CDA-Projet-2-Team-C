@@ -55,6 +55,7 @@ describe('Test AgentDepartment component', () => {
     expect(cardiologyLink).toBeInTheDocument();
     expect(neurologyLink).toBeInTheDocument();
     expect(orthopedicsLink).toBeInTheDocument();
+
     fireEvent.click(cardiologyLink);
     expect(mockNavigate).toHaveBeenCalledWith(
       '/rechercher/service/docteur?label=Cardiology'
@@ -104,7 +105,6 @@ describe('Test AgentDepartment component', () => {
   });
 
   it('Should render an h1 with the text "Service"', () => {
-    // Mock des données de départements
     const mockDepartments = {
       departments: [
         { id: '1', label: 'Cardiology' },
@@ -112,7 +112,6 @@ describe('Test AgentDepartment component', () => {
       ]
     };
 
-    // Configure le mock pour renvoyer les données
     mockUseDepartmentsQuery.mockReturnValue({
       loading: false,
       error: null,
@@ -125,9 +124,8 @@ describe('Test AgentDepartment component', () => {
       </MemoryRouter>
     );
 
-    // Vérifie la présence du h1 et son texte
-    const heading = screen.getByRole('heading', { level: 1 }); // Cherche un h1
+    const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toBeInTheDocument();
-    expect(heading).toHaveTextContent('Service'); // Vérifie que le texte est correct
+    expect(heading).toHaveTextContent('Service');
   });
 });

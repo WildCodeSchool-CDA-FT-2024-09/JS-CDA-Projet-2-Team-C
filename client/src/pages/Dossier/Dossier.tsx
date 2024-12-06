@@ -18,7 +18,7 @@ export default function Dossier() {
     return (
       <>
         <section className="mb-8 mt-8 grid grid-cols-2 gap-8">
-          <p>research area placeholder</p>
+          <p>zone de recherche</p>
           <PatientDetails patientId={parseInt(patientId)} />
         </section>
         <ConsultationTimeline consultations={data.dossier} />

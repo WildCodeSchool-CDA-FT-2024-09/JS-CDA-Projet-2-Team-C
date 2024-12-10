@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useDossierQuery } from '../../generated/graphql-types';
 import ConsultationTimeline from '../../components/ConsultationsTimeline/ConsultationsTimeline';
+import PatientDetails from '../../components/PatientDetails/PatientDetails';
 
 export default function Dossier() {
   const { patientId } = useParams() as { patientId: string };
@@ -16,7 +17,10 @@ export default function Dossier() {
   if (data)
     return (
       <>
-        <h1>Dossier patient</h1>
+        <section className="mb-8 mt-8 grid grid-cols-2 gap-8">
+          <p>zone de recherche</p>
+          <PatientDetails patientId={parseInt(patientId)} />
+        </section>
         <ConsultationTimeline consultations={data.dossier} />
       </>
     );

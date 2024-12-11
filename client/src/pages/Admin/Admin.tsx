@@ -3,6 +3,7 @@ import UserList from '../../components/UserList/UserList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import users from './fakeUsers';
+import { AdminPopup } from '../../components/AdminPopup/AdminPopup.tsx';
 
 export default function Admin() {
   const [searchByName, setSearchByName] = useState<string>('');
@@ -25,6 +26,7 @@ export default function Admin() {
     <>
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
         <section className="flex p-[27px]">
+          <AdminPopup />
           <div className="basis-1/4">{''}</div>
           <h2 className="basis-3/4 text-center font-bold">
             Liste des utilisateurs
@@ -32,6 +34,7 @@ export default function Admin() {
           <button
             type="button"
             className="basis-1/4 rounded-lg bg-primary-dark p-2 text-white hover:bg-secondary"
+            onClick={() => document.getElementById('my_modal_3').showModal()}
           >
             Ajouter un utilisateur
           </button>

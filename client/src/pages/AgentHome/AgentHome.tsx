@@ -4,6 +4,7 @@ import {
   useGetDoctorByDepartmentQuery
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
+import AgentList from '../../components/AgentList/AgentList';
 
 function DynamicPage() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
@@ -64,18 +65,12 @@ function DynamicPage() {
               ) : errorDoctors ? (
                 <p>Erreur lors du chargement des docteurs.</p>
               ) : (
-                <ul className="flex flex-col items-center gap-4">
-                  {dataDoctors?.getDoctorByDepartment[0]?.users.map(
-                    (doctor) => (
-                      <li
-                        key={doctor.id}
-                        className="flex h-[60px] w-full cursor-pointer items-center justify-center rounded-[10px] bg-[rgba(24,121,205,0.6)] text-[24px] font-bold transition-opacity duration-300 hover:opacity-100"
-                      >
-                        DR. {doctor.firstname} {doctor.lastname}
-                      </li>
-                    )
-                  )}
-                </ul>
+                <AgentList
+                  items={dataDoctors?.getDoctorByDepartment[0]?.users || []}
+                  renderItem={(doctor) =>
+                    `DR. ${doctor.firstname} ${doctor.lastname}`
+                  }
+                />
               )}
               <button
                 className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
@@ -86,17 +81,11 @@ function DynamicPage() {
             </>
           ) : (
             // Vue pour de tout les services
-            <ul className="flex flex-col items-center gap-4">
-              {dataServices?.departments.map((department) => (
-                <li
-                  key={department.id}
-                  className="flex h-[60px] w-full cursor-pointer items-center justify-center rounded-[10px] bg-[rgba(24,121,205,0.6)] text-[24px] font-bold transition-opacity duration-300 hover:opacity-100"
-                  onClick={() => handleServiceClick(department.label)}
-                >
-                  {department.label}
-                </li>
-              ))}
-            </ul>
+            <AgentList
+              items={dataServices?.departments || []}
+              renderItem={(department) => department.label}
+              onItemClick={(department) => handleServiceClick(department.label)}
+            />
           )}
           <button
             className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
@@ -114,16 +103,12 @@ function DynamicPage() {
           ) : errorServices ? (
             <p>Erreur lors du chargement des docteurs.</p>
           ) : (
-            <ul className="flex flex-col items-center gap-4">
-              {dataServices?.getDoctors.map((doctor) => (
-                <li
-                  key={doctor.id}
-                  className="flex h-[60px] w-full cursor-pointer items-center justify-center rounded-[10px] bg-[rgba(24,121,205,0.6)] text-[24px] font-bold transition-opacity duration-300 hover:opacity-100"
-                >
-                  DR. {doctor.firstname} {doctor.lastname}
-                </li>
-              ))}
-            </ul>
+            <AgentList
+              items={dataServices?.getDoctors || []}
+              renderItem={(doctor) =>
+                `DR. ${doctor.firstname} ${doctor.lastname}`
+              }
+            />
           )}
           <button
             className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"

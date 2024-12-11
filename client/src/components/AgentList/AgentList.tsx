@@ -3,10 +3,10 @@ import React from 'react';
 interface AgentListProps<T> {
   isLoading: boolean;
   error?: Error | null;
-  items: T[]; // Type générique pour tes données
+  items: T[];
   emptyMessage: string;
-  renderItem: (item: T) => React.ReactNode; // Fonction pour définir comment afficher chaque élément
-  onItemClick?: (item: T) => void; // Optionnel : Fonction appelée lors du clic sur un élément
+  renderItem: (item: T) => React.ReactNode;
+  onItemClick?: (item: T) => void;
 }
 
 const AgentList = <T,>({

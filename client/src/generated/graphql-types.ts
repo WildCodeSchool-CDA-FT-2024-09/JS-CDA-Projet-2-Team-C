@@ -101,12 +101,20 @@ export type Query = {
   __typename?: 'Query';
   departments: Array<Department>;
   dossier: Array<Consultation>;
+  /** Récupère les départements par label et leurs docteurs */
+  getDoctorByDepartment: Array<Department>;
+  /** Récupère tous les utilisateurs ayant le rôle de doctor */
+  getDoctors: Array<User>;
   patient: Patient;
   roles: Array<Role>;
 };
 
 export type QueryDossierArgs = {
   patientId: Scalars['Float']['input'];
+};
+
+export type QueryGetDoctorByDepartmentArgs = {
+  label: Scalars['String']['input'];
 };
 
 export type QueryPatientArgs = {
@@ -233,6 +241,40 @@ export type DepartmentsQueryVariables = Exact<{ [key: string]: never }>;
 export type DepartmentsQuery = {
   __typename?: 'Query';
   departments: Array<{ __typename?: 'Department'; id: number; label: string }>;
+};
+
+export type DepartmentsAndDoctorsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type DepartmentsAndDoctorsQuery = {
+  __typename?: 'Query';
+  departments: Array<{ __typename?: 'Department'; id: number; label: string }>;
+  getDoctors: Array<{
+    __typename?: 'User';
+    firstname: string;
+    id: number;
+    lastname: string;
+  }>;
+};
+
+export type GetDoctorByDepartmentQueryVariables = Exact<{
+  label: Scalars['String']['input'];
+}>;
+
+export type GetDoctorByDepartmentQuery = {
+  __typename?: 'Query';
+  getDoctorByDepartment: Array<{
+    __typename?: 'Department';
+    id: number;
+    label: string;
+    users: Array<{
+      __typename?: 'User';
+      firstname: string;
+      lastname: string;
+      id: number;
+    }>;
+  }>;
 };
 
 export const DossierDocument = gql`
@@ -626,4 +668,175 @@ export type DepartmentsSuspenseQueryHookResult = ReturnType<
 export type DepartmentsQueryResult = Apollo.QueryResult<
   DepartmentsQuery,
   DepartmentsQueryVariables
+>;
+export const DepartmentsAndDoctorsDocument = gql`
+  query DepartmentsAndDoctors {
+    departments {
+      id
+      label
+    }
+    getDoctors {
+      firstname
+      id
+      lastname
+    }
+  }
+`;
+
+/**
+ * __useDepartmentsAndDoctorsQuery__
+ *
+ * To run a query within a React component, call `useDepartmentsAndDoctorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDepartmentsAndDoctorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDepartmentsAndDoctorsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDepartmentsAndDoctorsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    DepartmentsAndDoctorsQuery,
+    DepartmentsAndDoctorsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    DepartmentsAndDoctorsQuery,
+    DepartmentsAndDoctorsQueryVariables
+  >(DepartmentsAndDoctorsDocument, options);
+}
+export function useDepartmentsAndDoctorsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    DepartmentsAndDoctorsQuery,
+    DepartmentsAndDoctorsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    DepartmentsAndDoctorsQuery,
+    DepartmentsAndDoctorsQueryVariables
+  >(DepartmentsAndDoctorsDocument, options);
+}
+export function useDepartmentsAndDoctorsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        DepartmentsAndDoctorsQuery,
+        DepartmentsAndDoctorsQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    DepartmentsAndDoctorsQuery,
+    DepartmentsAndDoctorsQueryVariables
+  >(DepartmentsAndDoctorsDocument, options);
+}
+export type DepartmentsAndDoctorsQueryHookResult = ReturnType<
+  typeof useDepartmentsAndDoctorsQuery
+>;
+export type DepartmentsAndDoctorsLazyQueryHookResult = ReturnType<
+  typeof useDepartmentsAndDoctorsLazyQuery
+>;
+export type DepartmentsAndDoctorsSuspenseQueryHookResult = ReturnType<
+  typeof useDepartmentsAndDoctorsSuspenseQuery
+>;
+export type DepartmentsAndDoctorsQueryResult = Apollo.QueryResult<
+  DepartmentsAndDoctorsQuery,
+  DepartmentsAndDoctorsQueryVariables
+>;
+export const GetDoctorByDepartmentDocument = gql`
+  query GetDoctorByDepartment($label: String!) {
+    getDoctorByDepartment(label: $label) {
+      id
+      label
+      users {
+        firstname
+        lastname
+        id
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetDoctorByDepartmentQuery__
+ *
+ * To run a query within a React component, call `useGetDoctorByDepartmentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDoctorByDepartmentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDoctorByDepartmentQuery({
+ *   variables: {
+ *      label: // value for 'label'
+ *   },
+ * });
+ */
+export function useGetDoctorByDepartmentQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetDoctorByDepartmentQuery,
+    GetDoctorByDepartmentQueryVariables
+  > &
+    (
+      | { variables: GetDoctorByDepartmentQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    )
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetDoctorByDepartmentQuery,
+    GetDoctorByDepartmentQueryVariables
+  >(GetDoctorByDepartmentDocument, options);
+}
+export function useGetDoctorByDepartmentLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetDoctorByDepartmentQuery,
+    GetDoctorByDepartmentQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetDoctorByDepartmentQuery,
+    GetDoctorByDepartmentQueryVariables
+  >(GetDoctorByDepartmentDocument, options);
+}
+export function useGetDoctorByDepartmentSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetDoctorByDepartmentQuery,
+        GetDoctorByDepartmentQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetDoctorByDepartmentQuery,
+    GetDoctorByDepartmentQueryVariables
+  >(GetDoctorByDepartmentDocument, options);
+}
+export type GetDoctorByDepartmentQueryHookResult = ReturnType<
+  typeof useGetDoctorByDepartmentQuery
+>;
+export type GetDoctorByDepartmentLazyQueryHookResult = ReturnType<
+  typeof useGetDoctorByDepartmentLazyQuery
+>;
+export type GetDoctorByDepartmentSuspenseQueryHookResult = ReturnType<
+  typeof useGetDoctorByDepartmentSuspenseQuery
+>;
+export type GetDoctorByDepartmentQueryResult = Apollo.QueryResult<
+  GetDoctorByDepartmentQuery,
+  GetDoctorByDepartmentQueryVariables
 >;

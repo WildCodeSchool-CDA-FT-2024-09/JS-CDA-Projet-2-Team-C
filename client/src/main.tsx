@@ -9,9 +9,7 @@ import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
 import Admin from './pages/Admin/Admin.tsx';
 import Dossier from './pages/Dossier/Dossier.tsx';
-import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
-import AgentDepartment from './pages/AgentDepartment/AgentDepartment.tsx';
-import AgentDepartmentDoctor from './pages/AgentDepartmentDoctor/AgentDepartmentDoctor.tsx';
+import DynamicPage from './pages/AgentHome/AgentHome.tsx';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -34,15 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'rechercher',
-        element: <QuickSearch />
-      },
-      {
-        path: 'rechercher/service',
-        element: <AgentDepartment />
-      },
-      {
-        path: 'rechercher/service/docteur',
-        element: <AgentDepartmentDoctor />
+        element: <DynamicPage />
       },
       {
         path: 'patient/:patientId/dossier',

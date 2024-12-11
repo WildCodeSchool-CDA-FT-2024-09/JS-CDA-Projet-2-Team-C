@@ -1,8 +1,11 @@
 import { buildSchema } from 'type-graphql';
 import RoleResolver from './modules/role/role.resolver';
-import DepartmentResolver from './modules/department/department.resolver';
+import DepartmentResolver, {
+  DoctorByDepartmentResolver
+} from './modules/department/department.resolver';
 import ConsultationResolver from './modules/consultation/consultation.resolver';
 import PatientResolver from './modules/patient/patient.resolver';
+import { DoctorsResolver } from './modules/user/user.resolver';
 
 const getSchema = async () => {
   return await buildSchema({
@@ -10,7 +13,9 @@ const getSchema = async () => {
       RoleResolver,
       ConsultationResolver,
       PatientResolver,
-      DepartmentResolver
+      DepartmentResolver,
+      DoctorByDepartmentResolver,
+      DoctorsResolver
     ],
 
     validate: true

@@ -41,97 +41,101 @@ function DynamicPage() {
     setSelectedService(null);
   };
 
+  const renderInitialView = () => (
+    <ViewButtons
+      handleViewChange={handleViewChange}
+      buttonLabels={['Service', 'Docteur', 'Patient']}
+    />
+  );
+
+  const renderServices = () => (
+    <>
+      <h1 className="text-3xl font-bold">Liste des services</h1>
+      <AgentList
+        isLoading={loadingServices}
+        error={errorServices}
+        items={dataServices?.departments || []}
+        renderItem={(department) => department.label}
+        onItemClick={(department) => handleServiceClick(department.label)}
+        emptyMessage="Aucun service disponible."
+      />
+      <button
+        className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
+        onClick={() => setSelectedView(null)}
+      >
+        Retour au menu principal
+      </button>
+    </>
+  );
+
+  const renderDoctorsByService = () => (
+    <>
+      <h1 className="text-3xl font-bold">
+        Docteurs pour {selectedService || 'ce service'}
+      </h1>
+      <AgentList
+        isLoading={loadingDoctors}
+        error={errorDoctors}
+        items={dataDoctors?.getDoctorByDepartment[0]?.users || []}
+        renderItem={(doctor) => `DR. ${doctor.firstname} ${doctor.lastname}`}
+        emptyMessage="Aucun docteur trouvé pour ce service."
+      />
+      <button
+        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
+        onClick={handleBackClick}
+      >
+        Retour aux services
+      </button>
+    </>
+  );
+
+  const renderAllDoctors = () => (
+    <>
+      <h1 className="text-3xl font-bold">Liste des docteurs</h1>
+      <AgentList
+        isLoading={loadingServices}
+        error={errorServices}
+        items={dataServices?.getDoctors || []}
+        renderItem={(doctor) => `DR. ${doctor.firstname} ${doctor.lastname}`}
+        emptyMessage="Aucun docteur disponible."
+      />
+      <button
+        className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
+        onClick={() => setSelectedView(null)}
+      >
+        Retour au menu principal
+      </button>
+    </>
+  );
+
+  const renderPatients = () => (
+    <>
+      <h1 className="text-3xl font-bold">Liste des patients</h1>
+      <p>Cette fonctionnalité est en cours de développement.</p>
+      <button
+        className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
+        onClick={() => setSelectedView(null)}
+      >
+        Retour au menu principal
+      </button>
+    </>
+  );
+
+  const renderView = () => {
+    switch (selectedView) {
+      case 'service':
+        return selectedService ? renderDoctorsByService() : renderServices();
+      case 'docteur':
+        return renderAllDoctors();
+      case 'patient':
+        return renderPatients();
+      default:
+        return renderInitialView();
+    }
+  };
+
   return (
-    <div className="mt-8 flex flex-col items-center gap-8">
-      {!selectedView ? (
-        // Vue initiale avec les trois boutons
-        <ViewButtons
-          handleViewChange={handleViewChange}
-          buttonLabels={['Service', 'Docteur', 'Patient']}
-        />
-      ) : selectedView === 'service' ? (
-        // Vue pour les services
-        <>
-          <h1 className="text-3xl font-bold">
-            {selectedService
-              ? `Docteurs pour ${selectedService}`
-              : 'Liste des services'}
-          </h1>
-          {selectedService ? (
-            // Vue pour les docteurs par service
-            <>
-              {loadingDoctors ? (
-                <p>Chargement des docteurs...</p>
-              ) : errorDoctors ? (
-                <p>Erreur lors du chargement des docteurs.</p>
-              ) : (
-                <AgentList
-                  items={dataDoctors?.getDoctorByDepartment[0]?.users || []}
-                  renderItem={(doctor) =>
-                    `DR. ${doctor.firstname} ${doctor.lastname}`
-                  }
-                />
-              )}
-              <button
-                className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
-                onClick={handleBackClick}
-              >
-                Retour aux services
-              </button>
-            </>
-          ) : (
-            // Vue pour de tout les services
-            <AgentList
-              items={dataServices?.departments || []}
-              renderItem={(department) => department.label}
-              onItemClick={(department) => handleServiceClick(department.label)}
-            />
-          )}
-          <button
-            className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
-            onClick={() => setSelectedView(null)}
-          >
-            Retour au menu principal
-          </button>
-        </>
-      ) : selectedView === 'docteur' ? (
-        // Vue pour les docteurs
-        <>
-          <h1 className="text-3xl font-bold">Liste des docteurs</h1>
-          {loadingServices ? (
-            <p>Chargement des docteurs...</p>
-          ) : errorServices ? (
-            <p>Erreur lors du chargement des docteurs.</p>
-          ) : (
-            <AgentList
-              items={dataServices?.getDoctors || []}
-              renderItem={(doctor) =>
-                `DR. ${doctor.firstname} ${doctor.lastname}`
-              }
-            />
-          )}
-          <button
-            className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
-            onClick={() => setSelectedView(null)}
-          >
-            Retour au menu principal
-          </button>
-        </>
-      ) : (
-        <>
-          <h1 className="text-3xl font-bold">
-            {selectedView === 'patient' ? 'Liste des patients' : ''}
-          </h1>
-          <p>Cette fonctionnalité est en cours de développement.</p>
-          <button
-            className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
-            onClick={() => setSelectedView(null)}
-          >
-            Retour au menu principal
-          </button>
-        </>
-      )}
-    </div>
+    <div className="mt-8 flex flex-col items-center gap-8">{renderView()}</div>
   );
 }
 

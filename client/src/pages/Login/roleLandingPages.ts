@@ -1,5 +1,5 @@
 export const roleLandingPages = {
-  agent: '/quicksearch',
+  agent: '/rechercher',
   secretary: '/planning',
   doctor: '/planning',
   admin: '/admin'

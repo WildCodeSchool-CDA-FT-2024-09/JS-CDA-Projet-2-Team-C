@@ -10,18 +10,22 @@ export const AdminPopup = () => {
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const { data: departments } = useDepartmentsQuery();
   const { data: genders } = useGendersQuery();
+  const [inputError, setInputError] = useState({});
 
   const [createUser] = useAddUserMutation();
 
-  const [formInputs, setFormInputs] = useState({
+  const emptyFormInputs = {
     role: '',
     name: '',
     firstname: '',
     email: '',
     service: '',
     gender: ''
-  });
+  };
 
+  const [formInputs, setFormInputs] = useState(emptyFormInputs);
+
+  // fields available by roles
   const rolesInfosAttribution = {
     doctor: ['name', 'firstname', 'email', 'service', 'gender'],
     secretary: ['name', 'firstname', 'email', 'service'],
@@ -33,7 +37,7 @@ export const AdminPopup = () => {
   const isVisibleToRole = (field: string) =>
     formInputs.role && rolesInfosAttribution[formInputs.role]?.includes(field);
 
-  // check if every required field is filled
+  // check if every required field for a role is filled
   useEffect(() => {
     if (!formInputs.role) {
       setButtonDisabled(true);
@@ -44,6 +48,7 @@ export const AdminPopup = () => {
     setButtonDisabled(!isValid);
   }, [formInputs]);
 
+  // handle every form input change
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -51,7 +56,8 @@ export const AdminPopup = () => {
     setFormInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCreateUserButton = async () => {
+  // create user on form submit
+  const handleCreateUser = async () => {
     try {
       await createUser({
         variables: {
@@ -63,11 +69,19 @@ export const AdminPopup = () => {
           genderLabel: formInputs.gender
         }
       });
+
+      // reset inputs and errors
+      setFormInputs(emptyFormInputs);
+      setInputError({});
+
+      // TODO: change for a snackbar when available
       alert('User créé avec succès');
-    } catch {
-      console.error("Erreur lors de la création de l'utilisateur");
+
+      // close popup
+      document.getElementById('admin-popup').close();
+    } catch (error) {
+      setInputError(error);
     }
-    document.getElementById('admin-popup').close();
   };
 
   return (
@@ -82,10 +96,16 @@ export const AdminPopup = () => {
           <h3 className="text-center text-lg font-bold text-primary">
             Créer un utilisateur
           </h3>
+          {inputError &&
+            inputError?.graphQLErrors?.map((err) => (
+              <p className="mt-1 text-center text-sm text-red-500">
+                {err.message}
+              </p>
+            ))}
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              handleCreateUserButton();
+              handleCreateUser();
             }}
             className="flex flex-col place-items-center gap-6"
           >
@@ -153,54 +173,50 @@ export const AdminPopup = () => {
                 />
               </label>
               {isVisibleToRole('service') && (
-                <>
-                  <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                      <span className="label-text text-primary">Service</span>
-                    </div>
-                    <select
-                      className="select select-bordered w-full max-w-xs border-primary text-base"
-                      name="service"
-                      value={formInputs.service}
-                      onChange={handleInputChange}
-                      disabled={!formInputs.role}
-                    >
-                      <option value="" defaultValue="" disabled>
-                        Service
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text text-primary">Service</span>
+                  </div>
+                  <select
+                    className="select select-bordered w-full max-w-xs border-primary text-base"
+                    name="service"
+                    value={formInputs.service}
+                    onChange={handleInputChange}
+                    disabled={!formInputs.role}
+                  >
+                    <option value="" defaultValue="" disabled>
+                      Service
+                    </option>
+                    {departments?.departments.map((department) => (
+                      <option value={department.label} key={department.id}>
+                        {department.label}
                       </option>
-                      {departments?.departments.map((department) => (
-                        <option value={department.label} key={department.id}>
-                          {department.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </>
-              )}{' '}
+                    ))}
+                  </select>
+                </label>
+              )}
               {isVisibleToRole('gender') && (
-                <>
-                  <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                      <span className="label-text text-primary">Genre</span>
-                    </div>
-                    <select
-                      className="select select-bordered w-full max-w-xs border-primary text-base"
-                      name="gender"
-                      value={formInputs.gender}
-                      onChange={handleInputChange}
-                      disabled={!formInputs.role}
-                    >
-                      <option value="" defaultValue="" disabled>
-                        Genre
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text text-primary">Genre</span>
+                  </div>
+                  <select
+                    className="select select-bordered w-full max-w-xs border-primary text-base"
+                    name="gender"
+                    value={formInputs.gender}
+                    onChange={handleInputChange}
+                    disabled={!formInputs.role}
+                  >
+                    <option value="" defaultValue="" disabled>
+                      Genre
+                    </option>
+                    {genders?.genders.map((gender) => (
+                      <option value={gender.label} key={gender.id}>
+                        {gender.label}
                       </option>
-                      {genders?.genders.map((gender) => (
-                        <option value={gender.label} key={gender.id}>
-                          {gender.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </>
+                    ))}
+                  </select>
+                </label>
               )}
             </section>
             <button

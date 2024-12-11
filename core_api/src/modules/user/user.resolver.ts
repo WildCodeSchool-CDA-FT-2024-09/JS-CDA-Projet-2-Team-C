@@ -61,46 +61,42 @@ export default class UserResolver {
     @Arg('departmentLabel', { nullable: true }) departmentLabel: string,
     @Arg('genderLabel', { nullable: true }) genderLabel: string
   ): Promise<User> {
-    try {
-      const hashedPassword = process.env.TEST_USER_PASSWORD;
+    const hashedPassword = process.env.TEST_USER_PASSWORD;
 
-      const role = await Role.findOne({ where: { label: roleLabel } });
-      if (!role) throw new Error('Role not found');
+    const duplicateUser = await User.findOne({ where: { email: email } });
 
-      let gender = undefined;
-      if (genderLabel) {
-        gender = await Gender.findOne({ where: { label: genderLabel } });
-        if (!gender) throw new Error('Gender not found');
-      }
+    if (duplicateUser) throw new Error('Email already used');
 
-      let department = undefined;
-      if (departmentLabel) {
-        department = await Department.findOne({
-          where: { label: departmentLabel }
-        });
-        if (!department) throw new Error('Department not found');
-      }
+    const role = await Role.findOne({ where: { label: roleLabel } });
+    if (!role) throw new Error('Role not found');
 
-      const user = User.create({
-        firstname,
-        lastname,
-        email,
-        password: hashedPassword,
-        role,
-        department,
-        gender,
-        isArchived: false
-      });
-
-      await user.save();
-      return user;
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Failed to add user: ${error.message}`);
-      } else {
-        throw new Error('Failed to add user due to an unknown error');
-      }
+    let gender = undefined;
+    if (genderLabel) {
+      gender = await Gender.findOne({ where: { label: genderLabel } });
+      if (!gender) throw new Error('Gender not found');
     }
+
+    let department = undefined;
+    if (departmentLabel) {
+      department = await Department.findOne({
+        where: { label: departmentLabel }
+      });
+      if (!department) throw new Error('Department not found');
+    }
+
+    const user = User.create({
+      firstname,
+      lastname,
+      email,
+      password: hashedPassword,
+      role,
+      department,
+      gender,
+      isArchived: false
+    });
+
+    await user.save();
+    return user;
   }
 
   @Query(() => AuthUser)

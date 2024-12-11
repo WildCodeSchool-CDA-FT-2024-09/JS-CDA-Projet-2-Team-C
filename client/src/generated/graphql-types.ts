@@ -102,6 +102,7 @@ export type Query = {
   departments: Array<Department>;
   dossier: Array<Consultation>;
   patient: Patient;
+  patients: Array<Patient>;
   roles: Array<Role>;
 };
 
@@ -111,6 +112,10 @@ export type QueryDossierArgs = {
 
 export type QueryPatientArgs = {
   patientId: Scalars['Float']['input'];
+};
+
+export type QueryPatientsArgs = {
+  search: Scalars['String']['input'];
 };
 
 export type Role = {
@@ -202,6 +207,20 @@ export type PatientQuery = {
     town: string;
     gender: { __typename?: 'Gender'; label: string };
   };
+};
+
+export type GetPatientsByNameQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+}>;
+
+export type GetPatientsByNameQuery = {
+  __typename?: 'Query';
+  patients: Array<{
+    __typename?: 'Patient';
+    id: number;
+    firstname: string;
+    lastname: string;
+  }>;
 };
 
 export type RolesQueryVariables = Exact<{ [key: string]: never }>;
@@ -402,6 +421,90 @@ export type PatientSuspenseQueryHookResult = ReturnType<
 export type PatientQueryResult = Apollo.QueryResult<
   PatientQuery,
   PatientQueryVariables
+>;
+export const GetPatientsByNameDocument = gql`
+  query GetPatientsByName($search: String!) {
+    patients(search: $search) {
+      id
+      firstname
+      lastname
+    }
+  }
+`;
+
+/**
+ * __useGetPatientsByNameQuery__
+ *
+ * To run a query within a React component, call `useGetPatientsByNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPatientsByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPatientsByNameQuery({
+ *   variables: {
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useGetPatientsByNameQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetPatientsByNameQuery,
+    GetPatientsByNameQueryVariables
+  > &
+    (
+      | { variables: GetPatientsByNameQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    )
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetPatientsByNameQuery,
+    GetPatientsByNameQueryVariables
+  >(GetPatientsByNameDocument, options);
+}
+export function useGetPatientsByNameLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPatientsByNameQuery,
+    GetPatientsByNameQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetPatientsByNameQuery,
+    GetPatientsByNameQueryVariables
+  >(GetPatientsByNameDocument, options);
+}
+export function useGetPatientsByNameSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetPatientsByNameQuery,
+        GetPatientsByNameQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetPatientsByNameQuery,
+    GetPatientsByNameQueryVariables
+  >(GetPatientsByNameDocument, options);
+}
+export type GetPatientsByNameQueryHookResult = ReturnType<
+  typeof useGetPatientsByNameQuery
+>;
+export type GetPatientsByNameLazyQueryHookResult = ReturnType<
+  typeof useGetPatientsByNameLazyQuery
+>;
+export type GetPatientsByNameSuspenseQueryHookResult = ReturnType<
+  typeof useGetPatientsByNameSuspenseQuery
+>;
+export type GetPatientsByNameQueryResult = Apollo.QueryResult<
+  GetPatientsByNameQuery,
+  GetPatientsByNameQueryVariables
 >;
 export const RolesDocument = gql`
   query Roles {

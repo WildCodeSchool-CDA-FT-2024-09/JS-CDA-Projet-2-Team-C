@@ -9,10 +9,11 @@ import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
 import Admin from './pages/Admin/Admin.tsx';
 import Dossier from './pages/Dossier/Dossier.tsx';
-import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
+
 import AgentDepartment from './pages/AgentDepartment/AgentDepartment.tsx';
 import AgentDepartmentDoctor from './pages/AgentDepartmentDoctor/AgentDepartmentDoctor.tsx';
 import './index.css';
+import DynamicPage from './pages/AgentHome/AgentHome.tsx';
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'rechercher',
-        element: <QuickSearch />
+        element: <DynamicPage />
       },
       {
         path: 'rechercher/service',

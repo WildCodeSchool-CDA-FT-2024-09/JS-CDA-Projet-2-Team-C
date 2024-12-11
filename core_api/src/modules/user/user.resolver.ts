@@ -1,11 +1,12 @@
 import { Resolver, Mutation, Arg } from 'type-graphql';
 import { User, Role, Department, Gender } from '../entities.index';
+import { hashPassword } from '../../utils/auth.utils';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 @Resolver(User)
-export class UserResolver {
+export default class UserResolver {
   @Mutation(() => User)
   async addUser(
     @Arg('firstname') firstname: string,
@@ -15,10 +16,11 @@ export class UserResolver {
     @Arg('departmentLabel', { nullable: true }) departmentLabel: string,
     @Arg('genderLabel', { nullable: true }) genderLabel: string
   ): Promise<User> {
-    const hashedPassword = process.env.TEST_USER_PASSWORD;
+    const password = process.env.TEST_USER_PASSWORD || '';
+
+    const hashedPassword = await hashPassword(password);
 
     const duplicateUser = await User.findOne({ where: { email: email } });
-
     if (duplicateUser) throw new Error('Email already used');
 
     const role = await Role.findOne({ where: { label: roleLabel } });

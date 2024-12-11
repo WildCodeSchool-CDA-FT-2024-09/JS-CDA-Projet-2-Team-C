@@ -1,11 +1,11 @@
 import dataSource from './dataSource';
 
 const seed = async () => {
+  // START TRANSACTION
   const queryRunner = dataSource.createQueryRunner();
+  await queryRunner.startTransaction();
 
   try {
-    // START TRANSACTION
-    await queryRunner.startTransaction();
     // DELETE TABLES / RESET INDEXES
     const tables = [
       'consultation_subject',
@@ -489,14 +489,12 @@ const seed = async () => {
       ("note", "filePath", "fileDisplayName", "authorId", "consultationId")
       VALUES ${attachmentValues}
     `);
-
-    // COMMIT TRANSACTION
-    await queryRunner.commitTransaction();
-
-    console.info('seed is complete');
   } catch (error) {
     console.error('Seed error: ', error);
     await queryRunner.rollbackTransaction();
+  } finally {
+    // COMMIT TRANSACTION
+    await queryRunner.commitTransaction();
   }
 };
 

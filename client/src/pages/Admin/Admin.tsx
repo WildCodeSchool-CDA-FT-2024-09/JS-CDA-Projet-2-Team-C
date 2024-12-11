@@ -38,7 +38,7 @@ export default function Admin() {
           <button
             type="button"
             className="basis-1/4 rounded-lg bg-primary-dark p-2 text-white hover:bg-secondary"
-            onClick={() => document.getElementById('my_modal_3').showModal()}
+            onClick={() => document.getElementById('admin-popup').showModal()}
           >
             Ajouter un utilisateur
           </button>

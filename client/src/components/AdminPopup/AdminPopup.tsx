@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
+import roleMap from '../UserList/roleMap';
 
 export const AdminPopup = () => {
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const [formInputs, setFormInputs] = useState({
-    role: undefined,
-    name: undefined,
-    firstName: undefined,
-    email: undefined,
-    service: undefined,
-    genre: undefined
+    role: '',
+    name: '',
+    firstName: '',
+    email: '',
+    service: '',
+    genre: ''
   });
 
   const rolesInfosAttribution = {
@@ -24,7 +25,7 @@ export const AdminPopup = () => {
     formInputs.role && rolesInfosAttribution[formInputs.role]?.includes(field);
 
   // check if every required field is filled
-  const checkFormInputs = () => {
+  useEffect(() => {
     if (!formInputs.role) {
       setButtonDisabled(true);
       return;
@@ -32,10 +33,6 @@ export const AdminPopup = () => {
     const roleInfos = rolesInfosAttribution[formInputs.role];
     const isValid = roleInfos.every((field) => !!formInputs[field]);
     setButtonDisabled(!isValid);
-  };
-
-  useEffect(() => {
-    checkFormInputs();
   }, [formInputs]);
 
   const handleInputChange = (
@@ -76,13 +73,14 @@ export const AdminPopup = () => {
                 value={formInputs.role}
                 onChange={handleInputChange}
               >
-                <option value={undefined} disabled selected>
+                <option value="" disabled defaultValue="">
                   Role
                 </option>
-                <option value="admin">Admin</option>
-                <option value="doctor">Docteur</option>
-                <option value="secretary">Secrétaire</option>
-                <option value="agent">Agent</option>
+                {Object.keys(roleMap).map((key, id) => (
+                  <option key={id} value={key}>
+                    {roleMap[key]}
+                  </option>
+                ))}
               </select>
               {isVisibleToRole('name') && (
                 <>
@@ -144,7 +142,7 @@ export const AdminPopup = () => {
                       onChange={handleInputChange}
                       disabled={!formInputs.role}
                     >
-                      <option selected disabled>
+                      <option value="" defaultValue="" disabled>
                         Service
                       </option>
                       <option>Oncologie</option>
@@ -166,7 +164,7 @@ export const AdminPopup = () => {
                       onChange={handleInputChange}
                       disabled={!formInputs.role}
                     >
-                      <option selected disabled>
+                      <option value="" defaultValue="" disabled>
                         Genre
                       </option>
                       <option>Féminin</option>

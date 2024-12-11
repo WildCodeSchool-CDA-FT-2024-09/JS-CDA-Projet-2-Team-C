@@ -4,8 +4,14 @@ meta {
   seq: 1
 }
 
-get {
+post {
   url: http://localhost:3310/
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {"to":"text@email.fr",
+   "subject":"this is a spam",
+  "text":"hello world !"}
 }

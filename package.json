@@ -34,8 +34,12 @@
   },
   "homepage": "https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-2-Team-C#readme",
   "devDependencies": {
+    "@types/nodemailer": "^6.4.17",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
     "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.16"
   }
 }

@@ -13,14 +13,14 @@ export default class DepartmentResolver {
 @Resolver()
 export class DoctorByDepartmentResolver {
   @Query(() => [Department], {
-    description: 'Récupère les départements par label et leurs docteurs'
+    description: 'Fetches departments by label and their doctors'
   })
   async getDoctorByDepartment(
     @Arg('label', () => String) label: string
   ): Promise<Department[]> {
     const doctorRole = await Role.findOne({ where: { label: 'doctor' } });
     if (!doctorRole) {
-      throw new Error("Role 'doctor' introuvable.");
+      throw new Error("Role 'doctor' not found.");
     }
     const departments = await Department.find({
       where: { label },
@@ -28,7 +28,7 @@ export class DoctorByDepartmentResolver {
     });
 
     if (departments.length === 0) {
-      throw new Error(`Aucun département trouvé avec le label '${label}'.`);
+      throw new Error(`No department found with the label  '${label}'.`);
     }
     departments.forEach((department) => {
       department.users = department.users.filter(

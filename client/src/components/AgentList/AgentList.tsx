@@ -1,16 +1,17 @@
 import { AgentListProps } from './AgentList.types';
 
-const AgentList = <T,>({
+export default function AgentList<T>({
   isLoading,
   error,
   items,
   emptyMessage,
   renderItem,
   onItemClick
-}: AgentListProps<T>) => {
+}: AgentListProps<T>) {
   if (isLoading) return <p>Chargement en cours...</p>;
   if (error) return <p>Erreur lors du chargement : {error.message}</p>;
   if (!items.length) return <p>{emptyMessage}</p>;
+
   return (
     <ul className="flex flex-col items-center gap-4">
       {items.map((item) => (
@@ -24,6 +25,4 @@ const AgentList = <T,>({
       ))}
     </ul>
   );
-};
-
-export default AgentList;
+}

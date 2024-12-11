@@ -1,6 +1,9 @@
 import ViewButtonsProps from './ViewButtons.types';
 
-const ViewButtons = ({ handleViewChange, buttonLabels }: ViewButtonsProps) => {
+export default function ViewButtons({
+  handleViewChange,
+  buttonLabels
+}: ViewButtonsProps) {
   return (
     <div className="flex flex-col items-center gap-4">
       {buttonLabels.map((label) => (
@@ -14,6 +17,4 @@ const ViewButtons = ({ handleViewChange, buttonLabels }: ViewButtonsProps) => {
       ))}
     </div>
   );
-};
-
-export default ViewButtons;
+}

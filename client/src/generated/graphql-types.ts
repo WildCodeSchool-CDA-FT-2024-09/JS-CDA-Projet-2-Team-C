@@ -103,6 +103,7 @@ export type Query = {
   dossier: Array<Consultation>;
   patient: Patient;
   roles: Array<Role>;
+  users: Array<User>;
 };
 
 export type QueryDossierArgs = {
@@ -233,6 +234,20 @@ export type DepartmentsQueryVariables = Exact<{ [key: string]: never }>;
 export type DepartmentsQuery = {
   __typename?: 'Query';
   departments: Array<{ __typename?: 'Department'; id: number; label: string }>;
+};
+
+export type UsersQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UsersQuery = {
+  __typename?: 'Query';
+  users: Array<{
+    __typename?: 'User';
+    id: number;
+    firstname: string;
+    lastname: string;
+    email: string;
+    role: { __typename?: 'Role'; id: number; label: string };
+  }>;
 };
 
 export const DossierDocument = gql`
@@ -626,4 +641,75 @@ export type DepartmentsSuspenseQueryHookResult = ReturnType<
 export type DepartmentsQueryResult = Apollo.QueryResult<
   DepartmentsQuery,
   DepartmentsQueryVariables
+>;
+export const UsersDocument = gql`
+  query Users {
+    users {
+      id
+      firstname
+      lastname
+      email
+      role {
+        id
+        label
+      }
+    }
+  }
+`;
+
+/**
+ * __useUsersQuery__
+ *
+ * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UsersQuery, UsersQueryVariables>(
+    UsersDocument,
+    options
+  );
+}
+export function useUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(
+    UsersDocument,
+    options
+  );
+}
+export function useUsersSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<UsersQuery, UsersQueryVariables>
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<UsersQuery, UsersQueryVariables>(
+    UsersDocument,
+    options
+  );
+}
+export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
+export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
+export type UsersSuspenseQueryHookResult = ReturnType<
+  typeof useUsersSuspenseQuery
+>;
+export type UsersQueryResult = Apollo.QueryResult<
+  UsersQuery,
+  UsersQueryVariables
 >;

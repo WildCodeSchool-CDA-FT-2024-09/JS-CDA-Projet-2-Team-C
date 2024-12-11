@@ -80,3 +80,18 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 }
+
+@ObjectType()
+export class AuthUser {
+  @Field(() => Int)
+  id: number;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => Role)
+  role: Role;
+
+  @Field(() => String)
+  token: string;
+}

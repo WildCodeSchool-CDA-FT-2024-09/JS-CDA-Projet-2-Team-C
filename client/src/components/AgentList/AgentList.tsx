@@ -1,13 +1,4 @@
-import React from 'react';
-
-interface AgentListProps<T> {
-  isLoading: boolean;
-  error?: Error | null;
-  items: T[];
-  emptyMessage: string;
-  renderItem: (item: T) => React.ReactNode;
-  onItemClick?: (item: T) => void;
-}
+import { AgentListProps } from './AgentList.types';
 
 const AgentList = <T,>({
   isLoading,

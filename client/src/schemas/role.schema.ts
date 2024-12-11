@@ -32,6 +32,20 @@ export const GET_DEPARTMENT = gql`
   }
 `;
 
+export const GET_DEPARTMENT_AND_DOCTOR = gql`
+  query DepartmentsAndDoctors {
+    departments {
+      id
+      label
+    }
+    getDoctors {
+      firstname
+      id
+      lastname
+    }
+  }
+`;
+
 export const GET_DOCTORS_BY_DEPARTMENT = gql`
   query GetDoctorByDepartment($label: String!) {
     getDoctorByDepartment(label: $label) {

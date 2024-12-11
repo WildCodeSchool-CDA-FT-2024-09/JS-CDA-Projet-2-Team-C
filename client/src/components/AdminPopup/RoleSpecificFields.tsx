@@ -1,5 +1,6 @@
 import { isVisibleToRole } from '../../utils/roles.utils';
 import { InputField, SelectField } from './Fields';
+import { RoleSpecificFieldsProps } from './AdminPopup.types';
 
 export const RoleSelector: React.FC<{
   roles: Record<string, string>;
@@ -30,7 +31,7 @@ export const RoleSpecificFields = ({
   handleInputChange,
   departments,
   genders
-}) => {
+}: RoleSpecificFieldsProps) => {
   const { name, firstname, email, service, gender } = formInputs;
 
   return (
@@ -68,10 +69,12 @@ export const RoleSpecificFields = ({
         <SelectField
           name="service"
           label="Service"
-          options={departments?.departments.map((d) => ({
-            value: d.label,
-            label: d.label
-          }))}
+          options={
+            departments?.departments.map((d) => ({
+              value: d.label,
+              label: d.label
+            })) || []
+          }
           value={service}
           onChange={handleInputChange}
           disabled={!role}
@@ -81,10 +84,12 @@ export const RoleSpecificFields = ({
         <SelectField
           name="gender"
           label="Genre"
-          options={genders?.genders.map((g) => ({
-            value: g.label,
-            label: g.label
-          }))}
+          options={
+            genders?.genders.map((g) => ({
+              value: g.label,
+              label: g.label
+            })) || []
+          }
           value={gender}
           onChange={handleInputChange}
           disabled={!role}

@@ -7,6 +7,7 @@ import {
   useGendersQuery
 } from '../../generated/graphql-types';
 import { useCreateUserForm } from './useCreateUserForm';
+import { InputError } from './AdminPopup.types';
 
 export const AdminPopup: React.FC = () => {
   const { data: departments } = useDepartmentsQuery();
@@ -28,6 +29,9 @@ export const AdminPopup: React.FC = () => {
   };
 
   const handleCreateUser = async () => {
+    const dialog = document.getElementById(
+      'admin-popup'
+    ) as HTMLDialogElement | null;
     try {
       await createUser({
         variables: {
@@ -51,9 +55,17 @@ export const AdminPopup: React.FC = () => {
       setInputError({});
       // TODO: replace with a snackbar when available
       alert('User créé avec succès');
-      document.getElementById('admin-popup')?.close();
-    } catch (error) {
-      setInputError(error);
+      dialog?.close();
+    } catch (error: unknown) {
+      if (
+        typeof error === 'object' &&
+        error !== null &&
+        'graphQLErrors' in error
+      ) {
+        setInputError(error as InputError);
+      } else {
+        console.error('Unexpected error:', error);
+      }
     }
   };
 
@@ -68,7 +80,7 @@ export const AdminPopup: React.FC = () => {
         <h3 className="text-center text-lg font-bold text-primary">
           Créer un utilisateur
         </h3>
-        {inputError?.graphQLErrors?.map((err, i) => (
+        {inputError?.graphQLErrors?.map((err, i: number) => (
           <p key={i} className="mt-1 text-center text-sm text-red-500">
             {err.message}
           </p>

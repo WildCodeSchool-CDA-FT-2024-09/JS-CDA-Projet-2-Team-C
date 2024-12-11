@@ -1,3 +1,5 @@
+import { InputFieldProps, SelectFieldProps } from './AdminPopup.types';
+
 export const InputField = ({
   name,
   label,
@@ -6,7 +8,7 @@ export const InputField = ({
   onChange,
   disabled,
   type = 'text'
-}) => (
+}: InputFieldProps) => (
   <label className="form-control w-full max-w-xs">
     <div className="label">
       <span className="label-text text-primary">{label}</span>
@@ -30,7 +32,7 @@ export const SelectField = ({
   value,
   onChange,
   disabled
-}) => (
+}: SelectFieldProps) => (
   <label className="form-control w-full max-w-xs">
     <div className="label">
       <span className="label-text text-primary">{label}</span>

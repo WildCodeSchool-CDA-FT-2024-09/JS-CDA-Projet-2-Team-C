@@ -117,9 +117,17 @@ export type QueryPatientArgs = {
 export type Role = {
   __typename?: 'Role';
   id: Scalars['Int']['output'];
-  label: Scalars['String']['output'];
-  users?: Maybe<Array<User>>;
+  label: RoleLabel;
+  users: Array<User>;
 };
+
+/** The roles available to a user */
+export enum RoleLabel {
+  Admin = 'ADMIN',
+  Agent = 'AGENT',
+  Doctor = 'DOCTOR',
+  Secretary = 'SECRETARY'
+}
 
 export type User = {
   __typename?: 'User';
@@ -179,7 +187,7 @@ export type DossierQuery = {
         __typename?: 'User';
         firstname: string;
         lastname: string;
-        role: { __typename?: 'Role'; label: string };
+        role: { __typename?: 'Role'; label: RoleLabel };
       };
     }>;
   }>;
@@ -209,7 +217,7 @@ export type RolesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type RolesQuery = {
   __typename?: 'Query';
-  roles: Array<{ __typename?: 'Role'; id: number; label: string }>;
+  roles: Array<{ __typename?: 'Role'; id: number; label: RoleLabel }>;
 };
 
 export type RolesWithUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -219,13 +227,13 @@ export type RolesWithUsersQuery = {
   roles: Array<{
     __typename?: 'Role';
     id: number;
-    label: string;
-    users?: Array<{
+    label: RoleLabel;
+    users: Array<{
       __typename?: 'User';
       id: number;
       firstname: string;
       lastname: string;
-    }> | null;
+    }>;
   }>;
 };
 
@@ -246,7 +254,7 @@ export type UsersQuery = {
     firstname: string;
     lastname: string;
     email: string;
-    role: { __typename?: 'Role'; id: number; label: string };
+    role: { __typename?: 'Role'; id: number; label: RoleLabel };
   }>;
 };
 

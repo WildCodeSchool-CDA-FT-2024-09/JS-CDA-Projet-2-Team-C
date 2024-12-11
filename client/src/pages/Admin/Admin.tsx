@@ -6,7 +6,6 @@ import OptionSelect from '../../components/OptionSelect/OptionSelect';
 
 export default function Admin() {
   const { data, loading, error } = useUsersQuery();
-
   const [searchByName, setSearchByName] = useState<string>('');
   const [role, setRole] = useState<string>('');
 
@@ -23,7 +22,6 @@ export default function Admin() {
     ) || [];
 
   if (loading) return <h1>Chargement ...</h1>;
-
   if (error) return <h1>Erreur</h1>;
 
   // See https://daisyui.com/components/table/ for table component
@@ -71,16 +69,7 @@ export default function Admin() {
                 </tr>
               </thead>
               <tbody>
-                {filteredUsers.map((user) => (
-                  <UserList
-                    key={user.id}
-                    id={user.id}
-                    name={user.firstname}
-                    lastName={user.lastname}
-                    email={user.email}
-                    role={user.role.label}
-                  />
-                ))}
+                <UserList filteredUsers={filteredUsers} />
               </tbody>
             </table>
             <section className="w-full text-right">

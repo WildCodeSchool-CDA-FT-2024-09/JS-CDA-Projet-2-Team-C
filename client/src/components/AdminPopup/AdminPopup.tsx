@@ -86,7 +86,7 @@ export const AdminPopup = () => {
 
   return (
     <>
-      <dialog id="admin-popup" className="modal">
+      <dialog id="admin-popup" className="modal" role="dialog">
         <div className="modal-box">
           <form method="dialog">
             <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
@@ -97,8 +97,8 @@ export const AdminPopup = () => {
             Créer un utilisateur
           </h3>
           {inputError &&
-            inputError?.graphQLErrors?.map((err) => (
-              <p className="mt-1 text-center text-sm text-red-500">
+            inputError?.graphQLErrors?.map((err, index) => (
+              <p key={index} className="mt-1 text-center text-sm text-red-500">
                 {err.message}
               </p>
             ))}
@@ -112,6 +112,7 @@ export const AdminPopup = () => {
             <section className="mt-12 flex w-5/6 flex-col place-items-center rounded-xl border border-primary py-6">
               <select
                 name="role"
+                aria-label="Role"
                 className="select select-bordered select-sm max-w-xs border-primary"
                 value={formInputs.role}
                 onChange={handleInputChange}
@@ -133,6 +134,7 @@ export const AdminPopup = () => {
                     </div>
                     <input
                       type="text"
+                      aria-label="Name"
                       className="input input-bordered w-full max-w-xs border-primary"
                       placeholder="Dupont"
                       name="name"
@@ -147,6 +149,7 @@ export const AdminPopup = () => {
                     </div>
                     <input
                       type="text"
+                      aria-label="Firstname"
                       className="input input-bordered w-full max-w-xs border-primary"
                       placeholder="Jean"
                       name="firstname"
@@ -165,6 +168,7 @@ export const AdminPopup = () => {
                   className="input input-bordered w-full max-w-xs border-primary"
                   placeholder="email@adresse.com"
                   name="email"
+                  aria-label="Email"
                   value={formInputs.email}
                   onChange={handleInputChange}
                   disabled={!formInputs.role}
@@ -180,6 +184,7 @@ export const AdminPopup = () => {
                   <select
                     className="select select-bordered w-full max-w-xs border-primary text-base"
                     name="service"
+                    aria-label="Department"
                     value={formInputs.service}
                     onChange={handleInputChange}
                     disabled={!formInputs.role}
@@ -203,6 +208,7 @@ export const AdminPopup = () => {
                   <select
                     className="select select-bordered w-full max-w-xs border-primary text-base"
                     name="gender"
+                    aria-label="Gender"
                     value={formInputs.gender}
                     onChange={handleInputChange}
                     disabled={!formInputs.role}

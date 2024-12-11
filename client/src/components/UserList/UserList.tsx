@@ -1,4 +1,4 @@
-import { UsersQuery } from '../../generated/graphql-types';
+import { Get_All_UsersQuery } from '../../generated/graphql-types';
 import translateRole from './roleMap';
 import EditIcon from '../../icons/EditIcon';
 import ArchiveIcon from '../../icons/ArchiveIcon';
@@ -6,7 +6,7 @@ import ArchiveIcon from '../../icons/ArchiveIcon';
 export default function UserList({
   filteredUsers
 }: {
-  filteredUsers: UsersQuery['users'];
+  filteredUsers: Get_All_UsersQuery['users'];
 }) {
   return (
     <>

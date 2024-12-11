@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import roleMap from '../UserList/roleMap';
 import {
+  useAddUserMutation,
   useDepartmentsQuery,
   useGendersQuery
 } from '../../generated/graphql-types';
@@ -10,20 +11,22 @@ export const AdminPopup = () => {
   const { data: departments } = useDepartmentsQuery();
   const { data: genders } = useGendersQuery();
 
+  const [createUser] = useAddUserMutation();
+
   const [formInputs, setFormInputs] = useState({
     role: '',
     name: '',
-    firstName: '',
+    firstname: '',
     email: '',
     service: '',
-    genre: ''
+    gender: ''
   });
 
   const rolesInfosAttribution = {
-    doctor: ['name', 'firstName', 'email', 'service', 'genre'],
-    secretary: ['name', 'firstName', 'email', 'service'],
-    agent: ['name', 'firstName', 'email'],
-    admin: ['name', 'firstName', 'email']
+    doctor: ['name', 'firstname', 'email', 'service', 'gender'],
+    secretary: ['name', 'firstname', 'email', 'service'],
+    agent: ['name', 'firstname', 'email'],
+    admin: ['name', 'firstname', 'email']
   };
 
   // check if an input is visible to a role
@@ -48,13 +51,28 @@ export const AdminPopup = () => {
     setFormInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCreateUserButton = () => {
-    alert('validé');
+  const handleCreateUserButton = async () => {
+    try {
+      await createUser({
+        variables: {
+          lastname: formInputs.name,
+          firstname: formInputs.firstname,
+          departmentLabel: formInputs.service,
+          email: formInputs.email,
+          roleLabel: formInputs.role,
+          genderLabel: formInputs.gender
+        }
+      });
+      alert('User créé avec succès');
+    } catch {
+      console.error("Erreur lors de la création de l'utilisateur");
+    }
+    document.getElementById('admin-popup').close();
   };
 
   return (
     <>
-      <dialog id="my_modal_3" className="modal">
+      <dialog id="admin-popup" className="modal">
         <div className="modal-box">
           <form method="dialog">
             <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
@@ -111,8 +129,8 @@ export const AdminPopup = () => {
                       type="text"
                       className="input input-bordered w-full max-w-xs border-primary"
                       placeholder="Jean"
-                      name="firstName"
-                      value={formInputs.firstName}
+                      name="firstname"
+                      value={formInputs.firstname}
                       onChange={handleInputChange}
                       disabled={!formInputs.role}
                     />
@@ -151,13 +169,15 @@ export const AdminPopup = () => {
                         Service
                       </option>
                       {departments?.departments.map((department) => (
-                        <option key={department.id}>{department.label}</option>
+                        <option value={department.label} key={department.id}>
+                          {department.label}
+                        </option>
                       ))}
-                    </select>{' '}
+                    </select>
                   </label>
                 </>
               )}{' '}
-              {isVisibleToRole('genre') && (
+              {isVisibleToRole('gender') && (
                 <>
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
@@ -165,8 +185,8 @@ export const AdminPopup = () => {
                     </div>
                     <select
                       className="select select-bordered w-full max-w-xs border-primary text-base"
-                      name="genre"
-                      value={formInputs.genre}
+                      name="gender"
+                      value={formInputs.gender}
                       onChange={handleInputChange}
                       disabled={!formInputs.role}
                     >
@@ -174,7 +194,9 @@ export const AdminPopup = () => {
                         Genre
                       </option>
                       {genders?.genders.map((gender) => (
-                        <option key={gender.id}>{gender.label}</option>
+                        <option value={gender.label} key={gender.id}>
+                          {gender.label}
+                        </option>
                       ))}
                     </select>
                   </label>

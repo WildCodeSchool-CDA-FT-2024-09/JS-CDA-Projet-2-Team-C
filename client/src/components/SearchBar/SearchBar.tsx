@@ -3,7 +3,7 @@ import SearchIcon from '../../icons/SearchIcon';
 
 export default function SearchBar({ handleChange }: SearchBarProps) {
   return (
-    <section className="flex w-full justify-center">
+    <div className="flex w-full justify-center">
       <label
         htmlFor="search-input"
         className="flex w-96 gap-4 rounded-lg border border-primary-dark p-1"
@@ -18,6 +18,6 @@ export default function SearchBar({ handleChange }: SearchBarProps) {
           aria-label="champ de recherche"
         />
       </label>
-    </section>
+    </div>
   );
 }

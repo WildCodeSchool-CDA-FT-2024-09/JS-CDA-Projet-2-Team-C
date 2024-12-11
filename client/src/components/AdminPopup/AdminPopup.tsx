@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import roleMap from '../UserList/roleMap';
+import {
+  useDepartmentsQuery,
+  useGendersQuery
+} from '../../generated/graphql-types';
 
 export const AdminPopup = () => {
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const { data: departments } = useDepartmentsQuery();
+  const { data: genders } = useGendersQuery();
 
   const [formInputs, setFormInputs] = useState({
     role: '',
@@ -51,7 +57,6 @@ export const AdminPopup = () => {
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box">
           <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
               ✕
             </button>
@@ -61,8 +66,8 @@ export const AdminPopup = () => {
           </h3>
           <form
             onSubmit={(e) => {
-              e.preventDefault(); // Empêche la soumission par défaut
-              handleCreateUserButton(); // Logique pour ajouter l’utilisateur
+              e.preventDefault();
+              handleCreateUserButton();
             }}
             className="flex flex-col place-items-center gap-6"
           >
@@ -145,8 +150,9 @@ export const AdminPopup = () => {
                       <option value="" defaultValue="" disabled>
                         Service
                       </option>
-                      <option>Oncologie</option>
-                      <option>Podologie</option>
+                      {departments?.departments.map((department) => (
+                        <option key={department.id}>{department.label}</option>
+                      ))}
                     </select>{' '}
                   </label>
                 </>
@@ -167,9 +173,9 @@ export const AdminPopup = () => {
                       <option value="" defaultValue="" disabled>
                         Genre
                       </option>
-                      <option>Féminin</option>
-                      <option>Masculin</option>
-                      <option>N/A</option>
+                      {genders?.genders.map((gender) => (
+                        <option key={gender.id}>{gender.label}</option>
+                      ))}
                     </select>
                   </label>
                 </>

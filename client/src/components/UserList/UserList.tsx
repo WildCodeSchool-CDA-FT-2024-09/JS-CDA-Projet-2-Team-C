@@ -8,9 +8,6 @@ export default function UserList({
 }: {
   filteredUsers: UsersQuery['users'];
 }) {
-  // function for translate role bdd to role french
-  // const translatedRole = roleMap[filteredUsers[0].role.label];
-
   return (
     <>
       {filteredUsers.map((user) => (

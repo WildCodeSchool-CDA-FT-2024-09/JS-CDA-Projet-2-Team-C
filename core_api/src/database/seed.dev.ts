@@ -1,4 +1,8 @@
+import { hashPassword } from '../utils/auth.utils';
 import dataSource from './dataSource';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 (async () => {
   await dataSource.initialize();
@@ -92,12 +96,22 @@ import dataSource from './dataSource';
     const genderIdMap = await makeLabelIdMap('gender');
 
     // 2. USERS
-    // Fake email utilty
+    // Fake email utility
     // Add min one milisecond tick to avoid duplicate emails
     async function fakeEmail(): Promise<string> {
       const time = Date.now();
       await new Promise((resolve) => setTimeout(resolve, 3));
       return `fake${time}@fake.com`;
+    }
+
+    // Fake password utility
+    async function fakePassword(): Promise<string> {
+      const { TEST_USER_PASSWORD } = process.env;
+      if (!TEST_USER_PASSWORD) {
+        throw new Error('TEST_USER_PASSWORD environment variable not set');
+      }
+      const hashedPassword = await hashPassword(TEST_USER_PASSWORD);
+      return hashedPassword;
     }
 
     // DOCTORS
@@ -106,7 +120,7 @@ import dataSource from './dataSource';
         firstname: 'Cyril',
         lastname: 'Convergence',
         email: await fakeEmail(),
-        password: 'fake1234hash',
+        password: await fakePassword(),
         roleId: roleIdMap.doctor,
         genderId: genderIdMap.male,
         departmentId: Math.floor(Math.random() * departments.length) + 1
@@ -115,7 +129,7 @@ import dataSource from './dataSource';
         firstname: 'Diana',
         lastname: 'Divergence',
         email: await fakeEmail(),
-        password: 'fake1234hash',
+        password: await fakePassword(),
         roleId: roleIdMap.doctor,
         genderId: genderIdMap.female,
         departmentId: Math.floor(Math.random() * departments.length) + 1
@@ -144,7 +158,7 @@ import dataSource from './dataSource';
         firstname: 'Arnold',
         lastname: 'Agent',
         email: await fakeEmail(),
-        password: 'fake1234hash',
+        password: await fakePassword(),
         roleId: roleIdMap.agent,
         genderId: genderIdMap.na
       },
@@ -152,7 +166,7 @@ import dataSource from './dataSource';
         firstname: 'Anna',
         lastname: 'Agent',
         email: await fakeEmail(),
-        password: 'fake1234hash',
+        password: await fakePassword(),
         roleId: roleIdMap.agent,
         genderId: genderIdMap.na
       }
@@ -177,7 +191,7 @@ import dataSource from './dataSource';
         firstname: 'Alice',
         lastname: 'Admin',
         email: await fakeEmail(),
-        password: 'fake1234hash',
+        password: await fakePassword(),
         roleId: roleIdMap.admin,
         genderId: genderIdMap.na
       },
@@ -185,7 +199,7 @@ import dataSource from './dataSource';
         firstname: 'Albert',
         lastname: 'Admin',
         email: await fakeEmail(),
-        password: 'fake1234hash',
+        password: await fakePassword(),
         roleId: roleIdMap.admin,
         genderId: genderIdMap.na
       }
@@ -210,7 +224,7 @@ import dataSource from './dataSource';
         firstname: 'Samuel',
         lastname: 'Secretary',
         email: await fakeEmail(),
-        password: 'fake1234hash',
+        password: await fakePassword(),
         roleId: roleIdMap.secretary,
         genderId: genderIdMap.na,
         departmentId: Math.floor(Math.random() * departments.length) + 1
@@ -219,7 +233,7 @@ import dataSource from './dataSource';
         firstname: 'Sally',
         lastname: 'Secretary',
         email: await fakeEmail(),
-        password: 'fake1234hash',
+        password: await fakePassword(),
         roleId: roleIdMap.secretary,
         genderId: genderIdMap.na,
         departmentId: Math.floor(Math.random() * departments.length) + 1

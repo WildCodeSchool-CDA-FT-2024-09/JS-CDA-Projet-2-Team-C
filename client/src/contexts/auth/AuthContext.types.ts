@@ -1,6 +1,6 @@
-import { User } from '../../generated/graphql-types';
+import { AuthUser } from '../../generated/graphql-types';
 
 export type AuthContextType = {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  user: AuthUser | null;
+  setUser: React.Dispatch<React.SetStateAction<AuthUser | null>>;
 };

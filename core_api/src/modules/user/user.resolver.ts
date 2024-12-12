@@ -2,7 +2,7 @@ import { User } from '../entities.index';
 import { Resolver, Query } from 'type-graphql';
 
 @Resolver(User)
-export default class userResolver {
+export default class UserResolver {
   @Query(() => [User])
   async users() {
     return await User.find({

@@ -3,7 +3,7 @@ import RoleResolver from './modules/role/role.resolver';
 import DepartmentResolver from './modules/department/department.resolver';
 import ConsultationResolver from './modules/consultation/consultation.resolver';
 import PatientResolver from './modules/patient/patient.resolver';
-import userResolver from './modules/user/user.resolver';
+import UserResolver from './modules/user/user.resolver';
 
 const getSchema = async () => {
   return await buildSchema({
@@ -12,7 +12,7 @@ const getSchema = async () => {
       ConsultationResolver,
       PatientResolver,
       DepartmentResolver,
-      userResolver
+      UserResolver
     ],
 
     validate: true

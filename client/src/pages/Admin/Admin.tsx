@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useUsersQuery } from '../../generated/graphql-types';
+import { useGet_All_UsersQuery } from '../../generated/graphql-types';
 import UserList from '../../components/UserList/UserList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
 
 export default function Admin() {
-  const { data, loading, error } = useUsersQuery();
+  const { data, loading, error } = useGet_All_UsersQuery();
   const [searchByName, setSearchByName] = useState<string>('');
   const [role, setRole] = useState<string>('');
 

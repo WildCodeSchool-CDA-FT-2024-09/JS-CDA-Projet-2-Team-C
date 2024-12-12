@@ -43,6 +43,14 @@ export type Attachment = {
   updatedAt: Scalars['String']['output'];
 };
 
+export type AuthUser = {
+  __typename?: 'AuthUser';
+  email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  role: Role;
+  token: Scalars['String']['output'];
+};
+
 export type Consultation = {
   __typename?: 'Consultation';
   attachments: Array<Attachment>;
@@ -101,6 +109,7 @@ export type Query = {
   __typename?: 'Query';
   departments: Array<Department>;
   dossier: Array<Consultation>;
+  login: AuthUser;
   patient: Patient;
   roles: Array<Role>;
   users: Array<User>;
@@ -108,6 +117,11 @@ export type Query = {
 
 export type QueryDossierArgs = {
   patientId: Scalars['Float']['input'];
+};
+
+export type QueryLoginArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type QueryPatientArgs = {
@@ -242,6 +256,22 @@ export type DepartmentsQueryVariables = Exact<{ [key: string]: never }>;
 export type DepartmentsQuery = {
   __typename?: 'Query';
   departments: Array<{ __typename?: 'Department'; id: number; label: string }>;
+};
+
+export type LoginQueryVariables = Exact<{
+  password: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+}>;
+
+export type LoginQuery = {
+  __typename?: 'Query';
+  login: {
+    __typename?: 'AuthUser';
+    id: number;
+    email: string;
+    token: string;
+    role: { __typename?: 'Role'; id: number; label: RoleLabel };
+  };
 };
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -649,6 +679,79 @@ export type DepartmentsSuspenseQueryHookResult = ReturnType<
 export type DepartmentsQueryResult = Apollo.QueryResult<
   DepartmentsQuery,
   DepartmentsQueryVariables
+>;
+export const LoginDocument = gql`
+  query Login($password: String!, $email: String!) {
+    login(password: $password, email: $email) {
+      id
+      email
+      role {
+        id
+        label
+      }
+      token
+    }
+  }
+`;
+
+/**
+ * __useLoginQuery__
+ *
+ * To run a query within a React component, call `useLoginQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLoginQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLoginQuery({
+ *   variables: {
+ *      password: // value for 'password'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useLoginQuery(
+  baseOptions: Apollo.QueryHookOptions<LoginQuery, LoginQueryVariables> &
+    ({ variables: LoginQueryVariables; skip?: boolean } | { skip: boolean })
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<LoginQuery, LoginQueryVariables>(
+    LoginDocument,
+    options
+  );
+}
+export function useLoginLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<LoginQuery, LoginQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<LoginQuery, LoginQueryVariables>(
+    LoginDocument,
+    options
+  );
+}
+export function useLoginSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<LoginQuery, LoginQueryVariables>
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<LoginQuery, LoginQueryVariables>(
+    LoginDocument,
+    options
+  );
+}
+export type LoginQueryHookResult = ReturnType<typeof useLoginQuery>;
+export type LoginLazyQueryHookResult = ReturnType<typeof useLoginLazyQuery>;
+export type LoginSuspenseQueryHookResult = ReturnType<
+  typeof useLoginSuspenseQuery
+>;
+export type LoginQueryResult = Apollo.QueryResult<
+  LoginQuery,
+  LoginQueryVariables
 >;
 export const GetAllUsersDocument = gql`
   query GetAllUsers {

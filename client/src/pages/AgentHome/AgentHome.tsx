@@ -6,7 +6,7 @@ import {
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/AgentChoiceList/AgentChoiceList';
 
-function AgentHome() {
+export default function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
@@ -50,7 +50,7 @@ function AgentHome() {
 
   const renderServices = () => (
     <>
-      <h1 className="text-3xl font-bold">Liste des services</h1>
+      <h1 className="text-center text-3xl font-bold">Liste des services</h1>
       <AgentChoiceList
         isLoading={loadingServices}
         error={errorServices}
@@ -70,7 +70,7 @@ function AgentHome() {
 
   const renderDoctorsByService = () => (
     <>
-      <h1 className="text-3xl font-bold">
+      <h1 className="text-center text-3xl font-bold">
         Docteurs pour {selectedService || 'ce service'}
       </h1>
       <AgentChoiceList
@@ -91,7 +91,7 @@ function AgentHome() {
 
   const renderAllDoctors = () => (
     <>
-      <h1 className="text-3xl font-bold">Liste des docteurs</h1>
+      <h1 className="text-center text-3xl font-bold">Liste des docteurs</h1>
       <AgentChoiceList
         isLoading={loadingServices}
         error={errorServices}
@@ -110,7 +110,7 @@ function AgentHome() {
 
   const renderPatients = () => (
     <>
-      <h1 className="text-3xl font-bold">Liste des patients</h1>
+      <h1 className="text-center text-3xl font-bold">Liste des patients</h1>
       <p>Cette fonctionnalité est en cours de développement.</p>
       <button
         className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
@@ -138,5 +138,3 @@ function AgentHome() {
     <div className="mt-8 flex flex-col items-center gap-8">{renderView()}</div>
   );
 }
-
-export default AgentHome;

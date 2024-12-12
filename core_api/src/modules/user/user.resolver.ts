@@ -1,4 +1,4 @@
-import { User, Role, Department, AuthUser } from '../entities.index';
+import { User, Role, Department, AuthUser, RoleLabel } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
 import { Resolver, Query, Arg } from 'type-graphql';
 
@@ -8,7 +8,9 @@ export default class UserResolver {
     description: 'Fetches all users with the role of doctor'
   })
   async getDoctors(): Promise<User[]> {
-    const doctorRole = await Role.findOne({ where: { label: 'doctor' } });
+    const doctorRole = await Role.findOne({
+      where: { label: RoleLabel.DOCTOR }
+    });
     if (!doctorRole) {
       throw new Error("Role 'doctor' not found.");
     }
@@ -26,7 +28,9 @@ export default class UserResolver {
   async getDoctorByDepartment(
     @Arg('label', () => String) label: string
   ): Promise<Department[]> {
-    const doctorRole = await Role.findOne({ where: { label: 'doctor' } });
+    const doctorRole = await Role.findOne({
+      where: { label: RoleLabel.DOCTOR }
+    });
     if (!doctorRole) {
       throw new Error("Role 'doctor' not found.");
     }
@@ -62,5 +66,12 @@ export default class UserResolver {
     authUser.token = generateToken(user);
 
     return authUser;
+  }
+
+  @Query(() => [User])
+  async users() {
+    return await User.find({
+      relations: ['role', 'department', 'gender'] // Explicitly load the "role" relationship
+    });
   }
 }

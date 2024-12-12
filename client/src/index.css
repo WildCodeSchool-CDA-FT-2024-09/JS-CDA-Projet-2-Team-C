@@ -2,18 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scrollbar-gutter: auto !important;
+}
+
 @layer base {
   @font-face {
-    font-family: "Lato";
-    src: url("/fonts/Lato/Lato-Regular.ttf");
-  }
-  
-  @font-face {
-    font-family: "Montserrat";
-    src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.ttf");
+    font-family: 'Lato';
+    src: url('/fonts/Lato/Lato-Regular.ttf');
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  @font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat/Montserrat-VariableFont_wght.ttf');
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-montserrat;
   }
   h1 {

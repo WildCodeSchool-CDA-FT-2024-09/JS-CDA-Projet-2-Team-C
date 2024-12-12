@@ -22,7 +22,7 @@ export default function Admin() {
     ) || [];
 
   if (loading) return <h1>Chargement ...</h1>;
-  if (error) return <h1>Erreur</h1>;
+  if (error) return <h1>Erreur de récupération de donnée recharger la page</h1>;
 
   // See https://daisyui.com/components/table/ for table component
   if (data)

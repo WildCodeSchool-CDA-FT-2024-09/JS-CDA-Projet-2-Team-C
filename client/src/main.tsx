@@ -13,6 +13,7 @@ import QuickSearch from './pages/QuickSearch/QuickSearch.tsx';
 import AgentDepartment from './pages/AgentDepartment/AgentDepartment.tsx';
 import AgentDepartmentDoctor from './pages/AgentDepartmentDoctor/AgentDepartmentDoctor.tsx';
 import './index.css';
+import DossierBrowser from './pages/DossierBrowser/DossierBrowser.tsx';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: 'rechercher/service/docteur',
         element: <AgentDepartmentDoctor />
+      },
+      {
+        path: 'dossiers',
+        element: <DossierBrowser />
       },
       {
         path: 'patient/:patientId/dossier',

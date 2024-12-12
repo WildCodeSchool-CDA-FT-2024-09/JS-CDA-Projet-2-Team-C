@@ -29,9 +29,13 @@ dotenv.config();
     // SEED TABLES
     // 1. UNIQUE LABELS
     // Roles
-    const roles = ['admin', 'doctor', 'agent', 'secretary'];
+    const code = ['admin', 'doctor', 'agent', 'secretary'];
+    const label = ['administrateur', 'docteur', 'agent', 'secrétaire'];
+
+    const values = code.map((c, i) => `('${c}', '${label[i]}')`).join(', ');
+
     await queryRunner.query(
-      `INSERT INTO "role" (label) VALUES ('${roles.join("'), ('")}')`
+      `INSERT INTO "role" (code, label) VALUES ${values}`
     );
 
     // Genders

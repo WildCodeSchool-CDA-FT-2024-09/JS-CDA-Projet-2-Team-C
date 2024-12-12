@@ -1,15 +1,15 @@
-import { AgentListProps } from './AgentList.types';
+import { AgentChoiceListProps } from './AgentChoiceList.type';
 
-export default function AgentList<T>({
+export default function AgentChoiceList<T>({
   isLoading,
   error,
   items,
   emptyMessage,
   renderItem,
   onItemClick
-}: AgentListProps<T>) {
+}: AgentChoiceListProps<T>) {
   if (isLoading) return <p>Chargement en cours...</p>;
-  if (error) return <p>Erreur lors du chargement : {error.message}</p>;
+  if (error) return <p>Erreur lors du chargement</p>;
   if (!items.length) return <p>{emptyMessage}</p>;
 
   return (

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import {
-  useDepartmentsAndDoctorsQuery,
-  useGetDoctorByDepartmentQuery
+  useDepartmentsQuery,
+  useRolesWithUsersQuery
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
-import AgentList from '../../components/AgentList/AgentList';
+import AgentChoiceList from '../../components/AgentChoiceList/AgentChoiceList';
 
-function DynamicPage() {
+function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
@@ -14,13 +14,13 @@ function DynamicPage() {
     loading: loadingServices,
     error: errorServices,
     data: dataServices
-  } = useDepartmentsAndDoctorsQuery();
+  } = useDepartmentsQuery();
 
   const {
     loading: loadingDoctors,
     error: errorDoctors,
     data: dataDoctors
-  } = useGetDoctorByDepartmentQuery({
+  } = useRolesWithUsersQuery({
     variables: { label: selectedService || '' },
     skip: !selectedService
   });
@@ -51,7 +51,7 @@ function DynamicPage() {
   const renderServices = () => (
     <>
       <h1 className="text-3xl font-bold">Liste des services</h1>
-      <AgentList
+      <AgentChoiceList
         isLoading={loadingServices}
         error={errorServices}
         items={dataServices?.departments || []}
@@ -73,7 +73,7 @@ function DynamicPage() {
       <h1 className="text-3xl font-bold">
         Docteurs pour {selectedService || 'ce service'}
       </h1>
-      <AgentList
+      <AgentChoiceList
         isLoading={loadingDoctors}
         error={errorDoctors}
         items={dataDoctors?.getDoctorByDepartment[0]?.users || []}
@@ -92,7 +92,7 @@ function DynamicPage() {
   const renderAllDoctors = () => (
     <>
       <h1 className="text-3xl font-bold">Liste des docteurs</h1>
-      <AgentList
+      <AgentChoiceList
         isLoading={loadingServices}
         error={errorServices}
         items={dataServices?.getDoctors || []}
@@ -139,4 +139,4 @@ function DynamicPage() {
   );
 }
 
-export default DynamicPage;
+export default AgentHome;

@@ -1,4 +1,4 @@
-export interface AgentListProps<T> {
+export interface AgentChoiceListProps<T> {
   isLoading: boolean;
   error?: Error | null;
   items: T[];

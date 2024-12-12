@@ -9,7 +9,7 @@ import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
 import Admin from './pages/Admin/Admin.tsx';
 import Dossier from './pages/Dossier/Dossier.tsx';
-import DynamicPage from './pages/AgentHome/AgentHome.tsx';
+import AgentHome from './pages/AgentHome/AgentHome.tsx';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'rechercher',
-        element: <DynamicPage />
+        element: <AgentHome />
       },
       {
         path: 'patient/:patientId/dossier',

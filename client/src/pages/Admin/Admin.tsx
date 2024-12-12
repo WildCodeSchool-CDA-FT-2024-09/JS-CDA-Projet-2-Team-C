@@ -3,7 +3,6 @@ import { useGetAllUsersQuery } from '../../generated/graphql-types';
 import UserList from '../../components/UserList/UserList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
-//test
 export default function Admin() {
   const { data, loading, error } = useGetAllUsersQuery();
   const [searchByName, setSearchByName] = useState<string>('');

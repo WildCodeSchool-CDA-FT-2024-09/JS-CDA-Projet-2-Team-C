@@ -14,9 +14,13 @@ app.post('/send-mail', async (req, res) => {
     if (!to || !subject || !text) throw new Error();
 
     const mailOptions = req.body;
-    await sendMail(mailOptions);
+    const { success } = await sendMail(mailOptions);
 
-    res.sendStatus(201);
+    if (success) {
+      res.sendStatus(201);
+    } else {
+      res.sendStatus(500);
+    }
   } catch {
     res.status(400).send('Invalid input');
   }

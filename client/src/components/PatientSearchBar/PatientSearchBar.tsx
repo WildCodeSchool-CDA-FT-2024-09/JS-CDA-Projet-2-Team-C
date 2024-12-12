@@ -14,8 +14,9 @@ export default function PatientSearchBar({
   };
 
   useEffect(() => {
-    if (search !== '') {
-      getPatientsByname({ variables: { search: search } });
+    const sanitisedSearch = search.trim();
+    if (sanitisedSearch) {
+      getPatientsByname({ variables: { search: sanitisedSearch } });
     }
   }, [search]);
 

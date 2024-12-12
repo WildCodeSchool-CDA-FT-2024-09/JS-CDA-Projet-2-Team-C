@@ -244,9 +244,9 @@ export type DepartmentsQuery = {
   departments: Array<{ __typename?: 'Department'; id: number; label: string }>;
 };
 
-export type Get_All_UsersQueryVariables = Exact<{ [key: string]: never }>;
+export type GetAllUsersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type Get_All_UsersQuery = {
+export type GetAllUsersQuery = {
   __typename?: 'Query';
   users: Array<{
     __typename?: 'User';
@@ -650,8 +650,8 @@ export type DepartmentsQueryResult = Apollo.QueryResult<
   DepartmentsQuery,
   DepartmentsQueryVariables
 >;
-export const Get_All_UsersDocument = gql`
-  query Get_All_Users {
+export const GetAllUsersDocument = gql`
+  query GetAllUsers {
     users {
       id
       firstname
@@ -666,71 +666,69 @@ export const Get_All_UsersDocument = gql`
 `;
 
 /**
- * __useGet_All_UsersQuery__
+ * __useGetAllUsersQuery__
  *
- * To run a query within a React component, call `useGet_All_UsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGet_All_UsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGet_All_UsersQuery({
+ * const { data, loading, error } = useGetAllUsersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGet_All_UsersQuery(
+export function useGetAllUsersQuery(
   baseOptions?: Apollo.QueryHookOptions<
-    Get_All_UsersQuery,
-    Get_All_UsersQueryVariables
+    GetAllUsersQuery,
+    GetAllUsersQueryVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<Get_All_UsersQuery, Get_All_UsersQueryVariables>(
-    Get_All_UsersDocument,
+  return Apollo.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(
+    GetAllUsersDocument,
     options
   );
 }
-export function useGet_All_UsersLazyQuery(
+export function useGetAllUsersLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    Get_All_UsersQuery,
-    Get_All_UsersQueryVariables
+    GetAllUsersQuery,
+    GetAllUsersQueryVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<Get_All_UsersQuery, Get_All_UsersQueryVariables>(
-    Get_All_UsersDocument,
+  return Apollo.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(
+    GetAllUsersDocument,
     options
   );
 }
-export function useGet_All_UsersSuspenseQuery(
+export function useGetAllUsersSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
     | Apollo.SuspenseQueryHookOptions<
-        Get_All_UsersQuery,
-        Get_All_UsersQueryVariables
+        GetAllUsersQuery,
+        GetAllUsersQueryVariables
       >
 ) {
   const options =
     baseOptions === Apollo.skipToken
       ? baseOptions
       : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<
-    Get_All_UsersQuery,
-    Get_All_UsersQueryVariables
-  >(Get_All_UsersDocument, options);
+  return Apollo.useSuspenseQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(
+    GetAllUsersDocument,
+    options
+  );
 }
-export type Get_All_UsersQueryHookResult = ReturnType<
-  typeof useGet_All_UsersQuery
+export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
+export type GetAllUsersLazyQueryHookResult = ReturnType<
+  typeof useGetAllUsersLazyQuery
 >;
-export type Get_All_UsersLazyQueryHookResult = ReturnType<
-  typeof useGet_All_UsersLazyQuery
+export type GetAllUsersSuspenseQueryHookResult = ReturnType<
+  typeof useGetAllUsersSuspenseQuery
 >;
-export type Get_All_UsersSuspenseQueryHookResult = ReturnType<
-  typeof useGet_All_UsersSuspenseQuery
->;
-export type Get_All_UsersQueryResult = Apollo.QueryResult<
-  Get_All_UsersQuery,
-  Get_All_UsersQueryVariables
+export type GetAllUsersQueryResult = Apollo.QueryResult<
+  GetAllUsersQuery,
+  GetAllUsersQueryVariables
 >;

@@ -112,6 +112,7 @@ export type Query = {
   login: AuthUser;
   patient: Patient;
   roles: Array<Role>;
+  users: Array<User>;
 };
 
 export type QueryDossierArgs = {
@@ -130,9 +131,17 @@ export type QueryPatientArgs = {
 export type Role = {
   __typename?: 'Role';
   id: Scalars['Int']['output'];
-  label: Scalars['String']['output'];
-  users?: Maybe<Array<User>>;
+  label: RoleLabel;
+  users: Array<User>;
 };
+
+/** The roles available to a user */
+export enum RoleLabel {
+  Admin = 'ADMIN',
+  Agent = 'AGENT',
+  Doctor = 'DOCTOR',
+  Secretary = 'SECRETARY'
+}
 
 export type User = {
   __typename?: 'User';
@@ -192,7 +201,7 @@ export type DossierQuery = {
         __typename?: 'User';
         firstname: string;
         lastname: string;
-        role: { __typename?: 'Role'; label: string };
+        role: { __typename?: 'Role'; label: RoleLabel };
       };
     }>;
   }>;
@@ -222,7 +231,7 @@ export type RolesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type RolesQuery = {
   __typename?: 'Query';
-  roles: Array<{ __typename?: 'Role'; id: number; label: string }>;
+  roles: Array<{ __typename?: 'Role'; id: number; label: RoleLabel }>;
 };
 
 export type RolesWithUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -232,13 +241,13 @@ export type RolesWithUsersQuery = {
   roles: Array<{
     __typename?: 'Role';
     id: number;
-    label: string;
-    users?: Array<{
+    label: RoleLabel;
+    users: Array<{
       __typename?: 'User';
       id: number;
       firstname: string;
       lastname: string;
-    }> | null;
+    }>;
   }>;
 };
 
@@ -261,8 +270,22 @@ export type LoginQuery = {
     id: number;
     email: string;
     token: string;
-    role: { __typename?: 'Role'; id: number; label: string };
+    role: { __typename?: 'Role'; id: number; label: RoleLabel };
   };
+};
+
+export type GetAllUsersQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetAllUsersQuery = {
+  __typename?: 'Query';
+  users: Array<{
+    __typename?: 'User';
+    id: number;
+    firstname: string;
+    lastname: string;
+    email: string;
+    role: { __typename?: 'Role'; id: number; label: RoleLabel };
+  }>;
 };
 
 export const DossierDocument = gql`
@@ -729,4 +752,86 @@ export type LoginSuspenseQueryHookResult = ReturnType<
 export type LoginQueryResult = Apollo.QueryResult<
   LoginQuery,
   LoginQueryVariables
+>;
+export const GetAllUsersDocument = gql`
+  query GetAllUsers {
+    users {
+      id
+      firstname
+      lastname
+      email
+      role {
+        id
+        label
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetAllUsersQuery__
+ *
+ * To run a query within a React component, call `useGetAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetAllUsersQuery,
+    GetAllUsersQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(
+    GetAllUsersDocument,
+    options
+  );
+}
+export function useGetAllUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAllUsersQuery,
+    GetAllUsersQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(
+    GetAllUsersDocument,
+    options
+  );
+}
+export function useGetAllUsersSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetAllUsersQuery,
+        GetAllUsersQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(
+    GetAllUsersDocument,
+    options
+  );
+}
+export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
+export type GetAllUsersLazyQueryHookResult = ReturnType<
+  typeof useGetAllUsersLazyQuery
+>;
+export type GetAllUsersSuspenseQueryHookResult = ReturnType<
+  typeof useGetAllUsersSuspenseQuery
+>;
+export type GetAllUsersQueryResult = Apollo.QueryResult<
+  GetAllUsersQuery,
+  GetAllUsersQueryVariables
 >;

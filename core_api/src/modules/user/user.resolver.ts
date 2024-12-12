@@ -21,4 +21,11 @@ export default class UserResolver {
 
     return authUser;
   }
+
+  @Query(() => [User])
+  async users() {
+    return await User.find({
+      relations: ['role', 'department', 'gender'] // Explicitly load the "role" relationship
+    });
+  }
 }

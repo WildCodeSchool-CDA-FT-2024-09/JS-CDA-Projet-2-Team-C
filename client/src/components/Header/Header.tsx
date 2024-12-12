@@ -28,7 +28,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
       {currentRole === 'doctor' && (
         <li>
           <a
-            onClick={() => navigate('patient/1/dossier')}
+            onClick={() => navigate('dossiers')}
             className={currentPageName === 'Dossier patient' ? `underline` : ''}
           >
             Dossiers

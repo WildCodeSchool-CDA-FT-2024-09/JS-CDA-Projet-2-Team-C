@@ -11,6 +11,7 @@ import Admin from './pages/Admin/Admin.tsx';
 import Dossier from './pages/Dossier/Dossier.tsx';
 import AgentHome from './pages/AgentHome/AgentHome.tsx';
 import './index.css';
+import DossierBrowser from './pages/DossierBrowser/DossierBrowser.tsx';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: 'rechercher',
         element: <AgentHome />
+      },
+      {
+        path: 'dossiers',
+        element: <DossierBrowser />
       },
       {
         path: 'patient/:patientId/dossier',

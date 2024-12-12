@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
-  useDepartmentsQuery,
-  useRolesWithUsersQuery
+  useDepartmentsAndDoctorsQuery,
+  useGetDoctorByDepartmentQuery
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/AgentChoiceList/AgentChoiceList';
@@ -14,13 +14,13 @@ function AgentHome() {
     loading: loadingServices,
     error: errorServices,
     data: dataServices
-  } = useDepartmentsQuery();
+  } = useDepartmentsAndDoctorsQuery();
 
   const {
     loading: loadingDoctors,
     error: errorDoctors,
     data: dataDoctors
-  } = useRolesWithUsersQuery({
+  } = useGetDoctorByDepartmentQuery({
     variables: { label: selectedService || '' },
     skip: !selectedService
   });

@@ -10,7 +10,9 @@ export const GET_DOCTORS_BY_DEPARTMENT = gql`
         lastname
         id
       }
-    `;
+    }
+  }
+`;
 
 export const LOGIN = gql`
   query Login($password: String!, $email: String!) {

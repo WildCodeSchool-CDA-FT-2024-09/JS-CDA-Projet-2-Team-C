@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { RoleSelector, RoleSpecificFields } from './RoleSpecificFields';
-import roleMap from '../UserList/roleMap';
 import {
   useAddUserMutation,
-  useDepartmentsQuery,
-  useGendersQuery
+  useDepartmentsAndGendersAndRolesQuery
 } from '../../generated/graphql-types';
 import { useCreateUserForm } from './useCreateUserForm';
 import { InputError } from './AdminPopup.types';
 
-export const AdminPopup: React.FC = () => {
-  const { data: departments } = useDepartmentsQuery();
-  const { data: genders } = useGendersQuery();
+type AdminPopupProps = {
+  close: () => void;
+};
+
+const AdminPopup = forwardRef(({ close }: AdminPopupProps, ref) => {
+  const { data: departmentsAndGendersAndRoles } =
+    useDepartmentsAndGendersAndRolesQuery();
+
   const [createUser] = useAddUserMutation();
   const {
     formInputs,
@@ -29,9 +32,6 @@ export const AdminPopup: React.FC = () => {
   };
 
   const handleCreateUser = async () => {
-    const dialog = document.getElementById(
-      'admin-popup'
-    ) as HTMLDialogElement | null;
     try {
       await createUser({
         variables: {
@@ -55,7 +55,7 @@ export const AdminPopup: React.FC = () => {
       setInputError({});
       // TODO: replace with a snackbar when available
       alert('User créé avec succès');
-      dialog?.close();
+      close();
     } catch (error: unknown) {
       if (
         typeof error === 'object' &&
@@ -70,7 +70,7 @@ export const AdminPopup: React.FC = () => {
   };
 
   return (
-    <dialog id="admin-popup" className="modal" role="dialog">
+    <dialog id="admin-popup" className="modal" role="dialog" ref={ref}>
       <div className="modal-box">
         <form method="dialog">
           <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
@@ -94,7 +94,7 @@ export const AdminPopup: React.FC = () => {
         >
           <section className="mt-12 flex w-5/6 flex-col place-items-center rounded-xl border border-primary py-6">
             <RoleSelector
-              roles={roleMap}
+              roles={departmentsAndGendersAndRoles?.roles}
               selectedRole={formInputs.role}
               onChange={handleInputChange}
             />
@@ -102,8 +102,8 @@ export const AdminPopup: React.FC = () => {
               role={formInputs.role}
               formInputs={formInputs}
               handleInputChange={handleInputChange}
-              departments={departments}
-              genders={genders}
+              departments={departmentsAndGendersAndRoles?.departments}
+              genders={departmentsAndGendersAndRoles?.genders}
             />
           </section>
           <button
@@ -117,4 +117,6 @@ export const AdminPopup: React.FC = () => {
       </div>
     </dialog>
   );
-};
+});
+
+export default AdminPopup;

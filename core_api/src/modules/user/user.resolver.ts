@@ -1,13 +1,13 @@
+import { Query, Resolver, Mutation, Arg } from 'type-graphql';
 import {
   User,
+  AuthUser,
   Role,
   Department,
-  AuthUser,
-  RoleLabel,
-  Gender
+  Gender,
+  RoleLabel
 } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
-import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 import { hashPassword } from '../../utils/auth.utils';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -75,7 +75,7 @@ export default class UserResolver {
     const hashedPassword = await hashPassword(password);
 
     const duplicateUser = await User.findOne({ where: { email: email } });
-    if (duplicateUser) throw new Error('Email already used');
+    if (duplicateUser) throw new Error('Cet email est déjà utilisé');
 
     const role = await Role.findOne({ where: { label: roleLabel } });
     if (!role) throw new Error('Role not found');

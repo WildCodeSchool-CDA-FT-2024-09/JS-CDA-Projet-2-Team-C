@@ -34,12 +34,14 @@ export interface RoleSpecificFieldsProps {
   handleInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  departments?: {
-    departments: { id: string; label: string }[];
-  };
-  genders?: {
-    genders: { id: string; label: string }[];
-  };
+  departments?: { id: number; label: string }[];
+  genders?: { id: number; label: string }[];
+}
+
+export interface RoleSelectorProps {
+  roles: { id: number; label: string }[];
+  selectedRole: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export type GraphQLError = {

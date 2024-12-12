@@ -1,12 +1,12 @@
 import { isVisibleToRole } from '../../utils/roles.utils';
 import { InputField, SelectField } from './Fields';
-import { RoleSpecificFieldsProps } from './AdminPopup.types';
+import { RoleSelectorProps, RoleSpecificFieldsProps } from './AdminPopup.types';
 
-export const RoleSelector: React.FC<{
-  roles: Record<string, string>;
-  selectedRole: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}> = ({ roles, selectedRole, onChange }) => (
+export const RoleSelector = ({
+  roles,
+  selectedRole,
+  onChange
+}: RoleSelectorProps) => (
   <select
     name="role"
     aria-label="Role"
@@ -17,9 +17,9 @@ export const RoleSelector: React.FC<{
     <option value="" disabled defaultValue="">
       Role
     </option>
-    {Object.entries(roles).map(([key, label], id) => (
-      <option key={id} value={key}>
-        {label}
+    {roles?.map((role, id) => (
+      <option key={id} value={role.label.toLowerCase()}>
+        {role.label.toLowerCase()}
       </option>
     ))}
   </select>
@@ -70,7 +70,7 @@ export const RoleSpecificFields = ({
           name="service"
           label="Service"
           options={
-            departments?.departments.map((d) => ({
+            departments?.map((d) => ({
               value: d.label,
               label: d.label
             })) || []
@@ -85,7 +85,7 @@ export const RoleSpecificFields = ({
           name="gender"
           label="Genre"
           options={
-            genders?.genders.map((g) => ({
+            genders?.map((g) => ({
               value: g.label,
               label: g.label
             })) || []

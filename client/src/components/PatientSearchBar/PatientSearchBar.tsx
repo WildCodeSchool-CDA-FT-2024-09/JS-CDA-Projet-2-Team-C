@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { useGetPatientsByNameLazyQuery } from '../../generated/graphql-types';
 import SearchBar from '../SearchBar/SearchBar';
 import PatientSearchBarProps from './PatientSearchBar.type';
+import { useDebounce } from '../../utils/useDebounce';
 
 export default function PatientSearchBar({
   handlePatientSelected
 }: PatientSearchBarProps) {
   const [search, setSearch] = useState<string>('');
+  const debouncedSearch = useDebounce<string>(search, 500);
   const [getPatientsByname, { data }] = useGetPatientsByNameLazyQuery();
 
   const handleChange = (value: string): void => {
@@ -15,10 +17,10 @@ export default function PatientSearchBar({
 
   useEffect(() => {
     const sanitisedSearch = search.trim();
-    if (sanitisedSearch) {
+    if (sanitisedSearch && search === debouncedSearch) {
       getPatientsByname({ variables: { search: sanitisedSearch } });
     }
-  }, [search]);
+  }, [debouncedSearch]);
 
   // see https://daisyui.com/components/dropdown/
   return (

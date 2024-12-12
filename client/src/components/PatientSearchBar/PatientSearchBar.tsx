@@ -16,8 +16,8 @@ export default function PatientSearchBar({
   };
 
   useEffect(() => {
-    const sanitisedSearch = search.trim();
-    if (sanitisedSearch && search === debouncedSearch) {
+    const sanitisedSearch = debouncedSearch.trim();
+    if (sanitisedSearch) {
       getPatientsByname({ variables: { search: sanitisedSearch } });
     }
   }, [debouncedSearch]);

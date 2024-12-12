@@ -21,7 +21,8 @@ export default class PatientResolver {
   // needed to browse patients by their first or lastname, case insensitive
   @Query(() => [Patient])
   async patients(@Arg('search') search: string) {
-    if (search === '' || search === ' ') return [];
+    search = search.trim();
+    if (!search) return [];
     return await Patient.find({
       where: [
         { firstname: ILike(`${search}%`) },

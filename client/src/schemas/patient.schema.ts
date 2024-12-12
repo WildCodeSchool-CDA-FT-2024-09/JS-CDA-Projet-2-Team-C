@@ -18,3 +18,14 @@ export const GET_PATIENT_BY_ID = gql`
     }
   }
 `;
+
+// This query is used by PatientSearchBar to browse patients by their name
+export const GET_PATIENTS_BY_NAME = gql`
+  query GetPatientsByName($search: String!) {
+    patients(search: $search) {
+      id
+      firstname
+      lastname
+    }
+  }
+`;

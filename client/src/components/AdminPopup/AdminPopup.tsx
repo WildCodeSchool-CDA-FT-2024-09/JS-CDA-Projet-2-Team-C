@@ -9,7 +9,7 @@ import {
 import { useCreateUserForm } from './useCreateUserForm';
 import { InputError } from './AdminPopup.types';
 
-export const AdminPopup: React.FC = () => {
+export const AdminPopup = () => {
   const { data: departments } = useDepartmentsQuery();
   const { data: genders } = useGendersQuery();
   const [createUser] = useAddUserMutation();

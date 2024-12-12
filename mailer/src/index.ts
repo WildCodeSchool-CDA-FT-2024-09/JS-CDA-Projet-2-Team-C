@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { sendMail } from './mailer.util';
+import { sendMail } from '../utils/mailer.util';
 
 dotenv.config();
 const serverPort = process.env.PORT;
@@ -8,7 +8,7 @@ const serverPort = process.env.PORT;
 const app = express();
 app.use(express.json());
 
-app.post('/', async (req, res) => {
+app.post('/send-mail', async (req, res) => {
   try {
     const { to, subject, text } = req.body;
     if (!to || !subject || !text) throw new Error();

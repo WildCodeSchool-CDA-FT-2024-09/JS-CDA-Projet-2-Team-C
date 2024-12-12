@@ -5,13 +5,13 @@ meta {
 }
 
 post {
-  url: http://localhost:3310/
+  url: http://localhost:3310/send-mail
   body: json
   auth: none
 }
 
 body:json {
-  {"to":"text@email.fr",
-   "subject":"this is a spam",
+  {"to":"testmailbox@gmail.com",
+   "subject":"this is an email",
   "text":"hello world !"}
 }

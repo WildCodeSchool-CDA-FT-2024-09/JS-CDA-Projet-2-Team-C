@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 import transporter from './transporter.service';
 
 dotenv.config();
+const { MAIL_FROM } = process.env
+
 
 interface MailOptions {
   to: string;
@@ -24,7 +26,7 @@ export const sendMail = async ({
 }: MailOptions): Promise<MailResponse> => {
   try {
     const info = await transporter.sendMail({
-      from: process.env.MAIL_FROM || '"No Reply" <noreply@example.com>', // Fallback sender address
+      from: MAIL_FROM,
       to,
       subject,
       text

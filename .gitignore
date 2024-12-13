@@ -6,3 +6,4 @@ node_modules/
 
 # Visual Studio Code directory
 .vscode/
+core_api/src/database/med_data_v3.csv

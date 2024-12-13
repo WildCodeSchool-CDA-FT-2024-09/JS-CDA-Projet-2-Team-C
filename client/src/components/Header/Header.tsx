@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth/useAuth';
 import { HeaderProps } from './Header.types';
 import Logo from '/images/logo-main-white.png';
+import { RoleLabel } from '../../generated/graphql-types';
 
 export const Header = ({ page, pageNames }: HeaderProps) => {
   const { user, setUser } = useAuth();
@@ -15,7 +16,8 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
 
   const navItems = (
     <>
-      {(currentRole === 'doctor' || currentRole === 'secretary') && (
+      {(currentRole === RoleLabel.Doctor ||
+        currentRole === RoleLabel.Secretary) && (
         <li>
           <a
             onClick={() => navigate('/planning')}
@@ -25,7 +27,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
           </a>
         </li>
       )}
-      {currentRole === 'doctor' && (
+      {currentRole === RoleLabel.Doctor && (
         <li>
           <a
             onClick={() => navigate('dossiers')}

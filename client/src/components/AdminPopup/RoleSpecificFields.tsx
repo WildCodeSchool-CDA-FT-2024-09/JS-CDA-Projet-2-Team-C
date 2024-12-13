@@ -1,31 +1,9 @@
 import { isVisibleToRole } from '../../utils/roles.utils';
-import { InputField, SelectField } from './Fields';
-import { RoleSelectorProps, RoleSpecificFieldsProps } from './AdminPopup.types';
+import SelectField from './SelectField';
+import InputField from './InputField';
+import { RoleSpecificFieldsProps } from './AdminPopup.types';
 
-export const RoleSelector = ({
-  roles,
-  selectedRole,
-  onChange
-}: RoleSelectorProps) => (
-  <select
-    name="role"
-    aria-label="Role"
-    className="select select-bordered select-sm max-w-xs border-primary"
-    value={selectedRole}
-    onChange={onChange}
-  >
-    <option value="" disabled defaultValue="">
-      Role
-    </option>
-    {roles?.map((role, id) => (
-      <option key={id} value={role.label.toLowerCase()}>
-        {role.label.toLowerCase()}
-      </option>
-    ))}
-  </select>
-);
-
-export const RoleSpecificFields = ({
+const RoleSpecificFields = ({
   role,
   formInputs,
   handleInputChange,
@@ -98,3 +76,5 @@ export const RoleSpecificFields = ({
     </>
   );
 };
+
+export default RoleSpecificFields;

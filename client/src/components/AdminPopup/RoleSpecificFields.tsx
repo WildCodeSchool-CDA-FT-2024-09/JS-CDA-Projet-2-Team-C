@@ -7,7 +7,8 @@ const RoleSpecificFields = ({
   formInputs,
   handleInputChange,
   departments,
-  genders
+  genders,
+  disabled
 }: RoleSpecificFieldsProps) => {
   const { name, firstname, email, service, gender } = formInputs;
 
@@ -21,7 +22,7 @@ const RoleSpecificFields = ({
             placeholder="Dupont"
             value={name}
             onChange={handleInputChange}
-            disabled={!role}
+            disabled={!role || disabled}
           />
           <InputField
             name="firstname"
@@ -29,7 +30,7 @@ const RoleSpecificFields = ({
             placeholder="Jean"
             value={firstname}
             onChange={handleInputChange}
-            disabled={!role}
+            disabled={!role || disabled}
           />
         </>
       )}
@@ -39,7 +40,7 @@ const RoleSpecificFields = ({
         placeholder="email@adresse.com"
         value={email}
         onChange={handleInputChange}
-        disabled={!role}
+        disabled={!role || disabled}
         type="email"
       />
       {isVisibleToRole(role, 'service') && (
@@ -54,7 +55,7 @@ const RoleSpecificFields = ({
           }
           value={service}
           onChange={handleInputChange}
-          disabled={!role}
+          disabled={!role || disabled}
         />
       )}
       {isVisibleToRole(role, 'gender') && (
@@ -69,7 +70,7 @@ const RoleSpecificFields = ({
           }
           value={gender}
           onChange={handleInputChange}
-          disabled={!role}
+          disabled={!role || disabled}
         />
       )}
     </>

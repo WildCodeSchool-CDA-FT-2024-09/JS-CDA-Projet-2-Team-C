@@ -6,7 +6,7 @@ import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
 
 export default function Admin() {
-  const { data, loading, error } = useGetAllUsersQuery();
+  const { data, loading, error, refetch } = useGetAllUsersQuery();
   const [searchByName, setSearchByName] = useState<string>('');
   const [role, setRole] = useState<string>('');
 
@@ -44,7 +44,11 @@ export default function Admin() {
     <>
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
         <section className="flex p-[27px]">
-          <AdminPopup ref={dialogRef} close={handleClose} />
+          <AdminPopup
+            ref={dialogRef}
+            close={handleClose}
+            refetchUsers={refetch}
+          />
           <div className="basis-1/4">{''}</div>
           <h2 className="basis-3/4 text-center font-bold">
             Liste des utilisateurs

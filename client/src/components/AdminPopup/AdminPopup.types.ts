@@ -11,6 +11,7 @@ export type FormInputs = {
 
 export type AdminPopupProps = {
   close: () => void;
+  refetchUsers: () => void;
 };
 
 export interface InputFieldProps {
@@ -40,12 +41,14 @@ export interface RoleSpecificFieldsProps {
   ) => void;
   departments?: { id: number; label: string }[];
   genders?: { id: number; label: string }[];
+  disabled: boolean;
 }
 
 export interface RoleSelectorProps {
   roles: { id: number; label: string }[];
   selectedRole: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  disabled: boolean;
 }
 
 export type GraphQLError = {

@@ -3,7 +3,8 @@ import { vi } from 'vitest';
 import AdminPopup from './AdminPopup';
 import {
   useAddUserMutation,
-  useDepartmentsAndGendersAndRolesQuery
+  useDepartmentsAndGendersAndRolesQuery,
+  useGetAllUsersQuery
 } from '../../generated/graphql-types';
 
 vi.mock('../../generated/graphql-types', async () => {
@@ -11,6 +12,7 @@ vi.mock('../../generated/graphql-types', async () => {
   return {
     ...actual,
     useDepartmentsAndGendersAndRolesQuery: vi.fn(),
+    useGetAllUsersQuery: vi.fn(),
     useAddUserMutation: vi.fn()
   };
 });
@@ -38,14 +40,24 @@ describe('AdminPopup', () => {
   });
 
   it('should render without errors', () => {
-    render(<AdminPopup close={vi.fn()} />);
+    render(
+      <AdminPopup
+        close={vi.fn()}
+        refetchUsers={vi.mocked(useGetAllUsersQuery)}
+      />
+    );
     const dialog = screen.getByRole('dialog', { hidden: true });
     dialog.setAttribute('open', '');
     expect(screen.getByText('Créer un utilisateur')).toBeInTheDocument();
   });
 
   it('should disable the submit button initially', () => {
-    render(<AdminPopup close={vi.fn()} />);
+    render(
+      <AdminPopup
+        close={vi.fn()}
+        refetchUsers={vi.mocked(useGetAllUsersQuery)}
+      />
+    );
     const dialog = screen.getByRole('dialog', { hidden: true });
     dialog.setAttribute('open', '');
 
@@ -56,7 +68,12 @@ describe('AdminPopup', () => {
   });
 
   it('should enable the submit button when all required fields are filled for a role', async () => {
-    render(<AdminPopup close={vi.fn()} />);
+    render(
+      <AdminPopup
+        close={vi.fn()}
+        refetchUsers={vi.mocked(useGetAllUsersQuery)}
+      />
+    );
     const dialog = screen.getByRole('dialog', { hidden: true });
     dialog.setAttribute('open', '');
 
@@ -98,7 +115,12 @@ describe('AdminPopup', () => {
       )
     ]);
 
-    render(<AdminPopup close={vi.fn()} />);
+    render(
+      <AdminPopup
+        close={vi.fn()}
+        refetchUsers={vi.mocked(useGetAllUsersQuery)}
+      />
+    );
     const dialog = screen.getByRole('dialog', { hidden: true });
     dialog.setAttribute('open', '');
 
@@ -132,7 +154,12 @@ describe('AdminPopup', () => {
   });
 
   it('should reset form after successful submission', async () => {
-    render(<AdminPopup close={vi.fn()} />);
+    render(
+      <AdminPopup
+        close={vi.fn()}
+        refetchUsers={vi.mocked(useGetAllUsersQuery)}
+      />
+    );
     const dialog = screen.getByRole('dialog', { hidden: true });
 
     dialog.setAttribute('open', '');

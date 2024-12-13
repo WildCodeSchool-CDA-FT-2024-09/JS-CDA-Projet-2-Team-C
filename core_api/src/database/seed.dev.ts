@@ -29,13 +29,20 @@ dotenv.config();
     // SEED TABLES
     // 1. UNIQUE LABELS
     // Roles
-    const code = ['admin', 'doctor', 'agent', 'secretary'];
-    const label = ['administrateur', 'docteur', 'agent', 'secrétaire'];
+    const roles = [
+      { code: 'admin', label: 'administrateur' },
+      { code: 'doctor', label: 'docteur' },
+      { code: 'agent', label: 'agent' },
+      { code: 'secretary', label: 'secrétaire' }
+    ];
 
-    const values = code.map((c, i) => `('${c}', '${label[i]}')`).join(', ');
+    // Generation of valued dynamically from `roles`
+    const values = roles
+      .map((role) => `('${role.code}', '${role.label}')`)
+      .join(', ');
 
     await queryRunner.query(
-      `INSERT INTO "role" (code, label) VALUES ${values}`
+      `INSERT INTO "role" (code, label) VALUES ${values};`
     );
 
     // Genders
@@ -77,27 +84,34 @@ dotenv.config();
     );
 
     // Make utility maps of unique labels to their ids
-    type UniqueLabel = {
-      id: number;
-      label: string;
+    type UniqueCode<T extends string> = { id: number } & {
+      [key in T]: string;
     };
 
-    type LabelIdMap = {
+    type CodeIdMap = {
       [key: string]: number;
     };
 
-    async function makeLabelIdMap(table: string): Promise<LabelIdMap> {
-      const result: UniqueLabel[] = await queryRunner.query(
-        `SELECT id, label FROM ${table}`
+    async function makeIdMap<T extends string>(
+      table: string,
+      key: T
+    ): Promise<CodeIdMap> {
+      const result: UniqueCode<T>[] = await queryRunner.query(
+        `SELECT id, ${key} FROM ${table}`
       );
-      return result.reduce((acc: LabelIdMap, item: UniqueLabel) => {
-        acc[item.label.toLowerCase()] = item.id;
+      return result.reduce((acc: CodeIdMap, item) => {
+        acc[item[key].toLowerCase()] = item.id;
         return acc;
       }, {});
     }
 
-    const roleIdMap = await makeLabelIdMap('role');
-    const genderIdMap = await makeLabelIdMap('gender');
+    // Appels corrigés
+    const roleIdMap = await makeIdMap('role', 'code');
+    const genderIdMap = await makeIdMap('gender', 'label');
+
+    // Logs pour vérification
+    console.info('roleIdMap:', roleIdMap);
+    console.info('genderIdMap:', genderIdMap);
 
     // 2. USERS
     // Fake email utility
@@ -147,12 +161,14 @@ dotenv.config();
       )
       .join(', ');
 
+    console.info('%c⧭', 'color: #ffa640', doctorValues);
+
     const doctorResult = await queryRunner.query(`
-      INSERT INTO "user"
-      (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
-      VALUES ${doctorValues}
-      RETURNING id
-    `);
+        INSERT INTO "user"
+        (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
+        VALUES ${doctorValues}
+        RETURNING id
+        `);
 
     const doctorIds = doctorResult.map((item: { id: number }) => item.id);
 

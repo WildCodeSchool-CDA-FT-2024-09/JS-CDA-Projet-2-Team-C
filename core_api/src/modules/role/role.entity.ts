@@ -3,8 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
-  OneToMany,
-  Check
+  OneToMany
 } from 'typeorm';
 import { Field, ObjectType, Int, registerEnumType } from 'type-graphql';
 import { User } from '../entities.index';
@@ -21,16 +20,15 @@ registerEnumType(RoleLabel, {
   description: 'The roles available to a user'
 });
 @ObjectType()
-@Check(`"label" IN ('agent', 'secretary', 'doctor', 'admin')`)
 @Entity()
 export class Role extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => RoleLabel)
+  @Field(() => String)
   @Column({ nullable: false, unique: true, type: 'varchar', length: 30 })
-  code: RoleLabel;
+  code: string;
 
   @Field(() => String)
   @Column({ nullable: false, unique: true, type: 'varchar', length: 30 })

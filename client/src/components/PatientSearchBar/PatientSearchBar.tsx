@@ -4,7 +4,7 @@ import SearchBar from '../SearchBar/SearchBar';
 import PatientSearchBarProps from './PatientSearchBar.type';
 import { useDebounce } from '../../utils/useDebounce';
 import { genderMap } from '../../utils/genderMap.utils';
-import { frenchCompactDate } from '../../utils/dates.utils';
+import { frenchDate } from '../../utils/dates.utils';
 
 export default function PatientSearchBar({
   handlePatientSelected
@@ -41,7 +41,7 @@ export default function PatientSearchBar({
                     <strong>
                       {patient.firstname} {patient.lastname}
                     </strong>
-                    {` - ${genderMap[patient.gender.label]} - ${frenchCompactDate(patient.dateOfBirth)} - ${patient.ssn}`}
+                    {` - ${genderMap[patient.gender.label]} - ${frenchDate(patient.dateOfBirth, true)} - ${patient.ssn}`}
                   </button>
                 </li>
               ))

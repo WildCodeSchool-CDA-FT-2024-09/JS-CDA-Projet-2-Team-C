@@ -1,16 +1,12 @@
 import { usePatientQuery } from '../../generated/graphql-types';
 import { frenchLargeDate, getAge } from '../../utils/dates.utils';
+import { genderMap } from '../../utils/genderMap.utils';
 import { PatientDetailsProps } from './PatientDetails.types';
 
 export default function PatientDetails({ patientId }: PatientDetailsProps) {
   const { data, loading, error } = usePatientQuery({
     variables: { patientId: patientId }
   });
-
-  const genderMap: Record<string, string> = {
-    Male: 'H',
-    Female: 'F'
-  };
 
   if (loading) return <h1>Chargement ...</h1>;
 

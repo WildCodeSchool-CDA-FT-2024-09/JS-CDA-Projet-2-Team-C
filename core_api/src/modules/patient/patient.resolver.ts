@@ -1,6 +1,6 @@
 import { Resolver, Query, Arg } from 'type-graphql';
-import { Patient } from '../entities.index';
 import { ILike } from 'typeorm';
+import { Patient } from '../entities.index';
 
 @Resolver(Patient)
 export default class PatientResolver {
@@ -27,7 +27,10 @@ export default class PatientResolver {
       where: [
         { firstname: ILike(`${search}%`) },
         { lastname: ILike(`${search}%`) }
-      ]
+      ],
+      relations: {
+        gender: true
+      }
     });
   }
 }

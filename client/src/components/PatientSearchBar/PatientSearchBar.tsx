@@ -3,6 +3,7 @@ import { useGetPatientsByNameLazyQuery } from '../../generated/graphql-types';
 import SearchBar from '../SearchBar/SearchBar';
 import PatientSearchBarProps from './PatientSearchBar.type';
 import { useDebounce } from '../../utils/useDebounce';
+import { genderMap } from '../../utils/genderMap.utils';
 
 export default function PatientSearchBar({
   handlePatientSelected
@@ -36,7 +37,9 @@ export default function PatientSearchBar({
               data.patients.map((patient) => (
                 <li key={`patient-${patient.id}`}>
                   <button onClick={() => handlePatientSelected(patient.id)}>
-                    {patient.firstname} {patient.lastname}
+                    {patient.firstname} {patient.lastname} -{' '}
+                    {genderMap[patient.gender.label]} - {patient.dateOfBirth} -{' '}
+                    {patient.ssn}
                   </button>
                 </li>
               ))

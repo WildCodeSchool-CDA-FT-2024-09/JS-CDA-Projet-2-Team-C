@@ -5,6 +5,7 @@ export const GET_ROLES = gql`
     roles {
       id
       label
+      code
     }
   }
 `;

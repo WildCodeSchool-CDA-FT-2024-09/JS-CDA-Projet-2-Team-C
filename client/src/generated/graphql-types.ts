@@ -243,7 +243,12 @@ export type RolesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type RolesQuery = {
   __typename?: 'Query';
-  roles: Array<{ __typename?: 'Role'; id: number; label: string }>;
+  roles: Array<{
+    __typename?: 'Role';
+    id: number;
+    label: string;
+    code: string;
+  }>;
 };
 
 export type RolesWithUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -296,7 +301,7 @@ export type GetAllUsersQuery = {
     firstname: string;
     lastname: string;
     email: string;
-    role: { __typename?: 'Role'; id: number; label: string };
+    role: { __typename?: 'Role'; id: number; label: string; code: string };
   }>;
 };
 
@@ -557,6 +562,7 @@ export const RolesDocument = gql`
     roles {
       id
       label
+      code
     }
   }
 `;
@@ -859,6 +865,7 @@ export const GetAllUsersDocument = gql`
       role {
         id
         label
+        code
       }
     }
   }

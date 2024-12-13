@@ -15,7 +15,7 @@ export default function Admin() {
   const filteredUsers =
     data?.users?.filter(
       (user) =>
-        user.role.label.toLowerCase().includes(role.toLowerCase()) &&
+        user.role.code.toLowerCase().includes(role.toLowerCase()) &&
         (user.firstname.toLowerCase().includes(searchByName.toLowerCase()) ||
           user.lastname.toLowerCase().includes(searchByName.toLowerCase()))
     ) || [];

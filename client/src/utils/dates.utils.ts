@@ -19,6 +19,25 @@ export const frenchLargeDate = (
   }
 };
 
+export const frenchCompactDate = (
+  consultationDate: Date | string | undefined
+): string => {
+  try {
+    const localizedDate = new Date(consultationDate as Date).toLocaleDateString(
+      'fr-FR',
+      {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+      }
+    );
+    if (localizedDate === 'Invalid Date') throw new Error();
+    return localizedDate;
+  } catch {
+    return 'date inconnue';
+  }
+};
+
 export const getAge = (date: Date | string | undefined): string => {
   try {
     const today = new Date();

@@ -4,6 +4,7 @@ import SearchBar from '../SearchBar/SearchBar';
 import PatientSearchBarProps from './PatientSearchBar.type';
 import { useDebounce } from '../../utils/useDebounce';
 import { genderMap } from '../../utils/genderMap.utils';
+import { frenchCompactDate } from '../../utils/dates.utils';
 
 export default function PatientSearchBar({
   handlePatientSelected
@@ -26,7 +27,7 @@ export default function PatientSearchBar({
   // see https://daisyui.com/components/dropdown/
   return (
     <>
-      <div className="dropdown dropdown-end">
+      <div className="dropdown dropdown-end w-[35rem]">
         <SearchBar handleChange={handleChange} />
         {data && (
           <ul
@@ -37,9 +38,10 @@ export default function PatientSearchBar({
               data.patients.map((patient) => (
                 <li key={`patient-${patient.id}`}>
                   <button onClick={() => handlePatientSelected(patient.id)}>
-                    {patient.firstname} {patient.lastname} -{' '}
-                    {genderMap[patient.gender.label]} - {patient.dateOfBirth} -{' '}
-                    {patient.ssn}
+                    <strong>
+                      {patient.firstname} {patient.lastname}
+                    </strong>
+                    {` - ${genderMap[patient.gender.label]} - ${frenchCompactDate(patient.dateOfBirth)} - ${patient.ssn}`}
                   </button>
                 </li>
               ))

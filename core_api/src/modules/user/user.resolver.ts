@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv';
 import { Query, Resolver, Mutation, Arg } from 'type-graphql';
 import {
   User,
@@ -9,7 +10,6 @@ import {
 } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
 import { hashPassword } from '../../utils/auth.utils';
-import * as dotenv from 'dotenv';
 dotenv.config();
 
 @Resolver(User)

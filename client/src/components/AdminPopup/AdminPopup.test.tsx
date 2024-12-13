@@ -1,32 +1,34 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import { AdminPopup } from './AdminPopup';
+import AdminPopup from './AdminPopup';
 import {
-  useDepartmentsQuery,
-  useGendersQuery,
-  useAddUserMutation
+  useAddUserMutation,
+  useDepartmentsAndGendersAndRolesQuery
 } from '../../generated/graphql-types';
 
 vi.mock('../../generated/graphql-types', async () => {
   const actual = await vi.importActual('../../generated/graphql-types');
   return {
     ...actual,
-    useDepartmentsQuery: vi.fn(),
-    useGendersQuery: vi.fn(),
+    useDepartmentsAndGendersAndRolesQuery: vi.fn(),
     useAddUserMutation: vi.fn()
   };
 });
 
 describe('AdminPopup', () => {
   beforeEach(() => {
-    vi.mocked(useDepartmentsQuery).mockReturnValue({
-      data: { departments: [{ id: '1', label: 'Orthoptie' }] }
-    });
-    vi.mocked(useGendersQuery).mockReturnValue({
+    vi.mocked(useDepartmentsAndGendersAndRolesQuery).mockReturnValue({
       data: {
+        departments: [{ id: 1, label: 'Orthoptie' }],
         genders: [
-          { id: '1', label: 'Homme' },
-          { id: '2', label: 'Femme' }
+          { id: 1, label: 'Male' },
+          { id: 2, label: 'Female' }
+        ],
+        roles: [
+          { id: 1, label: 'doctor' },
+          { id: 2, label: 'agent' },
+          { id: 3, label: 'secretary' },
+          { id: 4, label: 'admin' }
         ]
       }
     });
@@ -36,14 +38,14 @@ describe('AdminPopup', () => {
   });
 
   it('should render without errors', () => {
-    render(<AdminPopup />);
+    render(<AdminPopup close={vi.fn()} />);
     const dialog = screen.getByRole('dialog', { hidden: true });
     dialog.setAttribute('open', '');
     expect(screen.getByText('Créer un utilisateur')).toBeInTheDocument();
   });
 
   it('should disable the submit button initially', () => {
-    render(<AdminPopup />);
+    render(<AdminPopup close={vi.fn()} />);
     const dialog = screen.getByRole('dialog', { hidden: true });
     dialog.setAttribute('open', '');
 
@@ -54,7 +56,7 @@ describe('AdminPopup', () => {
   });
 
   it('should enable the submit button when all required fields are filled for a role', async () => {
-    render(<AdminPopup />);
+    render(<AdminPopup close={vi.fn()} />);
     const dialog = screen.getByRole('dialog', { hidden: true });
     dialog.setAttribute('open', '');
 
@@ -77,7 +79,7 @@ describe('AdminPopup', () => {
       target: { value: 'Orthoptie' }
     });
     fireEvent.change(screen.getByLabelText(/genre/i), {
-      target: { value: 'Homme' }
+      target: { value: 'Male' }
     });
 
     // Check button activation
@@ -96,7 +98,7 @@ describe('AdminPopup', () => {
       )
     ]);
 
-    render(<AdminPopup />);
+    render(<AdminPopup close={vi.fn()} />);
     const dialog = screen.getByRole('dialog', { hidden: true });
     dialog.setAttribute('open', '');
 
@@ -116,7 +118,7 @@ describe('AdminPopup', () => {
       target: { value: 'Orthoptie' }
     });
     fireEvent.change(screen.getByLabelText(/genre/i), {
-      target: { value: 'Homme' }
+      target: { value: 'Male' }
     });
 
     const submitButton = screen.getByRole('button', {
@@ -130,7 +132,7 @@ describe('AdminPopup', () => {
   });
 
   it('should reset form after successful submission', async () => {
-    render(<AdminPopup />);
+    render(<AdminPopup close={vi.fn()} />);
     const dialog = screen.getByRole('dialog', { hidden: true });
 
     dialog.setAttribute('open', '');
@@ -151,7 +153,7 @@ describe('AdminPopup', () => {
       target: { value: 'Orthoptie' }
     });
     fireEvent.change(screen.getByLabelText(/genre/i), {
-      target: { value: 'Homme' }
+      target: { value: 'Male' }
     });
 
     const submitButton = screen.getByRole('button', {

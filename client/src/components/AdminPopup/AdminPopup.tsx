@@ -1,15 +1,12 @@
 import React, { forwardRef } from 'react';
-import { RoleSelector, RoleSpecificFields } from './RoleSpecificFields';
+import RoleSpecificFields from './RoleSpecificFields';
+import RoleSelector from './RoleSelector';
 import {
   useAddUserMutation,
   useDepartmentsAndGendersAndRolesQuery
 } from '../../generated/graphql-types';
 import { useCreateUserForm } from './useCreateUserForm';
-import { InputError } from './AdminPopup.types';
-
-type AdminPopupProps = {
-  close: () => void;
-};
+import { AdminPopupProps, InputError } from './AdminPopup.types';
 
 const AdminPopup = forwardRef(({ close }: AdminPopupProps, ref) => {
   const { data: departmentsAndGendersAndRoles } =

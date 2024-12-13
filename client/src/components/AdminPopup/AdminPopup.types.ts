@@ -9,6 +9,10 @@ export type FormInputs = {
   gender: string;
 };
 
+export type AdminPopupProps = {
+  close: () => void;
+};
+
 export interface InputFieldProps {
   name: string;
   label: string;

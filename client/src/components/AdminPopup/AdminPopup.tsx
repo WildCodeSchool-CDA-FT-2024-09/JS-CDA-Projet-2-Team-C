@@ -1,4 +1,3 @@
-import React, { forwardRef } from 'react';
 import RoleSpecificFields from './RoleSpecificFields';
 import RoleSelector from './RoleSelector';
 import {
@@ -8,7 +7,9 @@ import {
 import { useCreateUserForm } from './useCreateUserForm';
 import { AdminPopupProps, InputError } from './AdminPopup.types';
 
-const AdminPopup = forwardRef(({ close }: AdminPopupProps, ref) => {
+// problem was that ref is a reserved keyword in HTML, maybe ?
+// because we pass the ref as a prop instead of attaching it to the component, react doesn't lose track of the DOM
+export default function AdminPopup({ close, dialogRef }: AdminPopupProps) {
   const { data: departmentsAndGendersAndRoles } =
     useDepartmentsAndGendersAndRolesQuery();
 
@@ -67,7 +68,7 @@ const AdminPopup = forwardRef(({ close }: AdminPopupProps, ref) => {
   };
 
   return (
-    <dialog id="admin-popup" className="modal" role="dialog" ref={ref}>
+    <dialog id="admin-popup" className="modal" role="dialog" ref={dialogRef}>
       <div className="modal-box">
         <form method="dialog">
           <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
@@ -114,6 +115,4 @@ const AdminPopup = forwardRef(({ close }: AdminPopupProps, ref) => {
       </div>
     </dialog>
   );
-});
-
-export default AdminPopup;
+}

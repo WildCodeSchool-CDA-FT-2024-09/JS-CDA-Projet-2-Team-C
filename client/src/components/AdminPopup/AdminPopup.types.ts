@@ -11,6 +11,7 @@ export type FormInputs = {
 
 export type AdminPopupProps = {
   close: () => void;
+  dialogRef: React.RefObject<HTMLDialogElement>;
 };
 
 export interface InputFieldProps {

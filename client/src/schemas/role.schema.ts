@@ -23,12 +23,3 @@ export const GET_ROLES_WITH_USERS = gql`
     }
   }
 `;
-
-export const GET_DEPARTMENT = gql`
-  query Departments {
-    departments {
-      id
-      label
-    }
-  }
-`;

@@ -105,13 +105,8 @@ dotenv.config();
       }, {});
     }
 
-    // Appels corrigés
     const roleIdMap = await makeIdMap('role', 'code');
     const genderIdMap = await makeIdMap('gender', 'label');
-
-    // Logs pour vérification
-    console.info('roleIdMap:', roleIdMap);
-    console.info('genderIdMap:', genderIdMap);
 
     // 2. USERS
     // Fake email utility

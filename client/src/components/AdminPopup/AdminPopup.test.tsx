@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { renderWithAllProviders as render } from '../../utils/test/test.utils';
 import { vi } from 'vitest';
 import AdminPopup from './AdminPopup';
 import {

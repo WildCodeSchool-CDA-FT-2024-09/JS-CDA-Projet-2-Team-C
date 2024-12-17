@@ -81,6 +81,13 @@ export type Department = {
   users: Array<User>;
 };
 
+export type DisplayText = {
+  __typename?: 'DisplayText';
+  id: Scalars['Int']['output'];
+  label: Scalars['String']['output'];
+  textFR: Scalars['String']['output'];
+};
+
 export type Gender = {
   __typename?: 'Gender';
   id: Scalars['Int']['output'];
@@ -122,6 +129,7 @@ export type Patient = {
 export type Query = {
   __typename?: 'Query';
   departments: Array<Department>;
+  displayText: Array<DisplayText>;
   dossier: Array<Consultation>;
   genders: Array<Gender>;
   /** Fetches departments by label and their doctors */
@@ -160,7 +168,7 @@ export type Role = {
   __typename?: 'Role';
   id: Scalars['Int']['output'];
   label: RoleLabel;
-  users: Array<User>;
+  users?: Maybe<Array<User>>;
 };
 
 /** The roles available to a user */
@@ -227,6 +235,17 @@ export type DepartmentsAndDoctorsQuery = {
     firstname: string;
     id: number;
     lastname: string;
+  }>;
+};
+
+export type DisplayTextQueryVariables = Exact<{ [key: string]: never }>;
+
+export type DisplayTextQuery = {
+  __typename?: 'Query';
+  displayText: Array<{
+    __typename?: 'DisplayText';
+    label: string;
+    textFR: string;
   }>;
 };
 
@@ -324,12 +343,12 @@ export type RolesWithUsersQuery = {
     __typename?: 'Role';
     id: number;
     label: RoleLabel;
-    users: Array<{
+    users?: Array<{
       __typename?: 'User';
       id: number;
       firstname: string;
       lastname: string;
-    }>;
+    }> | null;
   }>;
 };
 
@@ -654,6 +673,82 @@ export type DepartmentsAndDoctorsSuspenseQueryHookResult = ReturnType<
 export type DepartmentsAndDoctorsQueryResult = Apollo.QueryResult<
   DepartmentsAndDoctorsQuery,
   DepartmentsAndDoctorsQueryVariables
+>;
+export const DisplayTextDocument = gql`
+  query DisplayText {
+    displayText {
+      label
+      textFR
+    }
+  }
+`;
+
+/**
+ * __useDisplayTextQuery__
+ *
+ * To run a query within a React component, call `useDisplayTextQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDisplayTextQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDisplayTextQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDisplayTextQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    DisplayTextQuery,
+    DisplayTextQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<DisplayTextQuery, DisplayTextQueryVariables>(
+    DisplayTextDocument,
+    options
+  );
+}
+export function useDisplayTextLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    DisplayTextQuery,
+    DisplayTextQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<DisplayTextQuery, DisplayTextQueryVariables>(
+    DisplayTextDocument,
+    options
+  );
+}
+export function useDisplayTextSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        DisplayTextQuery,
+        DisplayTextQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<DisplayTextQuery, DisplayTextQueryVariables>(
+    DisplayTextDocument,
+    options
+  );
+}
+export type DisplayTextQueryHookResult = ReturnType<typeof useDisplayTextQuery>;
+export type DisplayTextLazyQueryHookResult = ReturnType<
+  typeof useDisplayTextLazyQuery
+>;
+export type DisplayTextSuspenseQueryHookResult = ReturnType<
+  typeof useDisplayTextSuspenseQuery
+>;
+export type DisplayTextQueryResult = Apollo.QueryResult<
+  DisplayTextQuery,
+  DisplayTextQueryVariables
 >;
 export const DossierDocument = gql`
   query Dossier($patientId: Float!) {

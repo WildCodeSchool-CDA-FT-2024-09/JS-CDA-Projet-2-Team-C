@@ -1,0 +1,33 @@
+[
+  { "label": "admin", "textFR": "Administrateur" },
+  { "label": "doctor", "textFR": "Docteur" },
+  { "label": "agent", "textFR": "Agent" },
+  { "label": "secretary", "textFR": "Sécretaire" },
+  { "label": "male", "textFR": "Homme" },
+  { "label": "female", "textFR": "Femme" },
+  { "label": "na", "textFR": "Non applicable" },
+  { "label": "cardiology", "textFR": "Cardiologie" },
+  { "label": "dermatology", "textFR": "Dermatologie" },
+  { "label": "endocrinology", "textFR": "Endocrinologie" },
+  { "label": "gastroenterology", "textFR": "Gastroentérologie" },
+  { "label": "hematology", "textFR": "Hématologie" },
+  { "label": "infectious_diseases", "textFR": "Maladies infectieuses" },
+  { "label": "nephrology", "textFR": "Néphrologie" },
+  { "label": "neurology", "textFR": "Neurologie" },
+  { "label": "oncology", "textFR": "Oncologie" },
+  { "label": "pulmonology", "textFR": "Pneumologie" },
+  { "label": "rheumatology", "textFR": "Rhumatologie" },
+  { "label": "urology", "textFR": "Urologie" },
+  { "label": "general_consultation", "textFR": "Consultation générale" },
+  { "label": "followup_consultation", "textFR": "Consultation de suivi" },
+  { "label": "emergency_consultation", "textFR": "Consultation d'urgence" },
+  {
+    "label": "preoperative_consultation",
+    "textFR": "Consultation préopératoire"
+  },
+  {
+    "label": "postoperative_consultation",
+    "textFR": "Consultation postopératoire"
+  },
+  { "label": "routine_checkup", "textFR": "Bilan de routine" }
+]

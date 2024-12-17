@@ -1,6 +1,7 @@
 import { hashPassword } from '../utils/auth.utils';
 import dataSource from './dataSource';
 import * as dotenv from 'dotenv';
+import displayTextData from './displaytext.json';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ dotenv.config();
     await queryRunner.query('TRUNCATE consultation RESTART IDENTITY CASCADE');
     await queryRunner.query('TRUNCATE patient RESTART IDENTITY CASCADE');
     await queryRunner.query('TRUNCATE "user" RESTART IDENTITY CASCADE');
+    await queryRunner.query('TRUNCATE display_text RESTART IDENTITY CASCADE');
 
     // SEED TABLES
     // 1. UNIQUE LABELS
@@ -35,25 +37,25 @@ dotenv.config();
     );
 
     // Genders
-    const genders = ['Male', 'Female', 'NA'];
+    const genders = ['male', 'female', 'na'];
     await queryRunner.query(
       `INSERT INTO "gender" (label) VALUES ('${genders.join("'), ('")}')`
     );
 
     // Departments
     const departments = [
-      'Cardiology',
-      'Dermatology',
-      'Endocrinology',
-      'Gastroenterology',
-      'Hematology',
-      'Infectious diseases',
-      'Nephrology',
-      'Neurology',
-      'Oncology',
-      'Pulmonology',
-      'Rheumatology',
-      'Urology'
+      'cardiology',
+      'dermatology',
+      'endocrinology',
+      'gastroenterology',
+      'hematology',
+      'infectious_diseases',
+      'nephrology',
+      'neurology',
+      'oncology',
+      'pulmonology',
+      'rheumatology',
+      'urology'
     ];
     await queryRunner.query(
       `INSERT INTO "department" (label) VALUES ('${departments.join("'), ('")}')`
@@ -61,12 +63,12 @@ dotenv.config();
 
     // Consultation subjects
     const consultationSubjects = [
-      'General consultation',
-      'Follow-up consultation',
-      'Emergency consultation',
-      'Preoperative consultation',
-      'Postoperative consultation',
-      'Routine check-up'
+      'general_consultation',
+      'followup_consultation',
+      'emergency_consultation',
+      'preoperative_consultation',
+      'postoperative_consultation',
+      'routine_checkup'
     ];
     await queryRunner.query(
       `INSERT INTO "consultation_subject" (label) VALUES ('${consultationSubjects.join("'), ('")}')`
@@ -94,6 +96,17 @@ dotenv.config();
 
     const roleIdMap = await makeLabelIdMap('role');
     const genderIdMap = await makeLabelIdMap('gender');
+
+    // Seed display text
+    const displayTextValues = displayTextData
+      .map((item) => `('${item.label}', '${item.textFR.replace(/'/g, "''")}')`)
+      .join(', ');
+
+    await queryRunner.query(`
+      INSERT INTO "display_text"
+      (label, "textFR")
+      VALUES ${displayTextValues}
+    `);
 
     // 2. USERS
     // Fake email utility

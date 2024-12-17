@@ -9,7 +9,8 @@ import {
   Patient,
   Role,
   User,
-  WorkingHours
+  WorkingHours,
+  DisplayText
 } from '../modules/entities.index';
 
 dotenv.config();
@@ -25,7 +26,8 @@ const entities = [
   Consultation,
   ConsultationSubject,
   Attachment,
-  Patient
+  Patient,
+  DisplayText
 ];
 
 if (NODE_ENV === 'test') {

@@ -14,15 +14,12 @@ export default function LoginDevButtons() {
   const handleLogin = (role: RoleLabel) => {
     setUser({
       id: 1,
-      firstname: 'John',
-      lastname: 'Doe',
       email: 'test@test.com',
       role: {
         id: 1,
-        label: role,
-        users: []
+        label: role
       },
-      isArchived: false
+      token: 'test-token'
     });
 
     setTimeout(() => {

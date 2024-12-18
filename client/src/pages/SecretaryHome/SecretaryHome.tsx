@@ -1,6 +1,6 @@
-import Agenda from '../../components/SecretaryHome/Agenda/Agenda';
-import DoctorSelector from '../../components/SecretaryHome/DoctorSelector/DoctorSelector';
-import FormPanel from '../../components/SecretaryHome/FormPanel/FormPanel';
+import Agenda from '../../components/SecretaryUI/Agenda/Agenda';
+import DoctorSelector from '../../components/SecretaryUI/DoctorSelector/DoctorSelector';
+import FormPanel from '../../components/SecretaryUI/FormPanel/FormPanel';
 
 export default function SecretaryHome() {
   return (

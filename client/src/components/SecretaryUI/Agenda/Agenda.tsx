@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Calendar, DateLocalizer, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
-import fr from 'date-fns/locale/fr'; // Import French locale
+import { fr } from 'date-fns/locale/fr'; // Import French locale
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 export default function Agenda() {
@@ -32,7 +32,7 @@ export default function Agenda() {
   ]);
 
   const handleSelectSlot = useCallback(
-    ({ start, end }) => {
+    ({ start, end }: { start: Date; end: Date }) => {
       // After calendar was clicked, we're here !
       const title = window.prompt('New Event name');
       if (title) {
@@ -42,6 +42,7 @@ export default function Agenda() {
     [setEvents]
   );
 
+  // TODO : pass this as a prop
   const handleSelectEvent = useCallback(
     (event) => window.alert(event.title),
     []

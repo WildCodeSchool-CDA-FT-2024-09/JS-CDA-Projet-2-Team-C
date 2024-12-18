@@ -39,7 +39,7 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
             firstname: formInputs.firstname,
             departmentLabel: formInputs.service,
             email: formInputs.email,
-            roleLabel: formInputs.role,
+            roleCode: formInputs.role,
             genderLabel: formInputs.gender
           }
         });

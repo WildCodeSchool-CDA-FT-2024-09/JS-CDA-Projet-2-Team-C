@@ -8,15 +8,15 @@ import {
 import { Field, ObjectType, Int, registerEnumType } from 'type-graphql';
 import { User } from '../entities.index';
 
-export enum RoleLabel {
+export enum RoleCode {
   AGENT = 'agent',
   SECRETARY = 'secretary',
   DOCTOR = 'doctor',
   ADMIN = 'admin'
 }
 
-registerEnumType(RoleLabel, {
-  name: 'RoleLabel',
+registerEnumType(RoleCode, {
+  name: 'RoleCode',
   description: 'The roles available to a user'
 });
 @ObjectType()

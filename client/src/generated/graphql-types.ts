@@ -268,6 +268,9 @@ export type GetPatientsByNameQuery = {
     id: number;
     firstname: string;
     lastname: string;
+    ssn: string;
+    dateOfBirth: any;
+    gender: { __typename?: 'Gender'; label: string };
   }>;
 };
 
@@ -682,6 +685,11 @@ export const GetPatientsByNameDocument = gql`
       id
       firstname
       lastname
+      ssn
+      dateOfBirth
+      gender {
+        label
+      }
     }
   }
 `;

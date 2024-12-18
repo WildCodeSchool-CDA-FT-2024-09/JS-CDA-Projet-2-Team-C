@@ -26,6 +26,11 @@ export const GET_PATIENTS_BY_NAME = gql`
       id
       firstname
       lastname
+      ssn
+      dateOfBirth
+      gender {
+        label
+      }
     }
   }
 `;

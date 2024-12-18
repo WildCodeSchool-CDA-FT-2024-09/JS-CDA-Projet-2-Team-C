@@ -1,6 +1,6 @@
 import { Resolver, Query, Arg } from 'type-graphql';
-import { Patient } from '../entities.index';
 import { ILike } from 'typeorm';
+import { Patient } from '../entities.index';
 
 @Resolver(Patient)
 export default class PatientResolver {
@@ -16,9 +16,7 @@ export default class PatientResolver {
   }
 
   // TODO : rescrtict access to role === doctor | secretary
-  // TODO : limit the number of results ?
-
-  // needed to browse patients by their first or lastname, case insensitive
+  // needed to browse patients by their firstname,lastname or SSN, case insensitive
   @Query(() => [Patient])
   async patients(@Arg('search') search: string) {
     search = search.trim();
@@ -26,8 +24,13 @@ export default class PatientResolver {
     return await Patient.find({
       where: [
         { firstname: ILike(`${search}%`) },
-        { lastname: ILike(`${search}%`) }
-      ]
+        { lastname: ILike(`${search}%`) },
+        { ssn: ILike(`${search}%`) }
+      ],
+      take: 10,
+      relations: {
+        gender: true
+      }
     });
   }
 }

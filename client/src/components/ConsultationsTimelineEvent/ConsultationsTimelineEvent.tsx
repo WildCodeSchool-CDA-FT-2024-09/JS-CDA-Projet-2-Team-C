@@ -1,5 +1,5 @@
 import { ConsultationsTimelineEventProps } from './ConsultationsTimeLineEvent.types';
-import { frenchLargeDate } from '../../utils/dates.utils';
+import { frenchDate } from '../../utils/dates.utils';
 import FileList from '../FileList/FileList';
 
 export default function ConsultationsTimelineEvent({
@@ -19,7 +19,7 @@ export default function ConsultationsTimelineEvent({
     <>
       {!isFirst && <hr />}
       <div className="text-grey timeline-start">
-        {frenchLargeDate(consultationDate)}
+        {frenchDate(consultationDate)}
       </div>
       <div className="timeline-middle h-8 w-8 rounded-2xl bg-primary-lighter"></div>
       <article className="flex-2 collapse timeline-end collapse-plus timeline-box bg-primary-lighter">

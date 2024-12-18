@@ -29,7 +29,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'planning',
-        element: <h3 className="text-center">[contenu du planning]</h3>
+        element: (
+          <h3 className="flex h-24 place-content-center place-items-center text-center">
+            [contenu du planning]
+          </h3>
+        )
       },
       {
         path: 'rechercher',
@@ -49,7 +53,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'consultations',
-        element: <h3 className="text-center">[liste consultations]</h3>
+        element: (
+          <h3 className="flex h-24 place-content-center place-items-center text-center">
+            [liste consultations]
+          </h3>
+        )
       }
     ]
   }

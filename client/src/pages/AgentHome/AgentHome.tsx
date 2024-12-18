@@ -112,6 +112,7 @@ export default function AgentHome() {
   const renderPatients = () => (
     <>
       <h1 className="text-center text-3xl font-bold">Liste des patients</h1>
+
       <PatientSearchBar
         handlePatientSelected={function (patientId: number): void {
           console.info(`Patient ID sélectionné : ${patientId}`);

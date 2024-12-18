@@ -22,13 +22,13 @@ export default function PatientSearchBar({
     if (sanitisedSearch) {
       getPatientsByname({ variables: { search: sanitisedSearch } });
     }
-  }, [debouncedSearch]);
+  }, [debouncedSearch, getPatientsByname]);
 
   // see https://daisyui.com/components/dropdown/
   return (
     <>
       <div className="dropdown dropdown-end w-[35rem]">
-        <SearchBar handleChange={handleChange} />
+        <SearchBar handleChange={handleChange} inputType="number" />
         {data && (
           <ul
             tabIndex={0}

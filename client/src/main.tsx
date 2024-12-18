@@ -10,8 +10,9 @@ import Login from './pages/Login/Login.tsx';
 import Admin from './pages/Admin/Admin.tsx';
 import Dossier from './pages/Dossier/Dossier.tsx';
 import AgentHome from './pages/AgentHome/AgentHome.tsx';
-import './index.css';
 import DossierBrowser from './pages/DossierBrowser/DossierBrowser.tsx';
+import RoleBasedPlanning from './components/RoleBasedPlanning/RoleBasedPlanning.tsx';
+import './index.css';
 
 const router = createBrowserRouter([
   {
@@ -29,11 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'planning',
-        element: (
-          <h3 className="flex h-24 place-content-center place-items-center text-center">
-            [contenu du planning]
-          </h3>
-        )
+        element: <RoleBasedPlanning />
       },
       {
         path: 'rechercher',

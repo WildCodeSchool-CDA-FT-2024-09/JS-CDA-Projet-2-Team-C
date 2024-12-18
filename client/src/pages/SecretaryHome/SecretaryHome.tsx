@@ -1,3 +1,12 @@
+import Agenda from '../../components/Agenda/Agenda';
+
 export default function SecretaryHome() {
-  return <h1>the home of the secretz</h1>;
+  return (
+    <div className="grid grid-cols-2">
+      <section>Formulaire de prise de RDV</section>
+      <section>
+        <Agenda />
+      </section>
+    </div>
+  );
 }

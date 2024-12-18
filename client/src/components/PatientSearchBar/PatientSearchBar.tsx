@@ -7,28 +7,54 @@ import { genderMap } from '../../utils/genderMap.utils';
 import { frenchDate } from '../../utils/dates.utils';
 
 export default function PatientSearchBar({
-  handlePatientSelected
+  handlePatientSelected,
+  restriction = false
 }: PatientSearchBarProps) {
   const [search, setSearch] = useState<string>('');
+
   const debouncedSearch = useDebounce<string>(search, 500);
+
   const [getPatientsByname, { data }] = useGetPatientsByNameLazyQuery();
 
   const handleChange = (value: string): void => {
     setSearch(value);
+    if (!restriction) {
+      // If restriction is false, we update debouncedSearch immediately
+    }
+  };
+
+  const handleSearch = (): void => {
+    if (restriction) {
+      const sanitisedSearch = search.trim();
+      if (sanitisedSearch) {
+        getPatientsByname({ variables: { search: sanitisedSearch } });
+      }
+    }
   };
 
   useEffect(() => {
-    const sanitisedSearch = debouncedSearch.trim();
-    if (sanitisedSearch) {
-      getPatientsByname({ variables: { search: sanitisedSearch } });
+    if (!restriction) {
+      const sanitisedSearch = debouncedSearch.trim();
+      if (sanitisedSearch) {
+        getPatientsByname({ variables: { search: sanitisedSearch } });
+      }
     }
-  }, [debouncedSearch, getPatientsByname]);
+  }, [debouncedSearch, restriction, getPatientsByname]);
 
-  // see https://daisyui.com/components/dropdown/
   return (
     <>
       <div className="dropdown dropdown-end w-[35rem]">
-        <SearchBar handleChange={handleChange} inputType="number" />
+        <SearchBar
+          handleChange={handleChange}
+          inputType={restriction ? 'number' : 'text'}
+        />
+
+        {restriction && (
+          <button onClick={handleSearch} className="btn btn-primary mt-2">
+            Rechercher
+          </button>
+        )}
+
         {data && (
           <ul
             tabIndex={0}

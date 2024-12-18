@@ -117,6 +117,7 @@ export default function AgentHome() {
         handlePatientSelected={function (patientId: number): void {
           console.info(`Patient ID sélectionné : ${patientId}`);
         }}
+        restriction={true}
       />
       <button
         className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"

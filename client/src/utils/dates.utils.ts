@@ -1,14 +1,14 @@
-// this utility will convert a Date string from the api to a string like "01 décembre 2023"
-
-export const frenchLargeDate = (
-  consultationDate: Date | string | undefined
+// this utility will convert a Date string to a string like "01 décembre 2023" or 01/12/2023 if parameter 'compact' is true
+export const frenchDate = (
+  inputDate: Date | string | undefined,
+  compact?: boolean
 ): string => {
   try {
-    const localizedDate = new Date(consultationDate as Date).toLocaleDateString(
+    const localizedDate = new Date(inputDate as Date).toLocaleDateString(
       'fr-FR',
       {
         year: 'numeric',
-        month: 'long',
+        month: compact ? 'numeric' : 'long',
         day: 'numeric'
       }
     );

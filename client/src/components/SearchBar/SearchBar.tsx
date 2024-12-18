@@ -6,7 +6,7 @@ export default function SearchBar({ handleChange }: SearchBarProps) {
     <div className="flex w-full justify-center">
       <label
         htmlFor="search-input"
-        className="flex w-96 gap-4 rounded-lg border border-primary-dark p-1"
+        className="flex w-full gap-4 rounded-lg border border-primary-dark p-1"
       >
         <SearchIcon aria-hidden="true" />
         <input

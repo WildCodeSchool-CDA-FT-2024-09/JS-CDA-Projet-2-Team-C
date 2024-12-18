@@ -7,7 +7,9 @@ export default function SecretaryHome() {
     <div className="grid grid-cols-2 gap-8 p-8">
       <section className="rounded-2xl bg-primary-lighter p-4">
         <FormPanel title={'Médecin'}>
-          <DoctorSelector />
+          <DoctorSelector
+            handleDoctorSelected={(e) => console.info(e.target.value)}
+          />
         </FormPanel>
         <FormPanel title={'Patient'}>partie patient</FormPanel>
         <FormPanel title={'Horaire'}>partie motif</FormPanel>

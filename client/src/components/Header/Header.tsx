@@ -2,9 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth/useAuth';
 import { HeaderProps } from './Header.types';
 import Logo from '/images/logo-main-white.png';
+import { RoleLabel } from '../../generated/graphql-types';
+import { useDisplayText } from '../../contexts/displayText/useDisplayText';
 
 export const Header = ({ page, pageNames }: HeaderProps) => {
   const { user, setUser } = useAuth();
+  const { t } = useDisplayText();
   const currentRole = user?.role.label;
   const navigate = useNavigate();
   const currentPageName = pageNames[page];
@@ -15,7 +18,8 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
 
   const navItems = (
     <>
-      {(currentRole === 'doctor' || currentRole === 'secretary') && (
+      {(currentRole === RoleLabel.Doctor ||
+        currentRole === RoleLabel.Secretary) && (
         <li>
           <a
             onClick={() => navigate('/planning')}
@@ -25,7 +29,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
           </a>
         </li>
       )}
-      {currentRole === 'doctor' && (
+      {currentRole === RoleLabel.Doctor && (
         <li>
           <a
             onClick={() => navigate('dossiers')}
@@ -46,7 +50,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
       <section className="navbar-start">
         <img src={Logo} className="navbar-start w-16" />
         {currentRole && (
-          <span className="text-xs">Connecté en tant que {currentRole}</span>
+          <span className="text-xs">Connecté en tant que {t(currentRole)}</span>
         )}
       </section>
       <h1 role="title" className="navbar-center text-2xl text-white">

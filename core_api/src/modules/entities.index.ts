@@ -7,3 +7,4 @@ export * from './patient/patient.entity';
 export * from './role/role.entity';
 export * from './user/user.entity';
 export * from './working_hours/workingHours.entity';
+export * from './display_text/displayText.entity';

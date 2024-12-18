@@ -1,6 +1,7 @@
 import { hashPassword } from '../utils/auth.utils';
 import dataSource from './dataSource';
 import * as dotenv from 'dotenv';
+import displayTextData from './displaytext.json';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ dotenv.config();
     await queryRunner.query('TRUNCATE consultation RESTART IDENTITY CASCADE');
     await queryRunner.query('TRUNCATE patient RESTART IDENTITY CASCADE');
     await queryRunner.query('TRUNCATE "user" RESTART IDENTITY CASCADE');
+    await queryRunner.query('TRUNCATE display_text RESTART IDENTITY CASCADE');
 
     // SEED TABLES
     // 1. UNIQUE LABELS
@@ -35,25 +37,25 @@ dotenv.config();
     );
 
     // Genders
-    const genders = ['Male', 'Female', 'NA'];
+    const genders = ['male', 'female', 'na'];
     await queryRunner.query(
       `INSERT INTO "gender" (label) VALUES ('${genders.join("'), ('")}')`
     );
 
     // Departments
     const departments = [
-      'Cardiology',
-      'Dermatology',
-      'Endocrinology',
-      'Gastroenterology',
-      'Hematology',
-      'Infectious diseases',
-      'Nephrology',
-      'Neurology',
-      'Oncology',
-      'Pulmonology',
-      'Rheumatology',
-      'Urology'
+      'cardiology',
+      'dermatology',
+      'endocrinology',
+      'gastroenterology',
+      'hematology',
+      'infectious_diseases',
+      'nephrology',
+      'neurology',
+      'oncology',
+      'pulmonology',
+      'rheumatology',
+      'urology'
     ];
     await queryRunner.query(
       `INSERT INTO "department" (label) VALUES ('${departments.join("'), ('")}')`
@@ -61,12 +63,12 @@ dotenv.config();
 
     // Consultation subjects
     const consultationSubjects = [
-      'General consultation',
-      'Follow-up consultation',
-      'Emergency consultation',
-      'Preoperative consultation',
-      'Postoperative consultation',
-      'Routine check-up'
+      'general_consultation',
+      'followup_consultation',
+      'emergency_consultation',
+      'preoperative_consultation',
+      'postoperative_consultation',
+      'routine_checkup'
     ];
     await queryRunner.query(
       `INSERT INTO "consultation_subject" (label) VALUES ('${consultationSubjects.join("'), ('")}')`
@@ -95,6 +97,17 @@ dotenv.config();
     const roleIdMap = await makeLabelIdMap('role');
     const genderIdMap = await makeLabelIdMap('gender');
 
+    // Seed display text
+    const displayTextValues = displayTextData
+      .map((item) => `('${item.label}', '${item.textFR.replace(/'/g, "''")}')`)
+      .join(', ');
+
+    await queryRunner.query(`
+      INSERT INTO "display_text"
+      (label, "textFR")
+      VALUES ${displayTextValues}
+    `);
+
     // 2. USERS
     // Fake email utility
     // Add min one milisecond tick to avoid duplicate emails
@@ -119,7 +132,7 @@ dotenv.config();
       {
         firstname: 'Cyril',
         lastname: 'Convergence',
-        email: await fakeEmail(),
+        email: 'fakedoctor@fake.com',
         password: await fakePassword(),
         roleId: roleIdMap.doctor,
         genderId: genderIdMap.male,
@@ -157,7 +170,7 @@ dotenv.config();
       {
         firstname: 'Arnold',
         lastname: 'Agent',
-        email: await fakeEmail(),
+        email: 'fakeagent@fake.com',
         password: await fakePassword(),
         roleId: roleIdMap.agent,
         genderId: genderIdMap.na
@@ -190,7 +203,7 @@ dotenv.config();
       {
         firstname: 'Alice',
         lastname: 'Admin',
-        email: await fakeEmail(),
+        email: 'fakeadmin@fake.com',
         password: await fakePassword(),
         roleId: roleIdMap.admin,
         genderId: genderIdMap.na
@@ -223,7 +236,7 @@ dotenv.config();
       {
         firstname: 'Samuel',
         lastname: 'Secretary',
-        email: await fakeEmail(),
+        email: 'fakesecretary@fake.com',
         password: await fakePassword(),
         roleId: roleIdMap.secretary,
         genderId: genderIdMap.na,
@@ -411,7 +424,19 @@ dotenv.config();
         consultation2.consultationDate = '2024-11-22';
         const consultation3 = { ...baseConsultation };
         consultation3.consultationDate = '2024-11-13';
-        return [consultation1, consultation2, consultation3];
+        // Create a consultation for today, in the next 2 hours
+        const consultation4 = { ...baseConsultation };
+        consultation4.consultationDate = new Date().toISOString().split('T')[0];
+        const now = new Date();
+        const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+        const randomTime = new Date(
+          now.getTime() +
+            Math.random() * (twoHoursLater.getTime() - now.getTime())
+        );
+        randomTime.setMinutes(Math.round(randomTime.getMinutes() / 15) * 15);
+        randomTime.setHours(randomTime.getHours() + 1); // Add one hour to offset from UTC
+        consultation4.startTime = randomTime.toTimeString().slice(0, 5);
+        return [consultation1, consultation2, consultation3, consultation4];
       }
     );
 

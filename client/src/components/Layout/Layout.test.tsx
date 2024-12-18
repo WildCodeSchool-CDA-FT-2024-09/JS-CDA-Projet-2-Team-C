@@ -10,6 +10,10 @@ vi.mock('../../contexts/auth/useAuth', () => ({
   })
 }));
 
+vi.mock('../../contexts/displayText/useDisplayText', () => ({
+  useDisplayText: () => ({ t: vi.fn() })
+}));
+
 describe('Test du composant Layout', () => {
   it('Should display the Header component on /planning', async () => {
     render(

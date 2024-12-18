@@ -32,7 +32,7 @@ export class Role extends BaseEntity {
   @Column({ nullable: false, unique: true, type: 'varchar', length: 30 })
   label: RoleLabel;
 
-  @Field(() => [User], { nullable: false })
+  @Field(() => [User], { nullable: true })
   @OneToMany(() => User, (user) => user.role)
   users: User[];
 }

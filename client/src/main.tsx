@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
 import { AuthProvider } from './contexts/auth/AuthContext.tsx';
+import { DisplayTextProvider } from './contexts/displayText/DisplayTextContext.tsx';
 import RedirectWrapper from './components/RedirectWrapper/RedirectWrapper.tsx';
 import { client } from './services/client';
 import App from './App.tsx';
@@ -67,7 +68,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ApolloProvider client={client}>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <DisplayTextProvider>
+          <RouterProvider router={router} />
+        </DisplayTextProvider>
       </AuthProvider>
     </ApolloProvider>
   </StrictMode>

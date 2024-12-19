@@ -7,12 +7,14 @@ import {
 } from '../../generated/graphql-types';
 import { useCreateUserForm } from './useCreateUserForm';
 import { AdminPopupProps, InputError } from './AdminPopup.types';
+import { useToast } from '../../contexts/toasts/useToast';
 
 const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
   ({ close, refetchUsers }, ref) => {
     const { data: departmentsAndGendersAndRoles } =
       useDepartmentsAndGendersAndRolesQuery();
 
+    const { showToast } = useToast();
     const [loading, setLoading] = useState(false);
     const [createUser] = useAddUserMutation();
     const {
@@ -54,8 +56,8 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
           gender: ''
         });
         setInputError({});
-        // TODO: replace with a snackbar when available
         close();
+        showToast('Utilisateur créé avec succès!', 'success');
       } catch (error: unknown) {
         if (
           typeof error === 'object' &&
@@ -65,6 +67,7 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
           setInputError(error as InputError);
         } else {
           console.error('Unexpected error:', error);
+          showToast('Une erreur inattendue est survenue.', 'error');
         }
       } finally {
         setLoading(false);

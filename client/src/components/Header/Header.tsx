@@ -48,7 +48,9 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
       <section className="navbar-start">
         <img src={Logo} className="navbar-start w-16" />
         {currentRole && (
-          <span className="text-xs">Connecté en tant que {currentRole}</span>
+          <span data-testid="connected-role" className="text-xs">
+            Connecté en tant que {currentRole}
+          </span>
         )}
       </section>
       <h1 role="title" className="navbar-center text-2xl text-white">

@@ -103,6 +103,13 @@ export type MutationAddUserArgs = {
   roleCode: Scalars['String']['input'];
 };
 
+export type PaginatedUsers = {
+  __typename?: 'PaginatedUsers';
+  hasMore: Scalars['Boolean']['output'];
+  total: Scalars['Int']['output'];
+  users: Array<User>;
+};
+
 export type Patient = {
   __typename?: 'Patient';
   consultations: Array<Consultation>;
@@ -124,6 +131,8 @@ export type Query = {
   departments: Array<Department>;
   dossier: Array<Consultation>;
   genders: Array<Gender>;
+  /** Fetch paginated users with optional role filtering */
+  getAllUsers: PaginatedUsers;
   /** Fetches departments by label and their doctors */
   getDoctorByDepartment: Array<Department>;
   /** Fetches all users with the role of doctor */
@@ -137,6 +146,13 @@ export type Query = {
 
 export type QueryDossierArgs = {
   patientId: Scalars['Float']['input'];
+};
+
+export type QueryGetAllUsersArgs = {
+  roleCode?: InputMaybe<Scalars['String']['input']>;
+  searchByName?: InputMaybe<Scalars['String']['input']>;
+  skip: Scalars['Int']['input'];
+  take: Scalars['Int']['input'];
 };
 
 export type QueryGetDoctorByDepartmentArgs = {
@@ -410,18 +426,27 @@ export type AddUserMutation = {
   };
 };
 
-export type GetAllUsersQueryVariables = Exact<{ [key: string]: never }>;
+export type GetAllUsersQueryVariables = Exact<{
+  skip: Scalars['Int']['input'];
+  take: Scalars['Int']['input'];
+  roleCode?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 export type GetAllUsersQuery = {
   __typename?: 'Query';
-  users: Array<{
-    __typename?: 'User';
-    id: number;
-    firstname: string;
-    lastname: string;
-    email: string;
-    role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
-  }>;
+  getAllUsers: {
+    __typename?: 'PaginatedUsers';
+    total: number;
+    hasMore: boolean;
+    users: Array<{
+      __typename?: 'User';
+      id: number;
+      firstname: string;
+      lastname: string;
+      email: string;
+      role: { __typename?: 'Role'; id: number; code: RoleCode; label: string };
+    }>;
+  };
 };
 
 export const DepartmentsAndGendersAndRolesDocument = gql`
@@ -1387,17 +1412,21 @@ export type AddUserMutationOptions = Apollo.BaseMutationOptions<
   AddUserMutationVariables
 >;
 export const GetAllUsersDocument = gql`
-  query GetAllUsers {
-    users {
-      id
-      firstname
-      lastname
-      email
-      role {
+  query GetAllUsers($skip: Int!, $take: Int!, $roleCode: String) {
+    getAllUsers(skip: $skip, take: $take, roleCode: $roleCode) {
+      users {
         id
-        label
-        code
+        firstname
+        lastname
+        email
+        role {
+          id
+          code
+          label
+        }
       }
+      total
+      hasMore
     }
   }
 `;
@@ -1414,14 +1443,21 @@ export const GetAllUsersDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllUsersQuery({
  *   variables: {
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      roleCode: // value for 'roleCode'
  *   },
  * });
  */
 export function useGetAllUsersQuery(
-  baseOptions?: Apollo.QueryHookOptions<
+  baseOptions: Apollo.QueryHookOptions<
     GetAllUsersQuery,
     GetAllUsersQueryVariables
-  >
+  > &
+    (
+      | { variables: GetAllUsersQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    )
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(

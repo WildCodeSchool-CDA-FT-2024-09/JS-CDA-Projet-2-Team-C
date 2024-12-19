@@ -3,13 +3,13 @@ import EditIcon from '../../icons/EditIcon';
 import ArchiveIcon from '../../icons/ArchiveIcon';
 
 export default function UserList({
-  filteredUsers
+  users
 }: {
-  filteredUsers: GetAllUsersQuery['users'];
+  users: GetAllUsersQuery['getAllUsers']['users'];
 }) {
   return (
     <>
-      {filteredUsers.map((user) => (
+      {users.map((user) => (
         <tr
           key={user.id}
           id={user.id.toString()}

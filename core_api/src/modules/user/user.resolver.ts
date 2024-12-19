@@ -139,10 +139,11 @@ export default class UserResolver {
   @Query(() => PaginatedUsers, {
     description: 'Fetch paginated users with optional role filtering'
   })
-  async getUsers(
+  async getAllUsers(
     @Arg('skip', () => Int) skip: number,
     @Arg('take', () => Int) take: number,
-    @Arg('roleCode', { nullable: true }) roleCode?: string
+    @Arg('roleCode', { nullable: true }) roleCode?: string,
+    @Arg('searchByName', { nullable: true }) searchByName?: string
   ): Promise<PaginatedUsers> {
     const queryBuilder = User.createQueryBuilder('user')
       .leftJoinAndSelect('user.role', 'role')
@@ -154,6 +155,13 @@ export default class UserResolver {
     // Filtering by role if roleCode is set
     if (roleCode) {
       queryBuilder.where('role.code = :roleCode', { roleCode });
+    }
+
+    if (searchByName) {
+      queryBuilder.andWhere(
+        '(user.firstname ILIKE :search OR user.lastname ILIKE :search)',
+        { search: `%${searchByName}%` }
+      );
     }
 
     const [users, total] = await queryBuilder.getManyAndCount();

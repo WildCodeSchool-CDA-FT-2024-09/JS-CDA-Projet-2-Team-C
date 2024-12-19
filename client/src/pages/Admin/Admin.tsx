@@ -4,17 +4,47 @@ import UserList from '../../components/UserList/UserList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
+import Pagination from '../../components/Pagination/Pagination.tsx';
 
 export default function Admin() {
-  const { data, loading, error, refetch } = useGetAllUsersQuery();
-  const [searchByName, setSearchByName] = useState<string>('');
+  const ITEMS_PER_PAGE = 10; // Nombre d'utilisateurs par page
+  const [currentPage, setCurrentPage] = useState(0); // Page actuelle
+  const [searchByName, setSearchByName] = useState<string>(''); // Recherche
   // TODO : check role type (use enum on graphql-type) ?
-  const [role, setRole] = useState<string>('');
+  const [role, setRole] = useState<string>(''); // Filtrage par rôle
+
+  const { data, loading, error, refetch } = useGetAllUsersQuery({
+    variables: {
+      skip: currentPage * ITEMS_PER_PAGE,
+      take: ITEMS_PER_PAGE,
+      roleCode: role || null, // Filtrer par rôle (null = tous les rôles)
+      searchByName: searchByName || null // Recherche (null = pas de filtre)
+    },
+    fetchPolicy: 'cache-and-network'
+  });
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
+  const handleNextPage = () => {
+    if (data?.getAllUsers.hasMore) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
   const handleChange = (value: string): void => {
     setSearchByName(value);
+    setCurrentPage(0); // Réinitialiser à la première page
+  };
+
+  const handleRoleChange = (value: string): void => {
+    setRole(value);
+    setCurrentPage(0); // Réinitialiser à la première page
   };
 
   const handleOpen = () => {
@@ -29,16 +59,20 @@ export default function Admin() {
     }
   };
 
-  const filteredUsers =
-    data?.users?.filter(
-      (user) =>
-        user.role.code.toLowerCase().includes(role.toLowerCase()) &&
-        (user.firstname.toLowerCase().includes(searchByName.toLowerCase()) ||
-          user.lastname.toLowerCase().includes(searchByName.toLowerCase()))
-    ) || [];
+  // const filteredUsers =
+  //   data?.users?.filter(
+  //     (user) =>
+  //       user.role.code.toLowerCase().includes(role.toLowerCase()) &&
+  //       (user.firstname.toLowerCase().includes(searchByName.toLowerCase()) ||
+  //         user.lastname.toLowerCase().includes(searchByName.toLowerCase()))
+  //   ) || [];
 
-  if (loading) return <h1>Chargement ...</h1>;
-  if (error) return <h1>Erreur de récupération de donnée recharger la page</h1>;
+  if (loading) return <h1>Chargement...</h1>;
+  if (error) return <h1>Erreur : Veuillez recharger la page</h1>;
+
+  const totalPages = Math.ceil(
+    (data?.getAllUsers?.total || 1) / ITEMS_PER_PAGE
+  );
 
   // See https://daisyui.com/components/table/ for table component
   return (
@@ -72,9 +106,7 @@ export default function Admin() {
                     <select
                       id="role"
                       className="m-[-10px] rounded-lg border border-primary-dark p-2 focus:outline-none"
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setRole(e.target.value)
-                      }
+                      onChange={(e) => handleRoleChange(e.target.value)}
                     >
                       <option value="">Roles : tous</option>
                       <OptionSelect />
@@ -90,15 +122,17 @@ export default function Admin() {
               </tr>
             </thead>
             <tbody>
-              <UserList filteredUsers={filteredUsers} />
+              <UserList users={data?.getAllUsers.users || []} />
             </tbody>
           </table>
           <section className="w-full text-right">
-            <div className="join">
-              <button className="btn join-item">«</button>
-              <button className="btn join-item">Page 01</button>
-              <button className="btn join-item">»</button>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onNext={handleNextPage}
+              onPrev={handlePrevPage}
+              hasMore={data?.getAllUsers.hasMore || false}
+            />
           </section>
         </div>
       </section>

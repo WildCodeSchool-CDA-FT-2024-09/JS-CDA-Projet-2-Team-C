@@ -27,10 +27,10 @@ describe('AdminPopup', () => {
           { id: 2, label: 'Female' }
         ],
         roles: [
-          { id: 1, label: 'doctor' },
-          { id: 2, label: 'agent' },
-          { id: 3, label: 'secretary' },
-          { id: 4, label: 'admin' }
+          { id: 1, code: 'doctor', label: 'docteur' },
+          { id: 2, code: 'agent', label: 'agent' },
+          { id: 3, code: 'secretary', label: 'secrétaire' },
+          { id: 4, code: 'admin', label: 'administrateur' }
         ]
       }
     });

@@ -45,7 +45,7 @@ export interface RoleSpecificFieldsProps {
 }
 
 export interface RoleSelectorProps {
-  roles: { id: number; label: string }[];
+  roles: { id: number; label: string; code: string }[];
   selectedRole: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   disabled: boolean;

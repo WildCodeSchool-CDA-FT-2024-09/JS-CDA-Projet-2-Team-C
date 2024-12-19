@@ -22,7 +22,7 @@ export default function PatientSearchBar({
     if (sanitisedSearch) {
       getPatientsByname({ variables: { search: sanitisedSearch } });
     }
-  }, [debouncedSearch]);
+  }, [debouncedSearch, getPatientsByname]);
 
   // see https://daisyui.com/components/dropdown/
   return (

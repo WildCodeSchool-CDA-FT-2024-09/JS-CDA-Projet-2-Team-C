@@ -89,6 +89,20 @@ export type Gender = {
   users: Array<User>;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  addUser: User;
+};
+
+export type MutationAddUserArgs = {
+  departmentLabel?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['String']['input'];
+  firstname: Scalars['String']['input'];
+  genderLabel?: InputMaybe<Scalars['String']['input']>;
+  lastname: Scalars['String']['input'];
+  roleCode: Scalars['String']['input'];
+};
+
 export type Patient = {
   __typename?: 'Patient';
   consultations: Array<Consultation>;
@@ -109,6 +123,7 @@ export type Query = {
   __typename?: 'Query';
   departments: Array<Department>;
   dossier: Array<Consultation>;
+  genders: Array<Gender>;
   /** Fetches departments by label and their doctors */
   getDoctorByDepartment: Array<Department>;
   /** Fetches all users with the role of doctor */
@@ -143,13 +158,14 @@ export type QueryPatientsArgs = {
 
 export type Role = {
   __typename?: 'Role';
+  code: RoleCode;
   id: Scalars['Int']['output'];
-  label: RoleLabel;
+  label: Scalars['String']['output'];
   users: Array<User>;
 };
 
 /** The roles available to a user */
-export enum RoleLabel {
+export enum RoleCode {
   Admin = 'ADMIN',
   Agent = 'AGENT',
   Doctor = 'DOCTOR',
@@ -180,6 +196,22 @@ export type WorkingHours = {
   id: Scalars['Int']['output'];
   startTime: Scalars['String']['output'];
   weekday: Scalars['Int']['output'];
+};
+
+export type DepartmentsAndGendersAndRolesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type DepartmentsAndGendersAndRolesQuery = {
+  __typename?: 'Query';
+  genders: Array<{ __typename?: 'Gender'; id: number; label: string }>;
+  departments: Array<{ __typename?: 'Department'; id: number; label: string }>;
+  roles: Array<{
+    __typename?: 'Role';
+    id: number;
+    label: string;
+    code: RoleCode;
+  }>;
 };
 
 export type DepartmentsQueryVariables = Exact<{ [key: string]: never }>;
@@ -236,10 +268,17 @@ export type DossierQuery = {
         __typename?: 'User';
         firstname: string;
         lastname: string;
-        role: { __typename?: 'Role'; label: RoleLabel };
+        role: { __typename?: 'Role'; label: string };
       };
     }>;
   }>;
+};
+
+export type GendersQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GendersQuery = {
+  __typename?: 'Query';
+  genders: Array<{ __typename?: 'Gender'; id: number; label: string }>;
 };
 
 export type PatientQueryVariables = Exact<{
@@ -283,7 +322,12 @@ export type RolesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type RolesQuery = {
   __typename?: 'Query';
-  roles: Array<{ __typename?: 'Role'; id: number; label: RoleLabel }>;
+  roles: Array<{
+    __typename?: 'Role';
+    id: number;
+    label: string;
+    code: RoleCode;
+  }>;
 };
 
 export type RolesWithUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -293,7 +337,7 @@ export type RolesWithUsersQuery = {
   roles: Array<{
     __typename?: 'Role';
     id: number;
-    label: RoleLabel;
+    label: string;
     users: Array<{
       __typename?: 'User';
       id: number;
@@ -334,7 +378,35 @@ export type LoginQuery = {
     id: number;
     email: string;
     token: string;
-    role: { __typename?: 'Role'; id: number; label: RoleLabel };
+    role: { __typename?: 'Role'; id: number; label: string };
+  };
+};
+
+export type AddUserMutationVariables = Exact<{
+  firstname: Scalars['String']['input'];
+  lastname: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  roleCode: Scalars['String']['input'];
+  departmentLabel?: InputMaybe<Scalars['String']['input']>;
+  genderLabel?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type AddUserMutation = {
+  __typename?: 'Mutation';
+  addUser: {
+    __typename?: 'User';
+    id: number;
+    firstname: string;
+    lastname: string;
+    email: string;
+    createdAt?: string | null;
+    role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
+    department?: {
+      __typename?: 'Department';
+      id: number;
+      label: string;
+    } | null;
+    gender?: { __typename?: 'Gender'; id: number; label: string } | null;
   };
 };
 
@@ -348,10 +420,97 @@ export type GetAllUsersQuery = {
     firstname: string;
     lastname: string;
     email: string;
-    role: { __typename?: 'Role'; id: number; label: RoleLabel };
+    role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
   }>;
 };
 
+export const DepartmentsAndGendersAndRolesDocument = gql`
+  query DepartmentsAndGendersAndRoles {
+    genders {
+      id
+      label
+    }
+    departments {
+      id
+      label
+    }
+    roles {
+      id
+      label
+      code
+    }
+  }
+`;
+
+/**
+ * __useDepartmentsAndGendersAndRolesQuery__
+ *
+ * To run a query within a React component, call `useDepartmentsAndGendersAndRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDepartmentsAndGendersAndRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDepartmentsAndGendersAndRolesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDepartmentsAndGendersAndRolesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    DepartmentsAndGendersAndRolesQuery,
+    DepartmentsAndGendersAndRolesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    DepartmentsAndGendersAndRolesQuery,
+    DepartmentsAndGendersAndRolesQueryVariables
+  >(DepartmentsAndGendersAndRolesDocument, options);
+}
+export function useDepartmentsAndGendersAndRolesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    DepartmentsAndGendersAndRolesQuery,
+    DepartmentsAndGendersAndRolesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    DepartmentsAndGendersAndRolesQuery,
+    DepartmentsAndGendersAndRolesQueryVariables
+  >(DepartmentsAndGendersAndRolesDocument, options);
+}
+export function useDepartmentsAndGendersAndRolesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        DepartmentsAndGendersAndRolesQuery,
+        DepartmentsAndGendersAndRolesQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    DepartmentsAndGendersAndRolesQuery,
+    DepartmentsAndGendersAndRolesQueryVariables
+  >(DepartmentsAndGendersAndRolesDocument, options);
+}
+export type DepartmentsAndGendersAndRolesQueryHookResult = ReturnType<
+  typeof useDepartmentsAndGendersAndRolesQuery
+>;
+export type DepartmentsAndGendersAndRolesLazyQueryHookResult = ReturnType<
+  typeof useDepartmentsAndGendersAndRolesLazyQuery
+>;
+export type DepartmentsAndGendersAndRolesSuspenseQueryHookResult = ReturnType<
+  typeof useDepartmentsAndGendersAndRolesSuspenseQuery
+>;
+export type DepartmentsAndGendersAndRolesQueryResult = Apollo.QueryResult<
+  DepartmentsAndGendersAndRolesQuery,
+  DepartmentsAndGendersAndRolesQueryVariables
+>;
 export const DepartmentsDocument = gql`
   query Departments {
     departments {
@@ -603,6 +762,71 @@ export type DossierQueryResult = Apollo.QueryResult<
   DossierQuery,
   DossierQueryVariables
 >;
+export const GendersDocument = gql`
+  query Genders {
+    genders {
+      id
+      label
+    }
+  }
+`;
+
+/**
+ * __useGendersQuery__
+ *
+ * To run a query within a React component, call `useGendersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGendersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGendersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGendersQuery(
+  baseOptions?: Apollo.QueryHookOptions<GendersQuery, GendersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GendersQuery, GendersQueryVariables>(
+    GendersDocument,
+    options
+  );
+}
+export function useGendersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GendersQuery, GendersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GendersQuery, GendersQueryVariables>(
+    GendersDocument,
+    options
+  );
+}
+export function useGendersSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GendersQuery, GendersQueryVariables>
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<GendersQuery, GendersQueryVariables>(
+    GendersDocument,
+    options
+  );
+}
+export type GendersQueryHookResult = ReturnType<typeof useGendersQuery>;
+export type GendersLazyQueryHookResult = ReturnType<typeof useGendersLazyQuery>;
+export type GendersSuspenseQueryHookResult = ReturnType<
+  typeof useGendersSuspenseQuery
+>;
+export type GendersQueryResult = Apollo.QueryResult<
+  GendersQuery,
+  GendersQueryVariables
+>;
 export const PatientDocument = gql`
   query Patient($patientId: Float!) {
     patient(patientId: $patientId) {
@@ -773,6 +997,7 @@ export const RolesDocument = gql`
     roles {
       id
       label
+      code
     }
   }
 `;
@@ -1077,6 +1302,89 @@ export type LoginQueryResult = Apollo.QueryResult<
   LoginQuery,
   LoginQueryVariables
 >;
+export const AddUserDocument = gql`
+  mutation AddUser(
+    $firstname: String!
+    $lastname: String!
+    $email: String!
+    $roleCode: String!
+    $departmentLabel: String
+    $genderLabel: String
+  ) {
+    addUser(
+      firstname: $firstname
+      lastname: $lastname
+      email: $email
+      roleCode: $roleCode
+      departmentLabel: $departmentLabel
+      genderLabel: $genderLabel
+    ) {
+      id
+      firstname
+      lastname
+      email
+      role {
+        id
+        label
+        code
+      }
+      department {
+        id
+        label
+      }
+      gender {
+        id
+        label
+      }
+      createdAt
+    }
+  }
+`;
+export type AddUserMutationFn = Apollo.MutationFunction<
+  AddUserMutation,
+  AddUserMutationVariables
+>;
+
+/**
+ * __useAddUserMutation__
+ *
+ * To run a mutation, you first call `useAddUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addUserMutation, { data, loading, error }] = useAddUserMutation({
+ *   variables: {
+ *      firstname: // value for 'firstname'
+ *      lastname: // value for 'lastname'
+ *      email: // value for 'email'
+ *      roleCode: // value for 'roleCode'
+ *      departmentLabel: // value for 'departmentLabel'
+ *      genderLabel: // value for 'genderLabel'
+ *   },
+ * });
+ */
+export function useAddUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddUserMutation,
+    AddUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AddUserMutation, AddUserMutationVariables>(
+    AddUserDocument,
+    options
+  );
+}
+export type AddUserMutationHookResult = ReturnType<typeof useAddUserMutation>;
+export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>;
+export type AddUserMutationOptions = Apollo.BaseMutationOptions<
+  AddUserMutation,
+  AddUserMutationVariables
+>;
 export const GetAllUsersDocument = gql`
   query GetAllUsers {
     users {
@@ -1087,6 +1395,7 @@ export const GetAllUsersDocument = gql`
       role {
         id
         label
+        code
       }
     }
   }

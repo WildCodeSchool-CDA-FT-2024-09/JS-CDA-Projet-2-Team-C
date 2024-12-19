@@ -18,5 +18,7 @@ test('test login as an admin', async ({ page }) => {
   await page.getByPlaceholder('Mot de passe').fill(PASSWORD_FAKE);
   await page.getByRole('button', { name: 'CONNEXION' }).click();
   await expect(page.locator('h1')).toContainText('Administrateur');
-  await expect(page.getByTestId('connected-role')).toContainText('ADMIN');
+  await expect(page.getByTestId('connected-role')).toContainText(
+    'administrateur'
+  );
 });

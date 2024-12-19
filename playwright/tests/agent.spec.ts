@@ -18,5 +18,5 @@ test('test login as an agent', async ({ page }) => {
   await page.getByPlaceholder('Mot de passe').fill(PASSWORD_FAKE);
   await page.getByRole('button', { name: 'CONNEXION' }).click();
   await expect(page.locator('h1')).toContainText('Recherche rapide');
-  await expect(page.getByTestId('connected-role')).toContainText('AGENT');
+  await expect(page.getByTestId('connected-role')).toContainText('agent');
 });

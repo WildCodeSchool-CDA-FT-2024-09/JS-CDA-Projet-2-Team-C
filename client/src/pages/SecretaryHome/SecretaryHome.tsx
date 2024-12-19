@@ -19,7 +19,7 @@ export default function SecretaryHome() {
     // the default doctorId is 0
     if (doctorId) {
       getConsultationsByDoctorId({ variables: { doctorId: doctorId } });
-      // console.log('fetching consultations', doctorId);
+      // console.log('fetching consultations for doctor n° : ', doctorId);
     }
   }, [doctorId, getConsultationsByDoctorId]);
 

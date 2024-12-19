@@ -3,36 +3,38 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
-  OneToMany,
-  Check
+  OneToMany
 } from 'typeorm';
 import { Field, ObjectType, Int, registerEnumType } from 'type-graphql';
 import { User } from '../entities.index';
 
-export enum RoleLabel {
+export enum RoleCode {
   AGENT = 'agent',
   SECRETARY = 'secretary',
   DOCTOR = 'doctor',
   ADMIN = 'admin'
 }
 
-registerEnumType(RoleLabel, {
-  name: 'RoleLabel',
+registerEnumType(RoleCode, {
+  name: 'RoleCode',
   description: 'The roles available to a user'
 });
 @ObjectType()
-@Check(`"label" IN ('agent', 'secretary', 'doctor', 'admin')`)
 @Entity()
 export class Role extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => RoleLabel)
+  @Field(() => RoleCode)
   @Column({ nullable: false, unique: true, type: 'varchar', length: 30 })
-  label: RoleLabel;
+  code: RoleCode;
 
-  @Field(() => [User], { nullable: false })
+  @Field(() => String)
+  @Column({ nullable: false, unique: true, type: 'varchar', length: 30 })
+  label: string;
+
+  @Field(() => [User], { nullable: true })
   @OneToMany(() => User, (user) => user.role)
   users: User[];
 }

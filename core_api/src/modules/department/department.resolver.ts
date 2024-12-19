@@ -1,4 +1,4 @@
-import { Department, Role, RoleLabel } from '../entities.index';
+import { Department, Role, RoleCode } from '../entities.index';
 import { Resolver, Query } from 'type-graphql';
 
 @Resolver(Department)
@@ -15,7 +15,7 @@ export default class DepartmentResolver {
   })
   async allDepartmentsWithDoctors(): Promise<Department[]> {
     const doctorRole = await Role.findOne({
-      where: { label: RoleLabel.DOCTOR }
+      where: { code: RoleCode.DOCTOR }
     });
     if (!doctorRole) {
       throw new Error("Role 'doctor' not found.");

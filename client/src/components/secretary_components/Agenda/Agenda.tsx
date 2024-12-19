@@ -50,7 +50,7 @@ export default function Agenda() {
 
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
-      defaultDate: new Date(2015, 3, 12),
+      defaultDate: new Date(),
       scrollToTime: new Date(1970, 1, 1, 6)
     }),
     []

@@ -1,37 +1,24 @@
-// import { useAuth } from '../../contexts/auth/useAuth';
-import { RoleLabel } from '../../generated/graphql-types';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/auth/useAuth';
+import { RoleCode } from '../../generated/graphql-types';
 import SecretaryHome from '../../pages/SecretaryHome/SecretaryHome';
 
 export default function RoleBasedPlanning() {
-  // const { user } = useAuth();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  // const label = user?.role.label;
-
-  const label: RoleLabel[number] = 'SECRETARY';
-
-  switch (label) {
-    case 'DOCTOR':
+  switch (user?.role.code) {
+    case RoleCode.Doctor:
       return (
         <h3 className="flex h-24 place-content-center place-items-center text-center">
           [contenu du planning médecin]
         </h3>
       );
 
-    case 'SECRETARY':
+    case RoleCode.Secretary:
       return <SecretaryHome />;
 
-    case 'AGENT':
-      return (
-        <h3 className="flex h-24 place-content-center place-items-center text-center">
-          [page non accessible]
-        </h3>
-      );
-
     default:
-      return (
-        <h3 className="flex h-24 place-content-center place-items-center text-center">
-          [page non accessible]
-        </h3>
-      );
+      navigate('/');
   }
 }

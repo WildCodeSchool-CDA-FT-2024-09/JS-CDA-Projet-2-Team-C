@@ -28,7 +28,7 @@ export class Role extends BaseEntity {
 
   @Field(() => RoleCode)
   @Column({ nullable: false, unique: true, type: 'varchar', length: 30 })
-  code: string;
+  code: RoleCode;
 
   @Field(() => String)
   @Column({ nullable: false, unique: true, type: 'varchar', length: 30 })

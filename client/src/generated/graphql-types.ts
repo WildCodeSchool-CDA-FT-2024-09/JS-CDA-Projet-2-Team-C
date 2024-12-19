@@ -100,7 +100,7 @@ export type MutationAddUserArgs = {
   firstname: Scalars['String']['input'];
   genderLabel?: InputMaybe<Scalars['String']['input']>;
   lastname: Scalars['String']['input'];
-  roleLabel: Scalars['String']['input'];
+  roleCode: Scalars['String']['input'];
 };
 
 export type Patient = {
@@ -158,13 +158,14 @@ export type QueryPatientsArgs = {
 
 export type Role = {
   __typename?: 'Role';
+  code: RoleCode;
   id: Scalars['Int']['output'];
-  label: RoleLabel;
+  label: Scalars['String']['output'];
   users: Array<User>;
 };
 
 /** The roles available to a user */
-export enum RoleLabel {
+export enum RoleCode {
   Admin = 'ADMIN',
   Agent = 'AGENT',
   Doctor = 'DOCTOR',
@@ -205,7 +206,12 @@ export type DepartmentsAndGendersAndRolesQuery = {
   __typename?: 'Query';
   genders: Array<{ __typename?: 'Gender'; id: number; label: string }>;
   departments: Array<{ __typename?: 'Department'; id: number; label: string }>;
-  roles: Array<{ __typename?: 'Role'; id: number; label: RoleLabel }>;
+  roles: Array<{
+    __typename?: 'Role';
+    id: number;
+    label: string;
+    code: RoleCode;
+  }>;
 };
 
 export type DepartmentsQueryVariables = Exact<{ [key: string]: never }>;
@@ -262,7 +268,7 @@ export type DossierQuery = {
         __typename?: 'User';
         firstname: string;
         lastname: string;
-        role: { __typename?: 'Role'; label: RoleLabel };
+        role: { __typename?: 'Role'; label: string };
       };
     }>;
   }>;
@@ -316,7 +322,12 @@ export type RolesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type RolesQuery = {
   __typename?: 'Query';
-  roles: Array<{ __typename?: 'Role'; id: number; label: RoleLabel }>;
+  roles: Array<{
+    __typename?: 'Role';
+    id: number;
+    label: string;
+    code: RoleCode;
+  }>;
 };
 
 export type RolesWithUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -326,7 +337,7 @@ export type RolesWithUsersQuery = {
   roles: Array<{
     __typename?: 'Role';
     id: number;
-    label: RoleLabel;
+    label: string;
     users: Array<{
       __typename?: 'User';
       id: number;
@@ -367,7 +378,7 @@ export type LoginQuery = {
     id: number;
     email: string;
     token: string;
-    role: { __typename?: 'Role'; id: number; label: RoleLabel };
+    role: { __typename?: 'Role'; id: number; label: string };
   };
 };
 
@@ -375,7 +386,7 @@ export type AddUserMutationVariables = Exact<{
   firstname: Scalars['String']['input'];
   lastname: Scalars['String']['input'];
   email: Scalars['String']['input'];
-  roleLabel: Scalars['String']['input'];
+  roleCode: Scalars['String']['input'];
   departmentLabel?: InputMaybe<Scalars['String']['input']>;
   genderLabel?: InputMaybe<Scalars['String']['input']>;
 }>;
@@ -389,7 +400,7 @@ export type AddUserMutation = {
     lastname: string;
     email: string;
     createdAt?: string | null;
-    role: { __typename?: 'Role'; id: number; label: RoleLabel };
+    role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
     department?: {
       __typename?: 'Department';
       id: number;
@@ -409,7 +420,7 @@ export type GetAllUsersQuery = {
     firstname: string;
     lastname: string;
     email: string;
-    role: { __typename?: 'Role'; id: number; label: RoleLabel };
+    role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
   }>;
 };
 
@@ -426,6 +437,7 @@ export const DepartmentsAndGendersAndRolesDocument = gql`
     roles {
       id
       label
+      code
     }
   }
 `;
@@ -985,6 +997,7 @@ export const RolesDocument = gql`
     roles {
       id
       label
+      code
     }
   }
 `;
@@ -1294,7 +1307,7 @@ export const AddUserDocument = gql`
     $firstname: String!
     $lastname: String!
     $email: String!
-    $roleLabel: String!
+    $roleCode: String!
     $departmentLabel: String
     $genderLabel: String
   ) {
@@ -1302,7 +1315,7 @@ export const AddUserDocument = gql`
       firstname: $firstname
       lastname: $lastname
       email: $email
-      roleLabel: $roleLabel
+      roleCode: $roleCode
       departmentLabel: $departmentLabel
       genderLabel: $genderLabel
     ) {
@@ -1313,6 +1326,7 @@ export const AddUserDocument = gql`
       role {
         id
         label
+        code
       }
       department {
         id
@@ -1347,7 +1361,7 @@ export type AddUserMutationFn = Apollo.MutationFunction<
  *      firstname: // value for 'firstname'
  *      lastname: // value for 'lastname'
  *      email: // value for 'email'
- *      roleLabel: // value for 'roleLabel'
+ *      roleCode: // value for 'roleCode'
  *      departmentLabel: // value for 'departmentLabel'
  *      genderLabel: // value for 'genderLabel'
  *   },
@@ -1381,6 +1395,7 @@ export const GetAllUsersDocument = gql`
       role {
         id
         label
+        code
       }
     }
   }

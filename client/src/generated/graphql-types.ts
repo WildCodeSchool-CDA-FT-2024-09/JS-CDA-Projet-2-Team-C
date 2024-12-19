@@ -161,7 +161,7 @@ export type Role = {
   code: RoleCode;
   id: Scalars['Int']['output'];
   label: Scalars['String']['output'];
-  users: Array<User>;
+  users?: Maybe<Array<User>>;
 };
 
 /** The roles available to a user */
@@ -338,12 +338,12 @@ export type RolesWithUsersQuery = {
     __typename?: 'Role';
     id: number;
     label: string;
-    users: Array<{
+    users?: Array<{
       __typename?: 'User';
       id: number;
       firstname: string;
       lastname: string;
-    }>;
+    }> | null;
   }>;
 };
 
@@ -378,7 +378,7 @@ export type LoginQuery = {
     id: number;
     email: string;
     token: string;
-    role: { __typename?: 'Role'; id: number; label: string };
+    role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
   };
 };
 
@@ -1237,6 +1237,7 @@ export const LoginDocument = gql`
       role {
         id
         label
+        code
       }
       token
     }

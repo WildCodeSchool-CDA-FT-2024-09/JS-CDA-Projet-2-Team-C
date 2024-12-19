@@ -114,7 +114,7 @@ export default function AgentHome() {
       <h1 className="text-center text-3xl font-bold">Liste des patients</h1>
       <PatientSearchBar
         handlePatientSelected={function (patientId: number): void {
-          console.info(`Patient ID sélectionné : ${patientId}`);
+          console.info(`Patient ID sélectionné  : ${patientId}`);
         }}
       />
       <button

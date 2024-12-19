@@ -1,0 +1,17 @@
+meta {
+  name: post a mail
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3310/send-mail
+  body: json
+  auth: none
+}
+
+body:json {
+  {"to":"testmailbox@gmail.com",
+   "subject":"this is an email",
+  "text":"hello world !"}
+}

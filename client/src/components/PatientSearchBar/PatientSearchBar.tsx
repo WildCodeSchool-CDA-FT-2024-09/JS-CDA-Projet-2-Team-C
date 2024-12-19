@@ -26,7 +26,14 @@ export default function PatientSearchBar({
   const handleSearch = (): void => {
     if (restriction) {
       const sanitisedSearch = search.trim();
-      if (sanitisedSearch) {
+      //
+      //****WARNING****
+      // Currently, the SSN is set to 15 digits,
+      // but it will need to be changed to 13 digits
+      // before production!
+      //****WARNING****
+      //
+      if (sanitisedSearch.length === 15) {
         getPatientsByname({ variables: { search: sanitisedSearch } });
       }
     }
@@ -50,7 +57,20 @@ export default function PatientSearchBar({
         />
 
         {restriction && (
-          <button onClick={handleSearch} className="btn btn-primary mt-2">
+          <button
+            onClick={handleSearch}
+            className={`btn mt-2 ${
+              //
+              //****WARNING****
+              // Currently, the SSN is set to 15 digits,
+              // but it will need to be changed to 13 digits
+              // before production!
+              //****WARNING****
+              //
+              search.length !== 15 ? 'btn-disabled bg-gray-300' : 'btn-primary'
+            }`}
+            disabled={search.length !== 15}
+          >
             Rechercher
           </button>
         )}
@@ -64,10 +84,19 @@ export default function PatientSearchBar({
               data.patients.map((patient) => (
                 <li key={`patient-${patient.id}`}>
                   <button onClick={() => handlePatientSelected(patient.id)}>
-                    <strong>
-                      {patient.firstname} {patient.lastname}
-                    </strong>
-                    {` - ${genderMap[patient.gender.label]} - ${frenchDate(patient.dateOfBirth, true)} - ${patient.ssn}`}
+                    {restriction ? (
+                      <strong>{patient.ssn}</strong>
+                    ) : (
+                      <>
+                        <strong>
+                          {patient.firstname} {patient.lastname}
+                        </strong>
+                        {` - ${genderMap[patient.gender.label]} - ${frenchDate(
+                          patient.dateOfBirth,
+                          true
+                        )} - ${patient.ssn}`}
+                      </>
+                    )}
                   </button>
                 </li>
               ))

@@ -5,6 +5,7 @@ import {
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/AgentChoiceList/AgentChoiceList';
+import PatientSearchBar from '../../components/PatientSearchBar/PatientSearchBar';
 
 export default function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
@@ -111,7 +112,11 @@ export default function AgentHome() {
   const renderPatients = () => (
     <>
       <h1 className="text-center text-3xl font-bold">Liste des patients</h1>
-      <p>Cette fonctionnalité est en cours de développement.</p>
+      <PatientSearchBar
+        handlePatientSelected={function (patientId: number): void {
+          console.info(`Patient ID sélectionné  : ${patientId}`);
+        }}
+      />
       <button
         className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
         onClick={() => setSelectedView(null)}

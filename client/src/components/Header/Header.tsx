@@ -6,7 +6,7 @@ import { RoleCode } from '../../generated/graphql-types';
 
 export const Header = ({ page, pageNames }: HeaderProps) => {
   const { user, setUser } = useAuth();
-  const currentRole = user?.role.label;
+  const currentRole = user?.role.code;
   const navigate = useNavigate();
   const currentPageName = pageNames[page];
   const handeLogout = () => {

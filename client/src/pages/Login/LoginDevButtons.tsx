@@ -1,7 +1,7 @@
 import { useAuth } from '../../contexts/auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { roleLandingPages } from './roleLandingPages';
-import { RoleLabel } from '../../generated/graphql-types';
+import { RoleCode } from '../../generated/graphql-types';
 
 // This component is used to simulate login for different users roles.
 // It is used in the Login page for development purposes.
@@ -11,7 +11,7 @@ export default function LoginDevButtons() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
-  const handleLogin = (role: RoleLabel) => {
+  const handleLogin = (role: RoleCode) => {
     setUser({
       id: 1,
       firstname: 'John',
@@ -20,38 +20,38 @@ export default function LoginDevButtons() {
       role: {
         id: 1,
         label: role,
-        users: []
+        code: role
       },
       isArchived: false
     });
 
     setTimeout(() => {
       navigate(roleLandingPages[role]);
-    }, 100); // Petit délai pour laisser le contexte se mettre à jour
+    }, 100);
   };
 
   return (
     <>
       <button
-        onClick={() => handleLogin(RoleLabel.Agent)}
+        onClick={() => handleLogin(RoleCode.Agent)}
         className="btn w-40 bg-primary"
       >
         Login Agent
       </button>
       <button
-        onClick={() => handleLogin(RoleLabel.Secretary)}
+        onClick={() => handleLogin(RoleCode.Secretary)}
         className="btn w-40 bg-primary"
       >
         Login Secretary
       </button>
       <button
-        onClick={() => handleLogin(RoleLabel.Doctor)}
+        onClick={() => handleLogin(RoleCode.Doctor)}
         className="btn w-40 bg-primary"
       >
         Login Doctor
       </button>
       <button
-        onClick={() => handleLogin(RoleLabel.Admin)}
+        onClick={() => handleLogin(RoleCode.Admin)}
         className="btn w-40 bg-primary"
       >
         Login Admin

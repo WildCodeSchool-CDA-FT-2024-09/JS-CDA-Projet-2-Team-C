@@ -23,7 +23,7 @@ export interface InputFieldProps {
   disabled?: boolean;
   type?: string;
 }
-//TODO : remove
+
 export interface SelectFieldProps {
   name: string;
   label: string;

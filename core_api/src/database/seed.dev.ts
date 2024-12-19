@@ -119,7 +119,7 @@ dotenv.config();
       {
         firstname: 'Cyril',
         lastname: 'Convergence',
-        email: await fakeEmail(),
+        email: 'fakedoctor@fake.com',
         password: await fakePassword(),
         roleId: roleIdMap.doctor,
         genderId: genderIdMap.male,
@@ -157,7 +157,7 @@ dotenv.config();
       {
         firstname: 'Arnold',
         lastname: 'Agent',
-        email: await fakeEmail(),
+        email: 'fakeagent@fake.com',
         password: await fakePassword(),
         roleId: roleIdMap.agent,
         genderId: genderIdMap.na
@@ -190,7 +190,7 @@ dotenv.config();
       {
         firstname: 'Alice',
         lastname: 'Admin',
-        email: await fakeEmail(),
+        email: 'fakeadmin@fake.com',
         password: await fakePassword(),
         roleId: roleIdMap.admin,
         genderId: genderIdMap.na
@@ -223,7 +223,7 @@ dotenv.config();
       {
         firstname: 'Samuel',
         lastname: 'Secretary',
-        email: await fakeEmail(),
+        email: 'fakesecretary@fake.com',
         password: await fakePassword(),
         roleId: roleIdMap.secretary,
         genderId: genderIdMap.na,
@@ -411,7 +411,19 @@ dotenv.config();
         consultation2.consultationDate = '2024-11-22';
         const consultation3 = { ...baseConsultation };
         consultation3.consultationDate = '2024-11-13';
-        return [consultation1, consultation2, consultation3];
+        // Create a consultation for today, in the next 2 hours
+        const consultation4 = { ...baseConsultation };
+        consultation4.consultationDate = new Date().toISOString().split('T')[0];
+        const now = new Date();
+        const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+        const randomTime = new Date(
+          now.getTime() +
+            Math.random() * (twoHoursLater.getTime() - now.getTime())
+        );
+        randomTime.setMinutes(Math.round(randomTime.getMinutes() / 15) * 15);
+        randomTime.setHours(randomTime.getHours() + 1); // Add one hour to offset from UTC
+        consultation4.startTime = randomTime.toTimeString().slice(0, 5);
+        return [consultation1, consultation2, consultation3, consultation4];
       }
     );
 

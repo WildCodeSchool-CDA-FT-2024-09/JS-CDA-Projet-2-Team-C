@@ -156,8 +156,6 @@ dotenv.config();
       )
       .join(', ');
 
-    console.info('%c⧭', 'color: #ffa640', doctorValues);
-
     const doctorResult = await queryRunner.query(`
         INSERT INTO "user"
         (firstname, lastname, email, password, "roleId", "genderId", "departmentId")

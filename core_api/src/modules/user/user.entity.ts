@@ -95,3 +95,15 @@ export class AuthUser {
   @Field(() => String)
   token: string;
 }
+
+@ObjectType()
+export class PaginatedUsers {
+  @Field(() => [User])
+  users: User[];
+
+  @Field(() => Int)
+  total: number;
+
+  @Field(() => Boolean)
+  hasMore: boolean;
+}

@@ -26,7 +26,7 @@ export class Role extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => String)
+  @Field(() => RoleCode)
   @Column({ nullable: false, unique: true, type: 'varchar', length: 30 })
   code: string;
 

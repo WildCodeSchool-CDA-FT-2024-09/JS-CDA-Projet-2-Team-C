@@ -158,11 +158,19 @@ export type QueryPatientsArgs = {
 
 export type Role = {
   __typename?: 'Role';
-  code: Scalars['String']['output'];
+  code: RoleCode;
   id: Scalars['Int']['output'];
   label: Scalars['String']['output'];
   users: Array<User>;
 };
+
+/** The roles available to a user */
+export enum RoleCode {
+  Admin = 'ADMIN',
+  Agent = 'AGENT',
+  Doctor = 'DOCTOR',
+  Secretary = 'SECRETARY'
+}
 
 export type User = {
   __typename?: 'User';
@@ -202,7 +210,7 @@ export type DepartmentsAndGendersAndRolesQuery = {
     __typename?: 'Role';
     id: number;
     label: string;
-    code: string;
+    code: RoleCode;
   }>;
 };
 
@@ -318,7 +326,7 @@ export type RolesQuery = {
     __typename?: 'Role';
     id: number;
     label: string;
-    code: string;
+    code: RoleCode;
   }>;
 };
 
@@ -392,7 +400,7 @@ export type AddUserMutation = {
     lastname: string;
     email: string;
     createdAt?: string | null;
-    role: { __typename?: 'Role'; id: number; label: string; code: string };
+    role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
     department?: {
       __typename?: 'Department';
       id: number;
@@ -412,7 +420,7 @@ export type GetAllUsersQuery = {
     firstname: string;
     lastname: string;
     email: string;
-    role: { __typename?: 'Role'; id: number; label: string; code: string };
+    role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
   }>;
 };
 

@@ -22,6 +22,7 @@ export const LOGIN = gql`
       role {
         id
         label
+        code
       }
       token
     }

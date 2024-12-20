@@ -430,6 +430,7 @@ export type GetAllUsersQueryVariables = Exact<{
   skip: Scalars['Int']['input'];
   take: Scalars['Int']['input'];
   roleCode?: InputMaybe<Scalars['String']['input']>;
+  searchByName?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 export type GetAllUsersQuery = {
@@ -444,7 +445,7 @@ export type GetAllUsersQuery = {
       firstname: string;
       lastname: string;
       email: string;
-      role: { __typename?: 'Role'; id: number; code: RoleCode; label: string };
+      role: { __typename?: 'Role'; code: RoleCode; label: string };
     }>;
   };
 };
@@ -1412,15 +1413,24 @@ export type AddUserMutationOptions = Apollo.BaseMutationOptions<
   AddUserMutationVariables
 >;
 export const GetAllUsersDocument = gql`
-  query GetAllUsers($skip: Int!, $take: Int!, $roleCode: String) {
-    getAllUsers(skip: $skip, take: $take, roleCode: $roleCode) {
+  query GetAllUsers(
+    $skip: Int!
+    $take: Int!
+    $roleCode: String
+    $searchByName: String
+  ) {
+    getAllUsers(
+      skip: $skip
+      take: $take
+      roleCode: $roleCode
+      searchByName: $searchByName
+    ) {
       users {
         id
         firstname
         lastname
         email
         role {
-          id
           code
           label
         }
@@ -1446,6 +1456,7 @@ export const GetAllUsersDocument = gql`
  *      skip: // value for 'skip'
  *      take: // value for 'take'
  *      roleCode: // value for 'roleCode'
+ *      searchByName: // value for 'searchByName'
  *   },
  * });
  */

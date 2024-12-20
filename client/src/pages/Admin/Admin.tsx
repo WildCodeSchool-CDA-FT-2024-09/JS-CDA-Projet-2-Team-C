@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useGetAllUsersQuery } from '../../generated/graphql-types';
+import { useDebounce } from '../../utils/useDebounce.ts';
 import UserList from '../../components/UserList/UserList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
@@ -7,23 +8,22 @@ import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
 import Pagination from '../../components/Pagination/Pagination.tsx';
 
 export default function Admin() {
-  const ITEMS_PER_PAGE = 10; // Nombre d'utilisateurs par page
+  const ITEMS_PER_PAGE = 3; // Nombre d'utilisateurs par page
   const [currentPage, setCurrentPage] = useState(0); // Page actuelle
-  const [searchByName, setSearchByName] = useState<string>(''); // Recherche
-  // TODO : check role type (use enum on graphql-type) ?
+  const [searchByName, setSearchByName] = useState<string>('');
+  // Recherche  const debouncedSearch = useDebounce<string>(search, 500);
+  const debouncedSearch = useDebounce<string>(searchByName, 500); // TODO : check role type (use enum on graphql-type) ?
   const [role, setRole] = useState<string>(''); // Filtrage par rôle
 
   const { data, loading, error, refetch } = useGetAllUsersQuery({
     variables: {
       skip: currentPage * ITEMS_PER_PAGE,
       take: ITEMS_PER_PAGE,
-      roleCode: role || null, // Filtrer par rôle (null = tous les rôles)
-      searchByName: searchByName || null // Recherche (null = pas de filtre)
+      roleCode: role || null,
+      searchByName: debouncedSearch || null // Recherche (null = pas de filtre)
     },
     fetchPolicy: 'cache-and-network'
   });
-
-  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleNextPage = () => {
     if (data?.getAllUsers.hasMore) {
@@ -38,14 +38,19 @@ export default function Admin() {
   };
 
   const handleChange = (value: string): void => {
-    setSearchByName(value);
-    setCurrentPage(0); // Réinitialiser à la première page
+    if (value.trim() === '') {
+      return;
+    }
+    setSearchByName(value.toLowerCase());
+    setCurrentPage(0);
   };
 
-  const handleRoleChange = (value: string): void => {
-    setRole(value);
-    setCurrentPage(0); // Réinitialiser à la première page
-  };
+  const handleRoleChange = useCallback((value: string): void => {
+    setRole(value.toLocaleLowerCase());
+    setCurrentPage(0);
+  }, []);
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleOpen = () => {
     if (dialogRef.current) {
@@ -58,14 +63,6 @@ export default function Admin() {
       dialogRef.current.close();
     }
   };
-
-  // const filteredUsers =
-  //   data?.users?.filter(
-  //     (user) =>
-  //       user.role.code.toLowerCase().includes(role.toLowerCase()) &&
-  //       (user.firstname.toLowerCase().includes(searchByName.toLowerCase()) ||
-  //         user.lastname.toLowerCase().includes(searchByName.toLowerCase()))
-  //   ) || [];
 
   if (loading) return <h1>Chargement...</h1>;
   if (error) return <h1>Erreur : Veuillez recharger la page</h1>;
@@ -105,10 +102,10 @@ export default function Admin() {
                   <label htmlFor="role">
                     <select
                       id="role"
+                      value={role}
                       className="m-[-10px] rounded-lg border border-primary-dark p-2 focus:outline-none"
                       onChange={(e) => handleRoleChange(e.target.value)}
                     >
-                      <option value="">Roles : tous</option>
                       <OptionSelect />
                     </select>
                   </label>

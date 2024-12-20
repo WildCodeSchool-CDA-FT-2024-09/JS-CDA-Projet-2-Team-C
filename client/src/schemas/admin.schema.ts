@@ -13,6 +13,7 @@ export const GET_DEPARTMENTS_AND_GENDERS_AND_ROLES = gql`
     roles {
       id
       label
+      code
     }
   }
 `;

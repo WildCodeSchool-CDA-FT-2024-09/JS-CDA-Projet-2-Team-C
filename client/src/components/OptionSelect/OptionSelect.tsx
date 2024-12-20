@@ -1,11 +1,13 @@
-import { roleMap } from '../UserList/roleMap';
-
+import { useRolesQuery } from '../../generated/graphql-types';
 export default function OptionSelect() {
+  const { data: role } = useRolesQuery();
+
+  const roles = role?.roles || [];
   return (
     <>
-      {Object.entries(roleMap).map(([key, value]) => (
-        <option key={key} value={key.toLowerCase()}>
-          Role : {value}
+      {roles.map((role) => (
+        <option key={role.id} value={role.code}>
+          Role : {role.label}
         </option>
       ))}
     </>

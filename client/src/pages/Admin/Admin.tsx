@@ -8,6 +8,7 @@ import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
 export default function Admin() {
   const { data, loading, error, refetch } = useGetAllUsersQuery();
   const [searchByName, setSearchByName] = useState<string>('');
+  // TODO : check role type (use enum on graphql-type) ?
   const [role, setRole] = useState<string>('');
 
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -31,7 +32,7 @@ export default function Admin() {
   const filteredUsers =
     data?.users?.filter(
       (user) =>
-        user.role.label.toLowerCase().includes(role.toLowerCase()) &&
+        user.role.code.toLowerCase().includes(role.toLowerCase()) &&
         (user.firstname.toLowerCase().includes(searchByName.toLowerCase()) ||
           user.lastname.toLowerCase().includes(searchByName.toLowerCase()))
     ) || [];

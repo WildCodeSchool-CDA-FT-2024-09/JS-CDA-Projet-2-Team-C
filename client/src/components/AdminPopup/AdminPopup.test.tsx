@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import AdminPopup from './AdminPopup';
 import {
@@ -6,6 +6,7 @@ import {
   useDepartmentsAndGendersAndRolesQuery,
   useGetAllUsersQuery
 } from '../../generated/graphql-types';
+import { renderWithAllProviders as render } from '../../utils/test/test.utils';
 
 vi.mock('../../generated/graphql-types', async () => {
   const actual = await vi.importActual('../../generated/graphql-types');
@@ -14,6 +15,14 @@ vi.mock('../../generated/graphql-types', async () => {
     useDepartmentsAndGendersAndRolesQuery: vi.fn(),
     useGetAllUsersQuery: vi.fn(),
     useAddUserMutation: vi.fn()
+  };
+});
+
+vi.mock('../../contexts/toasts/ToastContext', async () => {
+  const actual = await vi.importActual('../../contexts/toasts/ToastContext');
+  return {
+    ...actual,
+    useToast: () => ({ showToast: vi.fn() })
   };
 });
 
@@ -27,10 +36,10 @@ describe('AdminPopup', () => {
           { id: 2, label: 'Female' }
         ],
         roles: [
-          { id: 1, label: 'doctor' },
-          { id: 2, label: 'agent' },
-          { id: 3, label: 'secretary' },
-          { id: 4, label: 'admin' }
+          { id: 1, code: 'doctor', label: 'docteur' },
+          { id: 2, code: 'agent', label: 'agent' },
+          { id: 3, code: 'secretary', label: 'secrétaire' },
+          { id: 4, code: 'admin', label: 'administrateur' }
         ]
       }
     });

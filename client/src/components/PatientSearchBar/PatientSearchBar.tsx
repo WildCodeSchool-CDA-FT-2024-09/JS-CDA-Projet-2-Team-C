@@ -46,7 +46,7 @@ export default function PatientSearchBar({
         getPatientsByname({ variables: { search: sanitisedSearch } });
       }
     }
-  }, [debouncedSearch, restriction, getPatientsByname]);
+  }, [debouncedSearch, getPatientsByname]);
 
   return (
     <>

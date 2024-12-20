@@ -1,6 +1,8 @@
-export const roleLandingPages = {
-  agent: '/rechercher',
-  secretary: '/planning',
-  doctor: '/planning',
-  admin: '/admin'
+import { RoleCode } from '../../generated/graphql-types';
+
+export const roleLandingPages: Record<RoleCode, string> = {
+  AGENT: '/rechercher',
+  SECRETARY: '/planning',
+  DOCTOR: '/planning',
+  ADMIN: '/admin'
 };

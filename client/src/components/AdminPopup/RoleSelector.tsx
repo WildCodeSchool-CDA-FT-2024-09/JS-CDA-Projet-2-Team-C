@@ -18,7 +18,7 @@ const RoleSelector = ({
       Role
     </option>
     {roles?.map((role, id) => (
-      <option key={id} value={role.label.toLowerCase()}>
+      <option key={id} value={role.code.toLowerCase()}>
         {role.label.toLowerCase()}
       </option>
     ))}

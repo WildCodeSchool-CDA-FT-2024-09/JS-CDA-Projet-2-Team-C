@@ -7,12 +7,14 @@ import {
 } from '../../generated/graphql-types';
 import { useCreateUserForm } from './useCreateUserForm';
 import { AdminPopupProps, InputError } from './AdminPopup.types';
+import { useToast } from '../../contexts/toasts/useToast';
 
 const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
   ({ close, refetchUsers }, ref) => {
     const { data: departmentsAndGendersAndRoles } =
       useDepartmentsAndGendersAndRolesQuery();
 
+    const { showToast } = useToast();
     const [loading, setLoading] = useState(false);
     const [createUser] = useAddUserMutation();
     const {
@@ -39,7 +41,7 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
             firstname: formInputs.firstname,
             departmentLabel: formInputs.service,
             email: formInputs.email,
-            roleLabel: formInputs.role,
+            roleCode: formInputs.role,
             genderLabel: formInputs.gender
           }
         });
@@ -54,8 +56,8 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
           gender: ''
         });
         setInputError({});
-        // TODO: replace with a snackbar when available
         close();
+        showToast('Utilisateur créé avec succès!', 'success');
       } catch (error: unknown) {
         if (
           typeof error === 'object' &&
@@ -65,6 +67,7 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
           setInputError(error as InputError);
         } else {
           console.error('Unexpected error:', error);
+          showToast('Une erreur inattendue est survenue.', 'error');
         }
       } finally {
         setLoading(false);
@@ -96,7 +99,13 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
           >
             <section className="mt-12 flex w-5/6 flex-col place-items-center rounded-xl border border-primary py-6">
               <RoleSelector
-                roles={departmentsAndGendersAndRoles?.roles}
+                roles={
+                  departmentsAndGendersAndRoles?.roles?.map((role) => ({
+                    id: role.id,
+                    label: role.label,
+                    code: role.code
+                  })) || []
+                }
                 selectedRole={formInputs.role}
                 onChange={handleInputChange}
                 disabled={loading}

@@ -1,5 +1,4 @@
 import { GetAllUsersQuery } from '../../generated/graphql-types';
-import translateRole from './roleMap';
 import EditIcon from '../../icons/EditIcon';
 import ArchiveIcon from '../../icons/ArchiveIcon';
 
@@ -16,7 +15,7 @@ export default function UserList({
           id={user.id.toString()}
           className="border-b border-gray-300"
         >
-          <td>{translateRole(user.role.label)}</td>
+          <td>{user.role.label}</td>
           <td>{user.firstname}</td>
           <td>{user.lastname}</td>
           <td>{user.email}</td>

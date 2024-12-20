@@ -6,7 +6,7 @@ import {
   Role,
   Department,
   Gender,
-  RoleLabel
+  RoleCode
 } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
 import { hashPassword } from '../../utils/auth.utils';
@@ -19,7 +19,7 @@ export default class UserResolver {
   })
   async getDoctors(): Promise<User[]> {
     const doctorRole = await Role.findOne({
-      where: { label: RoleLabel.DOCTOR }
+      where: { code: RoleCode.DOCTOR }
     });
     if (!doctorRole) {
       throw new Error("Role 'doctor' not found.");
@@ -40,7 +40,7 @@ export default class UserResolver {
     @Arg('label', () => String) label: string
   ): Promise<Department[]> {
     const doctorRole = await Role.findOne({
-      where: { label: RoleLabel.DOCTOR }
+      where: { code: RoleCode.DOCTOR }
     });
     if (!doctorRole) {
       throw new Error("Role 'doctor' not found.");
@@ -66,7 +66,7 @@ export default class UserResolver {
     @Arg('firstname') firstname: string,
     @Arg('lastname') lastname: string,
     @Arg('email') email: string,
-    @Arg('roleLabel') roleLabel: RoleLabel,
+    @Arg('roleCode') roleCode: RoleCode,
     @Arg('departmentLabel', { nullable: true }) departmentLabel: string,
     @Arg('genderLabel', { nullable: true }) genderLabel: string
   ): Promise<User> {
@@ -77,7 +77,7 @@ export default class UserResolver {
     const duplicateUser = await User.findOne({ where: { email: email } });
     if (duplicateUser) throw new Error('Cet email est déjà utilisé');
 
-    const role = await Role.findOne({ where: { label: roleLabel } });
+    const role = await Role.findOne({ where: { code: roleCode } });
     if (!role) throw new Error('Role not found');
 
     let gender = undefined;

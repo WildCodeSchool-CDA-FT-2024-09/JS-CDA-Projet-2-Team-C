@@ -12,6 +12,7 @@ import Dossier from './pages/Dossier/Dossier.tsx';
 import AgentHome from './pages/AgentHome/AgentHome.tsx';
 import './index.css';
 import DossierBrowser from './pages/DossierBrowser/DossierBrowser.tsx';
+import { ToastProvider } from './contexts/toasts/ToastContext.tsx';
 
 const router = createBrowserRouter([
   {
@@ -67,7 +68,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ApolloProvider client={client}>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <ToastProvider>
+          <RouterProvider router={router} />
+        </ToastProvider>
       </AuthProvider>
     </ApolloProvider>
   </StrictMode>

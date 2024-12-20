@@ -10,6 +10,7 @@ export const GET_ALL_USERS = gql`
       role {
         id
         label
+        code
       }
     }
   }

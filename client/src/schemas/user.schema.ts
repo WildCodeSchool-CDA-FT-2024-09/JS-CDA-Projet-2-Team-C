@@ -22,6 +22,7 @@ export const LOGIN = gql`
       role {
         id
         label
+        code
       }
       token
     }
@@ -33,7 +34,7 @@ export const ADD_USER_MUTATION = gql`
     $firstname: String!
     $lastname: String!
     $email: String!
-    $roleLabel: String!
+    $roleCode: String!
     $departmentLabel: String
     $genderLabel: String
   ) {
@@ -41,7 +42,7 @@ export const ADD_USER_MUTATION = gql`
       firstname: $firstname
       lastname: $lastname
       email: $email
-      roleLabel: $roleLabel
+      roleCode: $roleCode
       departmentLabel: $departmentLabel
       genderLabel: $genderLabel
     ) {
@@ -52,6 +53,7 @@ export const ADD_USER_MUTATION = gql`
       role {
         id
         label
+        code
       }
       department {
         id

@@ -45,7 +45,7 @@ export default function SearchBar({
         <SearchIcon aria-hidden="true" />
         <input
           id="search-input"
-          type="texte"
+          type="text"
           placeholder="rechercher"
           className="focus:outline-none"
           onChange={handleChangeInput}

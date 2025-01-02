@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useGetPatientsByNameLazyQuery } from '../../generated/graphql-types';
 import SearchBar from '../SearchBar/SearchBar';
 import PatientSearchBarProps from './PatientSearchBar.type';
@@ -11,19 +11,17 @@ export default function PatientSearchBar({
   restriction = false
 }: PatientSearchBarProps) {
   const [search, setSearch] = useState<string>('');
-
   const debouncedSearch = useDebounce<string>(search, 500);
-
   const [getPatientsByname, { data }] = useGetPatientsByNameLazyQuery();
 
   const handleChange = (value: string): void => {
     setSearch(value);
     if (!restriction) {
-      // If restriction is false, we update debouncedSearch immediately
+      // Si restriction est `false`, on laisse le debounce gérer la recherche
     }
   };
 
-  const handleSearch = (): void => {
+  const handleSearch = useCallback((): void => {
     if (restriction) {
       const sanitisedSearch = search.trim();
       //
@@ -37,75 +35,77 @@ export default function PatientSearchBar({
         getPatientsByname({ variables: { search: sanitisedSearch } });
       }
     }
-  };
+  }, [restriction, search, getPatientsByname]);
 
   useEffect(() => {
-    if (!restriction) {
+    if (restriction && search.length === 15) {
+      // Si restriction est `true` et qu'on atteint 21 caractères, on lance automatiquement handleSearch
+      handleSearch();
+    } else if (!restriction) {
+      // Sinon, on utilise le debounce pour déclencher la recherche
       const sanitisedSearch = debouncedSearch.trim();
       if (sanitisedSearch) {
         getPatientsByname({ variables: { search: sanitisedSearch } });
       }
     }
-  }, [debouncedSearch, getPatientsByname]);
+  }, [debouncedSearch, search, restriction, handleSearch, getPatientsByname]);
 
   return (
-    <>
-      <div className="dropdown dropdown-end w-[35rem]">
-        <SearchBar
-          handleChange={handleChange}
-          inputType={restriction ? 'number' : 'text'}
-        />
+    <div className="dropdown dropdown-end sm:w-auto md:w-[35rem]">
+      <SearchBar
+        handleChange={handleChange}
+        inputType={restriction ? 'number' : 'text'}
+      />
 
-        {restriction && (
-          <button
-            onClick={handleSearch}
-            className={`btn mt-2 ${
-              //
-              //****WARNING****
-              // Currently, the SSN is set to 15 digits,
-              // but it will need to be changed to 13 digits
-              // before production!
-              //****WARNING****
-              //
-              search.length !== 15 ? 'btn-disabled bg-gray-300' : 'btn-primary'
-            }`}
-            disabled={search.length !== 15}
-          >
-            Rechercher
-          </button>
-        )}
+      {restriction && (
+        <button
+          onClick={handleSearch}
+          className={`btn mt-2 ${
+            //
+            //****WARNING****
+            // Currently, the SSN is set to 15 digits,
+            // but it will need to be changed to 13 digits
+            // before production!
+            //****WARNING****
+            //
+            search.length !== 15 ? 'btn-disabled bg-gray-300' : 'btn-primary'
+          }`}
+          disabled={search.length !== 15}
+        >
+          Rechercher
+        </button>
+      )}
 
-        {data && (
-          <ul
-            tabIndex={0}
-            className="menu dropdown-content z-[1] w-full rounded-box bg-base-100 p-2 shadow"
-          >
-            {data.patients.length ? (
-              data.patients.map((patient) => (
-                <li key={`patient-${patient.id}`}>
-                  <button onClick={() => handlePatientSelected(patient.id)}>
-                    {restriction ? (
-                      <strong>{patient.ssn}</strong>
-                    ) : (
-                      <>
-                        <strong>
-                          {patient.firstname} {patient.lastname}
-                        </strong>
-                        {` - ${genderMap[patient.gender.label]} - ${frenchDate(
-                          patient.dateOfBirth,
-                          true
-                        )} - ${patient.ssn}`}
-                      </>
-                    )}
-                  </button>
-                </li>
-              ))
-            ) : (
-              <li>pas de résultat</li>
-            )}
-          </ul>
-        )}
-      </div>
-    </>
+      {data && (
+        <ul
+          tabIndex={0}
+          className="menu dropdown-content z-[1] w-full rounded-box bg-base-100 p-2 shadow"
+        >
+          {data.patients.length ? (
+            data.patients.map((patient) => (
+              <li key={`patient-${patient.id}`}>
+                <button onClick={() => handlePatientSelected(patient.id)}>
+                  {restriction ? (
+                    <strong>{patient.ssn}</strong>
+                  ) : (
+                    <>
+                      <strong>
+                        {patient.firstname} {patient.lastname}
+                      </strong>
+                      {` - ${genderMap[patient.gender.label]} - ${frenchDate(
+                        patient.dateOfBirth,
+                        true
+                      )} - ${patient.ssn}`}
+                    </>
+                  )}
+                </button>
+              </li>
+            ))
+          ) : (
+            <li>pas de résultat</li>
+          )}
+        </ul>
+      )}
+    </div>
   );
 }

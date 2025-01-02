@@ -28,3 +28,15 @@ export function generateToken(user: User): string {
     { expiresIn: '24h' }
   );
 }
+
+export function setTokenCookie(
+  res: { setHeader: (key: string, value: string) => void },
+  token: string
+): void {
+  res.setHeader(
+    'Set-Cookie',
+    `token=${token}; HttpOnly; Secure; SameSite=Strict; expires=${new Date(
+      Date.now() + 1000 * 60 * 60 * 24
+    ).toUTCString()}, Max-Age=${60 * 60 * 24}`
+  );
+}

@@ -11,7 +11,7 @@ export default function UserList({
   ITEMS_PER_PAGE: number;
   role: string;
   debouncedSearch: string;
-  onPaginationData: (total: number, hasMoreData: boolean) => void; // Fonction pour transmettre les données
+  onPaginationData: (total: number, hasMoreData: boolean) => void;
 }) {
   const { data, loading, error } = useGetAllUsersQuery({
     variables: {
@@ -24,7 +24,7 @@ export default function UserList({
     onCompleted: (fetchedData) => {
       const total = fetchedData?.getAllUsers?.total || 0;
       const hasMoreData = fetchedData?.getAllUsers?.hasMore || false;
-      onPaginationData(total, hasMoreData); // Transmet les données de pagination
+      onPaginationData(total, hasMoreData);
     }
   });
 

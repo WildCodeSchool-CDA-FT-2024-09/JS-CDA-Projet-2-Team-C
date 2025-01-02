@@ -1,12 +1,4 @@
-import React from 'react';
-
-type PaginationProps = {
-  currentPage: number;
-  totalPages: number;
-  onNext: () => void;
-  onPrev: () => void;
-  hasMore: boolean;
-};
+import PaginationProps from './Pagination.types';
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
@@ -16,16 +8,15 @@ const Pagination: React.FC<PaginationProps> = ({
   hasMore
 }) => {
   return (
-    <div className="join">
+    <div className="join mr-14 w-3/12">
       <button
         onClick={onPrev}
         disabled={currentPage === 0}
         className={`btn join-item ${currentPage === 0 ? 'bg-wrigth cursor-not-allowed' : ''}`}
-        // {className=`btn join-item ${currentPage === 0 ? '' : 'bg-wrigth'}`}
       >
         «
       </button>
-      <span className="btn join-item cursor-default hover:bg-transparent hover:text-inherit">
+      <span className="join-item inline-flex h-12 w-80 items-center justify-center font-semibold">
         Page : {currentPage + 1} / {totalPages}
       </span>
       <button

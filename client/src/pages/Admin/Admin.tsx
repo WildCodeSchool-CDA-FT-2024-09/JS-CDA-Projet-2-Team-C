@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce.ts';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
@@ -7,13 +7,14 @@ import Pagination from '../../components/Pagination/Pagination.tsx';
 import UserList from '../../components/UserList/UserList';
 
 export default function Admin() {
-  const ITEMS_PER_PAGE = 3; // Nombre d'utilisateurs par page
-  const [currentPage, setCurrentPage] = useState(0); // Page actuelle
-  const [searchByName, setSearchByName] = useState<string>(''); // Recherche
-  const [totalPages, setTotalPages] = useState(0); // Total des pages
-  const [hasMore, setHasMore] = useState(false); // Si d'autres pages existent
-  const debouncedSearch = useDebounce<string>(searchByName, 500); // Recherche avec debounce
-  const [role, setRole] = useState<string>(''); // Filtrage par rôle
+  // number of users to display per page, 8 chosen to avoid scrolling
+  const ITEMS_PER_PAGE = 8;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchByName, setSearchByName] = useState<string>('');
+  const [totalPages, setTotalPages] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const debouncedSearch = useDebounce<string>(searchByName, 500);
+  const [role, setRole] = useState<string>('');
 
   const handleNextPage = () => {
     if (hasMore) {
@@ -29,13 +30,13 @@ export default function Admin() {
 
   const handleChange = (value: string): void => {
     setSearchByName(value.toLowerCase());
-    setCurrentPage(0); // Réinitialiser la pagination
+    setCurrentPage(0);
   };
 
-  const handleRoleChange = useCallback((value: string): void => {
-    setRole(value.toLocaleLowerCase());
-    setCurrentPage(0); // Réinitialiser la pagination
-  }, []);
+  const handleRoleChange = (value: string): void => {
+    setRole(value === '' ? '' : value.toLocaleLowerCase());
+    setCurrentPage(0);
+  };
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -51,10 +52,10 @@ export default function Admin() {
     }
   };
 
-  // Fonction de mise à jour des données de pagination
+  // Pagination data update function
   const handlePaginationData = (total: number, hasMoreData: boolean) => {
-    setTotalPages(Math.ceil(total / ITEMS_PER_PAGE)); // Calcul du nombre total de pages
-    setHasMore(hasMoreData); // Indique si une page suivante existe
+    setTotalPages(Math.ceil(total / ITEMS_PER_PAGE)); // Calculating the total number of pages
+    setHasMore(hasMoreData); // Indicates if a next page exists
   };
 
   return (
@@ -78,21 +79,14 @@ export default function Admin() {
             Ajouter un utilisateur
           </button>
         </section>
-        <div className="overflow-x-auto rounded-lg border border-primary-dark p-6">
+        <div className="relative h-[75vh] overflow-x-auto rounded-lg border border-primary-dark p-6">
           <SearchBar handleChange={handleChange} />
           <table className="table bg-white">
             <thead>
               <tr className="border-b border-gray-300">
                 <th scope="col">
                   <label htmlFor="role">
-                    <select
-                      id="role"
-                      value={role}
-                      className="m-[-10px] rounded-lg border border-primary-dark p-2 focus:outline-none"
-                      onChange={(e) => handleRoleChange(e.target.value)}
-                    >
-                      <OptionSelect />
-                    </select>
+                    <OptionSelect handleRoleChange={handleRoleChange} />
                   </label>
                 </th>
                 <th scope="col">Nom</th>
@@ -113,7 +107,7 @@ export default function Admin() {
               />
             </tbody>
           </table>
-          <section className="w-full text-right">
+          <section className="absolute bottom-0 w-[95%] overflow-x-hidden bg-white p-2 text-right">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

@@ -1,12 +1,12 @@
 import PaginationProps from './Pagination.types';
 
-const Pagination: React.FC<PaginationProps> = ({
+export default function Pagination({
   currentPage,
   totalPages,
   onNext,
   onPrev,
   hasMore
-}) => {
+}: PaginationProps) {
   return (
     <div className="join mr-14 w-3/12">
       <button
@@ -28,6 +28,4 @@ const Pagination: React.FC<PaginationProps> = ({
       </button>
     </div>
   );
-};
-
-export default Pagination;
+}

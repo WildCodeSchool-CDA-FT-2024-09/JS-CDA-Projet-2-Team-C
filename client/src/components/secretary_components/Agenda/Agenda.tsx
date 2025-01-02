@@ -1,10 +1,11 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Calendar, DateLocalizer, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { fr } from 'date-fns/locale/fr'; // Import French locale
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { convertToCalendarEvents } from './events.utils';
 
-export default function Agenda() {
+export default function Agenda({ consultations }) {
   const localizer: DateLocalizer = dateFnsLocalizer({
     format,
     parse,
@@ -13,23 +14,30 @@ export default function Agenda() {
     locales: { fr }
   });
 
-  const [events, setEvents] = useState([
-    {
-      title: 'Meeting with Team',
-      start: new Date(2024, 10, 29, 10, 0), // Adjust dates to suit your example
-      end: new Date(2024, 10, 29, 11, 0)
-    },
-    {
-      title: 'Doctor Appointment',
-      start: new Date(2024, 10, 30, 14, 0),
-      end: new Date(2024, 10, 30, 15, 0)
-    },
-    {
-      title: 'Doctor CONvergence',
-      start: new Date(2024, 10, 30, 9, 0),
-      end: new Date(2024, 10, 30, 11, 0)
-    }
-  ]);
+  // const [events, setEvents] = useState([
+  //   {
+  //     title: 'Meeting with Team',
+  //     start: new Date(2024, 10, 29, 10, 0), // Adjust dates to suit your example
+  //     end: new Date(2024, 10, 29, 11, 0)
+  //   },
+  //   {
+  //     title: 'Doctor Appointment',
+  //     start: new Date(2024, 10, 30, 14, 0),
+  //     end: new Date(2024, 10, 30, 15, 0)
+  //   },
+  //   {
+  //     title: 'Doctor CONvergence',
+  //     start: new Date(2024, 10, 30, 9, 0),
+  //     end: new Date(2024, 10, 30, 11, 0)
+  //   }
+  // ]);
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const newEvents = convertToCalendarEvents(consultations);
+    setEvents(newEvents);
+  }, [consultations]);
 
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {

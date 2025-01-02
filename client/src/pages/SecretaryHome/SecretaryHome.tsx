@@ -27,8 +27,6 @@ export default function SecretaryHome() {
     if (data) setConsultations(data?.consultationsByDoctorId);
   }, [data, getConsultationsByDoctorId]);
 
-  // console.log(consultations);
-
   return (
     <div className="grid grid-cols-2 gap-8 p-8">
       <section className="rounded-2xl bg-primary-lighter p-4">

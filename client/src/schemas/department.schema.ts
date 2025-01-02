@@ -8,3 +8,17 @@ export const GET_DEPARTMENTS = gql`
     }
   }
 `;
+
+export const GET_DEPARTMENT_AND_DOCTOR = gql`
+  query DepartmentsAndDoctors {
+    departments {
+      id
+      label
+    }
+    getDoctors {
+      firstname
+      id
+      lastname
+    }
+  }
+`;

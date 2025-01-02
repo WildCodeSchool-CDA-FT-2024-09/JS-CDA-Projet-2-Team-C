@@ -15,6 +15,10 @@
     "playwright/**/*{js,ts}": [
       "npm run format --prefix playwright",
       "npm run lint --prefix playwright"
+    ],
+    "mailer/**/*.{js,jsx,ts,tsx}": [
+      "npm run format --prefix mailer",
+      "npm run lint --prefix mailer"
     ]
   },
   "scripts": {

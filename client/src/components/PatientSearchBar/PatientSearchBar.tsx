@@ -39,10 +39,8 @@ export default function PatientSearchBar({
 
   useEffect(() => {
     if (restriction && search.length === 15) {
-      // Si restriction est `true` et qu'on atteint 21 caractères, on lance automatiquement handleSearch
       handleSearch();
     } else if (!restriction) {
-      // Sinon, on utilise le debounce pour déclencher la recherche
       const sanitisedSearch = debouncedSearch.trim();
       if (sanitisedSearch) {
         getPatientsByname({ variables: { search: sanitisedSearch } });

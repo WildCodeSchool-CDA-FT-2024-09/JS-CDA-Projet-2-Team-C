@@ -115,7 +115,7 @@ export default function AgentHome() {
 
       <PatientSearchBar
         handlePatientSelected={function (patientId: number): void {
-          console.info(`Patient ID sélectionné : ${patientId}`);
+          console.info(`Patient ID sélectionné  : ${patientId}`);
         }}
         restriction={true}
       />

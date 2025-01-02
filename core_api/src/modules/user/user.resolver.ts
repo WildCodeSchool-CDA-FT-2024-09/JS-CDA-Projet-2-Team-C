@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { Query, Resolver, Mutation, Arg } from 'type-graphql';
+import { Query, Resolver, Mutation, Arg, Ctx } from 'type-graphql';
 import {
   User,
   AuthUser,
@@ -9,7 +9,9 @@ import {
   RoleCode
 } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
-import { hashPassword } from '../../utils/auth.utils';
+import { hashPassword, setTokenCookie } from '../../utils/auth.utils';
+import { ContextType } from '../../types/ContextType';
+
 dotenv.config();
 
 @Resolver(User)
@@ -110,7 +112,11 @@ export default class UserResolver {
   }
 
   @Query(() => AuthUser)
-  async login(@Arg('email') email: string, @Arg('password') password: string) {
+  async login(
+    @Arg('email') email: string,
+    @Arg('password') password: string,
+    @Ctx() ctx: ContextType
+  ): Promise<AuthUser> {
     const user = await User.findOne({ where: { email }, relations: ['role'] });
 
     if (!user || !(await verifyPassword(password, user.password))) {
@@ -122,7 +128,12 @@ export default class UserResolver {
     authUser.id = user.id;
     authUser.email = user.email;
     authUser.role = user.role;
-    authUser.token = generateToken(user);
+
+    const token = generateToken(user);
+    setTokenCookie(ctx.res, token);
+
+    // TODO: remove token from return type?
+    authUser.token = token;
 
     return authUser;
   }

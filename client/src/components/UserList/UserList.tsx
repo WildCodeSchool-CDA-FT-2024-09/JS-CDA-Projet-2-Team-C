@@ -2,21 +2,21 @@ import { useGetAllUsersQuery } from '../../generated/graphql-types';
 
 export default function UserList({
   currentPage,
-  ITEMS_PER_PAGE,
+  perPage,
   role,
   debouncedSearch,
   onPaginationData
 }: {
   currentPage: number;
-  ITEMS_PER_PAGE: number;
+  perPage: number;
   role: string;
   debouncedSearch: string;
   onPaginationData: (total: number, hasMoreData: boolean) => void;
 }) {
   const { data, loading, error } = useGetAllUsersQuery({
     variables: {
-      skip: currentPage * ITEMS_PER_PAGE,
-      take: ITEMS_PER_PAGE,
+      skip: currentPage * perPage,
+      take: perPage,
       roleCode: role || null,
       searchByName: debouncedSearch || null
     },

@@ -8,7 +8,7 @@ import UserList from '../../components/UserList/UserList';
 
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling
-  const ITEMS_PER_PAGE = 8;
+  const perPage = 8;
   const [currentPage, setCurrentPage] = useState(0);
   const [searchByName, setSearchByName] = useState<string>('');
   const [totalPages, setTotalPages] = useState(0);
@@ -54,7 +54,7 @@ export default function Admin() {
 
   // Pagination data update function
   const handlePaginationData = (total: number, hasMoreData: boolean) => {
-    setTotalPages(Math.ceil(total / ITEMS_PER_PAGE)); // Calculating the total number of pages
+    setTotalPages(Math.ceil(total / perPage)); // Calculating the total number of pages
     setHasMore(hasMoreData); // Indicates if a next page exists
   };
 
@@ -100,7 +100,7 @@ export default function Admin() {
             <tbody>
               <UserList
                 currentPage={currentPage}
-                ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+                perPage={perPage}
                 role={role}
                 debouncedSearch={debouncedSearch}
                 onPaginationData={handlePaginationData}

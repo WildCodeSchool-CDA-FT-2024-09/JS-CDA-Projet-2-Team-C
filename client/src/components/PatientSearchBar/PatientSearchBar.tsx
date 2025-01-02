@@ -38,16 +38,6 @@ export default function PatientSearchBar({
         inputType={restriction ? 'number' : 'text'}
       />
 
-      {restriction && (
-        <button
-          onClick={handleSearch}
-          className={`btn mt-2 ${search.length !== 15 ? 'btn-disabled bg-gray-300' : 'btn-primary'}`}
-          disabled={search.length !== 15}
-        >
-          Rechercher
-        </button>
-      )}
-
       {data && (
         <ul
           tabIndex={0}

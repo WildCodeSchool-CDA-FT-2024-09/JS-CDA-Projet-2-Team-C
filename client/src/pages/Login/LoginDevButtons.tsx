@@ -11,18 +11,23 @@ export default function LoginDevButtons() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
+  const roleLabels = {
+    [RoleCode.Agent]: 'DEVTEST-Agent',
+    [RoleCode.Secretary]: 'DEVTEST-Secretary',
+    [RoleCode.Doctor]: 'DEVTEST-Doctor',
+    [RoleCode.Admin]: 'DEVTEST-Admin'
+  };
+
   const handleLogin = (role: RoleCode) => {
     setUser({
       id: 1,
-      firstname: 'John',
-      lastname: 'Doe',
       email: 'test@test.com',
       role: {
         id: 1,
-        label: role,
+        label: roleLabels[role],
         code: role
       },
-      isArchived: false
+      token: 'fake-token'
     });
 
     setTimeout(() => {

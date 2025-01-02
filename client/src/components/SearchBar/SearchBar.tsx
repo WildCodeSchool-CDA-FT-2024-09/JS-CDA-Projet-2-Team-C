@@ -40,7 +40,7 @@ export default function SearchBar({
     <div className="flex w-full justify-center">
       <label
         htmlFor="search-input"
-        className="flex w-full gap-4 rounded-lg border border-primary-dark p-1"
+        className={`flex w-full gap-4 rounded-lg p-1 ${inputType !== 'text' && search.length !== 21 ? 'border-red-500' : 'border-blue-500'} border`}
       >
         <SearchIcon aria-hidden="true" />
         <input

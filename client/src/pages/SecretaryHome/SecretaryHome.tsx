@@ -8,7 +8,7 @@ import {
 } from '../../generated/graphql-types';
 
 export default function SecretaryHome() {
-  const [doctorId, setDoctorId] = useState<number>(1);
+  const [doctorId, setDoctorId] = useState<number>(0);
   const [consultations, setConsultations] = useState<
     ConsultationsByDoctorIdQuery['consultationsByDoctorId']
   >([]);

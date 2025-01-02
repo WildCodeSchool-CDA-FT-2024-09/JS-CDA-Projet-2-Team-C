@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-const { EMAIL_AGENT, PASSWORD_FAKE } = process.env;
+const { MEDAGENDA_URI, EMAIL_AGENT, PASSWORD_FAKE } = process.env;
 
-if (!EMAIL_AGENT || !PASSWORD_FAKE) {
+if (!MEDAGENDA_URI || !EMAIL_AGENT || !PASSWORD_FAKE) {
   throw new Error(
-    'EMAIL_AGENT and PASSWORD_FAKE environment variables are required'
+    'MEDAGENDA_URI, EMAIL_AGENT and PASSWORD_FAKE environment variables are required'
   );
 }
 

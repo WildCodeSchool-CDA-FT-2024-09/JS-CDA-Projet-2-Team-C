@@ -1,15 +1,15 @@
 import { test, expect } from '@playwright/test';
 
-const { EMAIL_ADMIN, PASSWORD_FAKE } = process.env;
+const { MEDAGENDA_URI, EMAIL_ADMIN, PASSWORD_FAKE } = process.env;
 
-if (!EMAIL_ADMIN || !PASSWORD_FAKE) {
+if (!MEDAGENDA_URI || !EMAIL_ADMIN || !PASSWORD_FAKE) {
   throw new Error(
-    'EMAIL_ADMIN and PASSWORD_FAKE environment variables are required'
+    'MEDAGENDA_URI, EMAIL_ADMIN and PASSWORD_FAKE environment variables are required'
   );
 }
 
 test('test login as an admin', async ({ page }) => {
-  await page.goto('http://localhost:5000/');
+  await page.goto(MEDAGENDA_URI);
   await expect(page.locator('h1')).toContainText('Agenda Médical');
 
   await page.getByPlaceholder('Email').click();

@@ -1,32 +1,22 @@
 import { useCallback, useRef, useState } from 'react';
-import { useGetAllUsersQuery } from '../../generated/graphql-types';
 import { useDebounce } from '../../utils/useDebounce.ts';
-import UserList from '../../components/UserList/UserList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
 import Pagination from '../../components/Pagination/Pagination.tsx';
+import UserList from '../../components/UserList/UserList';
 
 export default function Admin() {
   const ITEMS_PER_PAGE = 3; // Nombre d'utilisateurs par page
   const [currentPage, setCurrentPage] = useState(0); // Page actuelle
-  const [searchByName, setSearchByName] = useState<string>('');
-  // Recherche  const debouncedSearch = useDebounce<string>(search, 500);
-  const debouncedSearch = useDebounce<string>(searchByName, 500); // TODO : check role type (use enum on graphql-type) ?
+  const [searchByName, setSearchByName] = useState<string>(''); // Recherche
+  const [totalPages, setTotalPages] = useState(0); // Total des pages
+  const [hasMore, setHasMore] = useState(false); // Si d'autres pages existent
+  const debouncedSearch = useDebounce<string>(searchByName, 500); // Recherche avec debounce
   const [role, setRole] = useState<string>(''); // Filtrage par rôle
 
-  const { data, loading, error, refetch } = useGetAllUsersQuery({
-    variables: {
-      skip: currentPage * ITEMS_PER_PAGE,
-      take: ITEMS_PER_PAGE,
-      roleCode: role || null,
-      searchByName: debouncedSearch || null // Recherche (null = pas de filtre)
-    },
-    fetchPolicy: 'cache-and-network'
-  });
-
   const handleNextPage = () => {
-    if (data?.getAllUsers.hasMore) {
+    if (hasMore) {
       setCurrentPage((prev) => prev + 1);
     }
   };
@@ -38,16 +28,13 @@ export default function Admin() {
   };
 
   const handleChange = (value: string): void => {
-    if (value.trim() === '') {
-      return;
-    }
     setSearchByName(value.toLowerCase());
-    setCurrentPage(0);
+    setCurrentPage(0); // Réinitialiser la pagination
   };
 
   const handleRoleChange = useCallback((value: string): void => {
     setRole(value.toLocaleLowerCase());
-    setCurrentPage(0);
+    setCurrentPage(0); // Réinitialiser la pagination
   }, []);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -64,23 +51,17 @@ export default function Admin() {
     }
   };
 
-  if (loading) return <h1>Chargement...</h1>;
-  if (error) return <h1>Erreur : Veuillez recharger la page</h1>;
+  // Fonction de mise à jour des données de pagination
+  const handlePaginationData = (total: number, hasMoreData: boolean) => {
+    setTotalPages(Math.ceil(total / ITEMS_PER_PAGE)); // Calcul du nombre total de pages
+    setHasMore(hasMoreData); // Indique si une page suivante existe
+  };
 
-  const totalPages = Math.ceil(
-    (data?.getAllUsers?.total || 1) / ITEMS_PER_PAGE
-  );
-
-  // See https://daisyui.com/components/table/ for table component
   return (
     <>
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
         <section className="flex p-[27px]">
-          <AdminPopup
-            ref={dialogRef}
-            close={handleClose}
-            refetchUsers={refetch}
-          />
+          <AdminPopup ref={dialogRef} close={handleClose} />
           <div className="basis-1/4">{''}</div>
           <h2 className="basis-3/4 text-center font-bold">
             Liste des utilisateurs
@@ -119,7 +100,13 @@ export default function Admin() {
               </tr>
             </thead>
             <tbody>
-              <UserList users={data?.getAllUsers.users || []} />
+              <UserList
+                currentPage={currentPage}
+                ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+                role={role}
+                debouncedSearch={debouncedSearch}
+                onPaginationData={handlePaginationData} // Fonction pour transmettre les données
+              />
             </tbody>
           </table>
           <section className="w-full text-right">
@@ -128,7 +115,7 @@ export default function Admin() {
               totalPages={totalPages}
               onNext={handleNextPage}
               onPrev={handlePrevPage}
-              hasMore={data?.getAllUsers.hasMore || false}
+              hasMore={hasMore}
             />
           </section>
         </div>

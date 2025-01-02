@@ -17,7 +17,7 @@ export default function PatientSearchBar({
   const handleChange = (value: string): void => {
     setSearch(value);
     if (!restriction) {
-      // Si restriction est `false`, on laisse le debounce gérer la recherche
+      // If restriction is false, we let the debounce handle the search.
     }
   };
 

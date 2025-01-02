@@ -7,19 +7,13 @@ import Pagination from '../../components/Pagination/Pagination.tsx';
 import UserList from '../../components/UserList/UserList';
 
 export default function Admin() {
-  const ITEMS_PER_PAGE = 10; // Nombre d'utilisateurs par page
+  const ITEMS_PER_PAGE = 3; // Nombre d'utilisateurs par page
   const [currentPage, setCurrentPage] = useState(0); // Page actuelle
   const [searchByName, setSearchByName] = useState<string>(''); // Recherche
   const [totalPages, setTotalPages] = useState(0); // Total des pages
   const [hasMore, setHasMore] = useState(false); // Si d'autres pages existent
   const debouncedSearch = useDebounce<string>(searchByName, 500); // Recherche avec debounce
   const [role, setRole] = useState<string>(''); // Filtrage par rôle
-
-  // Charge la dernière page
-  const loadLastPage = useCallback((totalUsers: number) => {
-    const lastPage = Math.max(Math.ceil(totalUsers / ITEMS_PER_PAGE) - 1, 0);
-    setCurrentPage(lastPage);
-  }, []);
 
   const handleNextPage = () => {
     if (hasMore) {
@@ -70,7 +64,7 @@ export default function Admin() {
           <AdminPopup
             ref={dialogRef}
             close={handleClose}
-            refetchUsers={() => loadLastPage(totalPages * ITEMS_PER_PAGE)}
+            refetchUsers={() => setCurrentPage(0)}
           />
           <div className="basis-1/4">{''}</div>
           <h2 className="basis-3/4 text-center font-bold">

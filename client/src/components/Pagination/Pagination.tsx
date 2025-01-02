@@ -20,14 +20,19 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={onPrev}
         disabled={currentPage === 0}
-        className="btn join-item"
+        className={`btn join-item ${currentPage === 0 ? 'bg-wrigth cursor-not-allowed' : ''}`}
+        // {className=`btn join-item ${currentPage === 0 ? '' : 'bg-wrigth'}`}
       >
         «
       </button>
-      <span className="btn join-item">
+      <span className="btn join-item cursor-default hover:bg-transparent hover:text-inherit">
         Page : {currentPage + 1} / {totalPages}
       </span>
-      <button onClick={onNext} disabled={!hasMore} className="btn join-item">
+      <button
+        onClick={onNext}
+        disabled={!hasMore}
+        className={`btn join-item ${!hasMore ? 'bg-light-gray cursor-not-allowed' : ''}`}
+      >
         »
       </button>
     </div>

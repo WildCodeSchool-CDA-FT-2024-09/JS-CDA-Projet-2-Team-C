@@ -16,37 +16,20 @@ export default function PatientSearchBar({
 
   const handleChange = (value: string): void => {
     setSearch(value);
-    if (!restriction) {
-      // If restriction is false, we let the debounce handle the search.
-    }
   };
 
   const handleSearch = useCallback((): void => {
-    if (restriction) {
-      const sanitisedSearch = search.trim();
-      //
-      //****WARNING****
-      // Currently, the SSN is set to 15 digits,
-      // but it will need to be changed to 13 digits
-      // before production!
-      //****WARNING****
-      //
-      if (sanitisedSearch.length === 15) {
-        getPatientsByname({ variables: { search: sanitisedSearch } });
-      }
+    const sanitisedSearch = search.trim();
+    if (restriction && sanitisedSearch.length === 15) {
+      getPatientsByname({ variables: { search: sanitisedSearch } });
+    } else if (!restriction && debouncedSearch.trim()) {
+      getPatientsByname({ variables: { search: debouncedSearch.trim() } });
     }
-  }, [restriction, search, getPatientsByname]);
+  }, [search, debouncedSearch, restriction, getPatientsByname]);
 
   useEffect(() => {
-    if (restriction && search.length === 15) {
-      handleSearch();
-    } else if (!restriction) {
-      const sanitisedSearch = debouncedSearch.trim();
-      if (sanitisedSearch) {
-        getPatientsByname({ variables: { search: sanitisedSearch } });
-      }
-    }
-  }, [debouncedSearch, search, restriction, handleSearch, getPatientsByname]);
+    handleSearch();
+  }, [search, debouncedSearch, restriction, handleSearch]);
 
   return (
     <div className="dropdown dropdown-end sm:w-auto md:w-[35rem]">
@@ -58,16 +41,7 @@ export default function PatientSearchBar({
       {restriction && (
         <button
           onClick={handleSearch}
-          className={`btn mt-2 ${
-            //
-            //****WARNING****
-            // Currently, the SSN is set to 15 digits,
-            // but it will need to be changed to 13 digits
-            // before production!
-            //****WARNING****
-            //
-            search.length !== 15 ? 'btn-disabled bg-gray-300' : 'btn-primary'
-          }`}
+          className={`btn mt-2 ${search.length !== 15 ? 'btn-disabled bg-gray-300' : 'btn-primary'}`}
           disabled={search.length !== 15}
         >
           Rechercher

@@ -17,4 +17,19 @@ export default class ConsultationResolver {
       }
     });
   }
+
+  // TODO : talk amongst ourselves on how to restrict the dates ? Maybe refetch based on the calendar's view ?
+  // in this case, it should also take a end date
+  @Query(() => [Consultation])
+  async consultationsByDoctorId(@Arg('doctorId') doctorId: number) {
+    return await Consultation.find({
+      where: { doctor: { id: doctorId } },
+      order: { consultationDate: 'DESC', startTime: 'DESC' },
+      relations: {
+        doctor: { department: true },
+        subject: true,
+        patient: { gender: true }
+      }
+    });
+  }
 }

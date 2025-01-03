@@ -29,7 +29,7 @@ export default function AgentPatientSearchBar({
   };
 
   const handleSearch = useCallback((): void => {
-    const sanitisedSearch = search.trim();
+    const sanitisedSearch = search.replace(/\s+/g, '');
     if (sanitisedSearch.length === 15) {
       getPatientsByName({ variables: { search: sanitisedSearch } });
     }

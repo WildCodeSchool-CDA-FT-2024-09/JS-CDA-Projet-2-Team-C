@@ -1,0 +1,22 @@
+name: API Integration test
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - staged
+
+jobs:
+  api-test:
+    name: Run Integration test for Graph APIs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 Check out git repo
+        uses: actions/checkout@v4
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Run integration test
+        run: docker compose -f docker-compose.staging.yml up --build --exit-code-from staging_coreapi

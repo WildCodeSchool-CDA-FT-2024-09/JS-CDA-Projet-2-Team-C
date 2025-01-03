@@ -1,17 +1,30 @@
 import { gql } from '@apollo/client';
 
 export const GET_ALL_USERS = gql`
-  query GetAllUsers {
-    users {
-      id
-      firstname
-      lastname
-      email
-      role {
+  query GetAllUsers(
+    $skip: Int!
+    $take: Int!
+    $roleCode: String
+    $searchByName: String
+  ) {
+    getAllUsers(
+      skip: $skip
+      take: $take
+      roleCode: $roleCode
+      searchByName: $searchByName
+    ) {
+      users {
         id
-        label
-        code
+        firstname
+        lastname
+        email
+        role {
+          code
+          label
+        }
       }
+      total
+      hasMore
     }
   }
 `;

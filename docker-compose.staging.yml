@@ -1,7 +1,10 @@
 services:
   staging_postgres:
     image: postgres
-    env_file: .env-staging
+    environment:
+      - API_PORT=4000
+      - POSTGRES_PORT=5432
+      - POSTGRES_PASSWORD=password
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -d postgres -U postgres']
       interval: 5s
@@ -10,7 +13,10 @@ services:
 
   staging_coreapi:
     build: ./core_api
-    env_file: .env-staging
+    environment:
+      - API_PORT=4000
+      - POSTGRES_PORT=5432
+      - POSTGRES_PASSWORD=password
     command: npm run test
     ports:
       - 4000:4000

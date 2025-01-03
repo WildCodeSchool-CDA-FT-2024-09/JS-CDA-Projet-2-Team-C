@@ -29,7 +29,7 @@ export default function PatientSearchBar({
     <>
       <div className="dropdown dropdown-end w-[35rem]">
         <SearchBar handleChange={handleChange} />
-        {data && (
+        {data && debouncedSearch && (
           <ul
             tabIndex={0}
             className="menu dropdown-content z-[1] w-full rounded-box bg-base-100 p-2 shadow"

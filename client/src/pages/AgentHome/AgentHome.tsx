@@ -5,7 +5,7 @@ import {
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/AgentChoiceList/AgentChoiceList';
-import PatientSearchBar from '../../components/PatientSearchBar/PatientSearchBar';
+import AgentPatientSearchBar from '../../components/AgentComponents/AgentPatientSearchBar.tsx/AgentPatientSearchBar';
 
 export default function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
@@ -27,7 +27,6 @@ export default function AgentHome() {
   });
 
   if (loadingServices) return <p>Chargement des services...</p>;
-  if (errorServices) return <p>Erreur lors du chargement des services.</p>;
 
   const handleServiceClick = (label: string) => {
     setSelectedService(label);
@@ -112,8 +111,7 @@ export default function AgentHome() {
   const renderPatients = () => (
     <>
       <h1 className="text-center text-3xl font-bold">Liste des patients</h1>
-
-      <PatientSearchBar
+      <AgentPatientSearchBar
         handlePatientSelected={function (patientId: number): void {
           console.info(`Patient ID sélectionné  : ${patientId}`);
         }}

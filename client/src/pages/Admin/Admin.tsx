@@ -1,21 +1,44 @@
 import { useRef, useState } from 'react';
-import { useGetAllUsersQuery } from '../../generated/graphql-types';
-import UserList from '../../components/UserList/UserList';
+import { useDebounce } from '../../utils/useDebounce.ts';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
+import Pagination from '../../components/Pagination/Pagination.tsx';
+import UserList from '../../components/UserList/UserList';
 
 export default function Admin() {
-  const { data, loading, error, refetch } = useGetAllUsersQuery();
+  // number of users to display per page, 8 chosen to avoid scrolling
+  const perPage = 8;
+  const [currentPage, setCurrentPage] = useState(0);
   const [searchByName, setSearchByName] = useState<string>('');
-  // TODO : check role type (use enum on graphql-type) ?
+  const [totalPages, setTotalPages] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const debouncedSearch = useDebounce<string>(searchByName, 500);
   const [role, setRole] = useState<string>('');
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
+  const handleNextPage = () => {
+    if (hasMore) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
 
   const handleChange = (value: string): void => {
-    setSearchByName(value);
+    setSearchByName(value.toLowerCase());
+    setCurrentPage(0);
   };
+
+  const handleRoleChange = (value: string): void => {
+    setRole(value === '' ? '' : value.toLocaleLowerCase());
+    setCurrentPage(0);
+  };
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleOpen = () => {
     if (dialogRef.current) {
@@ -29,18 +52,12 @@ export default function Admin() {
     }
   };
 
-  const filteredUsers =
-    data?.users?.filter(
-      (user) =>
-        user.role.code.toLowerCase().includes(role.toLowerCase()) &&
-        (user.firstname.toLowerCase().includes(searchByName.toLowerCase()) ||
-          user.lastname.toLowerCase().includes(searchByName.toLowerCase()))
-    ) || [];
+  // Pagination data update function
+  const handlePaginationData = (total: number, hasMoreData: boolean) => {
+    setTotalPages(Math.ceil(total / perPage)); // Calculating the total number of pages
+    setHasMore(hasMoreData); // Indicates if a next page exists
+  };
 
-  if (loading) return <h1>Chargement ...</h1>;
-  if (error) return <h1>Erreur de récupération de donnée recharger la page</h1>;
-
-  // See https://daisyui.com/components/table/ for table component
   return (
     <>
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
@@ -48,7 +65,7 @@ export default function Admin() {
           <AdminPopup
             ref={dialogRef}
             close={handleClose}
-            refetchUsers={refetch}
+            refetchUsers={() => setCurrentPage(0)}
           />
           <div className="basis-1/4">{''}</div>
           <h2 className="basis-3/4 text-center font-bold">
@@ -62,23 +79,14 @@ export default function Admin() {
             Ajouter un utilisateur
           </button>
         </section>
-        <div className="overflow-x-auto rounded-lg border border-primary-dark p-6">
+        <div className="relative h-[75vh] overflow-x-auto rounded-lg border border-primary-dark p-6">
           <SearchBar handleChange={handleChange} />
           <table className="table bg-white">
             <thead>
               <tr className="border-b border-gray-300">
                 <th scope="col">
                   <label htmlFor="role">
-                    <select
-                      id="role"
-                      className="m-[-10px] rounded-lg border border-primary-dark p-2 focus:outline-none"
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setRole(e.target.value)
-                      }
-                    >
-                      <option value="">Roles : tous</option>
-                      <OptionSelect />
-                    </select>
+                    <OptionSelect handleRoleChange={handleRoleChange} />
                   </label>
                 </th>
                 <th scope="col">Nom</th>
@@ -90,15 +98,23 @@ export default function Admin() {
               </tr>
             </thead>
             <tbody>
-              <UserList filteredUsers={filteredUsers} />
+              <UserList
+                currentPage={currentPage}
+                perPage={perPage}
+                role={role}
+                debouncedSearch={debouncedSearch}
+                onPaginationData={handlePaginationData}
+              />
             </tbody>
           </table>
-          <section className="w-full text-right">
-            <div className="join">
-              <button className="btn join-item">«</button>
-              <button className="btn join-item">Page 01</button>
-              <button className="btn join-item">»</button>
-            </div>
+          <section className="absolute bottom-0 w-[95%] overflow-x-hidden bg-white p-2 text-right">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onNext={handleNextPage}
+              onPrev={handlePrevPage}
+              hasMore={hasMore}
+            />
           </section>
         </div>
       </section>

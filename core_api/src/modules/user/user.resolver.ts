@@ -1,12 +1,13 @@
 import * as dotenv from 'dotenv';
-import { Query, Resolver, Mutation, Arg, Ctx } from 'type-graphql';
+import { Query, Resolver, Mutation, Arg, Int, Ctx } from 'type-graphql';
 import {
   User,
   AuthUser,
   Role,
   Department,
   Gender,
-  RoleCode
+  RoleCode,
+  PaginatedUsers
 } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
 import { hashPassword, setTokenCookie } from '../../utils/auth.utils';
@@ -141,7 +142,45 @@ export default class UserResolver {
   @Query(() => [User])
   async users() {
     return await User.find({
-      relations: ['role', 'department', 'gender'] // Explicitly load the "role" relationship
+      // Explicitly load the "role" relationship
+      relations: ['role', 'department', 'gender']
     });
+  }
+
+  @Query(() => PaginatedUsers, {
+    description: 'Fetch paginated users with optional role filtering'
+  })
+  async getAllUsers(
+    @Arg('skip', () => Int) skip: number,
+    @Arg('take', () => Int) take: number,
+    @Arg('roleCode', { nullable: true }) roleCode?: string,
+    @Arg('searchByName', { nullable: true }) searchByName?: string
+  ): Promise<PaginatedUsers> {
+    const queryBuilder = User.createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('user.department', 'department')
+      .leftJoinAndSelect('user.gender', 'gender')
+      .skip(skip)
+      .take(take);
+
+    // Filtering by role if roleCode is set
+    if (roleCode) {
+      queryBuilder.where('role.code = :roleCode', { roleCode });
+    }
+
+    if (searchByName) {
+      queryBuilder.andWhere(
+        '(user.firstname ILIKE :search OR user.lastname ILIKE :search)',
+        { search: `%${searchByName}%` }
+      );
+    }
+
+    const [users, total] = await queryBuilder.getManyAndCount();
+
+    return {
+      users,
+      total,
+      hasMore: skip + take < total
+    };
   }
 }

@@ -35,6 +35,7 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
     const handleCreateUser = async () => {
       try {
         setLoading(true);
+
         await createUser({
           variables: {
             lastname: formInputs.name,
@@ -45,8 +46,9 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
             genderLabel: formInputs.gender
           }
         });
-        // Reset inputs and errors
-        await refetchUsers();
+
+        refetchUsers();
+
         setFormInputs({
           role: '',
           name: '',
@@ -55,10 +57,12 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
           service: '',
           gender: ''
         });
+
         setInputError({});
         close();
         showToast('Utilisateur créé avec succès!', 'success');
       } catch (error: unknown) {
+        console.error('Erreur capturée:', error);
         if (
           typeof error === 'object' &&
           error !== null &&
@@ -66,7 +70,7 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
         ) {
           setInputError(error as InputError);
         } else {
-          console.error('Unexpected error:', error);
+          console.error('Erreur inattendue détectée:', error);
           showToast('Une erreur inattendue est survenue.', 'error');
         }
       } finally {

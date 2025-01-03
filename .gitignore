@@ -3,6 +3,7 @@ node_modules/
 
 # dotenv environment variable files
 *.env
+.env-*
 
 # Visual Studio Code directory
 .vscode/

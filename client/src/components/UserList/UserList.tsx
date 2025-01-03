@@ -1,4 +1,4 @@
-import { useGetAllUsersQuery } from '../../generated/graphql-types';
+import { RoleCode, useGetAllUsersQuery } from '../../generated/graphql-types';
 
 export default function UserList({
   currentPage,
@@ -43,6 +43,18 @@ export default function UserList({
 
   const users = data?.getAllUsers.users || [];
 
+  // users.forEach((user) => {
+  //   if (user.role.code === RoleCode.Doctor && user.workingHours === null) {
+  //   }
+  // });
+
+  const checkWorkingHours = (user) => {
+    if (user.role.code === RoleCode.Doctor && user.workingHours === null) {
+      return <p>heure</p>;
+    }
+    return null;
+  };
+
   return (
     <>
       {users.map((user) => (
@@ -50,7 +62,10 @@ export default function UserList({
           <td>{user.role.label}</td>
           <td>{user.firstname}</td>
           <td>{user.lastname}</td>
-          <td>{user.email}</td>
+          <td>
+            {user.email}
+            {checkWorkingHours(user)}
+          </td>
           <td className="flex gap-2">
             <button
               type="button"

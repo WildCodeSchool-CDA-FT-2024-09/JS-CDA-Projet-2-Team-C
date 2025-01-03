@@ -22,6 +22,11 @@ export const GET_ALL_USERS = gql`
           code
           label
         }
+        workingHours {
+          endTime
+          startTime
+          id
+        }
       }
       total
       hasMore

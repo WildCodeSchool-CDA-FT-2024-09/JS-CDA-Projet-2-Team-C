@@ -1,0 +1,16 @@
+services:
+  staging_postgres:
+    image: postgres
+    env_file: .env-staging
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d postgres -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  staging_coreapi:
+    build: ./core_api
+    env_file: .env-staging
+    command: npm run test
+    ports:
+      - 4000:4000

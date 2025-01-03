@@ -1,0 +1,38 @@
+name: test
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+      - staged
+      - dev
+
+jobs:
+  test:
+    name: Run Linter, Client unit tests, Core API Unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        id: cache-nextjob
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install package dependencies
+        run: npm i
+
+      - name: Run Linter
+        run: npm run lint-full
+
+      - name: Run FrontEnd tests
+        run: npm run testclient
+
+      - name: Run Core API tests
+        run: npm run testcoreapi

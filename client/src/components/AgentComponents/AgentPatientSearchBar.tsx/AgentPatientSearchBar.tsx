@@ -2,41 +2,46 @@ import { useEffect, useState, useCallback } from 'react';
 import { useGetPatientsByNameLazyQuery } from '../../../generated/graphql-types';
 import AgentSearchBar from '../AgentSearchBar.tsx/AgentSearchBar';
 import AgentPatientSearchBarProps from './AgentPatientSearchBar.type';
-import { useDebounce } from '../../../utils/useDebounce';
-import { genderMap } from '../../../utils/genderMap.utils';
-import { frenchDate } from '../../../utils/dates.utils';
 
-export default function PatientSearchBar({
-  handlePatientSelected,
-  restriction = false
+export default function AgentPatientSearchBar({
+  handlePatientSelected
 }: AgentPatientSearchBarProps) {
   const [search, setSearch] = useState<string>('');
-  const debouncedSearch = useDebounce<string>(search, 500);
-  const [getPatientsByname, { data }] = useGetPatientsByNameLazyQuery();
+  const [getPatientsByName, { data }] = useGetPatientsByNameLazyQuery();
+
+  const formatSSN = (value: string): string => {
+    const cleanedValue = value.replace(/\s+/g, '');
+    let formattedValue = '';
+
+    for (let i = 0; i < cleanedValue.length; i++) {
+      formattedValue += cleanedValue[i];
+      if ([0, 2, 4, 6, 9, 12].includes(i)) {
+        formattedValue += ' ';
+      }
+    }
+
+    return formattedValue.trim();
+  };
 
   const handleChange = (value: string): void => {
-    setSearch(value);
+    const sanitisedValue = formatSSN(value.replace(/\D/g, ''));
+    setSearch(sanitisedValue);
   };
 
   const handleSearch = useCallback((): void => {
     const sanitisedSearch = search.trim();
-    if (restriction && sanitisedSearch.length === 15) {
-      getPatientsByname({ variables: { search: sanitisedSearch } });
-    } else if (!restriction && debouncedSearch.trim()) {
-      getPatientsByname({ variables: { search: debouncedSearch.trim() } });
+    if (sanitisedSearch.length === 15) {
+      getPatientsByName({ variables: { search: sanitisedSearch } });
     }
-  }, [search, debouncedSearch, restriction, getPatientsByname]);
+  }, [search, getPatientsByName]);
 
   useEffect(() => {
     handleSearch();
-  }, [search, debouncedSearch, restriction, handleSearch]);
+  }, [search, handleSearch]);
 
   return (
     <div className="dropdown dropdown-end sm:w-auto md:w-[35rem]">
-      <AgentSearchBar
-        handleChange={handleChange}
-        inputType={restriction ? 'number' : 'text'}
-      />
+      <AgentSearchBar handleChange={handleChange} search={search} />
 
       {data && (
         <ul
@@ -47,19 +52,7 @@ export default function PatientSearchBar({
             data.patients.map((patient) => (
               <li key={`patient-${patient.id}`}>
                 <button onClick={() => handlePatientSelected(patient.id)}>
-                  {restriction ? (
-                    <strong>{patient.ssn}</strong>
-                  ) : (
-                    <>
-                      <strong>
-                        {patient.firstname} {patient.lastname}
-                      </strong>
-                      {` - ${genderMap[patient.gender.label]} - ${frenchDate(
-                        patient.dateOfBirth,
-                        true
-                      )} - ${patient.ssn}`}
-                    </>
-                  )}
+                  <strong>{patient.ssn}</strong>
                 </button>
               </li>
             ))

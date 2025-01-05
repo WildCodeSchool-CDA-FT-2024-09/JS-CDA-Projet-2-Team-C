@@ -29,13 +29,28 @@ export function generateToken(user: User): string {
   );
 }
 
+export function verifyToken(
+  token: string
+): { id: number; email: string } | null {
+  const { JWT_SECRET } = process.env;
+  if (!JWT_SECRET) {
+    throw new Error('Server error: Missing JWT_SECRET');
+  }
+  const decoded = jwt.verify(token, JWT_SECRET);
+  if (typeof decoded === 'object' && 'id' in decoded && 'email' in decoded) {
+    return decoded as { id: number; email: string };
+  } else {
+    return null;
+  }
+}
+
 export function setTokenCookie(
   res: { setHeader: (key: string, value: string) => void },
   token: string
 ): void {
   res.setHeader(
     'Set-Cookie',
-    `token=${token}; HttpOnly; Secure; SameSite=Strict; expires=${new Date(
+    `medagendatoken=${token}; HttpOnly; Secure; SameSite=Strict; expires=${new Date(
       Date.now() + 1000 * 60 * 60 * 24
     ).toUTCString()}, Max-Age=${60 * 60 * 24}`
   );

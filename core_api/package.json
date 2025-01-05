@@ -20,6 +20,7 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.9.1",
+    "@types/set-cookie-parser": "^2.4.10",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
     "eslint": "^9.15.0",
@@ -42,6 +43,7 @@
     "graphql-scalars": "^1.23.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
+    "set-cookie-parser": "^2.7.1",
     "sqlite3": "^5.1.7",
     "type-graphql": "^2.0.0-rc.2",
     "typeorm": "^0.3.20"

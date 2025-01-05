@@ -1,5 +1,13 @@
 import * as dotenv from 'dotenv';
-import { Query, Resolver, Mutation, Arg, Int, Ctx } from 'type-graphql';
+import {
+  Query,
+  Resolver,
+  Mutation,
+  Arg,
+  Int,
+  Ctx,
+  Authorized
+} from 'type-graphql';
 import {
   User,
   AuthUser,
@@ -147,6 +155,7 @@ export default class UserResolver {
     });
   }
 
+  @Authorized([RoleCode.ADMIN])
   @Query(() => PaginatedUsers, {
     description: 'Fetch paginated users with optional role filtering'
   })

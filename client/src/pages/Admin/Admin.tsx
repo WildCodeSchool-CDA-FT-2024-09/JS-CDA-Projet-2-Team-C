@@ -16,23 +16,27 @@ export default function Admin() {
   const [hasMore, setHasMore] = useState(false);
   const debouncedSearch = useDebounce<string>(searchByName, 500);
   const [role, setRole] = useState<string>('');
-
-  const [checkHourDoctor, setCheckHourDoctor] = useState<boolean>(false);
-  console.info('%c⧭', 'color: #73998c', checkHourDoctor);
-  const [idDoctor, setIdDoctor] = useState<number>();
-  const [nameDoctor, setNameDoctor] = useState<string>();
+  const [doctorState, setDoctorState] = useState({
+    id: undefined as number | undefined,
+    name: undefined as string | undefined,
+    isModalOpen: false
+  });
 
   // pour ouvrir la modale hour doctor
-  const [isHourDoctorModalOpen, setHourDoctorIsModalOpen] = useState(false);
 
   const handleOpenModal = (id: number, name: string) => {
-    setHourDoctorIsModalOpen(true);
-    setIdDoctor(id);
-    setNameDoctor(name);
+    setDoctorState({
+      id: id,
+      name: name,
+      isModalOpen: true
+    });
   };
 
   const handleCloseModal = () => {
-    setHourDoctorIsModalOpen(false);
+    setDoctorState((prev) => ({
+      ...prev,
+      isModalOpen: false
+    }));
   };
   // repasser checkHourDoctor en false après l'avoir utilisé
   // conditionner l'affichage du bouton de recherche des medecins sans horaires
@@ -92,10 +96,10 @@ export default function Admin() {
           />
 
           <AdminPopupDoctorHour
-            isOpen={isHourDoctorModalOpen}
+            isOpen={doctorState.isModalOpen}
             onClose={handleCloseModal}
-            idDoctor={idDoctor ?? 0}
-            nameDoctor={nameDoctor ?? ''}
+            idDoctor={doctorState.id ?? 0} // 0 comme valeur par défaut si id est undefined
+            nameDoctor={doctorState.name ?? 'Nom inconnu'}
           />
 
           <div className="">{''}</div>
@@ -149,7 +153,7 @@ export default function Admin() {
                 role={role}
                 debouncedSearch={debouncedSearch}
                 onPaginationData={handlePaginationData}
-                setCheckHourDoctor={setCheckHourDoctor}
+                checkHourDoctor={doctorState.isModalOpen}
               />
             </tbody>
           </table>

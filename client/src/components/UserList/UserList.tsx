@@ -11,7 +11,6 @@ export default function UserList({
   role,
   debouncedSearch,
   onPaginationData,
-  setCheckHourDoctor,
   handleOpenModal
 }: {
   currentPage: number;
@@ -19,7 +18,7 @@ export default function UserList({
   role: string;
   debouncedSearch: string;
   onPaginationData: (total: number, hasMoreData: boolean) => void;
-  setCheckHourDoctor: (value: boolean) => void;
+  checkHourDoctor: boolean;
   handleOpenModal: (userId: number, name: string) => void;
 }) {
   const { data, loading, error } = useGetAllUsersQuery({
@@ -57,7 +56,6 @@ export default function UserList({
   ): JSX.Element | null => {
     if (user.role.code === RoleCode.Doctor) {
       if (user.workingHours === null) {
-        setCheckHourDoctor(true);
         return (
           <>
             <button
@@ -80,6 +78,9 @@ export default function UserList({
 
       return (
         <button
+          onClick={() =>
+            handleOpenModal(user.id, `${user.firstname} ${user.lastname}`)
+          }
           type="button"
           className="m-0 inline-flex items-center gap-2 rounded-lg bg-[#60DE8C] p-1 hover:bg-[#31B860] hover:text-white"
         >

@@ -57,7 +57,7 @@ export default function AdminPopupDoctorHour({
   }
 
   // Remplir les plages horaires
-  const timesAM = addTimes(6, 11); // Matin (6h à 11h)
+  const timesAM = addTimes(6, 16); // Matin (6h à 11h)
   const timesPM = addTimes(12, 20); // Après-midi (12h à 20h)
 
   return (
@@ -74,13 +74,13 @@ export default function AdminPopupDoctorHour({
               ✕
             </button>
             <h3 className="text-center text-lg font-bold text-primary">
-              horaire du médecin {nameDoctor}
+              horaire du médecin {nameDoctor}/id:{idDoctor}
             </h3>
             {/* Contenu de la modale */}
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">
-                  Sélectionner les jours et heures de travail
+                  Sélectionner les jours et les horaires de travail
                 </span>
               </label>
               {weekDays.map((day, index) => (
@@ -92,7 +92,10 @@ export default function AdminPopupDoctorHour({
                   <p className="min-w-[70px] font-bold capitalize">{day}</p>
 
                   {/* Sélecteur pour les horaires */}
-                  <select className="select select-bordered max-w-xs">
+                  <select
+                    className="select select-bordered max-w-xs"
+                    value={day}
+                  >
                     <option disabled selected>
                       debut de journée
                     </option>
@@ -102,7 +105,10 @@ export default function AdminPopupDoctorHour({
                       </option>
                     ))}
                   </select>
-                  <select className="select select-bordered max-w-xs">
+                  <select
+                    className="select select-bordered max-w-xs"
+                    value={day}
+                  >
                     <option disabled selected>
                       fin de journée
                     </option>

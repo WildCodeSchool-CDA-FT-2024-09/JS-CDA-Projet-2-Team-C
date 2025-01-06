@@ -5,6 +5,7 @@ import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
 import Pagination from '../../components/Pagination/Pagination.tsx';
 import UserList from '../../components/UserList/UserList';
+import AdminPopupDoctorHour from '../../components/AdminPopupDoctorHour/AdminPopupDoctorHour.tsx';
 
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling
@@ -15,6 +16,26 @@ export default function Admin() {
   const [hasMore, setHasMore] = useState(false);
   const debouncedSearch = useDebounce<string>(searchByName, 500);
   const [role, setRole] = useState<string>('');
+
+  const [checkHourDoctor, setCheckHourDoctor] = useState<boolean>(false);
+  console.info('%c⧭', 'color: #73998c', checkHourDoctor);
+  const [idDoctor, setidDoctor] = useState<number>();
+
+  // pour ouvrir la modale hour doctor
+  const [isHourDoctorModalOpen, setHourDoctorIsModalOpen] = useState(false);
+
+  const handleOpenModal = (id: number) => {
+    setHourDoctorIsModalOpen(true);
+    setidDoctor(id);
+  };
+
+  const handleCloseModal = () => {
+    setHourDoctorIsModalOpen(false);
+  };
+  // repasser checkHourDoctor en false après l'avoir utilisé
+  // conditionner l'affichage du bouton de recherche des medecins sans horaires
+  // crérer la fonction qui va permettre de rechercher les medecins sans horaires
+  // créer la modale pour ajouter et modifier les horaires des médecins
 
   const handleNextPage = () => {
     if (hasMore) {
@@ -67,7 +88,26 @@ export default function Admin() {
             close={handleClose}
             refetchUsers={() => setCurrentPage(0)}
           />
-          <div className="basis-1/4">{''}</div>
+
+          <AdminPopupDoctorHour
+            isOpen={isHourDoctorModalOpen}
+            onClose={handleCloseModal}
+            idDoctor={idDoctor ?? 0}
+          />
+
+          <div className="">{''}</div>
+
+          <section className="flex w-48 rounded-lg bg-warning p-2">
+            <p className="text-[10px]">certain médecins n'ont pas d'horaires</p>
+            <button
+              type="button"
+              className="basis-1/4 rounded-lg bg-danger-lighter p-2 hover:bg-danger-dark hover:text-white"
+              onClick={handleOpen}
+            >
+              afficher
+            </button>
+          </section>
+
           <h2 className="basis-3/4 text-center font-bold">
             Liste des utilisateurs
           </h2>
@@ -79,6 +119,7 @@ export default function Admin() {
             Ajouter un utilisateur
           </button>
         </section>
+
         <div className="relative h-[75vh] overflow-x-auto rounded-lg border border-primary-dark p-6">
           <SearchBar handleChange={handleChange} />
           <table className="table bg-white">
@@ -99,11 +140,13 @@ export default function Admin() {
             </thead>
             <tbody>
               <UserList
+                handleOpenModal={handleOpenModal}
                 currentPage={currentPage}
                 perPage={perPage}
                 role={role}
                 debouncedSearch={debouncedSearch}
                 onPaginationData={handlePaginationData}
+                setCheckHourDoctor={setCheckHourDoctor}
               />
             </tbody>
           </table>

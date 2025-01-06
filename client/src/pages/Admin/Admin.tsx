@@ -19,14 +19,16 @@ export default function Admin() {
 
   const [checkHourDoctor, setCheckHourDoctor] = useState<boolean>(false);
   console.info('%c⧭', 'color: #73998c', checkHourDoctor);
-  const [idDoctor, setidDoctor] = useState<number>();
+  const [idDoctor, setIdDoctor] = useState<number>();
+  const [nameDoctor, setNameDoctor] = useState<string>();
 
   // pour ouvrir la modale hour doctor
   const [isHourDoctorModalOpen, setHourDoctorIsModalOpen] = useState(false);
 
-  const handleOpenModal = (id: number) => {
+  const handleOpenModal = (id: number, name: string) => {
     setHourDoctorIsModalOpen(true);
-    setidDoctor(id);
+    setIdDoctor(id);
+    setNameDoctor(name);
   };
 
   const handleCloseModal = () => {
@@ -93,6 +95,7 @@ export default function Admin() {
             isOpen={isHourDoctorModalOpen}
             onClose={handleCloseModal}
             idDoctor={idDoctor ?? 0}
+            nameDoctor={nameDoctor ?? ''}
           />
 
           <div className="">{''}</div>

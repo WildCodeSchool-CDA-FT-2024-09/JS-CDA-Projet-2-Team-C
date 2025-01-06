@@ -4,12 +4,14 @@ interface AdminPopupDoctorHourProps {
   isOpen: boolean;
   onClose: () => void;
   idDoctor: number;
+  nameDoctor: string;
 }
 
 export default function AdminPopupDoctorHour({
   isOpen,
   onClose,
-  idDoctor
+  idDoctor,
+  nameDoctor
 }: AdminPopupDoctorHourProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -72,7 +74,7 @@ export default function AdminPopupDoctorHour({
               ✕
             </button>
             <h3 className="text-center text-lg font-bold text-primary">
-              horaire du médecin '{idDoctor}'
+              horaire du médecin {nameDoctor}
             </h3>
             {/* Contenu de la modale */}
             <div className="form-control w-full max-w-xs">

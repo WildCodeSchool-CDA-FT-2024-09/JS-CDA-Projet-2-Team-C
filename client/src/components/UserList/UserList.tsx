@@ -29,7 +29,7 @@ export default function UserList({
       searchByName: debouncedSearch || null
     },
     fetchPolicy: 'cache-and-network',
-    onCompleted: (fetchedData) => {
+    onCompleted: (fetchedData: GetAllUsersQuery) => {
       const total = fetchedData?.getAllUsers?.total || 0;
       const hasMoreData = fetchedData?.getAllUsers?.hasMore || false;
       onPaginationData(total, hasMoreData);
@@ -55,7 +55,7 @@ export default function UserList({
     user: GetAllUsersQuery['getAllUsers']['users'][0]
   ): JSX.Element | null => {
     if (user.role.code === RoleCode.Doctor) {
-      if (user.workingHours === null) {
+      if (user.workingHours && user.workingHours.length === 0) {
         return (
           <>
             <button

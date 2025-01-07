@@ -218,7 +218,7 @@ export type WorkingHours = {
   endTime: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   startTime: Scalars['String']['output'];
-  weekday: Scalars['Int']['output'];
+  weekDay: Scalars['Int']['output'];
 };
 
 export type DepartmentsAndGendersAndRolesQueryVariables = Exact<{
@@ -499,7 +499,7 @@ export type GetAllUsersQuery = {
         __typename?: 'WorkingHours';
         endTime: string;
         startTime: string;
-        id: number;
+        weekDay: number;
       }> | null;
     }>;
   };
@@ -1670,7 +1670,7 @@ export const GetAllUsersDocument = gql`
         workingHours {
           endTime
           startTime
-          id
+          weekDay
         }
       }
       total

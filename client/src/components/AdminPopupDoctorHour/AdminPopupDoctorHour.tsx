@@ -84,7 +84,7 @@ export default function AdminPopupDoctorHour({
                 </span>
               </label>
               {weekDays.map((day, index) => (
-                <div key={index} className="mb-4 flex gap-4">
+                <div key={index} className="mb-4 flex items-center gap-4">
                   {/* Affiche le nom du jour */}
                   <label htmlFor="">
                     <input type="checkbox" name="" id="" />

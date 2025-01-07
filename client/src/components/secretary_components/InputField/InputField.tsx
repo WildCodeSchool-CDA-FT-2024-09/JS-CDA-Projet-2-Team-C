@@ -1,4 +1,4 @@
-import { InputFieldProps } from '../../AdminPopup/AdminPopup.types';
+import InputFieldProps from './InputField.types';
 
 export default function InputField({
   className,

@@ -13,13 +13,21 @@ export default function PatientSelector({
   const { data } = usePatientQuery({
     variables: { patientId: patientId }
   });
-  const [patient, setPatient] = useState<PatientQuery['patient'] | null>(null);
+  const [patient, setPatient] = useState<
+    PatientQuery['patient'] | Partial<PatientQuery['patient']> | null
+  >(null);
 
   useEffect(() => {
     if (data) {
       setPatient(data.patient);
     }
   }, [data]);
+
+  const handleChange =
+    (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newPatient = { ...patient, [field]: e.target.value };
+      setPatient(newPatient);
+    };
 
   if (patientId) {
     return (
@@ -30,42 +38,50 @@ export default function PatientSelector({
             name={'lastname'}
             label={'Nom'}
             value={patient?.lastname}
+            onChange={handleChange('lastname')}
           />
           <InputField
             className="col-span-2"
             name={'firstname'}
             label={'Prénom'}
             value={patient?.firstname}
+            onChange={handleChange('firstname')}
           />
           <InputField
             className="col-span-2"
             name={'dateOfBirth'}
             label={'Date de naissance'}
             value={patient?.dateOfBirth}
+            type={'date'}
+            onChange={handleChange('dateOfBirth')}
           />
           <InputField
             className="col-span-3"
             name={'email'}
             label={'E-mail'}
             value={patient?.email}
+            onChange={handleChange('email')}
           />
           <InputField
             className="col-span-3"
             name={'ssn'}
             label={'Numéro de sécurité sociale'}
             value={patient?.ssn}
+            onChange={handleChange('ssn')}
           />
           <InputField
             className="col-span-4"
             name={'city'}
             label={'Ville'}
             value={patient?.town}
+            onChange={handleChange('city')}
           />
           <InputField
             className="col-span-2"
             name={'postcode'}
             label={'Code Postal'}
             value={patient?.postcode}
+            onChange={handleChange('postcode')}
           />
         </div>
       </>

@@ -42,7 +42,10 @@ export default function SecretaryHome() {
             handleDoctorSelected={(doctor) => setDoctorId(doctor.id)}
           />
         </FormPanel>
-        <FormPanel title={'Patient'}>
+        <FormPanel
+          title={'Patient'}
+          onReturn={patientId === 0 ? undefined : () => setPatientId(0)}
+        >
           <PatientSelector
             patientId={patientId}
             handlePatientSelected={handlePatientSelected}

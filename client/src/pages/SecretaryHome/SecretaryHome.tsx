@@ -9,6 +9,7 @@ import {
 import PatientSelector from '../../components/secretary_components/PatientSelector/PatientSelector';
 
 export default function SecretaryHome() {
+  // Doctor
   const [doctorId, setDoctorId] = useState<number>(0);
   const [consultations, setConsultations] = useState<
     ConsultationsByDoctorIdQuery['consultationsByDoctorId']
@@ -26,6 +27,13 @@ export default function SecretaryHome() {
     if (data) setConsultations(data?.consultationsByDoctorId);
   }, [data, getConsultationsByDoctorId]);
 
+  // Patient
+  const [patientId, setPatientId] = useState<number>(0);
+
+  const handlePatientSelected = (patientId: number) => {
+    setPatientId(patientId);
+  };
+
   return (
     <div className="grid grid-cols-2 gap-8 p-8">
       <section className="rounded-2xl bg-primary-lighter p-4">
@@ -35,7 +43,10 @@ export default function SecretaryHome() {
           />
         </FormPanel>
         <FormPanel title={'Patient'}>
-          <PatientSelector />
+          <PatientSelector
+            patientId={patientId}
+            handlePatientSelected={handlePatientSelected}
+          />
         </FormPanel>
         <FormPanel title={'Horaire'}>partie motif</FormPanel>
         <FormPanel title={'Motif'}>partie motif</FormPanel>

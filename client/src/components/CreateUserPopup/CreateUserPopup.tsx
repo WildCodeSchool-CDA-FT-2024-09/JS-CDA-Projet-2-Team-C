@@ -6,10 +6,10 @@ import {
   useDepartmentsAndGendersAndRolesQuery
 } from '../../generated/graphql-types';
 import { useCreateUserForm } from './useCreateUserForm';
-import { AdminPopupProps, InputError } from './AdminPopup.types';
+import { CreateUserPopupProps, InputError } from './CreateUserPopup.types';
 import { useToast } from '../../contexts/toasts/useToast';
 
-const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
+const CreateUserPopup = forwardRef<HTMLDialogElement, CreateUserPopupProps>(
   ({ close, refetchUsers }, ref) => {
     const { data: departmentsAndGendersAndRoles } =
       useDepartmentsAndGendersAndRolesQuery();
@@ -137,4 +137,4 @@ const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
   }
 );
 
-export default AdminPopup;
+export default CreateUserPopup;

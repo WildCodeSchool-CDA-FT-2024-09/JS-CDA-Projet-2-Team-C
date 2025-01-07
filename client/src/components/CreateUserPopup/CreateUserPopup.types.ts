@@ -9,7 +9,7 @@ export type FormInputs = {
   gender: string;
 };
 
-export type AdminPopupProps = {
+export type CreateUserPopupProps = {
   close: () => void;
   refetchUsers: () => void;
 };

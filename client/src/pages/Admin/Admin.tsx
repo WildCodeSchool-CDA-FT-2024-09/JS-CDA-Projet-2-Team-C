@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce.ts';
 import SearchBar from '../../components/shared_components/SearchBar/SearchBar.tsx';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
-import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
+import CreateUserPopup from '../../components/CreateUserPopup/CreateUserPopup.tsx';
 import Pagination from '../../components/Pagination/Pagination.tsx';
 import UserList from '../../components/UserList/UserList';
 
@@ -62,7 +62,7 @@ export default function Admin() {
     <>
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
         <section className="flex p-[27px]">
-          <AdminPopup
+          <CreateUserPopup
             ref={dialogRef}
             close={handleClose}
             refetchUsers={() => setCurrentPage(0)}

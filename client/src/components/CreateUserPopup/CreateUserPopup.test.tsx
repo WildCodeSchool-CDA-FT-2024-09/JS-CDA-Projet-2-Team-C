@@ -1,6 +1,6 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import AdminPopup from './AdminPopup';
+import AdminPopup from './CreateUserPopup';
 import {
   useAddUserMutation,
   useDepartmentsAndGendersAndRolesQuery,

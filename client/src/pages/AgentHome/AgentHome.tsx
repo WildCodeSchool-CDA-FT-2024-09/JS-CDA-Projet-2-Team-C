@@ -5,7 +5,7 @@ import {
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/AgentChoiceList/AgentChoiceList';
-import PatientSearchBar from '../../components/PatientSearchBar/PatientSearchBar';
+import PatientSearchBar from '../../components/shared_components/PatientSearchBar/PatientSearchBar';
 
 export default function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);

@@ -1,6 +1,6 @@
-import { usePatientQuery } from '../../generated/graphql-types';
-import { frenchDate, getAge } from '../../utils/dates.utils';
-import { genderMap } from '../../utils/genderMap.utils';
+import { usePatientQuery } from '../../../generated/graphql-types';
+import { frenchDate, getAge } from '../../../utils/dates.utils';
+import { genderMap } from '../../../utils/genderMap.utils';
 import { PatientDetailsProps } from './PatientDetails.types';
 
 export default function PatientDetails({ patientId }: PatientDetailsProps) {

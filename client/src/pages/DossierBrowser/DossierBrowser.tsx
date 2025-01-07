@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import PatientSearchBar from '../../components/PatientSearchBar/PatientSearchBar';
+import PatientSearchBar from '../../components/shared_components/PatientSearchBar/PatientSearchBar';
 
 export default function DossierBrowser() {
   const navigate = useNavigate();

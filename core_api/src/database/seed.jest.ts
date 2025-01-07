@@ -1,4 +1,5 @@
 import dataSource from './dataSource';
+import { v4 as uuidv4 } from 'uuid';
 
 const seed = async () => {
   // START TRANSACTION
@@ -121,6 +122,7 @@ const seed = async () => {
     // DOCTORS
     const doctors = [
       {
+        id: uuidv4(),
         firstname: 'Cyril',
         lastname: 'Convergence',
         email: 'fakedoctor@fake.com',
@@ -130,6 +132,7 @@ const seed = async () => {
         departmentId: Math.floor(Math.random() * departments.length) + 1
       },
       {
+        id: uuidv4(),
         firstname: 'Diana',
         lastname: 'Divergence',
         email: await fakeEmail(),
@@ -143,22 +146,23 @@ const seed = async () => {
     const doctorValues = doctors
       .map(
         (doctor) =>
-          `('${doctor.firstname}', '${doctor.lastname}', '${doctor.email}', '${doctor.password}', ${doctor.roleId}, ${doctor.genderId}, ${doctor.departmentId})`
+          `('${doctor.id}', '${doctor.firstname}', '${doctor.lastname}', '${doctor.email}', '${doctor.password}', ${doctor.roleId}, ${doctor.genderId}, ${doctor.departmentId})`
       )
       .join(', ');
 
     const doctorResult = await queryRunner.query(`
       INSERT INTO "user"
-      (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
+      (id, firstname, lastname, email, password, "roleId", "genderId", "departmentId")
       VALUES ${doctorValues}
       RETURNING id
     `);
 
-    const doctorIds = doctorResult.map((item: { id: number }) => item.id);
+    const doctorIds = doctorResult.map((item: { id: string }) => item.id);
 
     // AGENTS
     const agents = [
       {
+        id: uuidv4(),
         firstname: 'Arnold',
         lastname: 'Agent',
         email: 'fakeagent@fake.com',
@@ -167,6 +171,7 @@ const seed = async () => {
         genderId: genderIdMap.na
       },
       {
+        id: uuidv4(),
         firstname: 'Anna',
         lastname: 'Agent',
         email: await fakeEmail(),
@@ -179,19 +184,20 @@ const seed = async () => {
     const agentValues = agents
       .map(
         (agent) =>
-          `('${agent.firstname}', '${agent.lastname}', '${agent.email}', '${agent.password}', ${agent.roleId}, ${agent.genderId})`
+          `('${agent.id}', '${agent.firstname}', '${agent.lastname}', '${agent.email}', '${agent.password}', ${agent.roleId}, ${agent.genderId})`
       )
       .join(', ');
 
     await queryRunner.query(`
       INSERT INTO "user"
-      (firstname, lastname, email, password, "roleId", "genderId")
+      (id, firstname, lastname, email, password, "roleId", "genderId")
       VALUES ${agentValues}
     `);
 
     // ADMINS
     const admins = [
       {
+        id: uuidv4(),
         firstname: 'Alice',
         lastname: 'Administrateur',
         email: 'fakeadmin@fake.com',
@@ -200,6 +206,7 @@ const seed = async () => {
         genderId: genderIdMap.na
       },
       {
+        id: uuidv4(),
         firstname: 'Albert',
         lastname: 'Administrateur',
         email: await fakeEmail(),
@@ -212,19 +219,20 @@ const seed = async () => {
     const adminValues = admins
       .map(
         (admin) =>
-          `('${admin.firstname}', '${admin.lastname}', '${admin.email}', '${admin.password}', ${admin.roleId}, ${admin.genderId})`
+          `('${admin.id}', '${admin.firstname}', '${admin.lastname}', '${admin.email}', '${admin.password}', ${admin.roleId}, ${admin.genderId})`
       )
       .join(', ');
 
     await queryRunner.query(`
       INSERT INTO "user"
-      (firstname, lastname, email, password, "roleId", "genderId")
+      (id, firstname, lastname, email, password, "roleId", "genderId")
       VALUES ${adminValues}
     `);
 
     // SECRETARIES
     const secretaries = [
       {
+        id: uuidv4(),
         firstname: 'Samuel',
         lastname: 'Secretary',
         email: 'fakesecretary@fake.com',
@@ -234,6 +242,7 @@ const seed = async () => {
         departmentId: Math.floor(Math.random() * departments.length) + 1
       },
       {
+        id: uuidv4(),
         firstname: 'Sally',
         lastname: 'Secretary',
         email: await fakeEmail(),
@@ -247,28 +256,28 @@ const seed = async () => {
     const secretaryValues = secretaries
       .map(
         (secretary) =>
-          `('${secretary.firstname}', '${secretary.lastname}', '${secretary.email}', '${secretary.password}', ${secretary.roleId}, ${secretary.genderId}, ${secretary.departmentId})`
+          `('${secretary.id}', '${secretary.firstname}', '${secretary.lastname}', '${secretary.email}', '${secretary.password}', ${secretary.roleId}, ${secretary.genderId}, ${secretary.departmentId})`
       )
       .join(', ');
 
     const secretaryResult = await queryRunner.query(`
       INSERT INTO "user"
-      (firstname, lastname, email, password, "roleId", "genderId", "departmentId")
+      (id, firstname, lastname, email, password, "roleId", "genderId", "departmentId")
       VALUES ${secretaryValues}
       RETURNING id
     `);
 
-    const secretaryIds = secretaryResult.map((item: { id: number }) => item.id);
+    const secretaryIds = secretaryResult.map((item: { id: string }) => item.id);
 
     // 3. WORKING HOURS
     type WorkdayHours = {
-      doctorId: number;
+      doctorId: string;
       weekday: number;
       startTime: string;
       endTime: string;
     };
 
-    function generateWorkingHours(doctorIds: number[]): WorkdayHours[] {
+    function generateWorkingHours(doctorIds: string[]): WorkdayHours[] {
       const workdays = [0, 1, 2, 3, 4, 5, 6];
       const daysWorked = 5;
       const possibleShifts = [
@@ -297,7 +306,7 @@ const seed = async () => {
     const workingHoursValues = workingHours
       .map(
         (workingHour) =>
-          `(${workingHour.doctorId}, ${workingHour.weekday}, '${workingHour.startTime}', '${workingHour.endTime}')`
+          `('${workingHour.doctorId}', ${workingHour.weekday}, '${workingHour.startTime}', '${workingHour.endTime}')`
       )
       .join(', ');
 
@@ -380,8 +389,8 @@ const seed = async () => {
       startTime: string;
       durationMinutes: number;
       subjectId: number;
-      doctorId: number;
-      authorId: number;
+      doctorId: string;
+      authorId: string;
       patientId: number;
     };
 
@@ -434,7 +443,7 @@ const seed = async () => {
     const consultationValues = consultations
       .map(
         (consultation) =>
-          `('${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, ${consultation.doctorId}, ${consultation.authorId}, ${consultation.patientId})`
+          `('${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, '${consultation.doctorId}', '${consultation.authorId}', ${consultation.patientId})`
       )
       .join(', ');
 
@@ -505,7 +514,7 @@ const seed = async () => {
     const attachmentValues = attachments
       .map(
         (attachment) =>
-          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', ${attachment.authorId}, ${attachment.consultationId})`
+          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', '${attachment.authorId}', ${attachment.consultationId})`
       )
       .join(', ');
 

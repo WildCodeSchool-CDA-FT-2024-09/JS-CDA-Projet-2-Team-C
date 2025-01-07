@@ -163,7 +163,7 @@ dotenv.config();
         RETURNING id
         `);
 
-    const doctorIds = doctorResult.map((item: { id: number }) => item.id);
+    const doctorIds = doctorResult.map((item: { id: string }) => item.id);
 
     // AGENTS
     const agents = [
@@ -267,17 +267,17 @@ dotenv.config();
       RETURNING id
     `);
 
-    const secretaryIds = secretaryResult.map((item: { id: number }) => item.id);
+    const secretaryIds = secretaryResult.map((item: { id: string }) => item.id);
 
     // 3. WORKING HOURS
     type WorkdayHours = {
-      doctorId: number;
+      doctorId: string;
       weekday: number;
       startTime: string;
       endTime: string;
     };
 
-    function generateWorkingHours(doctorIds: number[]): WorkdayHours[] {
+    function generateWorkingHours(doctorIds: string[]): WorkdayHours[] {
       const workdays = [0, 1, 2, 3, 4, 5, 6];
       const daysWorked = 5;
       const possibleShifts = [
@@ -306,7 +306,7 @@ dotenv.config();
     const workingHoursValues = workingHours
       .map(
         (workingHour) =>
-          `(${workingHour.doctorId}, ${workingHour.weekday}, '${workingHour.startTime}', '${workingHour.endTime}')`
+          `('${workingHour.doctorId}', ${workingHour.weekday}, '${workingHour.startTime}', '${workingHour.endTime}')`
       )
       .join(', ');
 
@@ -389,8 +389,8 @@ dotenv.config();
       startTime: string;
       durationMinutes: number;
       subjectId: number;
-      doctorId: number;
-      authorId: number;
+      doctorId: string;
+      authorId: string;
       patientId: number;
     };
 
@@ -443,7 +443,7 @@ dotenv.config();
     const consultationValues = consultations
       .map(
         (consultation) =>
-          `('${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, ${consultation.doctorId}, ${consultation.authorId}, ${consultation.patientId})`
+          `('${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, '${consultation.doctorId}', '${consultation.authorId}', ${consultation.patientId})`
       )
       .join(', ');
 
@@ -514,7 +514,7 @@ dotenv.config();
     const attachmentValues = attachments
       .map(
         (attachment) =>
-          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', ${attachment.authorId}, ${attachment.consultationId})`
+          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', '${attachment.authorId}', ${attachment.consultationId})`
       )
       .join(', ');
 

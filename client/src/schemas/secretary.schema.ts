@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_CONSULTATIONS_BY_DOCTOR_ID = gql`
-  query ConsultationsByDoctorId($doctorId: Float!) {
+  query ConsultationsByDoctorId($doctorId: String!) {
     consultationsByDoctorId(doctorId: $doctorId) {
       consultationDate
       startTime

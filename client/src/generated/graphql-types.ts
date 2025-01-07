@@ -46,7 +46,7 @@ export type Attachment = {
 export type AuthUser = {
   __typename?: 'AuthUser';
   email: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
   role: Role;
   token: Scalars['String']['output'];
 };
@@ -148,7 +148,7 @@ export type Query = {
 };
 
 export type QueryConsultationsByDoctorIdArgs = {
-  doctorId: Scalars['Float']['input'];
+  doctorId: Scalars['String']['input'];
 };
 
 export type QueryDossierArgs = {
@@ -205,7 +205,7 @@ export type User = {
   email: Scalars['String']['output'];
   firstname: Scalars['String']['output'];
   gender?: Maybe<Gender>;
-  id: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
   isArchived: Scalars['Boolean']['output'];
   lastname: Scalars['String']['output'];
   role: Role;
@@ -256,7 +256,7 @@ export type DepartmentsWithDoctorsQuery = {
     label: string;
     users: Array<{
       __typename?: 'User';
-      id: number;
+      id: string;
       firstname: string;
       lastname: string;
     }>;
@@ -273,7 +273,7 @@ export type DepartmentsAndDoctorsQuery = {
   getDoctors: Array<{
     __typename?: 'User';
     firstname: string;
-    id: number;
+    id: string;
     lastname: string;
   }>;
 };
@@ -382,7 +382,7 @@ export type RolesWithUsersQuery = {
     label: string;
     users?: Array<{
       __typename?: 'User';
-      id: number;
+      id: string;
       firstname: string;
       lastname: string;
     }> | null;
@@ -390,7 +390,7 @@ export type RolesWithUsersQuery = {
 };
 
 export type ConsultationsByDoctorIdQueryVariables = Exact<{
-  doctorId: Scalars['Float']['input'];
+  doctorId: Scalars['String']['input'];
 }>;
 
 export type ConsultationsByDoctorIdQuery = {
@@ -426,7 +426,7 @@ export type GetDoctorByDepartmentQuery = {
       __typename?: 'User';
       firstname: string;
       lastname: string;
-      id: number;
+      id: string;
     }>;
   }>;
 };
@@ -440,7 +440,7 @@ export type LoginQuery = {
   __typename?: 'Query';
   login: {
     __typename?: 'AuthUser';
-    id: number;
+    id: string;
     email: string;
     token: string;
     role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
@@ -460,7 +460,7 @@ export type AddUserMutation = {
   __typename?: 'Mutation';
   addUser: {
     __typename?: 'User';
-    id: number;
+    id: string;
     firstname: string;
     lastname: string;
     email: string;
@@ -490,7 +490,7 @@ export type GetAllUsersQuery = {
     hasMore: boolean;
     users: Array<{
       __typename?: 'User';
-      id: number;
+      id: string;
       firstname: string;
       lastname: string;
       email: string;
@@ -1300,7 +1300,7 @@ export type RolesWithUsersQueryResult = Apollo.QueryResult<
   RolesWithUsersQueryVariables
 >;
 export const ConsultationsByDoctorIdDocument = gql`
-  query ConsultationsByDoctorId($doctorId: Float!) {
+  query ConsultationsByDoctorId($doctorId: String!) {
     consultationsByDoctorId(doctorId: $doctorId) {
       consultationDate
       startTime

@@ -324,6 +324,7 @@ const seed = async () => {
 
     const patients = [
       {
+        id: uuidv4(),
         firstname: 'Pedro',
         lastname: 'Patient',
         email: await fakeEmail(),
@@ -334,6 +335,7 @@ const seed = async () => {
         genderId: genderIdMap.male
       },
       {
+        id: uuidv4(),
         firstname: 'Penelope',
         lastname: 'Patient',
         email: await fakeEmail(),
@@ -344,6 +346,7 @@ const seed = async () => {
         genderId: genderIdMap.female
       },
       {
+        id: uuidv4(),
         firstname: 'Pantagruel',
         lastname: 'Patient',
         email: await fakeEmail(),
@@ -354,6 +357,7 @@ const seed = async () => {
         genderId: genderIdMap.male
       },
       {
+        id: uuidv4(),
         firstname: 'Persephone',
         lastname: 'Patient',
         email: await fakeEmail(),
@@ -368,19 +372,19 @@ const seed = async () => {
     const patientValues = patients
       .map(
         (patient) =>
-          `('${patient.firstname}', '${patient.lastname}', '${patient.email}', '${patient.ssn}', '${patient.town}', '${patient.postcode}', '${patient.dateOfBirth}', ${patient.genderId})`
+          `('${patient.id}', '${patient.firstname}', '${patient.lastname}', '${patient.email}', '${patient.ssn}', '${patient.town}', '${patient.postcode}', '${patient.dateOfBirth}', ${patient.genderId})`
       )
       .join(', ');
 
     const patientResult = await queryRunner.query(`
       INSERT INTO "patient"
-      (firstname, lastname, email, ssn, town, postcode
+      (id, firstname, lastname, email, ssn, town, postcode
       , "dateOfBirth", "genderId")
       VALUES ${patientValues}
       RETURNING id
     `);
 
-    const patientIds = patientResult.map((item: { id: number }) => item.id);
+    const patientIds = patientResult.map((item: { id: string }) => item.id);
 
     // 5. CONSULTATIONS
     type Consultation = {
@@ -391,14 +395,14 @@ const seed = async () => {
       subjectId: number;
       doctorId: string;
       authorId: string;
-      patientId: number;
+      patientId: string;
     };
 
     // IMPORTANT NOTE - these start times are currently hardcoded to work with 4 fake patients and to fit within possible fake doctor working times on a single day. This is to avoid having to do lengthy checks of consistency that randomly generated consultations don't happen at the same time with the same doctor.
     const consultationStartTimes = ['12:00', '12:30', '13:00', '13:30'];
 
     const consultations: Consultation[] = patientIds.flatMap(
-      (patientId: number, index: number): Consultation[] => {
+      (patientId: string, index: number): Consultation[] => {
         const doctorId =
           doctorIds[Math.floor(Math.random() * doctorIds.length)];
         const authorId =
@@ -443,7 +447,7 @@ const seed = async () => {
     const consultationValues = consultations
       .map(
         (consultation) =>
-          `('${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, '${consultation.doctorId}', '${consultation.authorId}', ${consultation.patientId})`
+          `('${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, '${consultation.doctorId}', '${consultation.authorId}', '${consultation.patientId}')`
       )
       .join(', ');
 

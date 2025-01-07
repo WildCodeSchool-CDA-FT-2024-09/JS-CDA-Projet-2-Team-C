@@ -17,7 +17,7 @@ export class WorkingHours extends BaseEntity {
 
   @Field(() => Int)
   @Column({ nullable: false, type: 'int' })
-  weekday: number;
+  weekDay: number;
 
   @Field(() => String)
   @Column({ nullable: false, type: 'time' })

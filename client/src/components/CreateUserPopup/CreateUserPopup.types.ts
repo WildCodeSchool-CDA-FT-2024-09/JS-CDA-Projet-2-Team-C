@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent } from 'react';
 
 export type FormInputs = {
   role: string;
@@ -10,7 +10,7 @@ export type FormInputs = {
 };
 
 export type CreateUserPopupProps = {
-  close: (e: FormEvent<HTMLFormElement>) => void;
+  close: () => void;
   refetchUsers: () => void;
 };
 

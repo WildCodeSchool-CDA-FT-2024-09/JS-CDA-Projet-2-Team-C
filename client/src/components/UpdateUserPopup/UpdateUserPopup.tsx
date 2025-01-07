@@ -1,19 +1,26 @@
 import { forwardRef, useEffect, useState } from 'react';
 import {
   useDepartmentsAndGendersAndRolesQuery,
-  User
+  User,
+  useUpdateUserMutation
 } from '../../generated/graphql-types';
 import RoleSpecificFields from '../CreateUserPopup/RoleSpecificFields';
+import { useToast } from '../../contexts/toasts/useToast';
 
 type UpdateUserPopupProps = {
   close: () => void;
   user?: User;
+  refetchUsers: () => void;
 };
 
 const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
-  ({ close, user }, ref) => {
+  ({ close, refetchUsers, user }, ref) => {
     const { data: departmentsAndGendersAndRoles } =
       useDepartmentsAndGendersAndRolesQuery();
+    const [updateUser] = useUpdateUserMutation();
+
+    const { showToast } = useToast();
+
     const [formInputs, setFormInputs] = useState({
       role: '',
       name: '',
@@ -43,7 +50,31 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      close();
+      try {
+        updateUser({
+          variables: {
+            id: user.id,
+            lastname: formInputs.name,
+            firstname: formInputs.firstname,
+            departmentLabel: formInputs.service,
+            email: formInputs.email,
+            genderLabel: formInputs.gender
+          }
+        });
+        refetchUsers();
+        setFormInputs({
+          role: '',
+          name: '',
+          firstname: '',
+          email: '',
+          service: '',
+          gender: ''
+        });
+        close();
+        showToast('Utilisateur modifié avec succès!', 'success');
+      } catch (error) {
+        console.error('Erreur capturée:', error);
+      }
     };
 
     return (

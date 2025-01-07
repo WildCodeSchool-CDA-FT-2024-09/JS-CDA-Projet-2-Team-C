@@ -36,3 +36,36 @@ export const GET_ALL_USERS = gql`
     }
   }
 `;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser(
+    $id: String!
+    $firstname: String
+    $lastname: String
+    $email: String
+    $departmentLabel: String
+    $genderLabel: String
+  ) {
+    updateUser(
+      id: $id
+      firstname: $firstname
+      lastname: $lastname
+      email: $email
+      departmentLabel: $departmentLabel
+      genderLabel: $genderLabel
+    ) {
+      id
+      firstname
+      lastname
+      email
+      department {
+        label
+        id
+      }
+      gender {
+        id
+        label
+      }
+    }
+  }
+`;

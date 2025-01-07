@@ -89,6 +89,7 @@ export default function Admin() {
             ref={updateUserDialogRef}
             user={selectedUser}
             close={handleUpdateUserPopupClose}
+            refetchUsers={() => setCurrentPage(0)}
           />
           <div className="basis-1/4">{''}</div>
           <h2 className="basis-3/4 text-center font-bold">

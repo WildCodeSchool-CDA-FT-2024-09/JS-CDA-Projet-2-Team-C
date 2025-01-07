@@ -1,6 +1,7 @@
 import { InputFieldProps } from '../../AdminPopup/AdminPopup.types';
 
 export default function InputField({
+  className,
   name,
   label,
   placeholder,
@@ -10,12 +11,12 @@ export default function InputField({
   type = 'text'
 }: InputFieldProps) {
   return (
-    <label className="form-control w-full max-w-xs">
+    <label className={`form-control ${className || 'w-full'}`}>
       <div className="label">
         <span className="label-text text-primary">{label}</span>
       </div>
       <input
-        className="input input-bordered w-full max-w-xs border-primary"
+        className="input input-bordered w-full border-primary"
         name={name}
         placeholder={placeholder}
         value={value}

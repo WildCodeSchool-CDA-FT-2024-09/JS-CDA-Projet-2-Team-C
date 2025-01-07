@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-// This query is used for the dossier
+// This query is used for the dossier and for the PatientSelector component
 export const GET_PATIENT_BY_ID = gql`
   query Patient($patientId: Float!) {
     patient(patientId: $patientId) {

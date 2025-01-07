@@ -16,18 +16,14 @@ export default function SecretaryHome() {
     useConsultationsByDoctorIdLazyQuery();
 
   useEffect(() => {
-    // the default doctorId is 0
     if (doctorId) {
       getConsultationsByDoctorId({ variables: { doctorId: doctorId } });
-      // console.log('fetching consultations for doctor n° : ', doctorId);
     }
   }, [doctorId, getConsultationsByDoctorId]);
 
   useEffect(() => {
     if (data) setConsultations(data?.consultationsByDoctorId);
   }, [data, getConsultationsByDoctorId]);
-
-  // console.log(consultations);
 
   return (
     <div className="grid grid-cols-2 gap-8 p-8">

@@ -1,6 +1,6 @@
 export default interface PatientSelectorProps {
-  handlePatientSelected: (patientId: number) => void;
-  patientId: number | null;
+  handlePatientSelected: (patientId: string) => void;
+  patientId: string | null;
   displayMode: 'search' | 'form';
   setDisplayMode: (mode: 'search' | 'form') => void;
 }

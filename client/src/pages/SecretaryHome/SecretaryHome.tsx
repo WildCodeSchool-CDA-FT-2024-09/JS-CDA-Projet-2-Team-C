@@ -10,7 +10,7 @@ import PatientSelector from '../../components/secretary_components/PatientSelect
 
 export default function SecretaryHome() {
   // Doctor
-  const [doctorId, setDoctorId] = useState<number>(0);
+  const [doctorId, setDoctorId] = useState<string>('');
   const [consultations, setConsultations] = useState<
     ConsultationsByDoctorIdQuery['consultationsByDoctorId']
   >([]);
@@ -28,12 +28,12 @@ export default function SecretaryHome() {
   }, [data, getConsultationsByDoctorId]);
 
   // Patient
-  const [patientId, setPatientId] = useState<number | null>(null);
+  const [patientId, setPatientId] = useState<string | null>(null);
   const [patientDisplayMode, setPatientDisplayMode] = useState<
     'search' | 'form'
   >('search');
 
-  const handlePatientSelected = (patientId: number) => {
+  const handlePatientSelected = (patientId: string) => {
     setPatientId(patientId);
   };
 

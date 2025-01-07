@@ -12,7 +12,7 @@ export default function DoctorSelector({
 
   // TODO : find the department of the user and use it a default department
   const defaultDoctor = {
-    id: 0,
+    id: '',
     firstname: 'docteur',
     lastname: 'non défini'
   };

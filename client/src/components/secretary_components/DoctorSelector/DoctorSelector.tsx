@@ -51,9 +51,9 @@ export default function DoctorSelector({
     return (
       <>
         <div className="flex gap-2">
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full">
             <div className="label">
-              <span className="label-text text-primary">Service</span>
+              <span className="label-text text-primary-darker">Service</span>
             </div>
             <select
               className="select select-bordered"
@@ -72,9 +72,9 @@ export default function DoctorSelector({
             </select>
           </label>
 
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full">
             <div className="label">
-              <span className="label-text text-primary">Médecin</span>
+              <span className="label-text text-primary-darker">Médecin</span>
             </div>
             <select
               className="select select-bordered"

@@ -8,16 +8,16 @@ import {
   ManyToOne,
   OneToMany
 } from 'typeorm';
-import { Field, ObjectType, Int } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import { Gender, Consultation } from '../entities.index';
 import { GraphQLDate } from 'graphql-scalars';
 
 @ObjectType()
 @Entity()
 export class Patient extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id: number;
+  @Field(() => String)
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Field(() => String)
   @Column({ nullable: false, type: 'varchar', length: 50 })

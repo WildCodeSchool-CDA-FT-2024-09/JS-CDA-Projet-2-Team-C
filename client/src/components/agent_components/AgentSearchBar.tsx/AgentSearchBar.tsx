@@ -6,7 +6,7 @@ export default function AgentSearchBar({
   search
 }: AgentSearchBarProps) {
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full flex-col justify-center">
       <label
         htmlFor="search-input"
         className={`flex w-full gap-4 rounded-lg p-1 ${search.length !== 21 ? 'border-red-500' : 'border-blue-500'} border`}
@@ -15,7 +15,7 @@ export default function AgentSearchBar({
         <input
           id="search-input"
           type="text"
-          placeholder="rechercher"
+          placeholder="rechercher par N° social"
           className="focus:outline-none"
           onChange={(e) => handleChange(e.target.value)}
           aria-label="champ de recherche"
@@ -23,6 +23,9 @@ export default function AgentSearchBar({
           value={search}
         />
       </label>
+      <p className={`${search.length === 21 ? 'hidden' : 'text-red-500'}`}>
+        Le numéro doit contenir 15 chiffres.
+      </p>
     </div>
   );
 }

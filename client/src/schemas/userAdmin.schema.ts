@@ -22,6 +22,14 @@ export const GET_ALL_USERS = gql`
           code
           label
         }
+        department {
+          label
+          id
+        }
+        gender {
+          id
+          label
+        }
       }
       total
       hasMore

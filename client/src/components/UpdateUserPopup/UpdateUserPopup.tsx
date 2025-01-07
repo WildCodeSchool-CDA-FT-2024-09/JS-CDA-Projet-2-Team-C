@@ -1,5 +1,9 @@
-import { FormEvent, forwardRef } from 'react';
-import { User } from '../../generated/graphql-types';
+import { FormEvent, forwardRef, useEffect, useState } from 'react';
+import {
+  useDepartmentsAndGendersAndRolesQuery,
+  User
+} from '../../generated/graphql-types';
+import RoleSpecificFields from '../CreateUserPopup/RoleSpecificFields';
 
 type UpdateUserPopupProps = {
   close: (e: FormEvent<HTMLFormElement>) => void;
@@ -8,6 +12,40 @@ type UpdateUserPopupProps = {
 
 const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
   ({ close, user }, ref) => {
+    const { data: departmentsAndGendersAndRoles } =
+      useDepartmentsAndGendersAndRolesQuery();
+    const [formInputs, setFormInputs] = useState({
+      role: '',
+      name: '',
+      firstname: '',
+      email: '',
+      service: '',
+      gender: ''
+    });
+
+    useEffect(() => {
+      setFormInputs({
+        role: user?.role.code.toLowerCase(),
+        name: user?.lastname,
+        firstname: user?.firstname,
+        email: user?.email,
+        service: user?.department?.label,
+        gender: user?.gender?.label
+      });
+    }, [user]);
+
+    const handleInputChange = (
+      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
+      const { name, value } = e.target;
+      setFormInputs((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      close();
+    };
+
     return (
       <dialog id="admin-popup" className="modal" role="dialog" ref={ref}>
         <div className="modal-box">
@@ -20,11 +58,20 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
             Modifier un utilisateur
           </h3>
           <form
-            onSubmit={close}
+            onSubmit={handleSubmit}
             className="flex flex-col place-items-center gap-6"
           >
             <section className="mt-12 flex w-5/6 flex-col place-items-center rounded-xl border border-primary py-6">
-              {user && <div>{user.firstname}</div>}
+              {user && (
+                <RoleSpecificFields
+                  role={user.role.code.toLowerCase()}
+                  formInputs={formInputs}
+                  handleInputChange={handleInputChange}
+                  departments={departmentsAndGendersAndRoles?.departments}
+                  genders={departmentsAndGendersAndRoles?.genders}
+                  disabled={false}
+                />
+              )}
             </section>
             <button
               type="submit"

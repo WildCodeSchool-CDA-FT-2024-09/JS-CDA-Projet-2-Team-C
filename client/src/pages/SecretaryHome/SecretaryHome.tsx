@@ -28,7 +28,7 @@ export default function SecretaryHome() {
   }, [data, getConsultationsByDoctorId]);
 
   // Patient
-  const [patientId, setPatientId] = useState<number>(0);
+  const [patientId, setPatientId] = useState<number | null>(null);
 
   const handlePatientSelected = (patientId: number) => {
     setPatientId(patientId);
@@ -44,7 +44,7 @@ export default function SecretaryHome() {
         </FormPanel>
         <FormPanel
           title={'Patient'}
-          onReturn={patientId === 0 ? undefined : () => setPatientId(0)}
+          onReturn={patientId ? () => setPatientId(null) : undefined}
         >
           <PatientSelector
             patientId={patientId}

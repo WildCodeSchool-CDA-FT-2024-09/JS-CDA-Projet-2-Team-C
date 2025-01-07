@@ -1,4 +1,4 @@
 export default interface PatientSelectorProps {
   handlePatientSelected: (patientId: number) => void;
-  patientId: number;
+  patientId: number | null;
 }

@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { PatientQuery } from '../../../generated/graphql-types';
+import {
+  PatientQuery,
+  usePatientLazyQuery
+} from '../../../generated/graphql-types';
 import { useEffect } from 'react';
-import { usePatientQuery } from '../../../generated/graphql-types';
 import PatientSearchBar from '../../PatientSearchBar/PatientSearchBar';
 import InputField from '../InputField/InputField';
 import PatientSelectorProps from './PatientSelector.types';
@@ -10,12 +12,18 @@ export default function PatientSelector({
   patientId,
   handlePatientSelected
 }: PatientSelectorProps) {
-  const { data } = usePatientQuery({
-    variables: { patientId: patientId }
-  });
+  const [getPatient, { data }] = usePatientLazyQuery();
   const [patient, setPatient] = useState<
     PatientQuery['patient'] | Partial<PatientQuery['patient']> | null
   >(null);
+
+  useEffect(() => {
+    if (patientId) {
+      getPatient({ variables: { patientId } });
+    } else {
+      setPatient(null);
+    }
+  }, [patientId]);
 
   useEffect(() => {
     if (data) {

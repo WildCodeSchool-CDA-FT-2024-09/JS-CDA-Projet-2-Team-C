@@ -224,7 +224,7 @@ export type WorkingHours = {
   endTime: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   startTime: Scalars['String']['output'];
-  weekDay: Scalars['Int']['output'];
+  weekday: Scalars['Int']['output'];
 };
 
 export type DepartmentsAndGendersAndRolesQueryVariables = Exact<{
@@ -298,7 +298,7 @@ export type GetDoctorByIdQuery = {
       __typename?: 'WorkingHours';
       startTime: string;
       endTime: string;
-      weekDay: number;
+      weekday: number;
     }> | null;
   };
 };
@@ -524,7 +524,7 @@ export type GetAllUsersQuery = {
         __typename?: 'WorkingHours';
         endTime: string;
         startTime: string;
-        weekDay: number;
+        weekday: number;
       }> | null;
     }>;
   };
@@ -867,7 +867,7 @@ export const GetDoctorByIdDocument = gql`
       workingHours {
         startTime
         endTime
-        weekDay
+        weekday
       }
     }
   }
@@ -1783,7 +1783,7 @@ export const GetAllUsersDocument = gql`
         workingHours {
           endTime
           startTime
-          weekDay
+          weekday
         }
       }
       total

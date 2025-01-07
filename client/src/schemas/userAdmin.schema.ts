@@ -25,7 +25,7 @@ export const GET_ALL_USERS = gql`
         workingHours {
           endTime
           startTime
-          weekDay
+          weekday
         }
       }
       total

@@ -23,13 +23,13 @@ export default function AdminPopupDoctorHour({
     }
   });
 
-  const weekDays: ReadonlyArray<string> = useMemo(
+  const weekdays: ReadonlyArray<string> = useMemo(
     () => ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
     []
   );
 
   const [workingHoursState, setWorkingHoursState] = useState<
-    { weekDay: number; startTime: string; endTime: string }[]
+    { weekday: number; startTime: string; endTime: string }[]
   >([]);
 
   function formatTimeToHHMM(time: string): string {
@@ -48,14 +48,14 @@ export default function AdminPopupDoctorHour({
       );
     } else {
       setWorkingHoursState(
-        weekDays.map((_, index) => ({
-          weekDay: index,
+        weekdays.map((_, index) => ({
+          weekday: index,
           startTime: '',
           endTime: ''
         }))
       );
     }
-  }, [data, weekDays]);
+  }, [data, weekdays]);
 
   // Synchronisation de l'état avec l'affichage de la modale
   useEffect(() => {
@@ -92,7 +92,7 @@ export default function AdminPopupDoctorHour({
   ) => {
     setWorkingHoursState((prev) =>
       prev.map((wh) =>
-        wh.weekDay === dayIndex ? { ...wh, [field]: value } : wh
+        wh.weekday === dayIndex ? { ...wh, [field]: value } : wh
       )
     );
   };
@@ -117,9 +117,9 @@ export default function AdminPopupDoctorHour({
                   Sélectionner les jours et les horaires de travail
                 </span>
               </label>
-              {weekDays.map((day, index) => {
+              {weekdays.map((day, index) => {
                 const workingHour = workingHoursState.find(
-                  (wh) => wh.weekDay === index
+                  (wh) => wh.weekday === index
                 );
 
                 return (
@@ -136,7 +136,7 @@ export default function AdminPopupDoctorHour({
                           setWorkingHoursState((prev) => [
                             ...prev,
                             {
-                              weekDay: index,
+                              weekday: index,
                               startTime: '',
                               endTime: ''
                             }
@@ -144,7 +144,7 @@ export default function AdminPopupDoctorHour({
                         } else {
                           // Si décochée, retirer l'horaire pour ce jour
                           setWorkingHoursState((prev) =>
-                            prev.filter((wh) => wh.weekDay !== index)
+                            prev.filter((wh) => wh.weekday !== index)
                           );
                         }
                       }}

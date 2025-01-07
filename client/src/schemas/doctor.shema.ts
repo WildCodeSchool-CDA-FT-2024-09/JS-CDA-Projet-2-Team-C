@@ -8,7 +8,7 @@ export const GET_DOCTOR_BY_ID = gql`
       workingHours {
         startTime
         endTime
-        weekDay
+        weekday
       }
     }
   }

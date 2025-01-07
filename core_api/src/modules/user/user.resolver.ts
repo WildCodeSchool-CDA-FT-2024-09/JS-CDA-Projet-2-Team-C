@@ -8,7 +8,6 @@ import {
   Gender,
   RoleCode,
   PaginatedUsers
-  // WorkingHours
 } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
 import { hashPassword } from '../../utils/auth.utils';

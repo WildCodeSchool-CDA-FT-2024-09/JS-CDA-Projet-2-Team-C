@@ -58,7 +58,7 @@ export class User extends BaseEntity {
 
   @Field(() => [WorkingHours], { nullable: true })
   @OneToMany(() => WorkingHours, (workingHours) => workingHours.doctor, {
-    cascade: true // Sauvegarde automatique des relations
+    cascade: true
   })
   workingHours: WorkingHours[];
 

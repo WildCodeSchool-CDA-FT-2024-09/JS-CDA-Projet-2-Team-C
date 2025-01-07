@@ -6,6 +6,7 @@ import CreateUserPopup from '../../components/CreateUserPopup/CreateUserPopup.ts
 import Pagination from '../../components/Pagination/Pagination.tsx';
 import UserList from '../../components/UserList/UserList';
 import UpdateUserPopup from '../../components/UpdateUserPopup/UpdateUserPopup.tsx';
+import { User } from '../../generated/graphql-types.ts';
 
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling
@@ -15,7 +16,7 @@ export default function Admin() {
   const [totalPages, setTotalPages] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [role, setRole] = useState<string>('');
-  const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
+  const [selectedUser, setSelectedUser] = useState<User | undefined>();
 
   const debouncedSearch = useDebounce<string>(searchByName, 500);
 
@@ -50,8 +51,8 @@ export default function Admin() {
     }
   };
 
-  const handleUpdateUserPopupOpen = (userId: string) => {
-    setSelectedUserId(userId);
+  const handleUpdateUserPopupOpen = (user: User) => {
+    setSelectedUser(user);
     if (updateUserDialogRef.current) {
       updateUserDialogRef.current.showModal();
     }
@@ -85,7 +86,7 @@ export default function Admin() {
           <UpdateUserPopup
             name="updateUserPopup"
             ref={updateUserDialogRef}
-            userId={selectedUserId}
+            user={selectedUser}
             close={handleClose}
           />
           <div className="basis-1/4">{''}</div>

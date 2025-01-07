@@ -1,13 +1,13 @@
 import { forwardRef } from 'react';
+import { User } from '../../generated/graphql-types';
 
 type UpdateUserPopupProps = {
   close: () => void;
-  userId?: string;
+  user: User;
 };
 
 const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
-  ({ close, userId }, ref) => {
-    console.info('update popup user id', userId);
+  ({ close, user }, ref) => {
     return (
       <dialog id="admin-popup" className="modal" role="dialog" ref={ref}>
         <div className="modal-box">
@@ -23,6 +23,9 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
             onSubmit={close}
             className="flex flex-col place-items-center gap-6"
           >
+            <section className="mt-12 flex w-5/6 flex-col place-items-center rounded-xl border border-primary py-6">
+              {user && <div>{user.firstname}</div>}
+            </section>
             <button
               type="submit"
               className="btn btn-md w-5/6 bg-secondary text-white"

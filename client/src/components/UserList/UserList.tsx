@@ -1,4 +1,4 @@
-import { useGetAllUsersQuery } from '../../generated/graphql-types';
+import { useGetAllUsersQuery, User } from '../../generated/graphql-types';
 
 export default function UserList({
   currentPage,
@@ -13,7 +13,7 @@ export default function UserList({
   role: string;
   debouncedSearch: string;
   onPaginationData: (total: number, hasMoreData: boolean) => void;
-  openUpdateUserPopup: (id: string) => void;
+  openUpdateUserPopup: (user: User) => void;
 }) {
   const { data, loading, error } = useGetAllUsersQuery({
     variables: {
@@ -57,7 +57,7 @@ export default function UserList({
             <button
               type="button"
               className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark hover:text-white"
-              onClick={() => openUpdateUserPopup(user.id)}
+              onClick={() => openUpdateUserPopup(user)}
             >
               Modifier
             </button>

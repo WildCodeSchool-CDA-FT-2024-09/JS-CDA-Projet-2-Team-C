@@ -60,7 +60,7 @@ export type Consultation = {
   description: Scalars['String']['output'];
   doctor: User;
   durationMinutes: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
   patient: Patient;
   startTime: Scalars['String']['output'];
   subject: ConsultationSubject;
@@ -286,7 +286,7 @@ export type DossierQuery = {
   __typename?: 'Query';
   dossier: Array<{
     __typename?: 'Consultation';
-    id: number;
+    id: string;
     consultationDate: any;
     description: string;
     subject: { __typename?: 'ConsultationSubject'; label: string };
@@ -401,7 +401,7 @@ export type ConsultationsByDoctorIdQuery = {
     startTime: string;
     durationMinutes: number;
     description: string;
-    id: number;
+    id: string;
     patient: {
       __typename?: 'Patient';
       firstname: string;

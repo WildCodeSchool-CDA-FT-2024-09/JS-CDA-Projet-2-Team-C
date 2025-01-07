@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 // This query is resolved in the Consultations resolver
 export const GET_DOSSIER_BY_PATIENT_ID = gql`
-  query Dossier($patientId: Float!) {
+  query Dossier($patientId: String!) {
     dossier(patientId: $patientId) {
       id
       consultationDate

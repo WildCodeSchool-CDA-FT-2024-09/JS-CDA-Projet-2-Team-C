@@ -4,7 +4,7 @@ import PatientSearchBar from '../../components/PatientSearchBar/PatientSearchBar
 export default function DossierBrowser() {
   const navigate = useNavigate();
 
-  const handleRedirectToDossier = (patientId: number): void => {
+  const handleRedirectToDossier = (patientId: string): void => {
     navigate(`/patient/${patientId}/dossier`);
   };
 

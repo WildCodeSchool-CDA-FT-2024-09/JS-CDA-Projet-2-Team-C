@@ -6,6 +6,7 @@ import {
   ConsultationsByDoctorIdQuery,
   useConsultationsByDoctorIdLazyQuery
 } from '../../generated/graphql-types';
+import PatientSelector from '../../components/secretary_components/PatientSelector/PatientSelector';
 
 export default function SecretaryHome() {
   const [doctorId, setDoctorId] = useState<number>(0);
@@ -33,7 +34,9 @@ export default function SecretaryHome() {
             handleDoctorSelected={(doctor) => setDoctorId(doctor.id)}
           />
         </FormPanel>
-        <FormPanel title={'Patient'}>partie patient</FormPanel>
+        <FormPanel title={'Patient'}>
+          <PatientSelector />
+        </FormPanel>
         <FormPanel title={'Horaire'}>partie motif</FormPanel>
         <FormPanel title={'Motif'}>partie motif</FormPanel>
       </section>

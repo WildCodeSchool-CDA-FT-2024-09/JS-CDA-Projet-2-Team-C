@@ -33,17 +33,18 @@ export default function AdminPopupDoctorHour({
   >([]);
 
   function formatTimeToHHMM(time: string): string {
-    return time.slice(0, 5); // Garde uniquement les heures et minutes
+    return time.slice(0, 5);
   }
 
-  // Synchronisation de l'état avec les données récupérées
+  // Synchronizing state with retrieved data
   useEffect(() => {
     if (data?.getDoctorById?.workingHours) {
       setWorkingHoursState(
         data.getDoctorById.workingHours.map((wh) => ({
           ...wh,
-          startTime: formatTimeToHHMM(wh.startTime), // Conversion en HH:mm
-          endTime: formatTimeToHHMM(wh.endTime) // Conversion en HH:mm
+          // Conversion to HH:mm
+          startTime: formatTimeToHHMM(wh.startTime),
+          endTime: formatTimeToHHMM(wh.endTime)
         }))
       );
     } else {
@@ -57,7 +58,7 @@ export default function AdminPopupDoctorHour({
     }
   }, [data, weekdays]);
 
-  // Synchronisation de l'état avec l'affichage de la modale
+  // Synchronizing state with modal display
   useEffect(() => {
     if (isOpen && dialogRef.current) {
       dialogRef.current.showModal();
@@ -81,10 +82,10 @@ export default function AdminPopupDoctorHour({
     return times;
   }
 
-  const timesAM = addTimes(6, 16); // Matin (6h à 16h)
-  const timesPM = addTimes(12, 20); // Après-midi (12h à 20h)
+  const timesAM = addTimes(6, 16);
+  const timesPM = addTimes(12, 20);
 
-  // Mettre à jour l'état des horaires pour un jour spécifique
+  // Update schedule status for a specific day
   const updateWorkingHour = (
     dayIndex: number,
     field: 'startTime' | 'endTime',
@@ -128,11 +129,10 @@ export default function AdminPopupDoctorHour({
                       type="checkbox"
                       name={`day-${index}`}
                       id={`day-${index}`}
-                      checked={!!workingHour} // Si `workingHour` existe, la case est cochée
+                      checked={!!workingHour} // If `workingHour` exists, the box is checked
                       onChange={(e) => {
-                        // Ajouter ou supprimer un horaire pour le jour en fonction de la case cochée
                         if (e.target.checked) {
-                          // Si cochée, ajouter une plage horaire par défaut
+                          // select the schedule only if the day is checked
                           setWorkingHoursState((prev) => [
                             ...prev,
                             {
@@ -142,7 +142,7 @@ export default function AdminPopupDoctorHour({
                             }
                           ]);
                         } else {
-                          // Si décochée, retirer l'horaire pour ce jour
+                          // If unchecked, remove schedule for that day
                           setWorkingHoursState((prev) =>
                             prev.filter((wh) => wh.weekday !== index)
                           );

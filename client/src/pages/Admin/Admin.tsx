@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce.ts';
 import SearchBar from '../../components/shared_components/SearchBar/SearchBar.tsx';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
@@ -58,8 +58,7 @@ export default function Admin() {
     }
   };
 
-  const handleUpdateUserPopupClose = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleUpdateUserPopupClose = () => {
     if (updateUserDialogRef.current) {
       updateUserDialogRef.current.close();
     }

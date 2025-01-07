@@ -1,4 +1,4 @@
-import { FormEvent, forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import {
   useDepartmentsAndGendersAndRolesQuery,
   User
@@ -6,7 +6,7 @@ import {
 import RoleSpecificFields from '../CreateUserPopup/RoleSpecificFields';
 
 type UpdateUserPopupProps = {
-  close: (e: FormEvent<HTMLFormElement>) => void;
+  close: () => void;
   user?: User;
 };
 
@@ -25,12 +25,12 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
 
     useEffect(() => {
       setFormInputs({
-        role: user?.role.code.toLowerCase(),
-        name: user?.lastname,
-        firstname: user?.firstname,
-        email: user?.email,
-        service: user?.department?.label,
-        gender: user?.gender?.label
+        role: user?.role.code.toLowerCase() || '',
+        name: user?.lastname || '',
+        firstname: user?.firstname || '',
+        email: user?.email || '',
+        service: user?.department?.label || '',
+        gender: user?.gender?.label || ''
       });
     }, [user]);
 
@@ -41,7 +41,7 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
       setFormInputs((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       close();
     };

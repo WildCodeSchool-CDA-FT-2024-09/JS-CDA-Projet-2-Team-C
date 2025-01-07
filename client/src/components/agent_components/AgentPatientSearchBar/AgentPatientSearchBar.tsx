@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetPatientsByNameLazyQuery } from '../../../generated/graphql-types';
 import AgentSearchBar from '../AgentSearchBar.tsx/AgentSearchBar';
 import AgentPatientSearchBarProps from './AgentPatientSearchBar.type';
@@ -28,16 +28,12 @@ export default function AgentPatientSearchBar({
     setSearch(sanitisedValue);
   };
 
-  const handleSearch = useCallback((): void => {
+  useEffect(() => {
     const sanitisedSearch = search.replace(/\s+/g, '');
     if (sanitisedSearch.length === 15) {
       getPatientsByName({ variables: { search: sanitisedSearch } });
     }
   }, [search, getPatientsByName]);
-
-  useEffect(() => {
-    handleSearch();
-  }, [search, handleSearch]);
 
   return (
     <div className="dropdown dropdown-end sm:w-auto md:w-[35rem]">

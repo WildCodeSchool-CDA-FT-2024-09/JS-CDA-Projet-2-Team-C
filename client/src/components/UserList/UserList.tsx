@@ -5,13 +5,15 @@ export default function UserList({
   perPage,
   role,
   debouncedSearch,
-  onPaginationData
+  onPaginationData,
+  openUpdateUserPopup
 }: {
   currentPage: number;
   perPage: number;
   role: string;
   debouncedSearch: string;
   onPaginationData: (total: number, hasMoreData: boolean) => void;
+  openUpdateUserPopup: (id: string) => void;
 }) {
   const { data, loading, error } = useGetAllUsersQuery({
     variables: {
@@ -55,6 +57,7 @@ export default function UserList({
             <button
               type="button"
               className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark hover:text-white"
+              onClick={() => openUpdateUserPopup(user.id)}
             >
               Modifier
             </button>

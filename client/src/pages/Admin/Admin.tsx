@@ -5,6 +5,7 @@ import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import CreateUserPopup from '../../components/CreateUserPopup/CreateUserPopup.tsx';
 import Pagination from '../../components/Pagination/Pagination.tsx';
 import UserList from '../../components/UserList/UserList';
+import UpdateUserPopup from '../../components/UpdateUserPopup/UpdateUserPopup.tsx';
 
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling
@@ -13,8 +14,13 @@ export default function Admin() {
   const [searchByName, setSearchByName] = useState<string>('');
   const [totalPages, setTotalPages] = useState(0);
   const [hasMore, setHasMore] = useState(false);
-  const debouncedSearch = useDebounce<string>(searchByName, 500);
   const [role, setRole] = useState<string>('');
+  const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
+
+  const debouncedSearch = useDebounce<string>(searchByName, 500);
+
+  const createUserDialogRef = useRef<HTMLDialogElement>(null);
+  const updateUserDialogRef = useRef<HTMLDialogElement>(null);
 
   const handleNextPage = () => {
     if (hasMore) {
@@ -38,17 +44,25 @@ export default function Admin() {
     setCurrentPage(0);
   };
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
-  const handleOpen = () => {
-    if (dialogRef.current) {
-      dialogRef.current.showModal();
+  const handleCreateUserPopupOpen = () => {
+    if (createUserDialogRef.current) {
+      createUserDialogRef.current.showModal();
     }
   };
 
-  const handleClose = () => {
-    if (dialogRef.current) {
-      dialogRef.current.close();
+  const handleUpdateUserPopupOpen = (userId: string) => {
+    setSelectedUserId(userId);
+    if (updateUserDialogRef.current) {
+      updateUserDialogRef.current.showModal();
+    }
+  };
+
+  const handleClose = (e) => {
+    e.preventDefault();
+    if (e.target.name === 'createUserPopup' && createUserDialogRef.current) {
+      createUserDialogRef.current.close();
+    } else if (updateUserDialogRef.current) {
+      updateUserDialogRef.current.close();
     }
   };
 
@@ -63,9 +77,16 @@ export default function Admin() {
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
         <section className="flex p-[27px]">
           <CreateUserPopup
-            ref={dialogRef}
+            name="createUserPopup"
+            ref={createUserDialogRef}
             close={handleClose}
             refetchUsers={() => setCurrentPage(0)}
+          />
+          <UpdateUserPopup
+            name="updateUserPopup"
+            ref={updateUserDialogRef}
+            userId={selectedUserId}
+            close={handleClose}
           />
           <div className="basis-1/4">{''}</div>
           <h2 className="basis-3/4 text-center font-bold">
@@ -74,7 +95,7 @@ export default function Admin() {
           <button
             type="button"
             className="basis-1/4 rounded-lg bg-primary-dark p-2 text-white hover:bg-secondary"
-            onClick={handleOpen}
+            onClick={handleCreateUserPopupOpen}
           >
             Ajouter un utilisateur
           </button>
@@ -104,6 +125,7 @@ export default function Admin() {
                 role={role}
                 debouncedSearch={debouncedSearch}
                 onPaginationData={handlePaginationData}
+                openUpdateUserPopup={handleUpdateUserPopupOpen}
               />
             </tbody>
           </table>

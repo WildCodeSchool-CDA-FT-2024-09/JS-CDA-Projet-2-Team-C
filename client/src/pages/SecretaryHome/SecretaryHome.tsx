@@ -37,6 +37,12 @@ export default function SecretaryHome() {
     setPatientId(patientId);
   };
 
+  useEffect(() => {
+    if (patientDisplayMode === 'search') {
+      setPatientId(null);
+    }
+  }, [patientDisplayMode]);
+
   return (
     <div className="grid grid-cols-2 gap-8 p-8">
       <section className="rounded-2xl bg-primary-lighter p-4">

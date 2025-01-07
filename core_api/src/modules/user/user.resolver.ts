@@ -175,48 +175,19 @@ export default class UserResolver {
     };
   }
 
-  // @Mutation(() => Boolean, {
-  //   description: 'Update working hours for a doctor across multiple days'
-  // })
-  // async updateDoctorWorkingHours(
-  //   @Arg('doctorId', () => Int) doctorId: number,
-  //   @Arg('workingDays', () => [weekDay]) workingDays: weekDay[]
-  // ): Promise<boolean> {
-  //   // Vérifiez si l'utilisateur est un docteur
-  //   const doctor = await User.findOne({
-  //     where: { id: doctorId },
-  //     relations: ['role', 'workingHours']
-  //   });
+  @Query(() => User, {
+    description: 'Fetch a doctor by ID with their working hours'
+  })
+  async getDoctorById(@Arg('id', () => Int) id: number): Promise<User | null> {
+    const doctor = await User.findOne({
+      where: { id },
+      relations: ['role', 'workingHours']
+    });
 
-  //   if (!doctor) {
-  //     throw new Error('Doctor not found');
-  //   }
+    if (!doctor || doctor.role.code !== RoleCode.DOCTOR) {
+      throw new Error('Doctor not found or not a doctor');
+    }
 
-  //   if (doctor.role.code !== RoleCode.DOCTOR) {
-  //     throw new Error('The user is not a doctor');
-  //   }
-
-  //   for (const day of workingDays) {
-  //     // Vérifiez si un horaire existe pour ce jour
-  //     let workingHours = doctor.workingHours.find(
-  //       (wh) => wh.weekDay === day.weekDay
-  //     );
-
-  //     if (!workingHours) {
-  //       // Si aucun horaire n'existe pour ce jour, créez un nouvel objet
-  //       workingHours = new WorkingHours();
-  //       workingHours.doctor = doctor;
-  //       workingHours.weekDay = day.weekDay;
-  //     }
-
-  //     // Mettez à jour les horaires
-  //     workingHours.startTime = day.startTime;
-  //     workingHours.endTime = day.endTime;
-
-  //     // Sauvegardez les horaires
-  //     await workingHours.save();
-  //   }
-
-  //   return true;
-  // }
+    return doctor;
+  }
 }

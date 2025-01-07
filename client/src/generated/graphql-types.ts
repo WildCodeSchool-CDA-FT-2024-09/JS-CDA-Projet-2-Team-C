@@ -138,6 +138,8 @@ export type Query = {
   getAllUsers: PaginatedUsers;
   /** Fetches departments by label and their doctors */
   getDoctorByDepartment: Array<Department>;
+  /** Fetch a doctor by ID with their working hours */
+  getDoctorById: User;
   /** Fetches all users with the role of doctor */
   getDoctors: Array<User>;
   login: AuthUser;
@@ -164,6 +166,10 @@ export type QueryGetAllUsersArgs = {
 
 export type QueryGetDoctorByDepartmentArgs = {
   label: Scalars['String']['input'];
+};
+
+export type QueryGetDoctorByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 export type QueryLoginArgs = {
@@ -276,6 +282,25 @@ export type DepartmentsAndDoctorsQuery = {
     id: number;
     lastname: string;
   }>;
+};
+
+export type GetDoctorByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+export type GetDoctorByIdQuery = {
+  __typename?: 'Query';
+  getDoctorById: {
+    __typename?: 'User';
+    firstname: string;
+    lastname: string;
+    workingHours?: Array<{
+      __typename?: 'WorkingHours';
+      startTime: string;
+      endTime: string;
+      weekDay: number;
+    }> | null;
+  };
 };
 
 export type DossierQueryVariables = Exact<{
@@ -833,6 +858,94 @@ export type DepartmentsAndDoctorsSuspenseQueryHookResult = ReturnType<
 export type DepartmentsAndDoctorsQueryResult = Apollo.QueryResult<
   DepartmentsAndDoctorsQuery,
   DepartmentsAndDoctorsQueryVariables
+>;
+export const GetDoctorByIdDocument = gql`
+  query GetDoctorById($id: Int!) {
+    getDoctorById(id: $id) {
+      firstname
+      lastname
+      workingHours {
+        startTime
+        endTime
+        weekDay
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetDoctorByIdQuery__
+ *
+ * To run a query within a React component, call `useGetDoctorByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDoctorByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDoctorByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetDoctorByIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetDoctorByIdQuery,
+    GetDoctorByIdQueryVariables
+  > &
+    (
+      | { variables: GetDoctorByIdQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    )
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetDoctorByIdQuery, GetDoctorByIdQueryVariables>(
+    GetDoctorByIdDocument,
+    options
+  );
+}
+export function useGetDoctorByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetDoctorByIdQuery,
+    GetDoctorByIdQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetDoctorByIdQuery, GetDoctorByIdQueryVariables>(
+    GetDoctorByIdDocument,
+    options
+  );
+}
+export function useGetDoctorByIdSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetDoctorByIdQuery,
+        GetDoctorByIdQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetDoctorByIdQuery,
+    GetDoctorByIdQueryVariables
+  >(GetDoctorByIdDocument, options);
+}
+export type GetDoctorByIdQueryHookResult = ReturnType<
+  typeof useGetDoctorByIdQuery
+>;
+export type GetDoctorByIdLazyQueryHookResult = ReturnType<
+  typeof useGetDoctorByIdLazyQuery
+>;
+export type GetDoctorByIdSuspenseQueryHookResult = ReturnType<
+  typeof useGetDoctorByIdSuspenseQuery
+>;
+export type GetDoctorByIdQueryResult = Apollo.QueryResult<
+  GetDoctorByIdQuery,
+  GetDoctorByIdQueryVariables
 >;
 export const DossierDocument = gql`
   query Dossier($patientId: Float!) {

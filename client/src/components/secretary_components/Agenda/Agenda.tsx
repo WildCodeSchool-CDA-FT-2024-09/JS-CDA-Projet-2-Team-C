@@ -1,35 +1,31 @@
-import { useState, useCallback, useMemo } from 'react';
-import { Calendar, DateLocalizer, dateFnsLocalizer } from 'react-big-calendar';
+import { useState, useCallback, useMemo, useEffect } from 'react';
+import {
+  Calendar,
+  DateLocalizer,
+  dateFnsLocalizer,
+  Event
+} from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { fr } from 'date-fns/locale/fr'; // Import French locale
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { convertToCalendarEvents } from './events.utils';
+import { AgendaProps } from './Agenda.types';
 
-export default function Agenda() {
+export default function Agenda({ consultations }: AgendaProps) {
   const localizer: DateLocalizer = dateFnsLocalizer({
     format,
     parse,
-    startOfWeek,
+    startOfWeek: (date: Date) => startOfWeek(date, { weekStartsOn: 1 }), // Needed to start the week on monday instead of sunday
     getDay,
     locales: { fr }
   });
 
-  const [events, setEvents] = useState([
-    {
-      title: 'Meeting with Team',
-      start: new Date(2024, 10, 29, 10, 0), // Adjust dates to suit your example
-      end: new Date(2024, 10, 29, 11, 0)
-    },
-    {
-      title: 'Doctor Appointment',
-      start: new Date(2024, 10, 30, 14, 0),
-      end: new Date(2024, 10, 30, 15, 0)
-    },
-    {
-      title: 'Doctor CONvergence',
-      start: new Date(2024, 10, 30, 9, 0),
-      end: new Date(2024, 10, 30, 11, 0)
-    }
-  ]);
+  const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    const newEvents = convertToCalendarEvents(consultations);
+    setEvents(newEvents);
+  }, [consultations]);
 
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
@@ -60,6 +56,7 @@ export default function Agenda() {
     <div style={{ height: '700px', width: '800px' }}>
       <Calendar
         localizer={localizer}
+        culture="fr"
         events={events}
         startAccessor="start"
         endAccessor="end"

@@ -1,9 +1,9 @@
-import { forwardRef } from 'react';
+import { FormEvent, forwardRef } from 'react';
 import { User } from '../../generated/graphql-types';
 
 type UpdateUserPopupProps = {
-  close: () => void;
-  user: User;
+  close: (e: FormEvent<HTMLFormElement>) => void;
+  user?: User;
 };
 
 const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(

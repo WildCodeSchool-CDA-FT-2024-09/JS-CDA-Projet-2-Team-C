@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce.ts';
 import SearchBar from '../../components/shared_components/SearchBar/SearchBar.tsx';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
@@ -58,12 +58,16 @@ export default function Admin() {
     }
   };
 
-  const handleClose = (e) => {
+  const handleUpdateUserPopupClose = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (e.target.name === 'createUserPopup' && createUserDialogRef.current) {
-      createUserDialogRef.current.close();
-    } else if (updateUserDialogRef.current) {
+    if (updateUserDialogRef.current) {
       updateUserDialogRef.current.close();
+    }
+  };
+
+  const handleCreateUserPopupClose = () => {
+    if (createUserDialogRef.current) {
+      createUserDialogRef.current.close();
     }
   };
 
@@ -78,16 +82,14 @@ export default function Admin() {
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
         <section className="flex p-[27px]">
           <CreateUserPopup
-            name="createUserPopup"
             ref={createUserDialogRef}
-            close={handleClose}
+            close={handleCreateUserPopupClose}
             refetchUsers={() => setCurrentPage(0)}
           />
           <UpdateUserPopup
-            name="updateUserPopup"
             ref={updateUserDialogRef}
             user={selectedUser}
-            close={handleClose}
+            close={handleUpdateUserPopupClose}
           />
           <div className="basis-1/4">{''}</div>
           <h2 className="basis-3/4 text-center font-bold">

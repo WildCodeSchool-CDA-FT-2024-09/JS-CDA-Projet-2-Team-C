@@ -6,7 +6,7 @@ import { Patient } from '../entities.index';
 export default class PatientResolver {
   // TODO : rescrtict access to role === doctor | secretary
   @Query(() => Patient)
-  async patient(@Arg('patientId') patientId: number) {
+  async patient(@Arg('patientId') patientId: string) {
     return await Patient.findOne({
       where: { id: patientId },
       relations: {

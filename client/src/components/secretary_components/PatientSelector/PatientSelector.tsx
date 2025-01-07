@@ -10,7 +10,9 @@ import PatientSelectorProps from './PatientSelector.types';
 
 export default function PatientSelector({
   patientId,
-  handlePatientSelected
+  handlePatientSelected,
+  displayMode,
+  setDisplayMode
 }: PatientSelectorProps) {
   const [getPatient, { data }] = usePatientLazyQuery();
   const [patient, setPatient] = useState<
@@ -20,8 +22,10 @@ export default function PatientSelector({
   useEffect(() => {
     if (patientId) {
       getPatient({ variables: { patientId } });
+      setDisplayMode('form');
     } else {
       setPatient(null);
+      setDisplayMode('search');
     }
   }, [patientId]);
 
@@ -37,7 +41,7 @@ export default function PatientSelector({
       setPatient(newPatient);
     };
 
-  if (patientId) {
+  if (displayMode === 'form') {
     return (
       <>
         <div className="grid grid-cols-6 grid-rows-3 gap-2">
@@ -96,9 +100,14 @@ export default function PatientSelector({
     );
   } else
     return (
-      <>
+      <div className="flex items-center gap-2">
         <PatientSearchBar handlePatientSelected={handlePatientSelected} />
-        <button> add </button>
-      </>
+        <button
+          className="btn w-40 border-none bg-primary text-white"
+          onClick={() => setDisplayMode('form')}
+        >
+          + nouveau patient
+        </button>
+      </div>
     );
 }

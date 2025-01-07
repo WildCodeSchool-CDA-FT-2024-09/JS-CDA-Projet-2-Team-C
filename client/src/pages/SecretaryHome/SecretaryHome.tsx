@@ -29,6 +29,9 @@ export default function SecretaryHome() {
 
   // Patient
   const [patientId, setPatientId] = useState<number | null>(null);
+  const [patientDisplayMode, setPatientDisplayMode] = useState<
+    'search' | 'form'
+  >('search');
 
   const handlePatientSelected = (patientId: number) => {
     setPatientId(patientId);
@@ -44,11 +47,17 @@ export default function SecretaryHome() {
         </FormPanel>
         <FormPanel
           title={'Patient'}
-          onReturn={patientId ? () => setPatientId(null) : undefined}
+          onReturn={
+            patientDisplayMode !== 'search'
+              ? () => setPatientDisplayMode('search')
+              : undefined
+          }
         >
           <PatientSelector
             patientId={patientId}
             handlePatientSelected={handlePatientSelected}
+            displayMode={patientDisplayMode}
+            setDisplayMode={setPatientDisplayMode}
           />
         </FormPanel>
         <FormPanel title={'Horaire'}>partie motif</FormPanel>

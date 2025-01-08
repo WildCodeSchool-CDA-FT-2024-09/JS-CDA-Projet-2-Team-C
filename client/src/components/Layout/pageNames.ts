@@ -4,7 +4,7 @@ export const pageNames: PageNames = {
   '/': 'Login',
   '/planning': 'Planning',
   '/consultation': 'Consultation',
-  '/dossiers': 'Liste des dossiers patient',
+  '/dossiers': 'Dossiers',
   '/dossier:id': 'Dossier patient',
   '/planning/patient/:patientId/dossier': 'Dossier patient',
   '/patient/:patientId/dossier': 'Dossier patient',

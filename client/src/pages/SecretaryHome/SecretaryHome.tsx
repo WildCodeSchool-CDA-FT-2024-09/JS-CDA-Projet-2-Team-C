@@ -6,9 +6,11 @@ import {
   ConsultationsByDoctorIdQuery,
   useConsultationsByDoctorIdLazyQuery
 } from '../../generated/graphql-types';
+import PatientSelector from '../../components/secretary_components/PatientSelector/PatientSelector';
 
 export default function SecretaryHome() {
-  const [doctorId, setDoctorId] = useState<number>(0);
+  // Doctor
+  const [doctorId, setDoctorId] = useState<string>('');
   const [consultations, setConsultations] = useState<
     ConsultationsByDoctorIdQuery['consultationsByDoctorId']
   >([]);
@@ -16,10 +18,8 @@ export default function SecretaryHome() {
     useConsultationsByDoctorIdLazyQuery();
 
   useEffect(() => {
-    // the default doctorId is 0
     if (doctorId) {
       getConsultationsByDoctorId({ variables: { doctorId: doctorId } });
-      // console.log('fetching consultations for doctor n° : ', doctorId);
     }
   }, [doctorId, getConsultationsByDoctorId]);
 
@@ -27,7 +27,21 @@ export default function SecretaryHome() {
     if (data) setConsultations(data?.consultationsByDoctorId);
   }, [data, getConsultationsByDoctorId]);
 
-  // console.log(consultations);
+  // Patient
+  const [patientId, setPatientId] = useState<string | null>(null);
+  const [patientDisplayMode, setPatientDisplayMode] = useState<
+    'search' | 'form'
+  >('search');
+
+  const handlePatientSelected = (patientId: string) => {
+    setPatientId(patientId);
+  };
+
+  useEffect(() => {
+    if (patientDisplayMode === 'search') {
+      setPatientId(null);
+    }
+  }, [patientDisplayMode]);
 
   return (
     <div className="grid grid-cols-2 gap-8 p-8">
@@ -37,7 +51,21 @@ export default function SecretaryHome() {
             handleDoctorSelected={(doctor) => setDoctorId(doctor.id)}
           />
         </FormPanel>
-        <FormPanel title={'Patient'}>partie patient</FormPanel>
+        <FormPanel
+          title={'Patient'}
+          onReturn={
+            patientDisplayMode !== 'search'
+              ? () => setPatientDisplayMode('search')
+              : undefined
+          }
+        >
+          <PatientSelector
+            patientId={patientId}
+            handlePatientSelected={handlePatientSelected}
+            displayMode={patientDisplayMode}
+            setDisplayMode={setPatientDisplayMode}
+          />
+        </FormPanel>
         <FormPanel title={'Horaire'}>partie motif</FormPanel>
         <FormPanel title={'Motif'}>partie motif</FormPanel>
       </section>

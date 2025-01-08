@@ -22,32 +22,50 @@ describe('Patient resolver', () => {
     const searchValue = 'pen';
     const expectedResult = {
       firstname: 'Penelope',
-      id: 2,
       lastname: 'Patient'
     };
     const result = (await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       variableValues: { search: searchValue }
-    })) as { data: { patients: Array<unknown> } };
+    })) as {
+      data: {
+        patients: Array<{ id: string; firstname: string; lastname: string }>;
+      };
+    };
 
-    expect(result.data.patients).toContainEqual(expectedResult);
+    expect(result.data.patients).toContainEqual(
+      expect.objectContaining(expectedResult)
+    );
+    result.data.patients.forEach((patient) => {
+      expect(patient).toHaveProperty('id');
+      expect(typeof patient.id).toBe('string');
+    });
   });
 
   it('results aren t affected by case ', async () => {
     const searchValue = 'PeNel';
     const expectedResult = {
       firstname: 'Penelope',
-      id: 2,
       lastname: 'Patient'
     };
     const result = (await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       variableValues: { search: searchValue }
-    })) as { data: { patients: Array<unknown> } };
+    })) as {
+      data: {
+        patients: Array<{ id: string; firstname: string; lastname: string }>;
+      };
+    };
 
-    expect(result.data.patients).toContainEqual(expectedResult);
+    expect(result.data.patients).toContainEqual(
+      expect.objectContaining(expectedResult)
+    );
+    result.data.patients.forEach((patient) => {
+      expect(patient).toHaveProperty('id');
+      expect(typeof patient.id).toBe('string');
+    });
   });
 
   // Edge cases

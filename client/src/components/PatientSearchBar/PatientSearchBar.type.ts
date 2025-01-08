@@ -1,3 +1,3 @@
 export default interface PatientSearchBarProps {
-  handlePatientSelected: (patientId: number) => void;
+  handlePatientSelected: (patientId: string) => void;
 }

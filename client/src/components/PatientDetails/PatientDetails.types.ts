@@ -1,3 +1,3 @@
 export interface PatientDetailsProps {
-  patientId: number;
+  patientId: string;
 }

@@ -5,7 +5,7 @@ import { Resolver, Query, Arg } from 'type-graphql';
 export default class ConsultationResolver {
   // TODO : rescrtict access to role === doctor
   @Query(() => [Consultation])
-  async dossier(@Arg('patientId') patientId: number) {
+  async dossier(@Arg('patientId') patientId: string) {
     return await Consultation.find({
       where: { patient: { id: patientId } },
       order: { consultationDate: 'DESC', startTime: 'DESC' },
@@ -21,7 +21,7 @@ export default class ConsultationResolver {
   // TODO : talk amongst ourselves on how to restrict the dates ? Maybe refetch based on the calendar's view ?
   // in this case, it should also take a end date
   @Query(() => [Consultation])
-  async consultationsByDoctorId(@Arg('doctorId') doctorId: number) {
+  async consultationsByDoctorId(@Arg('doctorId') doctorId: string) {
     return await Consultation.find({
       where: { doctor: { id: doctorId } },
       order: { consultationDate: 'DESC', startTime: 'DESC' },

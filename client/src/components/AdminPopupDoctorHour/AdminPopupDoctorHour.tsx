@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useGetDoctorByIdQuery } from '../../generated/graphql-types';
 import TimeSelect from './TimeSelectWorkingHour';
+// import { useMutation } from '@apollo/client';
+import { useUpdateDoctorWorkingHoursMutation } from '../../generated/graphql-types';
+import { useToast } from '../../contexts/toasts/useToast';
 
 interface AdminPopupDoctorHourProps {
   isOpen: boolean;
@@ -17,7 +20,43 @@ export default function AdminPopupDoctorHour({
 }: AdminPopupDoctorHourProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const { data } = useGetDoctorByIdQuery({
+  const [updateDoctorWorkingHours, { loading: saving }] =
+    useUpdateDoctorWorkingHoursMutation();
+
+  const { showToast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      workingHoursState.some(
+        (wh) => !wh.startTime || !wh.endTime || wh.startTime >= wh.endTime
+      )
+    ) {
+      showToast('Veuillez vérifier les horaires saisie.', 'error');
+      return;
+    }
+
+    try {
+      await updateDoctorWorkingHours({
+        variables: {
+          doctorId: idDoctor,
+          workingHours: workingHoursState.map((wh) => ({
+            weekday: wh.weekday,
+            startTime: wh.startTime,
+            endTime: wh.endTime
+          }))
+        }
+      });
+      showToast('horaire ajouté / modifié avec succès', 'success');
+      refetch();
+      onClose();
+    } catch (error) {
+      console.error('Erreur capturée:', error);
+      showToast('Une erreur inattendue est survenue.', 'error');
+    }
+  };
+
+  const { data, refetch } = useGetDoctorByIdQuery({
     variables: {
       id: idDoctor
     }
@@ -32,6 +71,7 @@ export default function AdminPopupDoctorHour({
     { weekday: number; startTime: string; endTime: string }[]
   >([]);
 
+  // function for Conversion to HH:mm
   function formatTimeToHHMM(time: string): string {
     return time.slice(0, 5);
   }
@@ -102,7 +142,7 @@ export default function AdminPopupDoctorHour({
     <div>
       <dialog ref={dialogRef} className="modal" role="dialog">
         <div className="modal-box">
-          <form method="dialog">
+          <form onSubmit={handleSubmit}>
             <button
               onClick={onClose}
               className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
@@ -174,11 +214,13 @@ export default function AdminPopupDoctorHour({
             </div>
             <button
               type="submit"
-              className="btn btn-md w-full bg-secondary text-white"
+              className={`btn btn-md w-full ${saving ? 'btn-disabled' : ''} bg-secondary text-white`}
             >
-              {workingHoursState.length > 0
-                ? 'Modifier les horaires'
-                : 'Ajouter les horaires'}
+              {saving
+                ? 'Enregistrement...'
+                : workingHoursState.length > 0
+                  ? 'Modifier les horaires'
+                  : 'Ajouter les horaires'}
             </button>
           </form>
         </div>

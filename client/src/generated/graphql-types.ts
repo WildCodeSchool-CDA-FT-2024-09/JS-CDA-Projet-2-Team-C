@@ -92,6 +92,8 @@ export type Gender = {
 export type Mutation = {
   __typename?: 'Mutation';
   addUser: User;
+  /** Ajoute ou met à jour les horaires d'un médecin */
+  updateDoctorWorkingHours: Scalars['Boolean']['output'];
 };
 
 export type MutationAddUserArgs = {
@@ -101,6 +103,11 @@ export type MutationAddUserArgs = {
   genderLabel?: InputMaybe<Scalars['String']['input']>;
   lastname: Scalars['String']['input'];
   roleCode: Scalars['String']['input'];
+};
+
+export type MutationUpdateDoctorWorkingHoursArgs = {
+  doctorId: Scalars['Float']['input'];
+  workingHours: Array<WorkingHoursInput>;
 };
 
 export type PaginatedUsers = {
@@ -225,6 +232,12 @@ export type WorkingHours = {
   id: Scalars['Int']['output'];
   startTime: Scalars['String']['output'];
   weekday: Scalars['Int']['output'];
+};
+
+export type WorkingHoursInput = {
+  endTime: Scalars['String']['input'];
+  startTime: Scalars['String']['input'];
+  weekday: Scalars['Int']['input'];
 };
 
 export type DepartmentsAndGendersAndRolesQueryVariables = Exact<{
@@ -528,6 +541,16 @@ export type GetAllUsersQuery = {
       }> | null;
     }>;
   };
+};
+
+export type UpdateDoctorWorkingHoursMutationVariables = Exact<{
+  workingHours: Array<WorkingHoursInput> | WorkingHoursInput;
+  doctorId: Scalars['Float']['input'];
+}>;
+
+export type UpdateDoctorWorkingHoursMutation = {
+  __typename?: 'Mutation';
+  updateDoctorWorkingHours: boolean;
 };
 
 export const DepartmentsAndGendersAndRolesDocument = gql`
@@ -1867,3 +1890,56 @@ export type GetAllUsersQueryResult = Apollo.QueryResult<
   GetAllUsersQuery,
   GetAllUsersQueryVariables
 >;
+export const UpdateDoctorWorkingHoursDocument = gql`
+  mutation UpdateDoctorWorkingHours(
+    $workingHours: [WorkingHoursInput!]!
+    $doctorId: Float!
+  ) {
+    updateDoctorWorkingHours(workingHours: $workingHours, doctorId: $doctorId)
+  }
+`;
+export type UpdateDoctorWorkingHoursMutationFn = Apollo.MutationFunction<
+  UpdateDoctorWorkingHoursMutation,
+  UpdateDoctorWorkingHoursMutationVariables
+>;
+
+/**
+ * __useUpdateDoctorWorkingHoursMutation__
+ *
+ * To run a mutation, you first call `useUpdateDoctorWorkingHoursMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDoctorWorkingHoursMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateDoctorWorkingHoursMutation, { data, loading, error }] = useUpdateDoctorWorkingHoursMutation({
+ *   variables: {
+ *      workingHours: // value for 'workingHours'
+ *      doctorId: // value for 'doctorId'
+ *   },
+ * });
+ */
+export function useUpdateDoctorWorkingHoursMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateDoctorWorkingHoursMutation,
+    UpdateDoctorWorkingHoursMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateDoctorWorkingHoursMutation,
+    UpdateDoctorWorkingHoursMutationVariables
+  >(UpdateDoctorWorkingHoursDocument, options);
+}
+export type UpdateDoctorWorkingHoursMutationHookResult = ReturnType<
+  typeof useUpdateDoctorWorkingHoursMutation
+>;
+export type UpdateDoctorWorkingHoursMutationResult =
+  Apollo.MutationResult<UpdateDoctorWorkingHoursMutation>;
+export type UpdateDoctorWorkingHoursMutationOptions =
+  Apollo.BaseMutationOptions<
+    UpdateDoctorWorkingHoursMutation,
+    UpdateDoctorWorkingHoursMutationVariables
+  >;

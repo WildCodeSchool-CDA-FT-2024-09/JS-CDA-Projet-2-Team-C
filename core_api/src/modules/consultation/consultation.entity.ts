@@ -20,9 +20,9 @@ import { GraphQLDate } from 'graphql-scalars';
 @ObjectType()
 @Entity()
 export class Consultation extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id: number;
+  @Field(() => String)
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Field(() => String)
   @Column({ nullable: false, type: 'varchar', length: 255 })

@@ -388,6 +388,7 @@ const seed = async () => {
 
     // 5. CONSULTATIONS
     type Consultation = {
+      id: string;
       description: string;
       consultationDate: string;
       startTime: string;
@@ -423,13 +424,13 @@ const seed = async () => {
           authorId,
           patientId
         };
-        const consultation1 = { ...baseConsultation };
-        const consultation2 = { ...baseConsultation };
+        const consultation1 = { ...baseConsultation, id: uuidv4() };
+        const consultation2 = { ...baseConsultation, id: uuidv4() };
         consultation2.consultationDate = '2024-11-22';
-        const consultation3 = { ...baseConsultation };
+        const consultation3 = { ...baseConsultation, id: uuidv4() };
         consultation3.consultationDate = '2024-11-13';
         // Create a consultation for today, in the next 2 hours
-        const consultation4 = { ...baseConsultation };
+        const consultation4 = { ...baseConsultation, id: uuidv4() };
         consultation4.consultationDate = new Date().toISOString().split('T')[0];
         const now = new Date();
         const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
@@ -447,13 +448,13 @@ const seed = async () => {
     const consultationValues = consultations
       .map(
         (consultation) =>
-          `('${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, '${consultation.doctorId}', '${consultation.authorId}', '${consultation.patientId}')`
+          `('${consultation.id}', '${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, '${consultation.doctorId}', '${consultation.authorId}', '${consultation.patientId}')`
       )
       .join(', ');
 
     const consultationResult = await queryRunner.query(`
       INSERT INTO "consultation"
-      ("description", "consultationDate", "startTime", "durationMinutes", "subjectId", "doctorId", "authorId", "patientId")
+      ("id", "description", "consultationDate", "startTime", "durationMinutes", "subjectId", "doctorId", "authorId", "patientId")
       VALUES ${consultationValues}
       RETURNING id
     `);
@@ -467,14 +468,14 @@ const seed = async () => {
       note: string;
       filePath: string;
       fileDisplayName: string;
-      authorId: number;
-      consultationId: number;
+      authorId: string;
+      consultationId: string;
     };
 
     const doctorAndSecretaryIds = doctorIds.concat(secretaryIds);
 
     const attachmentsWithFiles: Attachment[] = consultationIds.map(
-      (consultationId: number): Attachment => {
+      (consultationId: string): Attachment => {
         const authorId =
           doctorAndSecretaryIds[
             Math.floor(Math.random() * doctorAndSecretaryIds.length)
@@ -494,7 +495,7 @@ const seed = async () => {
     );
 
     const attachmentsWithoutFiles: Attachment[] = consultationIds.map(
-      (consultationId: number): Attachment => {
+      (consultationId: string): Attachment => {
         const authorId =
           doctorAndSecretaryIds[
             Math.floor(Math.random() * doctorAndSecretaryIds.length)
@@ -518,7 +519,7 @@ const seed = async () => {
     const attachmentValues = attachments
       .map(
         (attachment) =>
-          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', '${attachment.authorId}', ${attachment.consultationId})`
+          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', '${attachment.authorId}', '${attachment.consultationId}')`
       )
       .join(', ');
 

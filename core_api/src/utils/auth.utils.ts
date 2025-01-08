@@ -22,23 +22,17 @@ export function generateToken(user: User): string {
     throw new Error('Server error: Missing JWT_SECRET');
   }
 
-  return jwt.sign(
-    { id: user.id, email: user.email, role: user.role },
-    JWT_SECRET,
-    { expiresIn: '24h' }
-  );
+  return jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '24h' });
 }
 
-export function verifyToken(
-  token: string
-): { id: string; email: string } | null {
+export function verifyToken(token: string): { id: string } | null {
   const { JWT_SECRET } = process.env;
   if (!JWT_SECRET) {
     throw new Error('Server error: Missing JWT_SECRET');
   }
   const decoded = jwt.verify(token, JWT_SECRET);
-  if (typeof decoded === 'object' && 'id' in decoded && 'email' in decoded) {
-    return decoded as { id: string; email: string };
+  if (typeof decoded === 'object' && 'id' in decoded) {
+    return decoded as { id: string };
   } else {
     return null;
   }

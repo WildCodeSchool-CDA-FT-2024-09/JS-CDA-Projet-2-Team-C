@@ -463,14 +463,14 @@ dotenv.config();
       note: string;
       filePath: string;
       fileDisplayName: string;
-      authorId: number;
-      consultationId: number;
+      authorId: string;
+      consultationId: string;
     };
 
     const doctorAndSecretaryIds = doctorIds.concat(secretaryIds);
 
     const attachmentsWithFiles: Attachment[] = consultationIds.map(
-      (consultationId: number): Attachment => {
+      (consultationId: string): Attachment => {
         const authorId =
           doctorAndSecretaryIds[
             Math.floor(Math.random() * doctorAndSecretaryIds.length)
@@ -490,7 +490,7 @@ dotenv.config();
     );
 
     const attachmentsWithoutFiles: Attachment[] = consultationIds.map(
-      (consultationId: number): Attachment => {
+      (consultationId: string): Attachment => {
         const authorId =
           doctorAndSecretaryIds[
             Math.floor(Math.random() * doctorAndSecretaryIds.length)
@@ -514,7 +514,7 @@ dotenv.config();
     const attachmentValues = attachments
       .map(
         (attachment) =>
-          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', '${attachment.authorId}', ${attachment.consultationId})`
+          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', '${attachment.authorId}', '${attachment.consultationId}')`
       )
       .join(', ');
 

@@ -5,6 +5,7 @@ import ConsultationResolver from './modules/consultation/consultation.resolver';
 import PatientResolver from './modules/patient/patient.resolver';
 import UserResolver from './modules/user/user.resolver';
 import GenderResolver from './modules/gender/gender.resolver';
+import WorkingHoursResolver from './modules/working_hours/workingHours.resolver';
 
 const getSchema = async () => {
   return await buildSchema({
@@ -14,7 +15,8 @@ const getSchema = async () => {
       PatientResolver,
       DepartmentResolver,
       UserResolver,
-      GenderResolver
+      GenderResolver,
+      WorkingHoursResolver
     ],
 
     validate: true

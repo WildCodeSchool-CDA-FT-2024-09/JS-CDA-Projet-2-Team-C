@@ -31,14 +31,14 @@ export function generateToken(user: User): string {
 
 export function verifyToken(
   token: string
-): { id: number; email: string } | null {
+): { id: string; email: string } | null {
   const { JWT_SECRET } = process.env;
   if (!JWT_SECRET) {
     throw new Error('Server error: Missing JWT_SECRET');
   }
   const decoded = jwt.verify(token, JWT_SECRET);
   if (typeof decoded === 'object' && 'id' in decoded && 'email' in decoded) {
-    return decoded as { id: number; email: string };
+    return decoded as { id: string; email: string };
   } else {
     return null;
   }

@@ -107,6 +107,8 @@ export default class UserResolver {
     });
 
     await user.save();
+    // TODO : fetch somewhere to send mail. only then return.
+
     return user;
   }
 

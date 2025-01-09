@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useDossierQuery } from '../../generated/graphql-types';
-import ConsultationTimeline from '../../components/ConsultationsTimeline/ConsultationsTimeline';
-import PatientDetails from '../../components/PatientDetails/PatientDetails';
+import ConsultationTimeline from '../../components/doctor_components/ConsultationsTimeline/ConsultationsTimeline';
+import PatientDetails from '../../components/doctor_components/PatientDetails/PatientDetails';
 
 export default function Dossier() {
   const { patientId } = useParams() as { patientId: string };

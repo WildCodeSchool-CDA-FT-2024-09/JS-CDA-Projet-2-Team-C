@@ -1,5 +1,5 @@
 import SearchBarProps from './SearchBar.type';
-import SearchIcon from '../../icons/SearchIcon';
+import SearchIcon from '../../../icons/SearchIcon';
 
 export default function SearchBar({ handleChange }: SearchBarProps) {
   return (

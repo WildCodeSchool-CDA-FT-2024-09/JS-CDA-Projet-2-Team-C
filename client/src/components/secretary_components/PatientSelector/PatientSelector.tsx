@@ -4,7 +4,7 @@ import {
   usePatientLazyQuery
 } from '../../../generated/graphql-types';
 import { useEffect } from 'react';
-import PatientSearchBar from '../../PatientSearchBar/PatientSearchBar';
+import PatientSearchBar from '../../shared_components/PatientSearchBar/PatientSearchBar';
 import InputField from '../InputField/InputField';
 import PatientSelectorProps from './PatientSelector.types';
 

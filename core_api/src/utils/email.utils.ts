@@ -9,7 +9,6 @@ export async function sendPasswordByEmail(
   password: string
 ): Promise<boolean> {
   try {
-    //node-fetch
     const response = await fetch(
       `http://${MAILER_HOST}:${MAILER_PORT}/send-mail`,
       {

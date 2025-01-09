@@ -21,8 +21,13 @@ export async function sendPasswordByEmail(
         })
       }
     );
-    return response.ok;
-  } catch {
+    if (!response.ok) {
+      throw new Error(`Failed to send email: ${response.statusText}`);
+    }
+    return false;
+  } catch (error) {
+    // TODO : Log this instead of consoling it.
+    console.error('Error sending email:', error);
     return false;
   }
 }

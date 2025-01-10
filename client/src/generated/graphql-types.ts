@@ -60,7 +60,7 @@ export type Consultation = {
   description: Scalars['String']['output'];
   doctor: User;
   durationMinutes: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
   patient: Patient;
   startTime: Scalars['String']['output'];
   subject: ConsultationSubject;
@@ -118,7 +118,7 @@ export type Patient = {
   email: Scalars['String']['output'];
   firstname: Scalars['String']['output'];
   gender: Gender;
-  id: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
   lastname: Scalars['String']['output'];
   postcode: Scalars['String']['output'];
   ssn: Scalars['String']['output'];
@@ -152,7 +152,7 @@ export type QueryConsultationsByDoctorIdArgs = {
 };
 
 export type QueryDossierArgs = {
-  patientId: Scalars['Float']['input'];
+  patientId: Scalars['String']['input'];
 };
 
 export type QueryGetAllUsersArgs = {
@@ -172,7 +172,7 @@ export type QueryLoginArgs = {
 };
 
 export type QueryPatientArgs = {
-  patientId: Scalars['Float']['input'];
+  patientId: Scalars['String']['input'];
 };
 
 export type QueryPatientsArgs = {
@@ -279,14 +279,14 @@ export type DepartmentsAndDoctorsQuery = {
 };
 
 export type DossierQueryVariables = Exact<{
-  patientId: Scalars['Float']['input'];
+  patientId: Scalars['String']['input'];
 }>;
 
 export type DossierQuery = {
   __typename?: 'Query';
   dossier: Array<{
     __typename?: 'Consultation';
-    id: number;
+    id: string;
     consultationDate: any;
     description: string;
     subject: { __typename?: 'ConsultationSubject'; label: string };
@@ -324,14 +324,14 @@ export type GendersQuery = {
 };
 
 export type PatientQueryVariables = Exact<{
-  patientId: Scalars['Float']['input'];
+  patientId: Scalars['String']['input'];
 }>;
 
 export type PatientQuery = {
   __typename?: 'Query';
   patient: {
     __typename?: 'Patient';
-    id: number;
+    id: string;
     firstname: string;
     lastname: string;
     email: string;
@@ -351,7 +351,7 @@ export type GetPatientsByNameQuery = {
   __typename?: 'Query';
   patients: Array<{
     __typename?: 'Patient';
-    id: number;
+    id: string;
     firstname: string;
     lastname: string;
     ssn: string;
@@ -401,12 +401,12 @@ export type ConsultationsByDoctorIdQuery = {
     startTime: string;
     durationMinutes: number;
     description: string;
-    id: number;
+    id: string;
     patient: {
       __typename?: 'Patient';
       firstname: string;
       lastname: string;
-      id: number;
+      id: string;
     };
     subject: { __typename?: 'ConsultationSubject'; label: string; id: number };
   }>;
@@ -829,7 +829,7 @@ export type DepartmentsAndDoctorsQueryResult = Apollo.QueryResult<
   DepartmentsAndDoctorsQueryVariables
 >;
 export const DossierDocument = gql`
-  query Dossier($patientId: Float!) {
+  query Dossier($patientId: String!) {
     dossier(patientId: $patientId) {
       id
       consultationDate
@@ -986,7 +986,7 @@ export type GendersQueryResult = Apollo.QueryResult<
   GendersQueryVariables
 >;
 export const PatientDocument = gql`
-  query Patient($patientId: Float!) {
+  query Patient($patientId: String!) {
     patient(patientId: $patientId) {
       id
       firstname

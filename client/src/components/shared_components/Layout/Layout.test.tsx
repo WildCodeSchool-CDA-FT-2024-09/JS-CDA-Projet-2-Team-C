@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { PageLayout } from './Layout';
 import { MemoryRouter } from 'react-router-dom';
 
-vi.mock('../../contexts/auth/useAuth', () => ({
+vi.mock('../../../contexts/auth/useAuth', () => ({
   useAuth: () => ({
     user: { role: { label: 'doctor' } },
     setUser: vi.fn()

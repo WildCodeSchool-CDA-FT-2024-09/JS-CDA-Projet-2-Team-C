@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce.ts';
-import SearchBar from '../../components/SearchBar/SearchBar';
+import SearchBar from '../../components/shared_components/SearchBar/SearchBar.tsx';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
 import Pagination from '../../components/Pagination/Pagination.tsx';

@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect } from 'react';
-import { useAuth } from '../../contexts/auth/useAuth';
+import { useAuth } from '../../../contexts/auth/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { roleLandingPages } from '../../pages/Login/roleLandingPages';
+import { roleLandingPages } from '../../../pages/Login/roleLandingPages';
 
 const RedirectWrapper = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();

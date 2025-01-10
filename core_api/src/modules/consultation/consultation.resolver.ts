@@ -5,7 +5,7 @@ import { Resolver, Query, Arg } from 'type-graphql';
 export default class ConsultationResolver {
   // TODO : rescrtict access to role === doctor
   @Query(() => [Consultation])
-  async dossier(@Arg('patientId') patientId: number) {
+  async dossier(@Arg('patientId') patientId: string) {
     return await Consultation.find({
       where: { patient: { id: patientId } },
       order: { consultationDate: 'DESC', startTime: 'DESC' },

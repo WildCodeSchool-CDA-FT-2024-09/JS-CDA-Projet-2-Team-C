@@ -1,4 +1,4 @@
-import { DossierQuery } from '../../generated/graphql-types';
+import { DossierQuery } from '../../../generated/graphql-types';
 
 export interface ConsultationsTimelineEventProps {
   consultation: DossierQuery['dossier'][number];

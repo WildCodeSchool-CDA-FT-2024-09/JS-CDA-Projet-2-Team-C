@@ -88,6 +88,7 @@ export default function Admin() {
             onClose={handleCloseModal}
             idDoctor={doctorState.id ?? 0} // 0 comme valeur par défaut si id est undefined
             nameDoctor={doctorState.name ?? 'Nom inconnu'}
+            refetchUsers={() => setCurrentPage(0)}
           />
 
           <div className="">{''}</div>

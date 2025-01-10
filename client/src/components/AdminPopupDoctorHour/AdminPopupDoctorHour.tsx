@@ -10,13 +10,15 @@ interface AdminPopupDoctorHourProps {
   onClose: () => void;
   idDoctor: number;
   nameDoctor: string;
+  refetchUsers?: () => void; // Marqué comme optionnel si non utilisé partout
 }
 
 export default function AdminPopupDoctorHour({
   isOpen,
   onClose,
   idDoctor,
-  nameDoctor
+  nameDoctor,
+  refetchUsers
 }: AdminPopupDoctorHourProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -48,7 +50,7 @@ export default function AdminPopupDoctorHour({
         }
       });
       showToast('horaire ajouté / modifié avec succès', 'success');
-      refetch();
+      refetchUsers?.();
       onClose();
     } catch (error) {
       console.error('Erreur capturée:', error);
@@ -56,7 +58,7 @@ export default function AdminPopupDoctorHour({
     }
   };
 
-  const { data, refetch } = useGetDoctorByIdQuery({
+  const { data } = useGetDoctorByIdQuery({
     variables: {
       id: idDoctor
     }

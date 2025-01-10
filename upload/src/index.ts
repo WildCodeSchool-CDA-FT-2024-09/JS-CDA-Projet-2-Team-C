@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { upload } from './imageUpload.utils';
 
 dotenv.config();
 const serverPort = process.env.PORT;
@@ -7,7 +8,11 @@ const serverPort = process.env.PORT;
 const app = express();
 app.use(express.json());
 
-app.post('/document', async (req, res) => {
+// TODO - Verify wether the user is authenticated before allowing the upload
+// TODO - Add a utils to send requests to coreAPI
+// TODO - Add a middleware to upload files
+
+app.post('/document', upload, async (req, res) => {
   try {
     console.info('received a post request');
 

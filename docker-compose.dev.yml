@@ -43,6 +43,7 @@ services:
     env_file: ./upload/.env
     volumes:
       - ./upload/src/:/app/src/
+      - ./upload/attachments/:/app/attachments/
     command: npm run dev
 
   gateway:

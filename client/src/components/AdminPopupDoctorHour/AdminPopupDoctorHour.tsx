@@ -142,16 +142,18 @@ export default function AdminPopupDoctorHour({
     <div>
       <dialog ref={dialogRef} className="modal" role="dialog">
         <div className="modal-box">
-          <form onSubmit={handleSubmit}>
+          <form method="dialog">
             <button
               onClick={onClose}
               className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
             >
               ✕
             </button>
-            <h3 className="text-center text-lg font-bold text-primary">
-              horaire du médecin {nameDoctor} / id:{idDoctor}
-            </h3>
+          </form>
+          <h3 className="text-center text-lg font-bold text-primary">
+            horaire du médecin {nameDoctor} / id:{idDoctor}
+          </h3>
+          <form onSubmit={handleSubmit}>
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">

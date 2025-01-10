@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce.ts';
+import { usePagination } from '../../utils/pagination/usePagination.ts';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
@@ -10,10 +11,17 @@ import AdminPopupDoctorHour from '../../components/AdminPopupDoctorHour/AdminPop
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling
   const perPage = 8;
-  const [currentPage, setCurrentPage] = useState(0);
+  const {
+    setCurrentPage,
+    currentPage,
+    totalPages,
+    hasMore,
+    handleNextPage,
+    handlePrevPage,
+    updatePaginationData
+  } = usePagination(0, perPage);
+
   const [searchByName, setSearchByName] = useState<string>('');
-  const [totalPages, setTotalPages] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
   const debouncedSearch = useDebounce<string>(searchByName, 500);
   const [role, setRole] = useState<string>('');
   const [doctorState, setDoctorState] = useState({
@@ -21,8 +29,6 @@ export default function Admin() {
     name: undefined as string | undefined,
     isModalOpen: false
   });
-
-  // pour ouvrir la modale hour doctor
 
   const handleOpenModal = (id: number, name: string) => {
     setDoctorState({
@@ -42,18 +48,6 @@ export default function Admin() {
   // conditionner l'affichage du bouton de recherche des medecins sans horaires
   // crérer la fonction qui va permettre de rechercher les medecins sans horaires
   // créer la modale pour ajouter et modifier les horaires des médecins
-
-  const handleNextPage = () => {
-    if (hasMore) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
 
   const handleChange = (value: string): void => {
     setSearchByName(value.toLowerCase());
@@ -77,12 +71,6 @@ export default function Admin() {
     if (dialogRef.current) {
       dialogRef.current.close();
     }
-  };
-
-  // Pagination data update function
-  const handlePaginationData = (total: number, hasMoreData: boolean) => {
-    setTotalPages(Math.ceil(total / perPage)); // Calculating the total number of pages
-    setHasMore(hasMoreData); // Indicates if a next page exists
   };
 
   return (
@@ -152,7 +140,7 @@ export default function Admin() {
                 perPage={perPage}
                 role={role}
                 debouncedSearch={debouncedSearch}
-                onPaginationData={handlePaginationData}
+                onPaginationData={updatePaginationData}
                 checkHourDoctor={doctorState.isModalOpen}
               />
             </tbody>

@@ -1,0 +1,17 @@
+meta {
+  name: post a mail (docker-dev)
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:5000/mailer/send-mail
+  body: json
+  auth: none
+}
+
+body:json {
+  {"to":"test@test.org",
+   "subject":"this is an email",
+  "text":"this email is a test"}
+}

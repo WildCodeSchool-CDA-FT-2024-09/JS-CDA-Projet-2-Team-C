@@ -11,9 +11,8 @@ import * as argon2 from 'argon2';
 
 describe('auth.utils', () => {
   const mockUser = {
-    id: 1,
-    email: 'test@example.com',
-    role: 'user'
+    id: 'b15ec4d0-7c7e-4f14-a1a6-0047f6ed4ca8',
+    email: 'test@example.com'
     // ...other properties if any...
   };
 
@@ -44,16 +43,16 @@ describe('auth.utils', () => {
 
   describe('generateToken', () => {
     it('should generate a JWT token', () => {
-      const token = generateToken(mockUser);
+      const token = generateToken(mockUser.id);
       expect(token).toBeDefined();
     });
   });
 
   describe('verifyToken', () => {
     it('should verify a valid token', () => {
-      const token = generateToken(mockUser);
+      const token = generateToken(mockUser.id);
       const decoded = verifyToken(token);
-      expect(decoded).toMatchObject({ id: mockUser.id, email: mockUser.email });
+      expect(decoded).toMatchObject({ id: mockUser.id });
     });
 
     it('should return null for an invalid token', () => {
@@ -67,7 +66,7 @@ describe('auth.utils', () => {
       const res = {
         setHeader: jest.fn()
       };
-      const token = generateToken(mockUser);
+      const token = generateToken(mockUser.id);
       setTokenCookie(res, token);
       expect(res.setHeader).toHaveBeenCalledWith(
         'Set-Cookie',

@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as argon2 from 'argon2';
 import * as jwt from 'jsonwebtoken';
-import { User } from '../modules/user/user.entity';
 
 dotenv.config();
 
@@ -16,13 +15,13 @@ export async function verifyPassword(
   return await argon2.verify(hashedPassword, plainPassword);
 }
 
-export function generateToken(user: User): string {
+export function generateToken(id: string): string {
   const { JWT_SECRET } = process.env;
   if (!JWT_SECRET) {
     throw new Error('Server error: Missing JWT_SECRET');
   }
 
-  return jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '24h' });
+  return jwt.sign({ id }, JWT_SECRET, { expiresIn: '24h' });
 }
 
 export function verifyToken(token: string): { id: string } | null {
@@ -30,12 +29,15 @@ export function verifyToken(token: string): { id: string } | null {
   if (!JWT_SECRET) {
     throw new Error('Server error: Missing JWT_SECRET');
   }
-  const decoded = jwt.verify(token, JWT_SECRET);
-  if (typeof decoded === 'object' && 'id' in decoded) {
-    return decoded as { id: string };
-  } else {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (typeof decoded === 'object' && 'id' in decoded) {
+      return decoded as { id: string };
+    }
+  } catch {
     return null;
   }
+  return null;
 }
 
 export function setTokenCookie(

@@ -138,7 +138,7 @@ export default class UserResolver {
     authUser.email = user.email;
     authUser.role = user.role;
 
-    const token = generateToken(user);
+    const token = generateToken(user.id);
     setTokenCookie(ctx.res, token);
 
     // TODO: remove token from return type?

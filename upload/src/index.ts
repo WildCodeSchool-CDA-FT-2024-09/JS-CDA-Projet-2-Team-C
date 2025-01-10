@@ -10,11 +10,11 @@ app.use(express.json());
 
 // TODO - Verify wether the user is authenticated before allowing the upload
 // TODO - Add a utils to send requests to coreAPI
-// TODO - Add a middleware to upload files
 
 app.post('/document', upload, async (req, res) => {
   try {
     console.info('received a post request');
+    
 
     res.status(201).send('Document uploaded');
   } catch {

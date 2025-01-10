@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
   filename(_req, file, cb) {
     cb(
       null,
-      // TODO : find a consensus here
+      // TODO : find a consensus here, how should security be taken into account ? 
       `${path.parse(file.originalname).name}-${Date.now()}${path.extname(file.originalname)}`
     );
   }
@@ -24,6 +24,7 @@ const storage = multer.diskStorage({
 const upload :RequestHandler = multer({
   storage,
   // this line limits the file size
+  // TODO : find a correct size
   limits: { fileSize: 1000000 },
   fileFilter: (_req, file, cb) => {
     if (

@@ -38,6 +38,13 @@ services:
       - ./mailer/src/:/app/src/
     command: npm run dev
 
+  upload:
+    build: ./upload
+    env_file: ./upload/.env
+    volumes:
+      - ./upload/src/:/app/src/
+    command: npm run dev
+
   gateway:
     image: nginx
     ports:

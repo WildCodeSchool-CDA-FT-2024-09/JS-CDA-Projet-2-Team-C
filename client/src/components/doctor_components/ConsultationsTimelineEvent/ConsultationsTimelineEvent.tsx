@@ -1,5 +1,5 @@
 import { ConsultationsTimelineEventProps } from './ConsultationsTimeLineEvent.types';
-import { frenchDate } from '../../utils/dates.utils';
+import { frenchDate } from '../../../utils/dates.utils';
 import FileList from '../FileList/FileList';
 
 export default function ConsultationsTimelineEvent({

@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/auth/useAuth';
+import { useAuth } from '../../../contexts/auth/useAuth';
 import { HeaderProps } from './Header.types';
 import Logo from '/images/logo-main-white.png';
-import { RoleCode } from '../../generated/graphql-types';
+import { RoleCode } from '../../../generated/graphql-types';
 
 export const Header = ({ page, pageNames }: HeaderProps) => {
   const { user, setUser } = useAuth();

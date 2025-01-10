@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useGetPatientsByNameLazyQuery } from '../../generated/graphql-types';
+import { useGetPatientsByNameLazyQuery } from '../../../generated/graphql-types';
 import SearchBar from '../SearchBar/SearchBar';
 import PatientSearchBarProps from './PatientSearchBar.type';
-import { useDebounce } from '../../utils/useDebounce';
-import { genderMap } from '../../utils/genderMap.utils';
-import { frenchDate } from '../../utils/dates.utils';
+import { useDebounce } from '../../../utils/useDebounce';
+import { genderMap } from '../../../utils/genderMap.utils';
+import { frenchDate } from '../../../utils/dates.utils';
 
 export default function PatientSearchBar({
   handlePatientSelected
@@ -29,7 +29,7 @@ export default function PatientSearchBar({
     <>
       <div className="dropdown dropdown-end w-[35rem]">
         <SearchBar handleChange={handleChange} />
-        {data && (
+        {data && debouncedSearch && (
           <ul
             tabIndex={0}
             className="menu dropdown-content z-[1] w-full rounded-box bg-base-100 p-2 shadow"

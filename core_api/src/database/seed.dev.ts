@@ -163,7 +163,7 @@ dotenv.config();
         RETURNING id
         `);
 
-    const doctorIds = doctorResult.map((item: { id: number }) => item.id);
+    const doctorIds = doctorResult.map((item: { id: string }) => item.id);
 
     // AGENTS
     const agents = [
@@ -267,17 +267,17 @@ dotenv.config();
       RETURNING id
     `);
 
-    const secretaryIds = secretaryResult.map((item: { id: number }) => item.id);
+    const secretaryIds = secretaryResult.map((item: { id: string }) => item.id);
 
     // 3. WORKING HOURS
     type WorkdayHours = {
-      doctorId: number;
+      doctorId: string;
       weekday: number;
       startTime: string;
       endTime: string;
     };
 
-    function generateWorkingHours(doctorIds: number[]): WorkdayHours[] {
+    function generateWorkingHours(doctorIds: string[]): WorkdayHours[] {
       const workdays = [0, 1, 2, 3, 4, 5, 6];
       const daysWorked = 5;
       const possibleShifts = [
@@ -306,7 +306,7 @@ dotenv.config();
     const workingHoursValues = workingHours
       .map(
         (workingHour) =>
-          `(${workingHour.doctorId}, ${workingHour.weekday}, '${workingHour.startTime}', '${workingHour.endTime}')`
+          `('${workingHour.doctorId}', ${workingHour.weekday}, '${workingHour.startTime}', '${workingHour.endTime}')`
       )
       .join(', ');
 
@@ -380,7 +380,7 @@ dotenv.config();
       RETURNING id
     `);
 
-    const patientIds = patientResult.map((item: { id: number }) => item.id);
+    const patientIds = patientResult.map((item: { id: string }) => item.id);
 
     // 5. CONSULTATIONS
     type Consultation = {
@@ -389,16 +389,16 @@ dotenv.config();
       startTime: string;
       durationMinutes: number;
       subjectId: number;
-      doctorId: number;
-      authorId: number;
-      patientId: number;
+      doctorId: string;
+      authorId: string;
+      patientId: string;
     };
 
     // IMPORTANT NOTE - these start times are currently hardcoded to work with 4 fake patients and to fit within possible fake doctor working times on a single day. This is to avoid having to do lengthy checks of consistency that randomly generated consultations don't happen at the same time with the same doctor.
     const consultationStartTimes = ['12:00', '12:30', '13:00', '13:30'];
 
     const consultations: Consultation[] = patientIds.flatMap(
-      (patientId: number, index: number): Consultation[] => {
+      (patientId: string, index: number): Consultation[] => {
         const doctorId =
           doctorIds[Math.floor(Math.random() * doctorIds.length)];
         const authorId =
@@ -443,7 +443,7 @@ dotenv.config();
     const consultationValues = consultations
       .map(
         (consultation) =>
-          `('${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, ${consultation.doctorId}, ${consultation.authorId}, ${consultation.patientId})`
+          `('${consultation.description}', '${consultation.consultationDate}', '${consultation.startTime}', ${consultation.durationMinutes}, ${consultation.subjectId}, '${consultation.doctorId}', '${consultation.authorId}', '${consultation.patientId}')`
       )
       .join(', ');
 
@@ -463,14 +463,14 @@ dotenv.config();
       note: string;
       filePath: string;
       fileDisplayName: string;
-      authorId: number;
-      consultationId: number;
+      authorId: string;
+      consultationId: string;
     };
 
     const doctorAndSecretaryIds = doctorIds.concat(secretaryIds);
 
     const attachmentsWithFiles: Attachment[] = consultationIds.map(
-      (consultationId: number): Attachment => {
+      (consultationId: string): Attachment => {
         const authorId =
           doctorAndSecretaryIds[
             Math.floor(Math.random() * doctorAndSecretaryIds.length)
@@ -490,7 +490,7 @@ dotenv.config();
     );
 
     const attachmentsWithoutFiles: Attachment[] = consultationIds.map(
-      (consultationId: number): Attachment => {
+      (consultationId: string): Attachment => {
         const authorId =
           doctorAndSecretaryIds[
             Math.floor(Math.random() * doctorAndSecretaryIds.length)
@@ -514,7 +514,7 @@ dotenv.config();
     const attachmentValues = attachments
       .map(
         (attachment) =>
-          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', ${attachment.authorId}, ${attachment.consultationId})`
+          `('${attachment.note}', '${attachment.filePath}', '${attachment.fileDisplayName}', '${attachment.authorId}', '${attachment.consultationId}')`
       )
       .join(', ');
 

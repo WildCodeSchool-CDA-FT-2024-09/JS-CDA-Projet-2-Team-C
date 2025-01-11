@@ -41,7 +41,7 @@ export default function AdminPopupDoctorHour({
           }))
         }
       });
-      showToast('horaire ajouté / modifié avec succès', 'success');
+      showToast('les horaires ont été mis à jour avec succès', 'success');
       onUpdate();
       onClose();
     } catch (error) {
@@ -132,13 +132,18 @@ export default function AdminPopupDoctorHour({
     );
   };
 
+  const handleclose = () => {
+    setWorkingHoursState([]);
+    onClose();
+  };
+
   return (
     <div>
       <dialog ref={dialogRef} className="modal" role="dialog">
         <div className="modal-box">
           <form method="dialog">
             <button
-              onClick={onClose}
+              onClick={handleclose}
               className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
             >
               ✕

@@ -1,12 +1,12 @@
 import { useRef, useState } from 'react';
-import { useDebounce } from '../../utils/useDebounce.ts';
-import { usePagination } from '../../utils/pagination/usePagination.ts';
+import { useDebounce } from '../../utils/useDebounce';
+import { usePagination } from '../../utils/pagination/usePagination';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
-import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
-import Pagination from '../../components/Pagination/Pagination.tsx';
+import AdminPopup from '../../components/AdminPopup/AdminPopup';
+import Pagination from '../../components/Pagination/Pagination';
 import UserList from '../../components/UserList/UserList';
-import AdminPopupDoctorHour from '../../components/AdminPopupDoctorHour/AdminPopupDoctorHour.tsx';
+import AdminPopupDoctorHour from '../../components/AdminPopupDoctorHour/AdminPopupDoctorHour';
 import { useGetAllUsersQuery } from '../../generated/graphql-types';
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling

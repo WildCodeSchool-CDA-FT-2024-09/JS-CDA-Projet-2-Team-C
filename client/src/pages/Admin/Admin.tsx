@@ -7,7 +7,7 @@ import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
 import Pagination from '../../components/Pagination/Pagination.tsx';
 import UserList from '../../components/UserList/UserList';
 import AdminPopupDoctorHour from '../../components/AdminPopupDoctorHour/AdminPopupDoctorHour.tsx';
-
+import { useGetAllUsersQuery } from '../../generated/graphql-types';
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling
   const perPage = 8;
@@ -30,6 +30,10 @@ export default function Admin() {
     isModalOpen: false
   });
 
+  const handleUpdate = () => {
+    refetch(); // Relancer la requête pour rafraîchir UserList
+  };
+
   const handleOpenModal = (id: number, name: string) => {
     setDoctorState({
       id: id,
@@ -44,10 +48,6 @@ export default function Admin() {
       isModalOpen: false
     }));
   };
-  // repasser checkHourDoctor en false après l'avoir utilisé
-  // conditionner l'affichage du bouton de recherche des medecins sans horaires
-  // crérer la fonction qui va permettre de rechercher les medecins sans horaires
-  // créer la modale pour ajouter et modifier les horaires des médecins
 
   const handleChange = (value: string): void => {
     setSearchByName(value.toLowerCase());
@@ -73,6 +73,21 @@ export default function Admin() {
     }
   };
 
+  const { data, loading, error, refetch } = useGetAllUsersQuery({
+    variables: {
+      skip: currentPage * perPage,
+      take: perPage,
+      roleCode: role || null,
+      searchByName: debouncedSearch || null
+    },
+    fetchPolicy: 'cache-and-network',
+    onCompleted: (fetchedData) => {
+      const total = fetchedData?.getAllUsers?.total || 0;
+      const hasMoreData = fetchedData?.getAllUsers?.hasMore || false;
+      updatePaginationData(total, hasMoreData);
+    }
+  });
+
   return (
     <>
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
@@ -89,6 +104,7 @@ export default function Admin() {
             idDoctor={doctorState.id ?? 0} // 0 comme valeur par défaut si id est undefined
             nameDoctor={doctorState.name ?? 'Nom inconnu'}
             refetchUsers={() => setCurrentPage(0)}
+            onUpdate={handleUpdate}
           />
 
           <div className="">{''}</div>
@@ -136,13 +152,10 @@ export default function Admin() {
             </thead>
             <tbody>
               <UserList
+                users={data?.getAllUsers.users || []}
+                loading={loading}
+                error={!!error}
                 handleOpenModal={handleOpenModal}
-                currentPage={currentPage}
-                perPage={perPage}
-                role={role}
-                debouncedSearch={debouncedSearch}
-                onPaginationData={updatePaginationData}
-                checkHourDoctor={doctorState.isModalOpen}
               />
             </tbody>
           </table>

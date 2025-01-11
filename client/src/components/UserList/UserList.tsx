@@ -1,41 +1,18 @@
-import {
-  RoleCode,
-  useGetAllUsersQuery,
-  GetAllUsersQuery
-} from '../../generated/graphql-types';
+import { RoleCode } from '../../generated/graphql-types';
+import { User } from '../AdminPopupDoctorHour/AdminPopupDoctorHour.types';
 import alert from '/images/alert-icon.png';
 
 export default function UserList({
-  currentPage,
-  perPage,
-  role,
-  debouncedSearch,
-  onPaginationData,
+  users,
+  loading,
+  error,
   handleOpenModal
 }: {
-  currentPage: number;
-  perPage: number;
-  role: string;
-  debouncedSearch: string;
-  onPaginationData: (total: number, hasMoreData: boolean) => void;
-  checkHourDoctor: boolean;
-  handleOpenModal: (userId: number, name: string) => void;
+  users: User[];
+  loading: boolean;
+  error: boolean | undefined;
+  handleOpenModal: (id: number, name: string) => void;
 }) {
-  const { data, loading, error } = useGetAllUsersQuery({
-    variables: {
-      skip: currentPage * perPage,
-      take: perPage,
-      roleCode: role || null,
-      searchByName: debouncedSearch || null
-    },
-    fetchPolicy: 'cache-and-network',
-    onCompleted: (fetchedData: GetAllUsersQuery) => {
-      const total = fetchedData?.getAllUsers?.total || 0;
-      const hasMoreData = fetchedData?.getAllUsers?.hasMore || false;
-      onPaginationData(total, hasMoreData);
-    }
-  });
-
   if (loading)
     return (
       <tr>
@@ -49,11 +26,7 @@ export default function UserList({
       </tr>
     );
 
-  const users = data?.getAllUsers.users || [];
-
-  const checkWorkingHours = (
-    user: GetAllUsersQuery['getAllUsers']['users'][0]
-  ): JSX.Element | null => {
+  const checkWorkingHours = (user: User): JSX.Element | null => {
     if (user.role.code === RoleCode.Doctor) {
       if (user.workingHours && user.workingHours.length === 0) {
         return (

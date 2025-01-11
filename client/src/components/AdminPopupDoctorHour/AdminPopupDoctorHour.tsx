@@ -1,24 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useGetDoctorByIdQuery } from '../../generated/graphql-types';
 import TimeSelect from './TimeSelectWorkingHour';
-// import { useMutation } from '@apollo/client';
 import { useUpdateDoctorWorkingHoursMutation } from '../../generated/graphql-types';
 import { useToast } from '../../contexts/toasts/useToast';
-
-interface AdminPopupDoctorHourProps {
-  isOpen: boolean;
-  onClose: () => void;
-  idDoctor: number;
-  nameDoctor: string;
-  refetchUsers?: () => void; // Marqué comme optionnel si non utilisé partout
-}
+import { AdminPopupDoctorHourProps } from './AdminPopupDoctorHour.types';
 
 export default function AdminPopupDoctorHour({
   isOpen,
   onClose,
   idDoctor,
   nameDoctor,
-  refetchUsers
+  onUpdate
 }: AdminPopupDoctorHourProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -50,7 +42,7 @@ export default function AdminPopupDoctorHour({
         }
       });
       showToast('horaire ajouté / modifié avec succès', 'success');
-      refetchUsers?.();
+      onUpdate();
       onClose();
     } catch (error) {
       console.error('Erreur capturée:', error);

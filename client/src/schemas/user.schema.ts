@@ -24,7 +24,6 @@ export const LOGIN = gql`
         label
         code
       }
-      token
     }
   }
 `;
@@ -64,6 +63,20 @@ export const ADD_USER_MUTATION = gql`
         label
       }
       createdAt
+    }
+  }
+`;
+
+export const GET_CURRENT_AUTH_USER = gql`
+  query GetCurrentAuthUser {
+    getCurrentAuthUser {
+      email
+      id
+      role {
+        id
+        code
+        label
+      }
     }
   }
 `;

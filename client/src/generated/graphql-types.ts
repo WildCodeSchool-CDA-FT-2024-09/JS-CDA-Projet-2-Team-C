@@ -48,7 +48,6 @@ export type AuthUser = {
   email: Scalars['String']['output'];
   id: Scalars['String']['output'];
   role: Role;
-  token: Scalars['String']['output'];
 };
 
 export type Consultation = {
@@ -136,6 +135,7 @@ export type Query = {
   genders: Array<Gender>;
   /** Fetch paginated users with optional role filtering */
   getAllUsers: PaginatedUsers;
+  getCurrentAuthUser: AuthUser;
   /** Fetches departments by label and their doctors */
   getDoctorByDepartment: Array<Department>;
   /** Fetches all users with the role of doctor */
@@ -442,7 +442,6 @@ export type LoginQuery = {
     __typename?: 'AuthUser';
     id: string;
     email: string;
-    token: string;
     role: { __typename?: 'Role'; id: number; label: string; code: RoleCode };
   };
 };
@@ -472,6 +471,18 @@ export type AddUserMutation = {
       label: string;
     } | null;
     gender?: { __typename?: 'Gender'; id: number; label: string } | null;
+  };
+};
+
+export type GetCurrentAuthUserQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCurrentAuthUserQuery = {
+  __typename?: 'Query';
+  getCurrentAuthUser: {
+    __typename?: 'AuthUser';
+    email: string;
+    id: string;
+    role: { __typename?: 'Role'; id: number; code: RoleCode; label: string };
   };
 };
 
@@ -1492,7 +1503,6 @@ export const LoginDocument = gql`
         label
         code
       }
-      token
     }
   }
 `;
@@ -1638,6 +1648,89 @@ export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>;
 export type AddUserMutationOptions = Apollo.BaseMutationOptions<
   AddUserMutation,
   AddUserMutationVariables
+>;
+export const GetCurrentAuthUserDocument = gql`
+  query GetCurrentAuthUser {
+    getCurrentAuthUser {
+      email
+      id
+      role {
+        id
+        code
+        label
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetCurrentAuthUserQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentAuthUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentAuthUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentAuthUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCurrentAuthUserQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetCurrentAuthUserQuery,
+    GetCurrentAuthUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetCurrentAuthUserQuery,
+    GetCurrentAuthUserQueryVariables
+  >(GetCurrentAuthUserDocument, options);
+}
+export function useGetCurrentAuthUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCurrentAuthUserQuery,
+    GetCurrentAuthUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetCurrentAuthUserQuery,
+    GetCurrentAuthUserQueryVariables
+  >(GetCurrentAuthUserDocument, options);
+}
+export function useGetCurrentAuthUserSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetCurrentAuthUserQuery,
+        GetCurrentAuthUserQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetCurrentAuthUserQuery,
+    GetCurrentAuthUserQueryVariables
+  >(GetCurrentAuthUserDocument, options);
+}
+export type GetCurrentAuthUserQueryHookResult = ReturnType<
+  typeof useGetCurrentAuthUserQuery
+>;
+export type GetCurrentAuthUserLazyQueryHookResult = ReturnType<
+  typeof useGetCurrentAuthUserLazyQuery
+>;
+export type GetCurrentAuthUserSuspenseQueryHookResult = ReturnType<
+  typeof useGetCurrentAuthUserSuspenseQuery
+>;
+export type GetCurrentAuthUserQueryResult = Apollo.QueryResult<
+  GetCurrentAuthUserQuery,
+  GetCurrentAuthUserQueryVariables
 >;
 export const GetAllUsersDocument = gql`
   query GetAllUsers(

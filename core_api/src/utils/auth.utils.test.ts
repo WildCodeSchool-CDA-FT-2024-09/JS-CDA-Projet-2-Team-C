@@ -3,7 +3,8 @@ import {
   verifyPassword,
   generateToken,
   verifyToken,
-  setTokenCookie
+  setTokenCookie,
+  clearCookie
 } from './auth.utils';
 // import { User } from '../modules/user/user.entity';
 import * as argon2 from 'argon2';
@@ -68,9 +69,25 @@ describe('auth.utils', () => {
       };
       const token = generateToken(mockUser.id);
       setTokenCookie(res, token);
+      expect(res.setHeader).toHaveBeenCalledTimes(1);
+      const [name, cookieValue] = res.setHeader.mock.calls[0];
+      expect(name).toBe('Set-Cookie');
+      expect(cookieValue).toContain('medagendatoken=' + token);
+      expect(cookieValue).toContain('HttpOnly');
+      expect(cookieValue).toContain('Secure');
+      expect(cookieValue).toContain('SameSite=Strict');
+    });
+  });
+
+  describe('clearCookie', () => {
+    it('should clear a token cookie', () => {
+      const res = {
+        setHeader: jest.fn()
+      };
+      clearCookie(res);
       expect(res.setHeader).toHaveBeenCalledWith(
         'Set-Cookie',
-        expect.stringContaining('medagendatoken=')
+        expect.stringContaining('expires=Thu, 01 Jan 1970 00:00:00')
       );
     });
   });

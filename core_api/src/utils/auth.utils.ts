@@ -57,6 +57,6 @@ export function clearCookie(res: {
 }): void {
   res.setHeader(
     'Set-Cookie',
-    `medagendatoken=; HttpOnly; Secure; SameSite=Strict; expires=${new Date(0)}, Max-Age=0`
+    `medagendatoken=; HttpOnly; Secure; SameSite=Strict; expires=${new Date(0).toUTCString()}, Max-Age=0`
   );
 }

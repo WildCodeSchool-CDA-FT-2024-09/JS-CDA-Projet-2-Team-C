@@ -1,9 +1,9 @@
 import { useAuth } from './useAuth';
-import { useLoginLazyQuery } from '../../generated/graphql-types';
+import { useLoginMutation } from '../../generated/graphql-types';
 
 export const useLogin = () => {
   const { setUser } = useAuth();
-  const [login, { error: loginError }] = useLoginLazyQuery();
+  const [login, { error: loginError }] = useLoginMutation();
 
   const handleLogin = async (email: string, password: string) => {
     const response = await login({ variables: { email, password } });

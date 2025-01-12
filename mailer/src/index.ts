@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { sendMail } from '../utils/mailer.util';
+import { sendMail } from './utils/mailer.util';
 
 dotenv.config();
 const serverPort = process.env.PORT;

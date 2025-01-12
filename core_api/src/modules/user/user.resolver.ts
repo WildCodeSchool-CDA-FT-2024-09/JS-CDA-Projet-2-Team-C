@@ -20,6 +20,7 @@ import {
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
 import { hashPassword, setTokenCookie } from '../../utils/auth.utils';
 import { ContextType } from '../../types/ContextType';
+import { sendPasswordByEmail } from '../../utils/email.utils';
 
 dotenv.config();
 
@@ -81,6 +82,7 @@ export default class UserResolver {
     @Arg('departmentLabel', { nullable: true }) departmentLabel: string,
     @Arg('genderLabel', { nullable: true }) genderLabel: string
   ): Promise<User> {
+    // TODO : we need to implement a way to generate a random password before shipping this code
     const password = process.env.TEST_USER_PASSWORD || '';
 
     const hashedPassword = await hashPassword(password);
@@ -117,6 +119,13 @@ export default class UserResolver {
     });
 
     await user.save();
+
+    const emailSuccess = await sendPasswordByEmail(email, password);
+
+    if (!emailSuccess) {
+      throw new Error('Failed to send email');
+    }
+
     return user;
   }
 

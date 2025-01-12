@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/auth/useAuth';
-import { RoleCode } from '../../generated/graphql-types';
-import SecretaryHome from '../../pages/SecretaryHome/SecretaryHome';
+import { useAuth } from '../../../contexts/auth/useAuth';
+import { RoleCode } from '../../../generated/graphql-types';
+import SecretaryHome from '../../../pages/SecretaryHome/SecretaryHome';
 
 export default function RoleBasedPlanning() {
   const { user } = useAuth();

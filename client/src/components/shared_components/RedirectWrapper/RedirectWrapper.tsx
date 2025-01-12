@@ -1,8 +1,8 @@
 import { PropsWithChildren, useEffect } from 'react';
-import { useAuth } from '../../contexts/auth/useAuth';
+import { useAuth } from '../../../contexts/auth/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useToast } from '../../contexts/toasts/useToast';
-import { roleLandingPages } from '../../pages/Login/roleLandingPages';
+import { useToast } from '../../../contexts/toasts/useToast';
+import { roleLandingPages } from '../../../pages/Login/roleLandingPages';
 
 const RedirectWrapper = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();

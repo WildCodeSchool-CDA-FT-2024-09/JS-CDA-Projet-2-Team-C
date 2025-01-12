@@ -15,7 +15,7 @@ export const GET_DOCTORS_BY_DEPARTMENT = gql`
 `;
 
 export const LOGIN = gql`
-  query Login($password: String!, $email: String!) {
+  mutation Login($password: String!, $email: String!) {
     login(password: $password, email: $email) {
       id
       email
@@ -78,5 +78,11 @@ export const GET_CURRENT_AUTH_USER = gql`
         label
       }
     }
+  }
+`;
+
+export const LOGOUT = gql`
+  mutation Logout {
+    logout
   }
 `;

@@ -18,7 +18,11 @@ import {
   PaginatedUsers
 } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
-import { hashPassword, setTokenCookie } from '../../utils/auth.utils';
+import {
+  hashPassword,
+  setTokenCookie,
+  clearCookie
+} from '../../utils/auth.utils';
 import { ContextType } from '../../types/ContextType';
 import { sendPasswordByEmail } from '../../utils/email.utils';
 
@@ -129,7 +133,7 @@ export default class UserResolver {
     return user;
   }
 
-  @Query(() => AuthUser)
+  @Mutation(() => AuthUser)
   async login(
     @Arg('email') email: string,
     @Arg('password') password: string,
@@ -205,8 +209,18 @@ export default class UserResolver {
     RoleCode.SECRETARY,
     RoleCode.AGENT
   ])
-  @Query(() => AuthUser)
+  @Query(() => AuthUser, {
+    description: 'Fetches the current authenticated user'
+  })
   async getCurrentAuthUser(@Ctx() ctx: ContextType): Promise<User | null> {
     return ctx.user;
+  }
+
+  @Mutation(() => Boolean, {
+    description: 'Logs out the user by clearing the medagendatoken cookie'
+  })
+  logout(@Ctx() ctx: ContextType): boolean {
+    clearCookie(ctx.res);
+    return true;
   }
 }

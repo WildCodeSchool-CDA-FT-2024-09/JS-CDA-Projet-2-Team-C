@@ -51,3 +51,12 @@ export function setTokenCookie(
     ).toUTCString()}, Max-Age=${60 * 60 * 24}`
   );
 }
+
+export function clearCookie(res: {
+  setHeader: (key: string, value: string) => void;
+}): void {
+  res.setHeader(
+    'Set-Cookie',
+    `medagendatoken=; HttpOnly; Secure; SameSite=Strict; expires=${new Date(0)}, Max-Age=0`
+  );
+}

@@ -141,9 +141,6 @@ export default class UserResolver {
     const token = generateToken(user.id);
     setTokenCookie(ctx.res, token);
 
-    // TODO: remove token from return type?
-    authUser.token = token;
-
     return authUser;
   }
 
@@ -191,5 +188,16 @@ export default class UserResolver {
       total,
       hasMore: skip + take < total
     };
+  }
+
+  @Authorized([
+    RoleCode.ADMIN,
+    RoleCode.DOCTOR,
+    RoleCode.SECRETARY,
+    RoleCode.AGENT
+  ])
+  @Query(() => AuthUser)
+  async getCurrentAuthUser(@Ctx() ctx: ContextType): Promise<User | null> {
+    return ctx.user;
   }
 }

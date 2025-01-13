@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_DOCTOR_BY_ID = gql`
-  query GetDoctorById($id: Int!) {
+  query GetDoctorById($id: String!) {
     getDoctorById(id: $id) {
       firstname
       lastname

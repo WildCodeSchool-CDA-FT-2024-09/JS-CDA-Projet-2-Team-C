@@ -3,7 +3,7 @@ import { GetAllUsersQuery } from '../../generated/graphql-types';
 export interface AdminPopupDoctorHourProps {
   isOpen: boolean;
   onClose: () => void;
-  idDoctor: number;
+  idDoctor: string;
   nameDoctor: string;
   refetchUsers?: () => void; // Marqué comme optionnel si non utilisé partout
   onUpdate: () => void; // Marqué comme optionnel si non utilisé partout

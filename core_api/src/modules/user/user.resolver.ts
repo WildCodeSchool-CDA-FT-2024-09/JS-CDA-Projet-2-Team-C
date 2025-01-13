@@ -186,9 +186,11 @@ export default class UserResolver {
   @Query(() => User, {
     description: 'Fetch a doctor by ID with their working hours'
   })
-  async getDoctorById(@Arg('id', () => Int) id: number): Promise<User | null> {
+  async getDoctorById(
+    @Arg('id', () => String) id: string
+  ): Promise<User | null> {
     const doctor = await User.findOne({
-      where: { id },
+      where: { id: id }, // Utilisez la variable id
       relations: ['role', 'workingHours']
     });
 

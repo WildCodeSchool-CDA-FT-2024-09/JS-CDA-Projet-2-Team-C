@@ -25,7 +25,7 @@ export default function Admin() {
   const debouncedSearch = useDebounce<string>(searchByName, 500);
   const [role, setRole] = useState<string>('');
   const [doctorState, setDoctorState] = useState({
-    id: undefined as number | undefined,
+    id: undefined as string | undefined,
     name: undefined as string | undefined,
     isModalOpen: false
   });
@@ -34,7 +34,7 @@ export default function Admin() {
     refetch(); // Relancer la requête pour rafraîchir UserList
   };
 
-  const handleOpenModal = (id: number, name: string) => {
+  const handleOpenModal = (id: string, name: string) => {
     setDoctorState({
       id: id,
       name: name,
@@ -101,7 +101,7 @@ export default function Admin() {
           <AdminPopupDoctorHour
             isOpen={doctorState.isModalOpen}
             onClose={handleCloseModal}
-            idDoctor={doctorState.id ?? 0} // 0 comme valeur par défaut si id est undefined
+            idDoctor={doctorState.id ?? ''} // 0 comme valeur par défaut si id est undefined
             nameDoctor={doctorState.name ?? 'Nom inconnu'}
             refetchUsers={() => setCurrentPage(0)}
             onUpdate={handleUpdate}

@@ -37,7 +37,7 @@ export const GET_ALL_USERS = gql`
 export const UPDATE_DOCTOR_WORKING_HOURS = gql`
   mutation UpdateDoctorWorkingHours(
     $workingHours: [WorkingHoursInput!]!
-    $doctorId: Float!
+    $doctorId: String!
   ) {
     updateDoctorWorkingHours(workingHours: $workingHours, doctorId: $doctorId)
   }

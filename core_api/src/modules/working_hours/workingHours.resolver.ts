@@ -8,7 +8,7 @@ export default class WorkingHoursResolver {
     description: "Ajoute ou met à jour les horaires d'un médecin"
   })
   async updateDoctorWorkingHours(
-    @Arg('doctorId') doctorId: number,
+    @Arg('doctorId') doctorId: string,
     @Arg('workingHours', () => [WorkingHoursInput])
     workingHours: WorkingHoursInput[]
   ): Promise<boolean> {

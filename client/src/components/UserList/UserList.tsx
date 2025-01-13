@@ -11,7 +11,7 @@ export default function UserList({
   users: User[];
   loading: boolean;
   error: boolean | undefined;
-  handleOpenModal: (id: number, name: string) => void;
+  handleOpenModal: (id: string, name: string) => void;
 }) {
   if (loading)
     return (

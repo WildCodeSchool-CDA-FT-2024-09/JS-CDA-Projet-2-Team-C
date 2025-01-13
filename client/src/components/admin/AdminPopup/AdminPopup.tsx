@@ -4,10 +4,10 @@ import RoleSelector from './RoleSelector';
 import {
   useAddUserMutation,
   useDepartmentsAndGendersAndRolesQuery
-} from '../../generated/graphql-types';
+} from '../../../generated/graphql-types';
 import { useCreateUserForm } from './useCreateUserForm';
 import { AdminPopupProps, InputError } from './AdminPopup.types';
-import { useToast } from '../../contexts/toasts/useToast';
+import { useToast } from '../../../contexts/toasts/useToast';
 
 const AdminPopup = forwardRef<HTMLDialogElement, AdminPopupProps>(
   ({ close, refetchUsers }, ref) => {

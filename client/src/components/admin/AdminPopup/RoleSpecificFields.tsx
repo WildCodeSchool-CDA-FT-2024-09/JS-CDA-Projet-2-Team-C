@@ -1,4 +1,4 @@
-import { isVisibleToRole } from '../../utils/roles.utils';
+import { isVisibleToRole } from '../../../utils/roles.utils';
 import { SelectField, InputField } from './Fields';
 import { RoleSpecificFieldsProps } from './AdminPopup.types';
 

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useGetDoctorByIdQuery } from '../../generated/graphql-types';
+import { useGetDoctorByIdQuery } from '../../../generated/graphql-types';
 import TimeSelect from './TimeSelectWorkingHour';
-import { useUpdateDoctorWorkingHoursMutation } from '../../generated/graphql-types';
-import { useToast } from '../../contexts/toasts/useToast';
+import { useUpdateDoctorWorkingHoursMutation } from '../../../generated/graphql-types';
+import { useToast } from '../../../contexts/toasts/useToast';
 import { AdminPopupDoctorHourProps } from './AdminPopupDoctorHour.types';
 
 export default function AdminPopupDoctorHour({

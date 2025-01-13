@@ -85,10 +85,11 @@ export default function DoctorSelector({
                 if (newDoctor?.id != doctor.id)
                   setDoctor(newDoctor || defaultDoctor);
               }}
+              defaultValue={`${doctor.firstname} ${doctor.lastname}`}
             >
               {doctors.length ? (
-                doctors.map((d, index) => (
-                  <option key={d.id} selected={index === 0}>
+                doctors.map((d) => (
+                  <option key={d.id}>
                     {d.firstname} {d.lastname}
                   </option>
                 ))

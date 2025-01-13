@@ -1,4 +1,4 @@
-import UserProps from '../../components/UserList/UserList.types.ts';
+import UserProps from '../../components/admin/UserList/UserList.types.ts';
 
 const users: UserProps[] = [
   {

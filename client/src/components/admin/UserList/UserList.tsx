@@ -1,4 +1,4 @@
-import { RoleCode } from '../../generated/graphql-types';
+import { RoleCode } from '../../../generated/graphql-types';
 import { User } from '../AdminPopupDoctorHour/AdminPopupDoctorHour.types';
 import alert from '/images/alert-icon.png';
 

@@ -3,10 +3,10 @@ import { usePagination } from '../../utils/pagination/usePagination';
 import { useDebounce } from '../../utils/useDebounce.ts';
 import SearchBar from '../../components/shared_components/SearchBar/SearchBar.tsx';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
-import AdminPopup from '../../components/AdminPopup/AdminPopup';
-import Pagination from '../../components/Pagination/Pagination';
-import UserList from '../../components/UserList/UserList';
-import AdminPopupDoctorHour from '../../components/AdminPopupDoctorHour/AdminPopupDoctorHour';
+import AdminPopup from '../../components/admin/AdminPopup/AdminPopup';
+import Pagination from '../../components/admin/Pagination/Pagination.tsx';
+import UserList from '../../components/admin/UserList/UserList.tsx';
+import AdminPopupDoctorHour from '../../components/admin/AdminPopupDoctorHour/AdminPopupDoctorHour';
 import { useGetAllUsersQuery } from '../../generated/graphql-types';
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling
@@ -31,7 +31,7 @@ export default function Admin() {
   });
 
   const handleUpdate = () => {
-    refetch(); // Relancer la requête pour rafraîchir UserList
+    refetch();
   };
 
   const handleOpenModal = (id: string, name: string) => {
@@ -101,7 +101,7 @@ export default function Admin() {
           <AdminPopupDoctorHour
             isOpen={doctorState.isModalOpen}
             onClose={handleCloseModal}
-            idDoctor={doctorState.id ?? ''} // 0 comme valeur par défaut si id est undefined
+            idDoctor={doctorState.id ?? ''}
             nameDoctor={doctorState.name ?? 'Nom inconnu'}
             refetchUsers={() => setCurrentPage(0)}
             onUpdate={handleUpdate}
@@ -133,7 +133,7 @@ export default function Admin() {
         </section>
 
         <div className="relative h-[75vh] overflow-x-auto rounded-lg border border-primary-dark p-6">
-          <SearchBar handleChange={handleChange} />
+          <SearchBar handleChange={handleChange} />+
           <table className="table bg-white">
             <thead>
               <tr className="border-b border-gray-300">

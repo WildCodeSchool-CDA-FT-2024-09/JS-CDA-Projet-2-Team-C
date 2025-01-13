@@ -1,19 +1,5 @@
 import { gql } from '@apollo/client';
 
-export const GET_DOCTORS_BY_DEPARTMENT = gql`
-  query GetDoctorByDepartment($label: String!) {
-    getDoctorByDepartment(label: $label) {
-      id
-      label
-      users {
-        firstname
-        lastname
-        id
-      }
-    }
-  }
-`;
-
 export const LOGIN = gql`
   query Login($password: String!, $email: String!) {
     login(password: $password, email: $email) {
@@ -64,6 +50,40 @@ export const ADD_USER_MUTATION = gql`
         label
       }
       createdAt
+    }
+  }
+`;
+
+export const GET_ALL_USERS = gql`
+  query GetAllUsers(
+    $skip: Int!
+    $take: Int!
+    $roleCode: String
+    $searchByName: String
+  ) {
+    getAllUsers(
+      skip: $skip
+      take: $take
+      roleCode: $roleCode
+      searchByName: $searchByName
+    ) {
+      users {
+        id
+        firstname
+        lastname
+        email
+        role {
+          code
+          label
+        }
+        workingHours {
+          endTime
+          startTime
+          weekday
+        }
+      }
+      total
+      hasMore
     }
   }
 `;

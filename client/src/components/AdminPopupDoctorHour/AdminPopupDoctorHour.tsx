@@ -19,6 +19,12 @@ export default function AdminPopupDoctorHour({
 
   const { showToast } = useToast();
 
+  const { data, refetch } = useGetDoctorByIdQuery({
+    variables: {
+      id: idDoctor
+    }
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
@@ -26,7 +32,7 @@ export default function AdminPopupDoctorHour({
         (wh) => !wh.startTime || !wh.endTime || wh.startTime >= wh.endTime
       )
     ) {
-      showToast('Veuillez vérifier les horaires saisie.', 'error');
+      showToast('Veuillez vérifier les horaires saisies.', 'error');
       return;
     }
 
@@ -41,20 +47,30 @@ export default function AdminPopupDoctorHour({
           }))
         }
       });
-      showToast('les horaires ont été mis à jour avec succès', 'success');
-      onUpdate();
-      onClose();
+
+      showToast('Les horaires ont été mis à jour avec succès', 'success');
+
+      // Refetch les données après la mise à jour
+      const updatedData = await refetch();
+
+      // Mettre à jour l'état local avec les nouvelles données
+      if (updatedData?.data?.getDoctorById?.workingHours) {
+        setWorkingHoursState(
+          updatedData.data.getDoctorById.workingHours.map((wh) => ({
+            ...wh,
+            startTime: formatTimeToHHMM(wh.startTime),
+            endTime: formatTimeToHHMM(wh.endTime)
+          }))
+        );
+      }
+
+      onClose(); // Ferme la modale
+      onUpdate(); // Notifie le parent
     } catch (error) {
       console.error('Erreur capturée:', error);
       showToast('Une erreur inattendue est survenue.', 'error');
     }
   };
-
-  const { data } = useGetDoctorByIdQuery({
-    variables: {
-      id: idDoctor
-    }
-  });
 
   const weekdays: ReadonlyArray<string> = useMemo(
     () => ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],

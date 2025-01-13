@@ -72,25 +72,32 @@ export default function AdminPopupDoctorHour({
 
   // Synchronizing state with retrieved data
   useEffect(() => {
-    if (data?.getDoctorById?.workingHours) {
-      setWorkingHoursState(
-        data.getDoctorById.workingHours.map((wh) => ({
-          ...wh,
-          // Conversion to HH:mm
-          startTime: formatTimeToHHMM(wh.startTime),
-          endTime: formatTimeToHHMM(wh.endTime)
-        }))
-      );
-    } else {
-      setWorkingHoursState(
-        weekdays.map((_, index) => ({
-          weekday: index,
-          startTime: '',
-          endTime: ''
-        }))
-      );
+    if (isOpen) {
+      if (data?.getDoctorById?.workingHours) {
+        setWorkingHoursState(
+          data.getDoctorById.workingHours.map((wh) => ({
+            ...wh,
+            startTime: formatTimeToHHMM(wh.startTime),
+            endTime: formatTimeToHHMM(wh.endTime)
+          }))
+        );
+      } else {
+        setWorkingHoursState(
+          weekdays.map((_, index) => ({
+            weekday: index,
+            startTime: '',
+            endTime: ''
+          }))
+        );
+      }
+
+      if (dialogRef.current) {
+        dialogRef.current.showModal();
+      }
+    } else if (!isOpen && dialogRef.current) {
+      dialogRef.current.close();
     }
-  }, [data, weekdays]);
+  }, [isOpen, data, weekdays]);
 
   // Synchronizing state with modal display
   useEffect(() => {

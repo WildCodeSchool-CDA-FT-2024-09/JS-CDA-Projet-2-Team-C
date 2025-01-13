@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
-import { useDebounce } from '../../utils/useDebounce';
 import { usePagination } from '../../utils/pagination/usePagination';
-import SearchBar from '../../components/SearchBar/SearchBar';
+import { useDebounce } from '../../utils/useDebounce.ts';
+import SearchBar from '../../components/shared_components/SearchBar/SearchBar.tsx';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
 import AdminPopup from '../../components/AdminPopup/AdminPopup';
 import Pagination from '../../components/Pagination/Pagination';

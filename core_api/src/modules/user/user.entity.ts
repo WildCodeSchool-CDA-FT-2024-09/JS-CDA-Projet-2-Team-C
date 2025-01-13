@@ -21,9 +21,9 @@ import {
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id: number;
+  @Field(() => String)
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Field(() => String)
   @Column({ nullable: false, type: 'varchar', length: 50 })
@@ -85,8 +85,8 @@ export class User extends BaseEntity {
 
 @ObjectType()
 export class AuthUser {
-  @Field(() => Int)
-  id: number;
+  @Field(() => String)
+  id: string;
 
   @Field(() => String)
   email: string;

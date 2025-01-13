@@ -50,10 +50,10 @@ export default function AdminPopupDoctorHour({
 
       showToast('Les horaires ont été mis à jour avec succès', 'success');
 
-      // Refetch les données après la mise à jour
+      // Refetch the data after the update
       const updatedData = await refetch();
 
-      // Mettre à jour l'état local avec les nouvelles données
+      // Update local state with new data
       if (updatedData?.data?.getDoctorById?.workingHours) {
         setWorkingHoursState(
           updatedData.data.getDoctorById.workingHours.map((wh) => ({
@@ -64,8 +64,8 @@ export default function AdminPopupDoctorHour({
         );
       }
 
-      onClose(); // Ferme la modale
-      onUpdate(); // Notifie le parent
+      onClose();
+      onUpdate();
     } catch (error) {
       console.error('Erreur capturée:', error);
       showToast('Une erreur inattendue est survenue.', 'error');

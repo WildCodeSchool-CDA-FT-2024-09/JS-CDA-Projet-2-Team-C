@@ -10,6 +10,7 @@ import AgentPatientSearchBar from '../../components/agent_components/AgentPatien
 export default function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
 
   const {
     loading: loadingServices,
@@ -39,6 +40,10 @@ export default function AgentHome() {
   const handleViewChange = (view: string) => {
     setSelectedView(view);
     setSelectedService(null);
+  };
+
+  const handleDoctorClick = (doctorId: string) => {
+    setSelectedDoctor(doctorId);
   };
 
   const renderInitialView = () => (
@@ -78,6 +83,7 @@ export default function AgentHome() {
         error={errorDoctors}
         items={dataDoctors?.getDoctorByDepartment[0]?.users || []}
         renderItem={(doctor) => `DR. ${doctor.firstname} ${doctor.lastname}`}
+        onItemClick={(doctor) => handleDoctorClick(doctor.id)}
         emptyMessage="Aucun docteur trouvé pour ce service."
       />
       <button
@@ -97,6 +103,7 @@ export default function AgentHome() {
         error={errorServices}
         items={dataServices?.getDoctors || []}
         renderItem={(doctor) => `DR. ${doctor.firstname} ${doctor.lastname}`}
+        onItemClick={(doctor) => handleDoctorClick(doctor.id)}
         emptyMessage="Aucun docteur disponible."
       />
       <button
@@ -125,12 +132,49 @@ export default function AgentHome() {
     </>
   );
 
+  const renderAppointmentsByDoctor = () => (
+    <>
+      <h1 className="text-center text-3xl font-bold">
+        ID du docteur sélectionné :{' '}
+        {selectedDoctor || 'Aucun docteur sélectionné'}
+      </h1>
+      <button
+        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
+        onClick={() => setSelectedDoctor(null)}
+      >
+        Retour aux docteurs
+      </button>
+      {/* <h1 className="text-center text-3xl font-bold">
+        Rendez-vous pour le docteur {selectedDoctor || ''}
+      </h1>
+      <AgentChoiceList
+        isLoading={loadingAppointments}
+        error={errorAppointments}
+        items={dataAppointments?.appointments || []}
+        renderItem={(appointment) => appointment.label}
+        emptyMessage="Aucun rendez-vous trouvé."
+      />
+      <button
+        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
+        onClick={() => setSelectedDoctor(null)}
+      >
+        Retour aux docteurs
+      </button> */}
+    </>
+  );
+
   const renderView = () => {
     switch (selectedView) {
       case 'service':
-        return selectedService ? renderDoctorsByService() : renderServices();
+        return selectedDoctor
+          ? renderAppointmentsByDoctor()
+          : selectedService
+            ? renderDoctorsByService()
+            : renderServices();
       case 'docteur':
-        return renderAllDoctors();
+        return selectedDoctor
+          ? renderAppointmentsByDoctor()
+          : renderAllDoctors();
       case 'patient':
         return renderPatients();
       default:

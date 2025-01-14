@@ -48,12 +48,12 @@ export default function AgentPatientSearchBar({
             data.patients.map((patient) => (
               <li key={`patient-${patient.id}`}>
                 <button onClick={() => handlePatientSelected(patient.id)}>
-                  <strong>{patient.ssn}</strong>
+                  <strong>Acceder au rendez-vous</strong>
                 </button>
               </li>
             ))
           ) : (
-            <li>pas de résultat</li>
+            <li>Pas de rendez-vous</li>
           )}
         </ul>
       )}

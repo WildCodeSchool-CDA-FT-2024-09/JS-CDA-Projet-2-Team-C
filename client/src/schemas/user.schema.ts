@@ -15,7 +15,7 @@ export const GET_DOCTORS_BY_DEPARTMENT = gql`
 `;
 
 export const LOGIN = gql`
-  query Login($password: String!, $email: String!) {
+  mutation Login($password: String!, $email: String!) {
     login(password: $password, email: $email) {
       id
       email
@@ -24,7 +24,6 @@ export const LOGIN = gql`
         label
         code
       }
-      token
     }
   }
 `;
@@ -65,5 +64,25 @@ export const ADD_USER_MUTATION = gql`
       }
       createdAt
     }
+  }
+`;
+
+export const GET_CURRENT_AUTH_USER = gql`
+  query GetCurrentAuthUser {
+    getCurrentAuthUser {
+      email
+      id
+      role {
+        id
+        code
+        label
+      }
+    }
+  }
+`;
+
+export const LOGOUT = gql`
+  mutation Logout {
+    logout
   }
 `;

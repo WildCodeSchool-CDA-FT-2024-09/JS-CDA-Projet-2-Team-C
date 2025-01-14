@@ -57,9 +57,7 @@ export class User extends BaseEntity {
   gender: Gender;
 
   @Field(() => [WorkingHours], { nullable: true })
-  @OneToMany(() => WorkingHours, (workingHours) => workingHours.doctor, {
-    cascade: true
-  })
+  @OneToMany(() => WorkingHours, (workingHours) => workingHours.doctor)
   workingHours: WorkingHours[];
 
   @Field(() => [Attachment], { nullable: true })
@@ -93,9 +91,6 @@ export class AuthUser {
 
   @Field(() => Role)
   role: Role;
-
-  @Field(() => String)
-  token: string;
 }
 
 @ObjectType()

@@ -4,6 +4,15 @@ import * as jwt from 'jsonwebtoken';
 
 dotenv.config();
 
+function getEnvKey(): string {
+  const JWT_SECRET =
+    process.env.NODE_ENV === 'test' ? 'testsecret' : process.env.JWT_SECRET;
+  if (!JWT_SECRET) {
+    throw new Error('Server error: Missing JWT_SECRET');
+  }
+  return JWT_SECRET;
+}
+
 export async function hashPassword(password: string): Promise<string> {
   return await argon2.hash(password);
 }
@@ -16,21 +25,12 @@ export async function verifyPassword(
 }
 
 export function generateToken(id: string): string {
-  const { JWT_SECRET } = process.env;
-  if (!JWT_SECRET) {
-    throw new Error('Server error: Missing JWT_SECRET');
-  }
-
-  return jwt.sign({ id }, JWT_SECRET, { expiresIn: '24h' });
+  return jwt.sign({ id }, getEnvKey(), { expiresIn: '24h' });
 }
 
 export function verifyToken(token: string): { id: string } | null {
-  const { JWT_SECRET } = process.env;
-  if (!JWT_SECRET) {
-    throw new Error('Server error: Missing JWT_SECRET');
-  }
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, getEnvKey());
     if (typeof decoded === 'object' && 'id' in decoded) {
       return decoded as { id: string };
     }

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import {
   useDepartmentsAndDoctorsQuery,
-  useGetDoctorByDepartmentQuery
+  useGetDoctorByDepartmentQuery,
+  useRestrictedConsultationsByDoctorIdQuery
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/AgentChoiceList/AgentChoiceList';
@@ -25,6 +26,14 @@ export default function AgentHome() {
   } = useGetDoctorByDepartmentQuery({
     variables: { label: selectedService || '' },
     skip: !selectedService
+  });
+  const {
+    loading: loadingAppointments,
+    error: errorAppointments,
+    data: dataAppointments
+  } = useRestrictedConsultationsByDoctorIdQuery({
+    variables: { doctorId: selectedDoctor || '' },
+    skip: !selectedDoctor
   });
 
   if (loadingServices) return <p>Chargement des services...</p>;
@@ -134,7 +143,7 @@ export default function AgentHome() {
 
   const renderAppointmentsByDoctor = () => (
     <>
-      <h1 className="text-center text-3xl font-bold">
+      {/* <h1 className="text-center text-3xl font-bold">
         ID du docteur sélectionné :{' '}
         {selectedDoctor || 'Aucun docteur sélectionné'}
       </h1>
@@ -143,15 +152,22 @@ export default function AgentHome() {
         onClick={() => setSelectedDoctor(null)}
       >
         Retour aux docteurs
-      </button>
-      {/* <h1 className="text-center text-3xl font-bold">
+      </button> */}
+      <h1 className="text-center text-3xl font-bold">
         Rendez-vous pour le docteur {selectedDoctor || ''}
       </h1>
       <AgentChoiceList
         isLoading={loadingAppointments}
         error={errorAppointments}
-        items={dataAppointments?.appointments || []}
-        renderItem={(appointment) => appointment.label}
+        items={dataAppointments?.restrictedConsultationsByDoctorId || []}
+        renderItem={(appointment) => (
+          <>
+            <div>{appointment.patient.firstname}</div>
+            <div>{appointment.doctor.firstname}</div>
+            <div>{appointment.startTime}</div>
+            <div>{appointment.consultationDate}</div>
+          </>
+        )}
         emptyMessage="Aucun rendez-vous trouvé."
       />
       <button
@@ -159,7 +175,7 @@ export default function AgentHome() {
         onClick={() => setSelectedDoctor(null)}
       >
         Retour aux docteurs
-      </button> */}
+      </button>
     </>
   );
 

@@ -1,14 +1,19 @@
 import { PropsWithChildren, useEffect } from 'react';
 import { useAuth } from '../../../contexts/auth/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useToast } from '../../../contexts/toasts/useToast';
 import { roleLandingPages } from '../../../pages/Login/roleLandingPages';
 
 const RedirectWrapper = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, authChecked } = useAuth();
+  const { showToast } = useToast();
 
   useEffect(() => {
+    // Don't redirect until auth is checked
+    if (!authChecked) return;
+
     // If user not logged in, redirect to login page
     if (!user) {
       navigate('/');
@@ -18,8 +23,9 @@ const RedirectWrapper = ({ children }: PropsWithChildren) => {
         roleLandingPages[user.role.code as keyof typeof roleLandingPages],
         { replace: true }
       );
+      showToast(`Welcome back ${user.email}`, 'success');
     }
-  }, [user, navigate, location.pathname]);
+  }, [authChecked, user, navigate, location.pathname]);
 
   // Remove fragments
   return <>{children}</>;

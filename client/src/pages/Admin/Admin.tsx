@@ -31,7 +31,7 @@ export default function Admin() {
   });
 
   const handleUpdate = () => {
-    refetch(); // Relancer la requête pour rafraîchir UserList
+    refetch();
   };
 
   const handleOpenModal = (id: string, name: string) => {
@@ -101,7 +101,7 @@ export default function Admin() {
           <AdminPopupDoctorHour
             isOpen={doctorState.isModalOpen}
             onClose={handleCloseModal}
-            idDoctor={doctorState.id ?? ''} // 0 comme valeur par défaut si id est undefined
+            idDoctor={doctorState.id ?? ''}
             nameDoctor={doctorState.name ?? 'Nom inconnu'}
             refetchUsers={() => setCurrentPage(0)}
             onUpdate={handleUpdate}

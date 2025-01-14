@@ -5,8 +5,8 @@ export interface AdminPopupDoctorHourProps {
   onClose: () => void;
   idDoctor: string;
   nameDoctor: string;
-  refetchUsers?: () => void; // Marqué comme optionnel si non utilisé partout
-  onUpdate: () => void; // Marqué comme optionnel si non utilisé partout
+  refetchUsers?: () => void;
+  onUpdate: () => void;
 }
 
 export interface WorkingHour {

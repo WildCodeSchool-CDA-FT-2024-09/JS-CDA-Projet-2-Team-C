@@ -6,6 +6,8 @@ import { client } from './services/client';
 import { AuthProvider } from './contexts/auth/AuthContext.tsx';
 import { ToastProvider } from './contexts/toasts/ToastContext.tsx';
 import RedirectWrapper from './components/shared_components/RedirectWrapper/RedirectWrapper.tsx';
+import ProtectedRoute from './components/shared_components/ProtectedRoute/ProtectedRoute.tsx';
+import { RoleCode } from './generated/graphql-types.ts';
 import RoleBasedPlanning from './components/shared_components/RoleBasedPlanning/RoleBasedPlanning.tsx';
 import App from './App.tsx';
 import Login from './pages/Login/Login.tsx';
@@ -48,7 +50,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'admin',
-        element: <Admin />
+        element: (
+          <ProtectedRoute allowedRoles={[RoleCode.Admin]}>
+            <Admin />
+          </ProtectedRoute>
+        )
       },
       {
         path: 'consultations',

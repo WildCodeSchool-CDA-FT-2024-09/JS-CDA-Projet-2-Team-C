@@ -23,7 +23,7 @@ const RedirectWrapper = ({ children }: PropsWithChildren) => {
         roleLandingPages[user.role.code as keyof typeof roleLandingPages],
         { replace: true }
       );
-      showToast(`Welcome back ${user.email}`, 'success');
+      showToast(`Connecté en tant que ${user.email}`, 'success');
     }
   }, [authChecked, user, navigate, location.pathname]);
 

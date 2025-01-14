@@ -6,15 +6,12 @@ import {
   setTokenCookie,
   clearCookie
 } from './auth.utils';
-// import { User } from '../modules/user/user.entity';
 import * as argon2 from 'argon2';
-// import * as jwt from 'jsonwebtoken';
 
 describe('auth.utils', () => {
   const mockUser = {
     id: 'b15ec4d0-7c7e-4f14-a1a6-0047f6ed4ca8',
     email: 'test@example.com'
-    // ...other properties if any...
   };
 
   describe('hashPassword', () => {

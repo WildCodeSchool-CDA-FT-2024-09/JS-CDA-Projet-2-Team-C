@@ -30,7 +30,8 @@ export default function AgentHome() {
   const {
     loading: loadingAppointments,
     error: errorAppointments,
-    data: dataAppointments
+    data: dataAppointments,
+    refetch: refetchAppointments
   } = useRestrictedConsultationsByDoctorIdQuery({
     variables: { doctorId: selectedDoctor || '' },
     skip: !selectedDoctor
@@ -51,7 +52,8 @@ export default function AgentHome() {
     setSelectedService(null);
   };
 
-  const handleDoctorClick = (doctorId: string) => {
+  const handleDoctorClick = async (doctorId: string) => {
+    await refetchAppointments({ doctorId });
     setSelectedDoctor(doctorId);
   };
 

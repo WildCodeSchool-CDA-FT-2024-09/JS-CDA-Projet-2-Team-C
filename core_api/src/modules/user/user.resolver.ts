@@ -1,5 +1,13 @@
 import * as dotenv from 'dotenv';
-import { Query, Resolver, Mutation, Arg, Int } from 'type-graphql';
+import {
+  Query,
+  Resolver,
+  Mutation,
+  Arg,
+  Int,
+  Ctx,
+  Authorized
+} from 'type-graphql';
 import {
   User,
   AuthUser,
@@ -10,8 +18,14 @@ import {
   PaginatedUsers
 } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
-import { hashPassword } from '../../utils/auth.utils';
+import {
+  hashPassword,
+  setTokenCookie,
+  clearCookie
+} from '../../utils/auth.utils';
+import { ContextType } from '../../types/ContextType';
 import { sendPasswordByEmail } from '../../utils/email.utils';
+
 dotenv.config();
 
 @Resolver(User)
@@ -119,8 +133,12 @@ export default class UserResolver {
     return user;
   }
 
-  @Query(() => AuthUser)
-  async login(@Arg('email') email: string, @Arg('password') password: string) {
+  @Mutation(() => AuthUser)
+  async login(
+    @Arg('email') email: string,
+    @Arg('password') password: string,
+    @Ctx() ctx: ContextType
+  ): Promise<AuthUser> {
     const user = await User.findOne({ where: { email }, relations: ['role'] });
 
     if (!user || !(await verifyPassword(password, user.password))) {
@@ -132,7 +150,9 @@ export default class UserResolver {
     authUser.id = user.id;
     authUser.email = user.email;
     authUser.role = user.role;
-    authUser.token = generateToken(user);
+
+    const token = generateToken(user.id);
+    setTokenCookie(ctx.res, token);
 
     return authUser;
   }
@@ -145,6 +165,7 @@ export default class UserResolver {
     });
   }
 
+  @Authorized([RoleCode.ADMIN])
   @Query(() => PaginatedUsers, {
     description: 'Fetch paginated users with optional role filtering'
   })
@@ -180,5 +201,26 @@ export default class UserResolver {
       total,
       hasMore: skip + take < total
     };
+  }
+
+  @Authorized([
+    RoleCode.ADMIN,
+    RoleCode.DOCTOR,
+    RoleCode.SECRETARY,
+    RoleCode.AGENT
+  ])
+  @Query(() => AuthUser, {
+    description: 'Fetches the current authenticated user'
+  })
+  async getCurrentAuthUser(@Ctx() ctx: ContextType): Promise<User | null> {
+    return ctx.user;
+  }
+
+  @Mutation(() => Boolean, {
+    description: 'Logs out the user by clearing the medagendatoken cookie'
+  })
+  logout(@Ctx() ctx: ContextType): boolean {
+    clearCookie(ctx.res);
+    return true;
   }
 }

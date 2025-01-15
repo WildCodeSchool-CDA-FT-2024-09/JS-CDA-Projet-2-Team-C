@@ -152,6 +152,7 @@ export type Query = {
   patient: Patient;
   patients: Array<Patient>;
   restrictedConsultationsByDoctorId: Array<Consultation>;
+  restrictedPatients: Array<Patient>;
   roles: Array<Role>;
   users: Array<User>;
 };
@@ -185,6 +186,10 @@ export type QueryPatientsArgs = {
 
 export type QueryRestrictedConsultationsByDoctorIdArgs = {
   doctorId: Scalars['String']['input'];
+};
+
+export type QueryRestrictedPatientsArgs = {
+  search: Scalars['String']['input'];
 };
 
 export type Role = {
@@ -385,6 +390,15 @@ export type GetPatientsByNameQuery = {
     dateOfBirth: any;
     gender: { __typename?: 'Gender'; label: string };
   }>;
+};
+
+export type GetRestrictedPatientsBySsnQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+}>;
+
+export type GetRestrictedPatientsBySsnQuery = {
+  __typename?: 'Query';
+  restrictedPatients: Array<{ __typename?: 'Patient'; ssn: string }>;
 };
 
 export type RolesQueryVariables = Exact<{ [key: string]: never }>;
@@ -1286,6 +1300,88 @@ export type GetPatientsByNameSuspenseQueryHookResult = ReturnType<
 export type GetPatientsByNameQueryResult = Apollo.QueryResult<
   GetPatientsByNameQuery,
   GetPatientsByNameQueryVariables
+>;
+export const GetRestrictedPatientsBySsnDocument = gql`
+  query GetRestrictedPatientsBySsn($search: String!) {
+    restrictedPatients(search: $search) {
+      ssn
+    }
+  }
+`;
+
+/**
+ * __useGetRestrictedPatientsBySsnQuery__
+ *
+ * To run a query within a React component, call `useGetRestrictedPatientsBySsnQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRestrictedPatientsBySsnQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRestrictedPatientsBySsnQuery({
+ *   variables: {
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useGetRestrictedPatientsBySsnQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetRestrictedPatientsBySsnQuery,
+    GetRestrictedPatientsBySsnQueryVariables
+  > &
+    (
+      | { variables: GetRestrictedPatientsBySsnQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    )
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetRestrictedPatientsBySsnQuery,
+    GetRestrictedPatientsBySsnQueryVariables
+  >(GetRestrictedPatientsBySsnDocument, options);
+}
+export function useGetRestrictedPatientsBySsnLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetRestrictedPatientsBySsnQuery,
+    GetRestrictedPatientsBySsnQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetRestrictedPatientsBySsnQuery,
+    GetRestrictedPatientsBySsnQueryVariables
+  >(GetRestrictedPatientsBySsnDocument, options);
+}
+export function useGetRestrictedPatientsBySsnSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetRestrictedPatientsBySsnQuery,
+        GetRestrictedPatientsBySsnQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetRestrictedPatientsBySsnQuery,
+    GetRestrictedPatientsBySsnQueryVariables
+  >(GetRestrictedPatientsBySsnDocument, options);
+}
+export type GetRestrictedPatientsBySsnQueryHookResult = ReturnType<
+  typeof useGetRestrictedPatientsBySsnQuery
+>;
+export type GetRestrictedPatientsBySsnLazyQueryHookResult = ReturnType<
+  typeof useGetRestrictedPatientsBySsnLazyQuery
+>;
+export type GetRestrictedPatientsBySsnSuspenseQueryHookResult = ReturnType<
+  typeof useGetRestrictedPatientsBySsnSuspenseQuery
+>;
+export type GetRestrictedPatientsBySsnQueryResult = Apollo.QueryResult<
+  GetRestrictedPatientsBySsnQuery,
+  GetRestrictedPatientsBySsnQueryVariables
 >;
 export const RolesDocument = gql`
   query Roles {

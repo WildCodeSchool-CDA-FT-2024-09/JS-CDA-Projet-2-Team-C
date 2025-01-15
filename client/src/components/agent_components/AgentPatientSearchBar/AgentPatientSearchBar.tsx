@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useGetPatientsByNameLazyQuery } from '../../../generated/graphql-types';
+import { useGetRestrictedPatientsBySsnLazyQuery } from '../../../generated/graphql-types';
 import AgentSearchBar from '../AgentSearchBar.tsx/AgentSearchBar';
 import AgentPatientSearchBarProps from './AgentPatientSearchBar.type';
 
@@ -7,7 +7,8 @@ export default function AgentPatientSearchBar({
   handlePatientSelected
 }: AgentPatientSearchBarProps) {
   const [search, setSearch] = useState<string>('');
-  const [getPatientsByName, { data }] = useGetPatientsByNameLazyQuery();
+  const [getPatientsByName, { data }] =
+    useGetRestrictedPatientsBySsnLazyQuery();
 
   const formatSSN = (value: string): string => {
     const cleanedValue = value.replace(/\s+/g, '');
@@ -44,17 +45,21 @@ export default function AgentPatientSearchBar({
           tabIndex={0}
           className="menu dropdown-content z-[1] w-full rounded-box bg-base-100 p-2 shadow"
         >
-          {data.patients.length ? (
-            data.patients.map((patient) => (
-              <li key={`patient-${patient.id}`}>
-                <button onClick={() => handlePatientSelected(patient.id)}>
-                  <strong>Acceder au rendez-vous</strong>
+          {data && data.restrictedPatients ? (
+            data.restrictedPatients[0] ? (
+              <li key={`patient-${data.restrictedPatients[0].ssn}`}>
+                <button
+                  onClick={() =>
+                    handlePatientSelected(data.restrictedPatients[0].ssn)
+                  }
+                >
+                  <strong>Accéder au rendez-vous</strong>
                 </button>
               </li>
-            ))
-          ) : (
-            <li>Pas de rendez-vous</li>
-          )}
+            ) : (
+              <li>Pas de rendez-vous</li>
+            )
+          ) : null}
         </ul>
       )}
     </div>

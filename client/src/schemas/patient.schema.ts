@@ -34,3 +34,11 @@ export const GET_PATIENTS_BY_NAME = gql`
     }
   }
 `;
+
+export const GET_RESTRICTED_PATIENTS_BY_SSN = gql`
+  query GetRestrictedPatientsBySsn($search: String!) {
+    restrictedPatients(search: $search) {
+      ssn
+    }
+  }
+`;

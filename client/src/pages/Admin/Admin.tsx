@@ -1,13 +1,16 @@
-import { useRef, useState } from 'react';
 import { usePagination } from '../../utils/pagination/usePagination';
+import AdminPopupDoctorHour from '../../components/AdminPopupDoctorHour/AdminPopupDoctorHour';
+import { useGetAllUsersQuery } from '../../generated/graphql-types';
+import { useRef, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce.ts';
 import SearchBar from '../../components/shared_components/SearchBar/SearchBar.tsx';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
-import AdminPopup from '../../components/AdminPopup/AdminPopup';
-import Pagination from '../../components/Pagination/Pagination';
+import CreateUserPopup from '../../components/CreateUserPopup/CreateUserPopup.tsx';
+import Pagination from '../../components/Pagination/Pagination.tsx';
 import UserList from '../../components/UserList/UserList';
-import AdminPopupDoctorHour from '../../components/AdminPopupDoctorHour/AdminPopupDoctorHour';
-import { useGetAllUsersQuery } from '../../generated/graphql-types';
+import UpdateUserPopup from '../../components/UpdateUserPopup/UpdateUserPopup.tsx';
+import { User } from '../../generated/graphql-types.ts';
+
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling
   const perPage = 8;
@@ -30,9 +33,13 @@ export default function Admin() {
     isModalOpen: false
   });
 
+  const [selectedUser, setSelectedUser] = useState<User | undefined>();
   const handleUpdate = () => {
     refetch();
   };
+
+  const createUserDialogRef = useRef<HTMLDialogElement>(null);
+  const updateUserDialogRef = useRef<HTMLDialogElement>(null);
 
   const handleOpenModalDoctorHour = (id: string, name: string) => {
     setDoctorState({
@@ -59,17 +66,26 @@ export default function Admin() {
     setCurrentPage(0);
   };
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
-  const handleOpen = () => {
-    if (dialogRef.current) {
-      dialogRef.current.showModal();
+  // Create and Update popup handlers
+  const handleCreateUserPopupOpen = () => {
+    if (createUserDialogRef.current) {
+      createUserDialogRef.current.showModal();
     }
   };
-
-  const handleClose = () => {
-    if (dialogRef.current) {
-      dialogRef.current.close();
+  const handleUpdateUserPopupOpen = (user: User) => {
+    setSelectedUser(user);
+    if (updateUserDialogRef.current) {
+      updateUserDialogRef.current.showModal();
+    }
+  };
+  const handleUpdateUserPopupClose = () => {
+    if (updateUserDialogRef.current) {
+      updateUserDialogRef.current.close();
+    }
+  };
+  const handleCreateUserPopupClose = () => {
+    if (createUserDialogRef.current) {
+      createUserDialogRef.current.close();
     }
   };
 
@@ -92,9 +108,15 @@ export default function Admin() {
     <>
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
         <section className="flex p-[27px]">
-          <AdminPopup
-            ref={dialogRef}
-            close={handleClose}
+          <CreateUserPopup
+            ref={createUserDialogRef}
+            close={handleCreateUserPopupClose}
+            refetchUsers={() => setCurrentPage(0)}
+          />
+          <UpdateUserPopup
+            ref={updateUserDialogRef}
+            user={selectedUser}
+            close={handleUpdateUserPopupClose}
             refetchUsers={() => setCurrentPage(0)}
           />
 
@@ -114,7 +136,6 @@ export default function Admin() {
             <button
               type="button"
               className="basis-1/4 rounded-lg bg-danger-lighter p-2 hover:bg-danger-dark hover:text-white"
-              onClick={handleOpen}
             >
               afficher
             </button>
@@ -126,7 +147,7 @@ export default function Admin() {
           <button
             type="button"
             className="basis-1/4 rounded-lg bg-primary-dark p-2 text-white hover:bg-secondary"
-            onClick={handleOpen}
+            onClick={handleCreateUserPopupOpen}
           >
             Ajouter un utilisateur
           </button>
@@ -156,6 +177,7 @@ export default function Admin() {
                 loading={loading}
                 error={!!error}
                 handleOpenModal={handleOpenModalDoctorHour}
+                openUpdateUserPopup={handleUpdateUserPopupOpen}
               />
             </tbody>
           </table>

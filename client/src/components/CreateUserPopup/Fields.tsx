@@ -1,4 +1,4 @@
-import { InputFieldProps, SelectFieldProps } from './AdminPopup.types';
+import { InputFieldProps, SelectFieldProps } from './CreateUserPopup.types';
 
 export const InputField = ({
   name,

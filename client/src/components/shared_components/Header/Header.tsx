@@ -51,7 +51,10 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
           </span>
         )}
       </section>
-      <h1 role="title" className="navbar-center text-2xl text-white">
+      <h1
+        role="title"
+        className="navbar-center ml-[50px] text-2xl text-white sm:ml-0"
+      >
         {currentPageName}
       </h1>
       <nav role="navigation-desktop" className="navbar-end hidden md:flex">

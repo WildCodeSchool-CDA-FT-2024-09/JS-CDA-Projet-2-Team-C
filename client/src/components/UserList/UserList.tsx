@@ -1,17 +1,20 @@
 import { RoleCode } from '../../generated/graphql-types';
 import { AllUser } from '../AdminPopupDoctorHour/AdminPopupDoctorHour.types';
 import alert from '/images/alert-icon.png';
+import { User } from '../../generated/graphql-types';
 
 export default function UserList({
   users,
   loading,
   error,
-  handleOpenModal
+  handleOpenModal,
+  openUpdateUserPopup
 }: {
   users: AllUser[];
   loading: boolean;
   error: boolean | undefined;
   handleOpenModal: (id: string, name: string) => void;
+  openUpdateUserPopup: (user: User) => void;
 }) {
   if (loading)
     return (
@@ -76,6 +79,7 @@ export default function UserList({
             <button
               type="button"
               className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark hover:text-white"
+              onClick={() => openUpdateUserPopup(user as User)}
             >
               Modifier
             </button>

@@ -51,7 +51,7 @@ const router = createBrowserRouter([
       {
         path: 'dossiers',
         element: (
-          <ProtectedRoute allowedRoles={[RoleCode.Agent]}>
+          <ProtectedRoute allowedRoles={[RoleCode.Doctor]}>
             <DossierBrowser />
           </ProtectedRoute>
         )

@@ -3,7 +3,6 @@ import { Resolver, Query, Arg, Authorized } from 'type-graphql';
 
 @Resolver(Consultation)
 export default class ConsultationResolver {
-  // TODO : rescrtict access to role === doctor
   @Authorized([RoleCode.DOCTOR])
   @Query(() => [Consultation])
   async dossier(@Arg('patientId') patientId: string) {

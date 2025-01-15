@@ -17,12 +17,6 @@ type UpdateUserPopupProps = {
 
 const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
   ({ close, refetchUsers, user }, ref) => {
-    const { data: departmentsAndGendersAndRoles } =
-      useDepartmentsAndGendersAndRolesQuery();
-    const [updateUser] = useUpdateUserMutation();
-
-    const { showToast } = useToast();
-
     const [formInputs, setFormInputs] = useState({
       role: '',
       name: '',
@@ -34,6 +28,11 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
     const [buttonDisabled, setButtonDisabled] = useState(true);
     const [inputError, setInputError] = useState<InputError>({});
     const [loading, setLoading] = useState(false);
+
+    const { data: departmentsAndGendersAndRoles } =
+      useDepartmentsAndGendersAndRolesQuery();
+    const [updateUser] = useUpdateUserMutation();
+    const { showToast } = useToast();
 
     useEffect(() => {
       setFormInputs({
@@ -64,27 +63,29 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
       e.preventDefault();
       try {
         setLoading(true);
-        await updateUser({
-          variables: {
-            id: user.id,
-            lastname: formInputs.name,
-            firstname: formInputs.firstname,
-            departmentLabel: formInputs.service,
-            email: formInputs.email,
-            genderLabel: formInputs.gender
-          }
-        });
-        refetchUsers();
-        setFormInputs({
-          role: '',
-          name: '',
-          firstname: '',
-          email: '',
-          service: '',
-          gender: ''
-        });
-        close();
-        showToast('Utilisateur modifié avec succès!', 'success');
+        if (user) {
+          await updateUser({
+            variables: {
+              id: user.id,
+              lastname: formInputs.name,
+              firstname: formInputs.firstname,
+              departmentLabel: formInputs.service,
+              email: formInputs.email,
+              genderLabel: formInputs.gender
+            }
+          });
+          refetchUsers();
+          setFormInputs({
+            role: '',
+            name: '',
+            firstname: '',
+            email: '',
+            service: '',
+            gender: ''
+          });
+          close();
+          showToast('Utilisateur modifié avec succès!', 'success');
+        }
       } catch (error: unknown) {
         console.error('Erreur capturée:', error);
         if (

@@ -22,12 +22,10 @@ export const GET_ALL_USERS = gql`
           code
           label
         }
-<<<<<<< HEAD
         workingHours {
           endTime
           startTime
           weekday
-=======
         department {
           label
           id
@@ -35,7 +33,6 @@ export const GET_ALL_USERS = gql`
         gender {
           id
           label
->>>>>>> 38d4a3457cc6ff157eab3cd45e5cf8d552be73e3
         }
       }
       total

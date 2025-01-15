@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce.ts';
 import SearchBar from '../../components/shared_components/SearchBar/SearchBar.tsx';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
@@ -23,11 +23,13 @@ export default function Admin() {
   const createUserDialogRef = useRef<HTMLDialogElement>(null);
   const updateUserDialogRef = useRef<HTMLDialogElement>(null);
 
-  const handleNextPage = () => {
+  // useCallback here so this function doesn't triggers rerender in
+  // paginatin component
+  const handleNextPage = useCallback(() => {
     if (hasMore) {
       setCurrentPage((prev) => prev + 1);
     }
-  };
+  }, [hasMore]);
 
   const handlePrevPage = () => {
     if (currentPage > 0) {
@@ -45,25 +47,23 @@ export default function Admin() {
     setCurrentPage(0);
   };
 
+  // Create and Update popup handlers
   const handleCreateUserPopupOpen = () => {
     if (createUserDialogRef.current) {
       createUserDialogRef.current.showModal();
     }
   };
-
   const handleUpdateUserPopupOpen = (user: User) => {
     setSelectedUser(user);
     if (updateUserDialogRef.current) {
       updateUserDialogRef.current.showModal();
     }
   };
-
   const handleUpdateUserPopupClose = () => {
     if (updateUserDialogRef.current) {
       updateUserDialogRef.current.close();
     }
   };
-
   const handleCreateUserPopupClose = () => {
     if (createUserDialogRef.current) {
       createUserDialogRef.current.close();

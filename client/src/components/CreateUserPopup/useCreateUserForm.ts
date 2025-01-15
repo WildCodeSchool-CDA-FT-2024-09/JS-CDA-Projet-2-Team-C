@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { rolesInfosAttribution } from '../../utils/roles.utils';
-import { InputError } from './AdminPopup.types';
+import { InputError } from './CreateUserPopup.types';
 
 export const useCreateUserForm = () => {
   const [formInputs, setFormInputs] = useState({

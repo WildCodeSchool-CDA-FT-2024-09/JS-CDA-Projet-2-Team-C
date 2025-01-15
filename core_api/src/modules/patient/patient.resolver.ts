@@ -33,4 +33,12 @@ export default class PatientResolver {
       }
     });
   }
+  @Query(() => [Patient])
+  async restrictedPatients(@Arg('search') search: string) {
+    search = search.trim();
+    if (!search) return [];
+    return await Patient.find({
+      where: [{ ssn: ILike(`${search}%`) }]
+    });
+  }
 }

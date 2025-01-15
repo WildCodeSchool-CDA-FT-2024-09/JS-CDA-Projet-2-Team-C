@@ -1,10 +1,12 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce.ts';
 import SearchBar from '../../components/shared_components/SearchBar/SearchBar.tsx';
 import OptionSelect from '../../components/OptionSelect/OptionSelect';
-import AdminPopup from '../../components/AdminPopup/AdminPopup.tsx';
+import CreateUserPopup from '../../components/CreateUserPopup/CreateUserPopup.tsx';
 import Pagination from '../../components/Pagination/Pagination.tsx';
 import UserList from '../../components/UserList/UserList';
+import UpdateUserPopup from '../../components/UpdateUserPopup/UpdateUserPopup.tsx';
+import { User } from '../../generated/graphql-types.ts';
 
 export default function Admin() {
   // number of users to display per page, 8 chosen to avoid scrolling
@@ -13,14 +15,21 @@ export default function Admin() {
   const [searchByName, setSearchByName] = useState<string>('');
   const [totalPages, setTotalPages] = useState(0);
   const [hasMore, setHasMore] = useState(false);
-  const debouncedSearch = useDebounce<string>(searchByName, 500);
   const [role, setRole] = useState<string>('');
+  const [selectedUser, setSelectedUser] = useState<User | undefined>();
 
-  const handleNextPage = () => {
+  const debouncedSearch = useDebounce<string>(searchByName, 500);
+
+  const createUserDialogRef = useRef<HTMLDialogElement>(null);
+  const updateUserDialogRef = useRef<HTMLDialogElement>(null);
+
+  // useCallback here so this function doesn't triggers rerender in
+  // paginatin component
+  const handleNextPage = useCallback(() => {
     if (hasMore) {
       setCurrentPage((prev) => prev + 1);
     }
-  };
+  }, [hasMore]);
 
   const handlePrevPage = () => {
     if (currentPage > 0) {
@@ -38,17 +47,26 @@ export default function Admin() {
     setCurrentPage(0);
   };
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
-  const handleOpen = () => {
-    if (dialogRef.current) {
-      dialogRef.current.showModal();
+  // Create and Update popup handlers
+  const handleCreateUserPopupOpen = () => {
+    if (createUserDialogRef.current) {
+      createUserDialogRef.current.showModal();
     }
   };
-
-  const handleClose = () => {
-    if (dialogRef.current) {
-      dialogRef.current.close();
+  const handleUpdateUserPopupOpen = (user: User) => {
+    setSelectedUser(user);
+    if (updateUserDialogRef.current) {
+      updateUserDialogRef.current.showModal();
+    }
+  };
+  const handleUpdateUserPopupClose = () => {
+    if (updateUserDialogRef.current) {
+      updateUserDialogRef.current.close();
+    }
+  };
+  const handleCreateUserPopupClose = () => {
+    if (createUserDialogRef.current) {
+      createUserDialogRef.current.close();
     }
   };
 
@@ -62,9 +80,15 @@ export default function Admin() {
     <>
       <section className="h-5/6 min-h-3.5 pl-[15vw] pr-[15vw]">
         <section className="flex p-[27px]">
-          <AdminPopup
-            ref={dialogRef}
-            close={handleClose}
+          <CreateUserPopup
+            ref={createUserDialogRef}
+            close={handleCreateUserPopupClose}
+            refetchUsers={() => setCurrentPage(0)}
+          />
+          <UpdateUserPopup
+            ref={updateUserDialogRef}
+            user={selectedUser}
+            close={handleUpdateUserPopupClose}
             refetchUsers={() => setCurrentPage(0)}
           />
           <div className="basis-1/4">{''}</div>
@@ -74,7 +98,7 @@ export default function Admin() {
           <button
             type="button"
             className="basis-1/4 rounded-lg bg-primary-dark p-2 text-white hover:bg-secondary"
-            onClick={handleOpen}
+            onClick={handleCreateUserPopupOpen}
           >
             Ajouter un utilisateur
           </button>
@@ -104,6 +128,7 @@ export default function Admin() {
                 role={role}
                 debouncedSearch={debouncedSearch}
                 onPaginationData={handlePaginationData}
+                openUpdateUserPopup={handleUpdateUserPopupOpen}
               />
             </tbody>
           </table>

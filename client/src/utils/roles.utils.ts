@@ -1,4 +1,4 @@
-import { FormInputs } from '../components/AdminPopup/AdminPopup.types';
+import { FormInputs } from '../components/CreateUserPopup/CreateUserPopup.types';
 
 export const rolesInfosAttribution: Record<string, (keyof FormInputs)[]> = {
   doctor: ['name', 'firstname', 'email', 'service', 'gender'],

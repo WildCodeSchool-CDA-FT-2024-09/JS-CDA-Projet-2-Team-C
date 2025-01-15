@@ -169,6 +169,36 @@ export default class UserResolver {
     });
   }
 
+  @Mutation(() => User)
+  async updateUser(
+    @Arg('id') id: string,
+    @Arg('firstname', { nullable: true }) firstname?: string,
+    @Arg('lastname', { nullable: true }) lastname?: string,
+    @Arg('email', { nullable: true }) email?: string,
+    @Arg('genderLabel', { nullable: true }) genderLabel?: string
+  ): Promise<User> {
+    const user = await User.findOne({ where: { id } });
+    if (!user) throw new Error('User not found');
+
+    if (email && email !== user.email) {
+      const duplicateUser = await User.findOne({ where: { email } });
+      if (duplicateUser) throw new Error('Cet email est déjà utilisé');
+      user.email = email;
+    }
+
+    if (firstname) user.firstname = firstname;
+    if (lastname) user.lastname = lastname;
+
+    if (genderLabel) {
+      const gender = await Gender.findOne({ where: { label: genderLabel } });
+      if (!gender) throw new Error('Gender not found');
+      user.gender = gender;
+    }
+
+    await user.save();
+    return user;
+  }
+
   @Authorized([RoleCode.ADMIN])
   @Query(() => PaginatedUsers, {
     description: 'Fetch paginated users with optional role filtering'

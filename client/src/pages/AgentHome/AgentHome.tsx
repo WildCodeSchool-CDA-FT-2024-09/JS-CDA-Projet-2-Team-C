@@ -154,7 +154,7 @@ export default function AgentHome() {
         items={dataAppointments?.restrictedConsultationsByDoctorId || []}
         renderItem={(appointment) => (
           <>
-            <div className="px-[2px]">{appointment.startTime}</div>
+            <div className="px-[2px]">{appointment.startTime.slice(0, 5)}</div>
             <div className="px-[2px]">{appointment.patient.firstname}</div>
             <div className="px-[2px]">{appointment.patient.lastname}</div>
           </>

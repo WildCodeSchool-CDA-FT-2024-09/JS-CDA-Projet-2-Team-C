@@ -1,5 +1,5 @@
 import { RoleCode } from '../../generated/graphql-types';
-import { User } from '../AdminPopupDoctorHour/AdminPopupDoctorHour.types';
+import { AllUser } from '../AdminPopupDoctorHour/AdminPopupDoctorHour.types';
 import alert from '/images/alert-icon.png';
 
 export default function UserList({
@@ -8,7 +8,7 @@ export default function UserList({
   error,
   handleOpenModal
 }: {
-  users: User[];
+  users: AllUser[];
   loading: boolean;
   error: boolean | undefined;
   handleOpenModal: (id: string, name: string) => void;
@@ -26,7 +26,7 @@ export default function UserList({
       </tr>
     );
 
-  const checkWorkingHours = (user: User): JSX.Element | null => {
+  const checkWorkingHours = (user: AllUser): JSX.Element | null => {
     if (user.role.code === RoleCode.Doctor) {
       if (user.workingHours && user.workingHours.length === 0) {
         return (

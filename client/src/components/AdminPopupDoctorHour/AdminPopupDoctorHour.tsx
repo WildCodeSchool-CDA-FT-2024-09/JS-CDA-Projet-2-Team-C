@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGetDoctorByIdQuery } from '../../generated/graphql-types';
 import TimeSelect from './TimeSelectWorkingHour';
 import { useUpdateDoctorWorkingHoursMutation } from '../../generated/graphql-types';
@@ -28,11 +28,11 @@ export default function AdminPopupDoctorHour({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
-      workingHoursState.some(
+      workingHours.some(
         (wh) => !wh.startTime || !wh.endTime || wh.startTime >= wh.endTime
       )
     ) {
-      showToast('Veuillez vérifier les horaires saisies.', 'error');
+      showToast('Veuillez vérifier les horaires saisis.', 'error');
       return;
     }
 
@@ -40,7 +40,7 @@ export default function AdminPopupDoctorHour({
       await updateDoctorWorkingHours({
         variables: {
           doctorId: doctorId,
-          workingHours: workingHoursState.map((wh) => ({
+          workingHours: workingHours.map((wh) => ({
             weekday: wh.weekday,
             startTime: wh.startTime,
             endTime: wh.endTime
@@ -55,7 +55,7 @@ export default function AdminPopupDoctorHour({
 
       // Update local state with new data
       if (updatedData?.data?.getDoctorById?.workingHours) {
-        setWorkingHoursState(
+        setWorkingHours(
           updatedData.data.getDoctorById.workingHours.map((wh) => ({
             ...wh,
             startTime: formatTimeToHHMM(wh.startTime),
@@ -72,12 +72,16 @@ export default function AdminPopupDoctorHour({
     }
   };
 
-  const weekdays: ReadonlyArray<string> = useMemo(
-    () => ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
-    []
-  );
+  const weekdays: string[] = [
+    'lundi',
+    'mardi',
+    'mercredi',
+    'jeudi',
+    'vendredi',
+    'samedi'
+  ];
 
-  const [workingHoursState, setWorkingHoursState] = useState<
+  const [workingHours, setWorkingHours] = useState<
     { weekday: number; startTime: string; endTime: string }[]
   >([]);
 
@@ -90,7 +94,7 @@ export default function AdminPopupDoctorHour({
   useEffect(() => {
     if (isOpen) {
       if (data?.getDoctorById?.workingHours) {
-        setWorkingHoursState(
+        setWorkingHours(
           data.getDoctorById.workingHours.map((wh) => ({
             ...wh,
             startTime: formatTimeToHHMM(wh.startTime),
@@ -98,7 +102,7 @@ export default function AdminPopupDoctorHour({
           }))
         );
       } else {
-        setWorkingHoursState(
+        setWorkingHours(
           weekdays.map((_, index) => ({
             weekday: index,
             startTime: '',
@@ -113,7 +117,7 @@ export default function AdminPopupDoctorHour({
     } else if (!isOpen && dialogRef.current) {
       dialogRef.current.close();
     }
-  }, [isOpen, data, weekdays]);
+  }, [isOpen, data]);
 
   // Synchronizing state with modal display
   useEffect(() => {
@@ -148,7 +152,7 @@ export default function AdminPopupDoctorHour({
     field: 'startTime' | 'endTime',
     value: string
   ) => {
-    setWorkingHoursState((prev) =>
+    setWorkingHours((prev) =>
       prev.map((wh) =>
         wh.weekday === dayIndex ? { ...wh, [field]: value } : wh
       )
@@ -156,12 +160,12 @@ export default function AdminPopupDoctorHour({
   };
 
   const handleclose = () => {
-    setWorkingHoursState([]);
+    setWorkingHours([]);
     onClose();
   };
 
   return (
-    <div>
+    <>
       <dialog ref={dialogRef} className="modal" role="dialog">
         <div className="modal-box">
           <form method="dialog">
@@ -183,7 +187,7 @@ export default function AdminPopupDoctorHour({
                 </span>
               </label>
               {weekdays.map((day, index) => {
-                const workingHour = workingHoursState.find(
+                const workingHour = workingHours.find(
                   (wh) => wh.weekday === index
                 );
 
@@ -197,7 +201,7 @@ export default function AdminPopupDoctorHour({
                       onChange={(e) => {
                         if (e.target.checked) {
                           // select the schedule only if the day is checked
-                          setWorkingHoursState((prev) => [
+                          setWorkingHours((prev) => [
                             ...prev,
                             {
                               weekday: index,
@@ -207,7 +211,7 @@ export default function AdminPopupDoctorHour({
                           ]);
                         } else {
                           // If unchecked, remove schedule for that day
-                          setWorkingHoursState((prev) =>
+                          setWorkingHours((prev) =>
                             prev.filter((wh) => wh.weekday !== index)
                           );
                         }
@@ -242,13 +246,13 @@ export default function AdminPopupDoctorHour({
             >
               {saving
                 ? 'Enregistrement...'
-                : workingHoursState.length > 0
+                : workingHours.length > 0
                   ? 'Modifier les horaires'
                   : 'Ajouter les horaires'}
             </button>
           </form>
         </div>
       </dialog>
-    </div>
+    </>
   );
 }

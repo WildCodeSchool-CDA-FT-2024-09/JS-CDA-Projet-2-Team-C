@@ -3,7 +3,7 @@ import { GetAllUsersQuery } from '../../generated/graphql-types';
 export interface AdminPopupDoctorHourProps {
   isOpen: boolean;
   onClose: () => void;
-  idDoctor: string;
+  doctorId: string;
   nameDoctor: string;
   refetchUsers?: () => void;
   onUpdate: () => void;
@@ -15,4 +15,4 @@ export interface WorkingHour {
   endTime: string;
 }
 
-export type User = GetAllUsersQuery['getAllUsers']['users'][0];
+export type AllUser = GetAllUsersQuery['getAllUsers']['users'][0];

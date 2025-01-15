@@ -101,7 +101,7 @@ export default function Admin() {
           <AdminPopupDoctorHour
             isOpen={doctorState.isModalOpen}
             onClose={handleCloseModal}
-            idDoctor={doctorState.id ?? ''}
+            doctorId={doctorState.id ?? ''}
             nameDoctor={doctorState.name ?? 'Nom inconnu'}
             refetchUsers={() => setCurrentPage(0)}
             onUpdate={handleUpdate}

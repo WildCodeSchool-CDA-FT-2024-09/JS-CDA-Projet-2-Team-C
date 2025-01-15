@@ -6,8 +6,13 @@ import { MemoryRouter } from 'react-router-dom';
 vi.mock('../../../contexts/auth/useAuth', () => ({
   useAuth: () => ({
     user: { role: { label: 'doctor' } },
-    setUser: vi.fn()
+    setUser: vi.fn(),
+    authChecked: true
   })
+}));
+
+vi.mock('../../../contexts/auth/useLogout', () => ({
+  useLogout: () => vi.fn()
 }));
 
 describe('Test du composant Layout', () => {

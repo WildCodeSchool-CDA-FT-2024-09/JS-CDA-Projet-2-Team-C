@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import LoginDevButtons from './LoginDevButtons';
 import Logo from '/images/logo-main-black.png';
 import { useLogin } from '../../contexts/auth/useLogin';
+import { useAuth } from '../../contexts/auth/useAuth';
 
 export default function Login() {
+  const { user, authChecked } = useAuth();
   const { handleLogin, loginErrorMsg } = useLogin();
 
-  // Controlled state for form inputs
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -14,6 +14,8 @@ export default function Login() {
     e.preventDefault();
     handleLogin(email, password);
   };
+
+  if (!authChecked || user) return null;
 
   return (
     <form
@@ -75,7 +77,6 @@ export default function Login() {
         {loginErrorMsg && (
           <p className="text-center text-red-500">{loginErrorMsg}</p>
         )}
-        <LoginDevButtons />
       </section>
     </form>
   );

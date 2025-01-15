@@ -1,11 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/auth/useAuth';
 import { RoleCode } from '../../../generated/graphql-types';
 import SecretaryHome from '../../../pages/SecretaryHome/SecretaryHome';
 
 export default function RoleBasedPlanning() {
   const { user } = useAuth();
-  const navigate = useNavigate();
 
   switch (user?.role.code) {
     case RoleCode.Doctor:
@@ -17,8 +15,5 @@ export default function RoleBasedPlanning() {
 
     case RoleCode.Secretary:
       return <SecretaryHome />;
-
-    default:
-      navigate('/');
   }
 }

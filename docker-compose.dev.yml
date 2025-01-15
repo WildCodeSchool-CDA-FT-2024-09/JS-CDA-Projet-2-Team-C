@@ -1,9 +1,9 @@
-services:
+services: 
   medapi_postgres:
     image: postgres
     ports:
       - 5566:5432
-    env_file: ./postgres/.env
+    env_file: .env
     volumes:
       # Mount for postgres data persistence e.g.
       # - ./prod_postgres_data:/var/lib/postgresql/data
@@ -18,14 +18,13 @@ services:
 
   coreapi:
     build: ./core_api
-    env_file: ./core_api/.env
+    env_file: .env
     volumes:
       - ./core_api/src/:/app/src/
     command: npm run dev 
 
   client:
-    environment:
-      - VITE_API_URL=http://localhost:5000/coreapi
+    env_file: .env
     build: ./client
     volumes:
       - ./client/src:/app/src
@@ -33,7 +32,7 @@ services:
 
   mailer:
     build: ./mailer
-    env_file: ./mailer/.env
+    env_file: .env
     volumes:
       - ./mailer/src/:/app/src/
     command: npm run dev

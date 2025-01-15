@@ -8,7 +8,7 @@ import { AdminPopupDoctorHourProps } from './AdminPopupDoctorHour.types';
 export default function AdminPopupDoctorHour({
   isOpen,
   onClose,
-  idDoctor,
+  doctorId,
   nameDoctor,
   onUpdate
 }: AdminPopupDoctorHourProps) {
@@ -21,7 +21,7 @@ export default function AdminPopupDoctorHour({
 
   const { data, refetch } = useGetDoctorByIdQuery({
     variables: {
-      id: idDoctor
+      id: doctorId
     }
   });
 
@@ -39,7 +39,7 @@ export default function AdminPopupDoctorHour({
     try {
       await updateDoctorWorkingHours({
         variables: {
-          doctorId: idDoctor,
+          doctorId: doctorId,
           workingHours: workingHoursState.map((wh) => ({
             weekday: wh.weekday,
             startTime: wh.startTime,
@@ -122,7 +122,7 @@ export default function AdminPopupDoctorHour({
     } else if (!isOpen && dialogRef.current) {
       dialogRef.current.close();
     }
-  }, [isOpen, idDoctor]);
+  }, [isOpen, doctorId]);
 
   function addTimes(startHour: number, endHour: number) {
     const times = [];
@@ -173,7 +173,7 @@ export default function AdminPopupDoctorHour({
             </button>
           </form>
           <h3 className="text-center text-lg font-bold text-primary">
-            horaire du médecin {nameDoctor} / id:{idDoctor}
+            horaire du médecin {nameDoctor} / id:{doctorId}
           </h3>
           <form onSubmit={handleSubmit}>
             <div className="form-control w-full max-w-xs">

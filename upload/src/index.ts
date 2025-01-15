@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { upload } from './imageUpload.utils';
 
 dotenv.config();
-const serverPort = process.env.PORT;
+const {UPLOAD_PORT}=process.env;
 
 const app = express();
 app.use(express.json());
@@ -22,6 +22,6 @@ app.post('/document', upload, async (req, res) => {
   }
 });
 
-app.listen(serverPort, () => {
-  console.info(`Listening on port ${serverPort}`);
+app.listen(UPLOAD_PORT, () => {
+  console.info(`Listening on port ${UPLOAD_PORT}`);
 });

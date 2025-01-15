@@ -26,6 +26,7 @@ export const GET_ALL_USERS = gql`
           endTime
           startTime
           weekday
+        }
         department {
           label
           id

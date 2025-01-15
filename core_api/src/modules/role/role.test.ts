@@ -1,5 +1,5 @@
 import getSchema from '../../schema';
-import { graphql, GraphQLSchema, print } from 'graphql';
+import { graphql, GraphQLSchema, print, ExecutionResult } from 'graphql';
 import gql from 'graphql-tag';
 import { RoleCode } from '../entities.index';
 import { MockUser } from '../../types/MockUserType';
@@ -33,11 +33,11 @@ describe('Repo resolvers', () => {
 
   it('Can get all roles as an ADMIN', async () => {
     mockUser.role.code = RoleCode.ADMIN;
-    const result = (await graphql({
+    const result: ExecutionResult = (await graphql({
       schema: schema,
       source: print(GET_ROLES),
       contextValue
     })) as { data: { roles: Array<unknown> } };
-    expect(result.data.roles).toEqual(expect.any(Array));
+    expect(result.data?.roles).toEqual(expect.any(Array));
   });
 });

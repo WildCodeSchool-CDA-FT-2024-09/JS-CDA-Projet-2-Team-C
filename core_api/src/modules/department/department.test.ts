@@ -1,5 +1,5 @@
 import getSchema from '../../schema';
-import { graphql, GraphQLSchema, print } from 'graphql';
+import { graphql, GraphQLSchema, print, ExecutionResult } from 'graphql';
 import gql from 'graphql-tag';
 import { RoleCode } from '../entities.index';
 import { MockUser } from '../../types/MockUserType';
@@ -33,41 +33,45 @@ describe('Department resolvers', () => {
 
   it('Can get all departments as an AGENT', async () => {
     mockUser.role.code = RoleCode.AGENT;
-    const result = (await graphql({
+    const result: ExecutionResult = await graphql({
       schema: schema,
       source: print(GET_DEPARTMENT),
       contextValue
-    })) as { data: { departments: Array<unknown> } };
-    expect(result.data.departments).toEqual(expect.any(Array));
+    });
+    expect(result.data?.departments).toEqual(expect.any(Array));
+    expect(result.errors).toBeUndefined();
   });
 
   it('Can get all departments as an ADMIN', async () => {
     mockUser.role.code = RoleCode.ADMIN;
-    const result = (await graphql({
+    const result: ExecutionResult = (await graphql({
       schema: schema,
       source: print(GET_DEPARTMENT),
       contextValue
     })) as { data: { departments: Array<unknown> } };
-    expect(result.data.departments).toEqual(expect.any(Array));
+    expect(result.data?.departments).toEqual(expect.any(Array));
+    expect(result.errors).toBeUndefined();
   });
 
   it('Cannot get all departments as a SECRETARY', async () => {
     mockUser.role.code = RoleCode.SECRETARY;
-    const result = (await graphql({
+    const result: ExecutionResult = await graphql({
       schema: schema,
       source: print(GET_DEPARTMENT),
       contextValue
-    })) as { errors: Array<unknown> };
+    });
     expect(result.errors).toEqual(expect.any(Array));
+    expect(result.data).toBeNull();
   });
 
   it('Cannot get all departments as a DOCTOR', async () => {
     mockUser.role.code = RoleCode.DOCTOR;
-    const result = (await graphql({
+    const result: ExecutionResult = await graphql({
       schema: schema,
       source: print(GET_DEPARTMENT),
       contextValue
-    })) as { errors: Array<unknown> };
+    });
     expect(result.errors).toEqual(expect.any(Array));
+    expect(result.data).toBeNull();
   });
 });

@@ -1,5 +1,5 @@
 import getSchema from '../../schema';
-import { graphql, GraphQLSchema, print } from 'graphql';
+import { graphql, GraphQLSchema, print, ExecutionResult } from 'graphql';
 import gql from 'graphql-tag';
 import { RoleCode } from '../entities.index';
 import { MockUser } from '../../types/MockUserType';
@@ -41,7 +41,8 @@ describe('Patient resolver', () => {
       firstname: 'Penelope',
       lastname: 'Patient'
     };
-    const result = (await graphql({
+
+    const result: ExecutionResult = (await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       contextValue,
@@ -52,10 +53,16 @@ describe('Patient resolver', () => {
       };
     };
 
-    expect(result.data.patients).toContainEqual(
+    expect(result.data?.patients).toContainEqual(
       expect.objectContaining(expectedResult)
     );
-    result.data.patients.forEach((patient) => {
+    (
+      result.data?.patients as Array<{
+        id: string;
+        firstname: string;
+        lastname: string;
+      }>
+    ).forEach((patient) => {
       expect(patient).toHaveProperty('id');
       expect(typeof patient.id).toBe('string');
     });
@@ -68,7 +75,8 @@ describe('Patient resolver', () => {
       firstname: 'Penelope',
       lastname: 'Patient'
     };
-    const result = (await graphql({
+
+    const result: ExecutionResult = (await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       contextValue,
@@ -79,10 +87,16 @@ describe('Patient resolver', () => {
       };
     };
 
-    expect(result.data.patients).toContainEqual(
+    expect(result.data?.patients).toContainEqual(
       expect.objectContaining(expectedResult)
     );
-    result.data.patients.forEach((patient) => {
+    (
+      result.data?.patients as Array<{
+        id: string;
+        firstname: string;
+        lastname: string;
+      }>
+    ).forEach((patient) => {
       expect(patient).toHaveProperty('id');
       expect(typeof patient.id).toBe('string');
     });
@@ -91,27 +105,31 @@ describe('Patient resolver', () => {
   it('Cannot search for patients by name as an AGENT', async () => {
     mockUser.role.code = RoleCode.AGENT;
     const searchValue = 'pen';
-    const result = (await graphql({
+
+    const result: ExecutionResult = await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       contextValue,
       variableValues: { search: searchValue }
-    })) as { errors: Array<unknown> };
+    });
 
     expect(result.errors).toEqual(expect.any(Array));
+    expect(result.data).toBeNull();
   });
 
   it('Cannot search for patients by name as an ADMIN', async () => {
     mockUser.role.code = RoleCode.ADMIN;
     const searchValue = 'pen';
-    const result = (await graphql({
+
+    const result: ExecutionResult = await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       contextValue,
       variableValues: { search: searchValue }
-    })) as { errors: Array<unknown> };
+    });
 
     expect(result.errors).toEqual(expect.any(Array));
+    expect(result.data).toBeNull();
   });
 
   // Search functionality
@@ -122,7 +140,8 @@ describe('Patient resolver', () => {
       firstname: 'Penelope',
       lastname: 'Patient'
     };
-    const result = (await graphql({
+
+    const result: ExecutionResult = (await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       contextValue,
@@ -133,10 +152,16 @@ describe('Patient resolver', () => {
       };
     };
 
-    expect(result.data.patients).toContainEqual(
+    expect(result.data?.patients).toContainEqual(
       expect.objectContaining(expectedResult)
     );
-    result.data.patients.forEach((patient) => {
+    (
+      result.data?.patients as Array<{
+        id: string;
+        firstname: string;
+        lastname: string;
+      }>
+    ).forEach((patient) => {
       expect(patient).toHaveProperty('id');
       expect(typeof patient.id).toBe('string');
     });
@@ -146,41 +171,39 @@ describe('Patient resolver', () => {
   it('returns an empty array if no patient was found', async () => {
     mockUser.role.code = RoleCode.DOCTOR;
     const searchValue = 'noPatientMatchesThisString';
-    const result = (await graphql({
+    const result: ExecutionResult = await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       contextValue,
       variableValues: { search: searchValue }
-    })) as { data: { patients: Array<unknown> } };
+    });
 
-    expect(result.data.patients.length).toEqual(0);
+    expect(result.data?.patients).toEqual([]);
   });
 
   it('resists basic SQLi', async () => {
     mockUser.role.code = RoleCode.DOCTOR;
     const searchValue = "' OR 1=1 --";
-    const result = (await graphql({
+    const result: ExecutionResult = await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       contextValue,
       variableValues: { search: searchValue }
-    })) as { data: { patients: Array<unknown> } };
+    });
 
-    expect(result.data.patients.length).toEqual(0);
+    expect(result.data?.patients).toEqual([]);
   });
 
   it('can handle empty searches', async () => {
     mockUser.role.code = RoleCode.DOCTOR;
     const searchValue = '';
-    const result = (await graphql({
+    const result: ExecutionResult = (await graphql({
       schema: schema,
       source: print(GET_PATIENTS_BY_NAME),
       contextValue,
       variableValues: { search: searchValue }
     })) as { data: { patients: Array<unknown> } };
 
-    console.info(result.data.patients);
-
-    expect(result.data.patients.length).toEqual(0);
+    expect(result.data?.patients).toEqual([]);
   });
 });

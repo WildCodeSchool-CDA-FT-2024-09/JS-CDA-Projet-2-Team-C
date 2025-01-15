@@ -66,8 +66,7 @@ export default function AdminPopupDoctorHour({
 
       onClose();
       onUpdate();
-    } catch (error) {
-      console.error('Erreur capturée:', error);
+    } catch {
       showToast('Une erreur inattendue est survenue.', 'error');
     }
   };

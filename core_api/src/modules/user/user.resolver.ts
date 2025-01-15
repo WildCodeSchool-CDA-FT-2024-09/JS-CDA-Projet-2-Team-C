@@ -30,6 +30,7 @@ dotenv.config();
 
 @Resolver(User)
 export default class UserResolver {
+  @Authorized([RoleCode.AGENT])
   @Query(() => [User], {
     description: 'Fetches all users with the role of doctor'
   })
@@ -49,6 +50,7 @@ export default class UserResolver {
     return doctors;
   }
 
+  @Authorized([RoleCode.AGENT])
   @Query(() => [Department], {
     description: 'Fetches departments by label and their doctors'
   })
@@ -77,6 +79,7 @@ export default class UserResolver {
     return departments;
   }
 
+  @Authorized([RoleCode.ADMIN])
   @Mutation(() => User)
   async addUser(
     @Arg('firstname') firstname: string,
@@ -158,6 +161,7 @@ export default class UserResolver {
   }
 
   @Query(() => [User])
+  @Authorized([RoleCode.ADMIN])
   async users() {
     return await User.find({
       // Explicitly load the "role" relationship

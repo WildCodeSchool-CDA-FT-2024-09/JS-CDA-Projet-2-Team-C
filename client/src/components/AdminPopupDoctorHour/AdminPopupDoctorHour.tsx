@@ -158,7 +158,7 @@ export default function AdminPopupDoctorHour({
     );
   };
 
-  const handleclose = () => {
+  const handlecloseDoctorHour = () => {
     setWorkingHours([]);
     onClose();
   };
@@ -169,7 +169,7 @@ export default function AdminPopupDoctorHour({
         <div className="modal-box">
           <form method="dialog">
             <button
-              onClick={handleclose}
+              onClick={handlecloseDoctorHour}
               className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
             >
               ✕

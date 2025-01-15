@@ -34,7 +34,7 @@ export default function Admin() {
     refetch();
   };
 
-  const handleOpenModal = (id: string, name: string) => {
+  const handleOpenModalDoctorHour = (id: string, name: string) => {
     setDoctorState({
       id: id,
       name: name,
@@ -42,7 +42,7 @@ export default function Admin() {
     });
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModalDoctorHour = () => {
     setDoctorState((prev) => ({
       ...prev,
       isModalOpen: false
@@ -100,7 +100,7 @@ export default function Admin() {
 
           <AdminPopupDoctorHour
             isOpen={doctorState.isModalOpen}
-            onClose={handleCloseModal}
+            onClose={handleCloseModalDoctorHour}
             doctorId={doctorState.id ?? ''}
             nameDoctor={doctorState.name ?? 'Nom inconnu'}
             refetchUsers={() => setCurrentPage(0)}
@@ -155,7 +155,7 @@ export default function Admin() {
                 users={data?.getAllUsers.users || []}
                 loading={loading}
                 error={!!error}
-                handleOpenModal={handleOpenModal}
+                handleOpenModal={handleOpenModalDoctorHour}
               />
             </tbody>
           </table>

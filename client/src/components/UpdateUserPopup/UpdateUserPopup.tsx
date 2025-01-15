@@ -45,17 +45,23 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
       });
     }, [user]);
 
+    // This checks if every required input is filled for a specific role
     useEffect(() => {
       if (!user) return;
+      // Gets the required fields from user's role
       const roleInfos = rolesInfosAttribution[user.role.code.toLowerCase()];
+      // Checks if they are present in the form
       const isValid = roleInfos.every((field) => !!formInputs[field]);
+      // Enable/disable the button accordingly
       setButtonDisabled(!isValid);
     }, [formInputs]);
 
+    // Gets onchanged field value by its name attribute
     const handleInputChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
       const { name, value } = e.target;
+      // Updates form field value
       setFormInputs((prev) => ({ ...prev, [name]: value }));
     };
 
@@ -87,7 +93,7 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
           showToast('Utilisateur modifié avec succès!', 'success');
         }
       } catch (error: unknown) {
-        console.error('Erreur capturée:', error);
+        console.error('Error on update form submit:', error);
         if (
           typeof error === 'object' &&
           error !== null &&
@@ -95,7 +101,7 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
         ) {
           setInputError(error as InputError);
         } else {
-          console.error('Erreur inattendue détectée:', error);
+          console.error('Unexpected error on update form submit:', error);
           showToast('Une erreur inattendue est survenue.', 'error');
         }
       } finally {

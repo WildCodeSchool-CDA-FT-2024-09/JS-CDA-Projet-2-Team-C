@@ -37,7 +37,6 @@ export default class ConsultationResolver {
   async restrictedConsultationsByDoctorId(@Arg('doctorId') doctorId: string) {
     const now = new Date();
 
-    // Log après l'ajout de 55 minutes
     const timePlus55Min = new Date(now);
     timePlus55Min.setMinutes(timePlus55Min.getMinutes() + 55);
     const timePlus55MinString = timePlus55Min
@@ -45,7 +44,6 @@ export default class ConsultationResolver {
       .split('T')[1]
       .slice(0, 8); // Format "HH:mm:ss"
 
-    // Log après l'ajout de 3 heures
     const timePlus3Hours = new Date(now);
     timePlus3Hours.setHours(timePlus3Hours.getHours() + 3);
     const timePlus3HoursString = timePlus3Hours
@@ -53,23 +51,20 @@ export default class ConsultationResolver {
       .split('T')[1]
       .slice(0, 8); // Format "HH:mm:ss"
 
-    // Construire la date complète d'aujourd'hui avec startTime pour la comparaison
     const todayDateString = now.toISOString().split('T')[0]; // "YYYY-MM-DD" format
     const startDateTime = new Date(`${todayDateString}T${timePlus55MinString}`);
     const endDateTime = new Date(`${todayDateString}T${timePlus3HoursString}`);
 
-    // Convertir l'heure dans le format "HH:mm:ss" pour startTime (string)
-    const startTimeFilter = timePlus55MinString; // Heure après 55 minutes
-    const endTimeFilter = timePlus3HoursString; // Heure après 3 heures
+    const startTimeFilter = timePlus55MinString;
+    const endTimeFilter = timePlus3HoursString;
 
-    // Requête avec les restrictions de dates et heures combinées
     return await Consultation.find({
       where: {
         doctor: { id: doctorId },
-        consultationDate: Between(startDateTime, endDateTime), // Comparer la date
-        startTime: Between(startTimeFilter, endTimeFilter) // Comparer l'heure
+        consultationDate: Between(startDateTime, endDateTime),
+        startTime: Between(startTimeFilter, endTimeFilter)
       },
-      order: { consultationDate: 'DESC', startTime: 'DESC' },
+      order: { consultationDate: 'DESC', startTime: 'ASC' },
       relations: {
         doctor: { department: true },
         patient: true

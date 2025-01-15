@@ -74,6 +74,7 @@ export default function AgentHome() {
         renderItem={(department) => department.label}
         onItemClick={(department) => handleServiceClick(department.label)}
         emptyMessage="Aucun service disponible."
+        modal={false}
       />
       <button
         className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
@@ -96,6 +97,7 @@ export default function AgentHome() {
         renderItem={(doctor) => `DR. ${doctor.firstname} ${doctor.lastname}`}
         onItemClick={(doctor) => handleDoctorClick(doctor.id)}
         emptyMessage="Aucun docteur trouvé pour ce service."
+        modal={false}
       />
       <button
         className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
@@ -116,6 +118,7 @@ export default function AgentHome() {
         renderItem={(doctor) => `DR. ${doctor.firstname} ${doctor.lastname}`}
         onItemClick={(doctor) => handleDoctorClick(doctor.id)}
         emptyMessage="Aucun docteur disponible."
+        modal={false}
       />
       <button
         className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
@@ -162,6 +165,7 @@ export default function AgentHome() {
           </>
         )}
         emptyMessage="Aucun rendez-vous trouvé."
+        modal={true}
       />
       <button
         className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"

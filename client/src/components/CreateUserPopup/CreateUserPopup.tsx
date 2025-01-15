@@ -121,6 +121,7 @@ const CreateUserPopup = forwardRef<HTMLDialogElement, CreateUserPopupProps>(
                 departments={departmentsAndGendersAndRoles?.departments}
                 genders={departmentsAndGendersAndRoles?.genders}
                 disabled={loading}
+                isUpdate={false}
               />
             </section>
             <button

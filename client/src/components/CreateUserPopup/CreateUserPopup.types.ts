@@ -41,7 +41,8 @@ export interface RoleSpecificFieldsProps {
   ) => void;
   departments?: { id: number; label: string }[];
   genders?: { id: number; label: string }[];
-  disabled: boolean;
+  disabled?: boolean;
+  isUpdate?: boolean;
 }
 
 export interface RoleSelectorProps {

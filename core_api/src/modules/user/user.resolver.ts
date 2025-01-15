@@ -171,7 +171,6 @@ export default class UserResolver {
     @Arg('firstname', { nullable: true }) firstname?: string,
     @Arg('lastname', { nullable: true }) lastname?: string,
     @Arg('email', { nullable: true }) email?: string,
-    @Arg('departmentLabel', { nullable: true }) departmentLabel?: string,
     @Arg('genderLabel', { nullable: true }) genderLabel?: string
   ): Promise<User> {
     const user = await User.findOne({ where: { id } });
@@ -185,14 +184,6 @@ export default class UserResolver {
 
     if (firstname) user.firstname = firstname;
     if (lastname) user.lastname = lastname;
-
-    if (departmentLabel) {
-      const department = await Department.findOne({
-        where: { label: departmentLabel }
-      });
-      if (!department) throw new Error('Department not found');
-      user.department = department;
-    }
 
     if (genderLabel) {
       const gender = await Gender.findOne({ where: { label: genderLabel } });

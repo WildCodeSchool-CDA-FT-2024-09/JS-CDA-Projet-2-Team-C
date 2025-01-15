@@ -22,7 +22,6 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
       name: '',
       firstname: '',
       email: '',
-      service: '',
       gender: ''
     });
     const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -40,7 +39,6 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
         name: user?.lastname || '',
         firstname: user?.firstname || '',
         email: user?.email || '',
-        service: user?.department?.label || '',
         gender: user?.gender?.label || ''
       });
     }, [user]);
@@ -50,8 +48,14 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
       if (!user) return;
       // Gets the required fields from user's role
       const roleInfos = rolesInfosAttribution[user.role.code.toLowerCase()];
-      // Checks if they are present in the form
-      const isValid = roleInfos.every((field) => !!formInputs[field]);
+
+      // Checks if they are present in the form except for departments
+      const isValid = roleInfos.every((field) => {
+        if (field === 'service') {
+          return true;
+        }
+        return !!formInputs[field];
+      });
       // Enable/disable the button accordingly
       setButtonDisabled(!isValid);
     }, [formInputs]);
@@ -75,7 +79,6 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
               id: user.id,
               lastname: formInputs.name,
               firstname: formInputs.firstname,
-              departmentLabel: formInputs.service,
               email: formInputs.email,
               genderLabel: formInputs.gender
             }
@@ -86,7 +89,6 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
             name: '',
             firstname: '',
             email: '',
-            service: '',
             gender: ''
           });
           close();
@@ -138,6 +140,7 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
                   departments={departmentsAndGendersAndRoles?.departments}
                   genders={departmentsAndGendersAndRoles?.genders}
                   disabled={loading}
+                  isUpdate
                 />
               )}
             </section>

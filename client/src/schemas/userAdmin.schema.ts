@@ -43,7 +43,6 @@ export const UPDATE_USER = gql`
     $firstname: String
     $lastname: String
     $email: String
-    $departmentLabel: String
     $genderLabel: String
   ) {
     updateUser(
@@ -51,17 +50,12 @@ export const UPDATE_USER = gql`
       firstname: $firstname
       lastname: $lastname
       email: $email
-      departmentLabel: $departmentLabel
       genderLabel: $genderLabel
     ) {
       id
       firstname
       lastname
       email
-      department {
-        label
-        id
-      }
       gender {
         id
         label

@@ -8,7 +8,8 @@ const RoleSpecificFields = ({
   handleInputChange,
   departments,
   genders,
-  disabled
+  disabled,
+  isUpdate
 }: RoleSpecificFieldsProps) => {
   const { name, firstname, email, service, gender } = formInputs;
 
@@ -43,7 +44,7 @@ const RoleSpecificFields = ({
         disabled={!role || disabled}
         type="email"
       />
-      {isVisibleToRole(role, 'service') && (
+      {isVisibleToRole(role, 'service') && !isUpdate && (
         <SelectField
           name="service"
           label="Service"

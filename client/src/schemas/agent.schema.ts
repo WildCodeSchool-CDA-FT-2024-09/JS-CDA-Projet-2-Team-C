@@ -11,6 +11,7 @@ export const GET_RESTRICTED_CONSULTATIONS_BY_DOCTOR_ID = gql`
       }
       patient {
         firstname
+        lastname
       }
       startTime
       consultationDate

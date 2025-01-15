@@ -257,7 +257,7 @@ export type RestrictedConsultationsByDoctorIdQuery = {
       firstname: string;
       department?: { __typename?: 'Department'; label: string } | null;
     };
-    patient: { __typename?: 'Patient'; firstname: string };
+    patient: { __typename?: 'Patient'; firstname: string; lastname: string };
   }>;
 };
 
@@ -621,6 +621,7 @@ export const RestrictedConsultationsByDoctorIdDocument = gql`
       }
       patient {
         firstname
+        lastname
       }
       startTime
       consultationDate

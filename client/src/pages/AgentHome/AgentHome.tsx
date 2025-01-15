@@ -143,18 +143,10 @@ export default function AgentHome() {
 
   const renderAppointmentsByDoctor = () => (
     <>
-      {/* <h1 className="text-center text-3xl font-bold">
-        ID du docteur sélectionné :{' '}
-        {selectedDoctor || 'Aucun docteur sélectionné'}
-      </h1>
-      <button
-        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
-        onClick={() => setSelectedDoctor(null)}
-      >
-        Retour aux docteurs
-      </button> */}
       <h1 className="text-center text-3xl font-bold">
-        Rendez-vous pour le docteur {selectedDoctor || ''}
+        Rendez-vous pour le docteur{' '}
+        {dataAppointments?.restrictedConsultationsByDoctorId[0]?.doctor
+          ?.firstname || ''}
       </h1>
       <AgentChoiceList
         isLoading={loadingAppointments}
@@ -162,10 +154,9 @@ export default function AgentHome() {
         items={dataAppointments?.restrictedConsultationsByDoctorId || []}
         renderItem={(appointment) => (
           <>
-            <div>{appointment.patient.firstname}</div>
-            <div>{appointment.doctor.firstname}</div>
-            <div>{appointment.startTime}</div>
-            <div>{appointment.consultationDate}</div>
+            <div className="px-[2px]">{appointment.startTime}</div>
+            <div className="px-[2px]">{appointment.patient.firstname}</div>
+            <div className="px-[2px]">{appointment.patient.lastname}</div>
           </>
         )}
         emptyMessage="Aucun rendez-vous trouvé."

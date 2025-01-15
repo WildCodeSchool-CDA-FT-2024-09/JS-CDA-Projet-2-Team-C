@@ -44,7 +44,6 @@ export default class ConsultationResolver {
       .toISOString()
       .split('T')[1]
       .slice(0, 8); // Format "HH:mm:ss"
-    // console.log('Heure après ajout de 55 minutes:', timePlus55MinString);
 
     // Log après l'ajout de 3 heures
     const timePlus3Hours = new Date(now);
@@ -53,7 +52,6 @@ export default class ConsultationResolver {
       .toISOString()
       .split('T')[1]
       .slice(0, 8); // Format "HH:mm:ss"
-    //console.log('Heure après ajout de 3 heures:', timePlus3HoursString);
 
     // Construire la date complète d'aujourd'hui avec startTime pour la comparaison
     const todayDateString = now.toISOString().split('T')[0]; // "YYYY-MM-DD" format

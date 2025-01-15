@@ -1,4 +1,4 @@
-import { RoleSelectorProps } from './AdminPopup.types';
+import { RoleSelectorProps } from './CreateUserPopup.types';
 
 const RoleSelector = ({
   roles,

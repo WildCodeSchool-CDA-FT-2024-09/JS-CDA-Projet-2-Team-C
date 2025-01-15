@@ -32,10 +32,7 @@ export default function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Arrière-plan flou */}
       <div className="absolute inset-0 backdrop-blur-md"></div>
-
-      {/* Contenu de la modale */}
       <div
         ref={modalRef}
         className="relative rounded bg-blue-400 p-6 shadow-lg"

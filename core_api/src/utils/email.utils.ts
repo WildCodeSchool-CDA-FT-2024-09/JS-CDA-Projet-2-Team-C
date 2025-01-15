@@ -24,7 +24,7 @@ export async function sendPasswordByEmail(
     if (!response.ok) {
       throw new Error(`Failed to send email: ${response.statusText}`);
     }
-    return false;
+    return true;
   } catch (error) {
     // TODO : Log this instead of consoling it.
     console.error('Error sending email:', error);

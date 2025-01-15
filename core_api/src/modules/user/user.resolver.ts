@@ -211,7 +211,7 @@ export default class UserResolver {
     @Arg('id', () => String) id: string
   ): Promise<User | null> {
     const doctor = await User.findOne({
-      where: { id: id }, // Utilisez la variable id
+      where: { id: id },
       relations: ['role', 'workingHours']
     });
 

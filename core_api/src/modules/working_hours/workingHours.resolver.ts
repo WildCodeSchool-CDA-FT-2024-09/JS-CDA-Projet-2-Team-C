@@ -5,7 +5,7 @@ import { User } from '../user/user.entity';
 @Resolver()
 export default class WorkingHoursResolver {
   @Mutation(() => Boolean, {
-    description: "Ajoute ou met à jour les horaires d'un médecin"
+    description: "Add or update a doctor's schedule"
   })
   async updateDoctorWorkingHours(
     @Arg('doctorId') doctorId: string,

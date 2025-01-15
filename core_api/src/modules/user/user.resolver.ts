@@ -157,6 +157,14 @@ export default class UserResolver {
     return authUser;
   }
 
+  @Query(() => [User])
+  async users() {
+    return await User.find({
+      // Explicitly load the "role" relationship
+      relations: ['role', 'department', 'gender']
+    });
+  }
+
   @Mutation(() => User)
   async updateUser(
     @Arg('id') id: string,

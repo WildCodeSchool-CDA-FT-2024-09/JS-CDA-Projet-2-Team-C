@@ -34,7 +34,7 @@ services:
 
   staging-mailer:
     build: ./mailer
-    env_file: .env
+    env_file: .env-staging
     volumes:
       - ./mailer/src/:/app/src/
     command: npm run dev

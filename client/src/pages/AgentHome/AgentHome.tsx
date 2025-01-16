@@ -7,8 +7,7 @@ import {
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/agent_components/AgentChoiceList/AgentChoiceList';
 import AgentPatientSearchBar from '../../components/agent_components/AgentPatientSearchBar/AgentPatientSearchBar';
-import Home from '/images/home.svg';
-import Return from '/images/return.svg';
+import AgentFooter from '../../components/agent_components/AgentFooter/AgentFooter';
 
 export default function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
@@ -210,17 +209,10 @@ export default function AgentHome() {
       <div className="mt-8 flex flex-col items-center gap-8">
         {renderView()}
       </div>
-      <footer className="fixed bottom-0 flex w-full items-center justify-evenly rounded-t-xl bg-primary-light p-2">
-        <button
-          className="rounded text-white"
-          onClick={() => setSelectedView(null)}
-        >
-          <img src={Home} alt="Retour à la maison" className="h-12 w-12" />
-        </button>
-        <button className="rounded text-white" onClick={handleReturn}>
-          <img src={Return} alt="Retour en arriere" className="h-12 w-12" />
-        </button>
-      </footer>
+      <AgentFooter
+        handleReturn={handleReturn}
+        resetView={() => setSelectedView(null)}
+      />
     </div>
   );
 }

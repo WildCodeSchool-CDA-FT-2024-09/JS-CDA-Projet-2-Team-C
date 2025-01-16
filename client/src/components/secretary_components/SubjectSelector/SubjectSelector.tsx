@@ -21,20 +21,21 @@ export default function SubjectSelector({
         <div className="flex gap-2">
           <label className="form-control w-full">
             <div className="label">
-              <span className="label-text text-primary-darker">Sujet</span>
+              <span className="label-text text-primary-darker">Motif</span>
             </div>
             <select
               className="select select-bordered"
               onChange={handleSubjectSelected}
-              defaultValue={'Sélectionnez un sujet'}
+              defaultValue="null"
             >
-              {consultationSubjects.length ? (
-                consultationSubjects.map((subject) => (
-                  <option key={subject.id}>{subject.label}</option>
-                ))
-              ) : (
-                <option> aucun médecin dans ce service</option>
+              {!details?.subject && (
+                <option value="null" disabled>
+                  Sélectionnez un motif
+                </option>
               )}
+              {consultationSubjects.map((subject) => (
+                <option key={subject.id}>{subject.label}</option>
+              ))}
             </select>
           </label>
           <InputField

@@ -47,6 +47,7 @@ export default function Agenda({
   return (
     <div style={{ height: '700px', width: '800px' }}>
       <Calendar
+        defaultView="week"
         localizer={localizer}
         culture="fr"
         events={events}

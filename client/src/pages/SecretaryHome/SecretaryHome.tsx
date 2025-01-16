@@ -54,7 +54,7 @@ export default function SecretaryHome() {
     ({ start, end }: { start: Date; end: Date }) => {
       // console.log(start, end);
       setConsultationDateTime({
-        consultationDate: start.getDay(),
+        consultationDate: start.toString(),
         startTime: start.getTime().toString(),
         durationMinutes: (end.getTime() - start.getTime()) / 60000
       });

@@ -30,6 +30,7 @@ dotenv.config();
 
 @Resolver(User)
 export default class UserResolver {
+  @Authorized([RoleCode.AGENT])
   @Query(() => [User], {
     description: 'Fetches all users with the role of doctor'
   })
@@ -49,6 +50,7 @@ export default class UserResolver {
     return doctors;
   }
 
+  @Authorized([RoleCode.AGENT])
   @Query(() => [Department], {
     description: 'Fetches departments by label and their doctors'
   })
@@ -77,6 +79,7 @@ export default class UserResolver {
     return departments;
   }
 
+  @Authorized([RoleCode.ADMIN])
   @Mutation(() => User)
   async addUser(
     @Arg('firstname') firstname: string,
@@ -158,11 +161,42 @@ export default class UserResolver {
   }
 
   @Query(() => [User])
+  @Authorized([RoleCode.ADMIN])
   async users() {
     return await User.find({
       // Explicitly load the "role" relationship
       relations: ['role', 'department', 'gender']
     });
+  }
+
+  @Mutation(() => User)
+  async updateUser(
+    @Arg('id') id: string,
+    @Arg('firstname', { nullable: true }) firstname?: string,
+    @Arg('lastname', { nullable: true }) lastname?: string,
+    @Arg('email', { nullable: true }) email?: string,
+    @Arg('genderLabel', { nullable: true }) genderLabel?: string
+  ): Promise<User> {
+    const user = await User.findOne({ where: { id } });
+    if (!user) throw new Error('User not found');
+
+    if (email && email !== user.email) {
+      const duplicateUser = await User.findOne({ where: { email } });
+      if (duplicateUser) throw new Error('Cet email est déjà utilisé');
+      user.email = email;
+    }
+
+    if (firstname) user.firstname = firstname;
+    if (lastname) user.lastname = lastname;
+
+    if (genderLabel) {
+      const gender = await Gender.findOne({ where: { label: genderLabel } });
+      if (!gender) throw new Error('Gender not found');
+      user.gender = gender;
+    }
+
+    await user.save();
+    return user;
   }
 
   @Authorized([RoleCode.ADMIN])

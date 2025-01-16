@@ -22,9 +22,44 @@ export const GET_ALL_USERS = gql`
           code
           label
         }
+        department {
+          label
+          id
+        }
+        gender {
+          id
+          label
+        }
       }
       total
       hasMore
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser(
+    $id: String!
+    $firstname: String
+    $lastname: String
+    $email: String
+    $genderLabel: String
+  ) {
+    updateUser(
+      id: $id
+      firstname: $firstname
+      lastname: $lastname
+      email: $email
+      genderLabel: $genderLabel
+    ) {
+      id
+      firstname
+      lastname
+      email
+      gender {
+        id
+        label
+      }
     }
   }
 `;

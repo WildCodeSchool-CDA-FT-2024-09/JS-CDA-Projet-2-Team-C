@@ -7,6 +7,8 @@ import {
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/agent_components/AgentChoiceList/AgentChoiceList';
 import AgentPatientSearchBar from '../../components/agent_components/AgentPatientSearchBar/AgentPatientSearchBar';
+import Home from '/images/home.svg';
+import Return from '/images/return.svg';
 
 export default function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
@@ -57,6 +59,15 @@ export default function AgentHome() {
     setSelectedDoctor(doctorId);
   };
 
+  const handleReturn = () => {
+    if (selectedDoctor) {
+      setSelectedDoctor(null);
+    } else if (selectedService) {
+      handleBackClick();
+    } else if (selectedView) {
+      setSelectedView(null);
+    }
+  };
   const renderInitialView = () => (
     <ViewButtons
       handleViewChange={handleViewChange}
@@ -77,7 +88,7 @@ export default function AgentHome() {
         openModalOnItemClick={false}
       />
       <button
-        className="mb-16 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
+        className="mb-20 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
         onClick={() => setSelectedView(null)}
       >
         Retour au menu principal
@@ -100,7 +111,7 @@ export default function AgentHome() {
         openModalOnItemClick={false}
       />
       <button
-        className="mb-16 mt-4 rounded bg-blue-500 px-4 py-2 text-white"
+        className="mb-20 mt-4 rounded bg-blue-500 px-4 py-2 text-white"
         onClick={handleBackClick}
       >
         Retour aux services
@@ -121,7 +132,7 @@ export default function AgentHome() {
         openModalOnItemClick={false}
       />
       <button
-        className="mb-16 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
+        className="mb-20 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
         onClick={() => setSelectedView(null)}
       >
         Retour au menu principal
@@ -138,7 +149,7 @@ export default function AgentHome() {
         }}
       />
       <button
-        className="mb-16 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
+        className="mb-20 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
         onClick={() => setSelectedView(null)}
       >
         Retour au menu principal
@@ -167,7 +178,7 @@ export default function AgentHome() {
         openModalOnItemClick={true}
       />
       <button
-        className="mb-16 mt-4 rounded bg-blue-500 px-4 py-2 text-white"
+        className="mb-20 mt-4 rounded bg-blue-500 px-4 py-2 text-white"
         onClick={() => setSelectedDoctor(null)}
       >
         Retour aux docteurs
@@ -201,8 +212,16 @@ export default function AgentHome() {
       </div>
 
       {/* Footer ajouté ici */}
-      <footer className="fixed bottom-0 w-full bg-gray-800 p-4 text-center text-white">
-        <p>© 2025 Mon Application. Tous droits réservés.</p>
+      <footer className="fixed bottom-0 flex w-full items-center justify-evenly rounded-t-xl bg-primary-light p-2">
+        <button
+          className="rounded text-white"
+          onClick={() => setSelectedView(null)}
+        >
+          <img src={Home} alt="Retour à la maison" className="h-12 w-12" />
+        </button>
+        <button className="rounded text-white" onClick={handleReturn}>
+          <img src={Return} alt="Retour en arriere" className="h-12 w-12" />
+        </button>
       </footer>
     </div>
   );

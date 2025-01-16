@@ -5,7 +5,7 @@ import {
   useRestrictedConsultationsByDoctorIdQuery
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
-import AgentChoiceList from '../../components/AgentChoiceList/AgentChoiceList';
+import AgentChoiceList from '../../components/agent_components/AgentChoiceList/AgentChoiceList';
 import AgentPatientSearchBar from '../../components/agent_components/AgentPatientSearchBar/AgentPatientSearchBar';
 
 export default function AgentHome() {

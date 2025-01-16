@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Modal from '../agent_components/AgentModal/AgentModal';
+import Modal from '../AgentModal/AgentModal';
 import { AgentChoiceListProps } from './AgentChoiceList.type';
 
 export default function AgentChoiceList<T>({

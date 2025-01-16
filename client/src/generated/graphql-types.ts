@@ -94,6 +94,8 @@ export type Mutation = {
   login: AuthUser;
   /** Logs out the user by clearing the medagendatoken cookie */
   logout: Scalars['Boolean']['output'];
+  /** Add or update a doctor's schedule */
+  updateDoctorWorkingHours: Scalars['Boolean']['output'];
   updateUser: User;
 };
 
@@ -109,6 +111,11 @@ export type MutationAddUserArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type MutationUpdateDoctorWorkingHoursArgs = {
+  doctorId: Scalars['String']['input'];
+  workingHours: Array<WorkingHoursInput>;
 };
 
 export type MutationUpdateUserArgs = {
@@ -156,6 +163,8 @@ export type Query = {
   getCurrentAuthUser: AuthUser;
   /** Fetches departments by label and their doctors */
   getDoctorByDepartment: Array<Department>;
+  /** Fetch a doctor by ID with their working hours */
+  getDoctorById: User;
   /** Fetches all users with the role of doctor */
   getDoctors: Array<User>;
   patient: Patient;
@@ -183,6 +192,10 @@ export type QueryGetAllUsersArgs = {
 
 export type QueryGetDoctorByDepartmentArgs = {
   label: Scalars['String']['input'];
+};
+
+export type QueryGetDoctorByIdArgs = {
+  id: Scalars['String']['input'];
 };
 
 export type QueryPatientArgs = {
@@ -241,6 +254,12 @@ export type WorkingHours = {
   id: Scalars['Int']['output'];
   startTime: Scalars['String']['output'];
   weekday: Scalars['Int']['output'];
+};
+
+export type WorkingHoursInput = {
+  endTime: Scalars['String']['input'];
+  startTime: Scalars['String']['input'];
+  weekday: Scalars['Int']['input'];
 };
 
 export type DepartmentsAndGendersAndRolesQueryVariables = Exact<{
@@ -317,6 +336,25 @@ export type DepartmentsAndDoctorsQuery = {
     id: string;
     lastname: string;
   }>;
+};
+
+export type GetDoctorByIdQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+export type GetDoctorByIdQuery = {
+  __typename?: 'Query';
+  getDoctorById: {
+    __typename?: 'User';
+    firstname: string;
+    lastname: string;
+    workingHours?: Array<{
+      __typename?: 'WorkingHours';
+      startTime: string;
+      endTime: string;
+      weekday: number;
+    }> | null;
+  };
 };
 
 export type DossierQueryVariables = Exact<{
@@ -560,6 +598,12 @@ export type GetAllUsersQuery = {
       lastname: string;
       email: string;
       role: { __typename?: 'Role'; code: RoleCode; label: string };
+      workingHours?: Array<{
+        __typename?: 'WorkingHours';
+        endTime: string;
+        startTime: string;
+        weekday: number;
+      }> | null;
       department?: {
         __typename?: 'Department';
         label: string;
@@ -568,6 +612,16 @@ export type GetAllUsersQuery = {
       gender?: { __typename?: 'Gender'; id: number; label: string } | null;
     }>;
   };
+};
+
+export type UpdateDoctorWorkingHoursMutationVariables = Exact<{
+  workingHours: Array<WorkingHoursInput> | WorkingHoursInput;
+  doctorId: Scalars['String']['input'];
+}>;
+
+export type UpdateDoctorWorkingHoursMutation = {
+  __typename?: 'Mutation';
+  updateDoctorWorkingHours: boolean;
 };
 
 export type UpdateUserMutationVariables = Exact<{
@@ -1013,6 +1067,94 @@ export type DepartmentsAndDoctorsSuspenseQueryHookResult = ReturnType<
 export type DepartmentsAndDoctorsQueryResult = Apollo.QueryResult<
   DepartmentsAndDoctorsQuery,
   DepartmentsAndDoctorsQueryVariables
+>;
+export const GetDoctorByIdDocument = gql`
+  query GetDoctorById($id: String!) {
+    getDoctorById(id: $id) {
+      firstname
+      lastname
+      workingHours {
+        startTime
+        endTime
+        weekday
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetDoctorByIdQuery__
+ *
+ * To run a query within a React component, call `useGetDoctorByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDoctorByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDoctorByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetDoctorByIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetDoctorByIdQuery,
+    GetDoctorByIdQueryVariables
+  > &
+    (
+      | { variables: GetDoctorByIdQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    )
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetDoctorByIdQuery, GetDoctorByIdQueryVariables>(
+    GetDoctorByIdDocument,
+    options
+  );
+}
+export function useGetDoctorByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetDoctorByIdQuery,
+    GetDoctorByIdQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetDoctorByIdQuery, GetDoctorByIdQueryVariables>(
+    GetDoctorByIdDocument,
+    options
+  );
+}
+export function useGetDoctorByIdSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetDoctorByIdQuery,
+        GetDoctorByIdQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetDoctorByIdQuery,
+    GetDoctorByIdQueryVariables
+  >(GetDoctorByIdDocument, options);
+}
+export type GetDoctorByIdQueryHookResult = ReturnType<
+  typeof useGetDoctorByIdQuery
+>;
+export type GetDoctorByIdLazyQueryHookResult = ReturnType<
+  typeof useGetDoctorByIdLazyQuery
+>;
+export type GetDoctorByIdSuspenseQueryHookResult = ReturnType<
+  typeof useGetDoctorByIdSuspenseQuery
+>;
+export type GetDoctorByIdQueryResult = Apollo.QueryResult<
+  GetDoctorByIdQuery,
+  GetDoctorByIdQueryVariables
 >;
 export const DossierDocument = gql`
   query Dossier($patientId: String!) {
@@ -2036,6 +2178,11 @@ export const GetAllUsersDocument = gql`
           code
           label
         }
+        workingHours {
+          endTime
+          startTime
+          weekday
+        }
         department {
           label
           id
@@ -2126,6 +2273,59 @@ export type GetAllUsersQueryResult = Apollo.QueryResult<
   GetAllUsersQuery,
   GetAllUsersQueryVariables
 >;
+export const UpdateDoctorWorkingHoursDocument = gql`
+  mutation UpdateDoctorWorkingHours(
+    $workingHours: [WorkingHoursInput!]!
+    $doctorId: String!
+  ) {
+    updateDoctorWorkingHours(workingHours: $workingHours, doctorId: $doctorId)
+  }
+`;
+export type UpdateDoctorWorkingHoursMutationFn = Apollo.MutationFunction<
+  UpdateDoctorWorkingHoursMutation,
+  UpdateDoctorWorkingHoursMutationVariables
+>;
+
+/**
+ * __useUpdateDoctorWorkingHoursMutation__
+ *
+ * To run a mutation, you first call `useUpdateDoctorWorkingHoursMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDoctorWorkingHoursMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateDoctorWorkingHoursMutation, { data, loading, error }] = useUpdateDoctorWorkingHoursMutation({
+ *   variables: {
+ *      workingHours: // value for 'workingHours'
+ *      doctorId: // value for 'doctorId'
+ *   },
+ * });
+ */
+export function useUpdateDoctorWorkingHoursMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateDoctorWorkingHoursMutation,
+    UpdateDoctorWorkingHoursMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateDoctorWorkingHoursMutation,
+    UpdateDoctorWorkingHoursMutationVariables
+  >(UpdateDoctorWorkingHoursDocument, options);
+}
+export type UpdateDoctorWorkingHoursMutationHookResult = ReturnType<
+  typeof useUpdateDoctorWorkingHoursMutation
+>;
+export type UpdateDoctorWorkingHoursMutationResult =
+  Apollo.MutationResult<UpdateDoctorWorkingHoursMutation>;
+export type UpdateDoctorWorkingHoursMutationOptions =
+  Apollo.BaseMutationOptions<
+    UpdateDoctorWorkingHoursMutation,
+    UpdateDoctorWorkingHoursMutationVariables
+  >;
 export const UpdateUserDocument = gql`
   mutation UpdateUser(
     $id: String!

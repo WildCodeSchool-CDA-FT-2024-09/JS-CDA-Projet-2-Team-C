@@ -22,6 +22,11 @@ export const GET_ALL_USERS = gql`
           code
           label
         }
+        workingHours {
+          endTime
+          startTime
+          weekday
+        }
         department {
           label
           id
@@ -34,6 +39,15 @@ export const GET_ALL_USERS = gql`
       total
       hasMore
     }
+  }
+`;
+
+export const UPDATE_DOCTOR_WORKING_HOURS = gql`
+  mutation UpdateDoctorWorkingHours(
+    $workingHours: [WorkingHoursInput!]!
+    $doctorId: String!
+  ) {
+    updateDoctorWorkingHours(workingHours: $workingHours, doctorId: $doctorId)
   }
 `;
 

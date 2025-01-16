@@ -7,7 +7,8 @@ import TimeSelector from '../../components/secretary_components/TimeSelector/Tim
 import SubjectSelector from '../../components/secretary_components/SubjectSelector/SubjectSelector';
 import {
   ConsultationsByDoctorIdQuery,
-  useConsultationsByDoctorIdLazyQuery
+  useConsultationsByDoctorIdLazyQuery,
+  useCreateConsultationMutation
 } from '../../generated/graphql-types';
 import { ConsultationDateTime } from './SecretaryHome.types';
 
@@ -78,6 +79,31 @@ export default function SecretaryHome() {
     setDetails(newDetails);
   };
 
+  // Submit
+  const [createConsultation] = useCreateConsultationMutation();
+
+  const handleSubmit = async () => {
+    try {
+      if (!doctorId || !patientId || !details || !consultationDateTime) {
+        // TODO : show a popup here
+        throw new Error('Missing data');
+      }
+
+      createConsultation({
+        variables: {
+          description: details?.description,
+          end: consultationDateTime.end,
+          start: consultationDateTime.start,
+          doctorId: doctorId,
+          patientId: patientId,
+          subjectLabel: details.subject
+        }
+      });
+    } catch {
+      //TODO : show popup
+    }
+  };
+
   return (
     <div className="grid grid-cols-2 gap-8 p-8">
       <section className="flex flex-col gap-2 rounded-2xl bg-primary-lighter p-4">
@@ -116,6 +142,7 @@ export default function SecretaryHome() {
           disabled={
             !doctorId || !patientId || !details || !consultationDateTime
           }
+          onClick={handleSubmit}
         >
           Valider le rendez-vous
         </button>

@@ -65,6 +65,19 @@ export default function SecretaryHome() {
     [setConsultationDateTime]
   );
 
+  // Subject
+  const [details, setDetails] = useState<Record<string, string> | null>(null);
+
+  const handleDescriptionChange = (e) => {
+    const newDetails = { ...details, description: e.target.value };
+    setDetails(newDetails);
+  };
+
+  const handleSubjectSelected = (e) => {
+    const newDetails = { ...details, subject: e.target.value };
+    setDetails(newDetails);
+  };
+
   return (
     <div className="grid grid-cols-2 gap-8 p-8">
       <section className="flex flex-col gap-2 rounded-2xl bg-primary-lighter p-4">
@@ -92,11 +105,18 @@ export default function SecretaryHome() {
           <TimeSelector consultationDateTime={consultationDateTime} />
         </FormPanel>
         <FormPanel title={'Motif'}>
-          <SubjectSelector handleSubjectSelected={() => {}} />
+          <SubjectSelector
+            handleSubjectSelected={handleSubjectSelected}
+            details={details}
+            handleDescriptionChange={handleDescriptionChange}
+          />
         </FormPanel>
-        <div></div>
-        <button className="btn" disabled={!doctorId || !patientId}>
-          {' '}
+        <button
+          className="btn"
+          disabled={
+            !doctorId || !patientId || !details || !consultationDateTime
+          }
+        >
           Valider le rendez-vous
         </button>
       </section>

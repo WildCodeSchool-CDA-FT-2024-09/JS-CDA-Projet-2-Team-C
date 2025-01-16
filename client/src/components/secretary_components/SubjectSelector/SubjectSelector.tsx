@@ -1,7 +1,11 @@
 import { useConsultationSubjectsQuery } from '../../../generated/graphql-types';
 import InputField from '../InputField/InputField';
 
-export default function SubjectSelector({ handleSubjectSelected }) {
+export default function SubjectSelector({
+  details,
+  handleSubjectSelected,
+  handleDescriptionChange
+}) {
   const { data, loading, error } = useConsultationSubjectsQuery();
 
   if (loading) return <p>Chargement ...</p>;
@@ -21,8 +25,8 @@ export default function SubjectSelector({ handleSubjectSelected }) {
             </div>
             <select
               className="select select-bordered"
-              onChange={(e) => handleSubjectSelected(e.target.value)}
-              defaultValue={consultationSubjects[0].label}
+              onChange={handleSubjectSelected}
+              defaultValue={'Sélectionnez un sujet'}
             >
               {consultationSubjects.length ? (
                 consultationSubjects.map((subject) => (
@@ -36,8 +40,8 @@ export default function SubjectSelector({ handleSubjectSelected }) {
           <InputField
             name={'description'}
             label={'Description'}
-            value={'a plugger'}
-            onChange={() => {}}
+            value={details ? details.description : ''}
+            onChange={handleDescriptionChange}
           />
         </div>
       </>

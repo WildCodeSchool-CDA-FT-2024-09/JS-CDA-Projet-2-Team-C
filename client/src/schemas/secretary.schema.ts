@@ -20,3 +20,12 @@ export const GET_CONSULTATIONS_BY_DOCTOR_ID = gql`
     }
   }
 `;
+
+export const GET_CONSULTATIONS_SUBJECTS = gql`
+  query ConsultationSubjects {
+    consultationSubjects {
+      id
+      label
+    }
+  }
+`;

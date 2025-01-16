@@ -9,6 +9,7 @@ import {
 import PatientSelector from '../../components/secretary_components/PatientSelector/PatientSelector';
 import TimeSelector from '../../components/secretary_components/TimeSelector/TimeSelector';
 import { ConsultationDateTime } from './SecretaryHome.types';
+import SubjectSelector from '../../components/secretary_components/SubjectSelector/SubjectSelector';
 
 export default function SecretaryHome() {
   // Doctor
@@ -90,7 +91,9 @@ export default function SecretaryHome() {
         <FormPanel title={'Horaire'}>
           <TimeSelector consultationDateTime={consultationDateTime} />
         </FormPanel>
-        <FormPanel title={'Motif'}>partie motif</FormPanel>
+        <FormPanel title={'Motif'}>
+          <SubjectSelector handleSubjectSelected={() => {}} />
+        </FormPanel>
         <div></div>
         <button className="btn" disabled={!doctorId || !patientId}>
           {' '}

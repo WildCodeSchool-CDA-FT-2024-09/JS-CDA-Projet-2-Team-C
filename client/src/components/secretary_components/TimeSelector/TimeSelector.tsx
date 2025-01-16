@@ -9,8 +9,7 @@ export default function TimeSelector({
   else
     return (
       <>
-        {' '}
-        {`${frenchDate(consultationDateTime.start)}, de ${frenchTime(consultationDateTime.start)} à ${frenchTime(consultationDateTime.end)}`}{' '}
+        {`${frenchDate(consultationDateTime.start)}, de ${frenchTime(consultationDateTime.start)} à ${frenchTime(consultationDateTime.end)}`}
       </>
     );
 }

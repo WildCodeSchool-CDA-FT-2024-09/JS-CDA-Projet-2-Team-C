@@ -34,19 +34,35 @@ const router = createBrowserRouter([
       },
       {
         path: 'planning',
-        element: <RoleBasedPlanning />
+        element: (
+          <ProtectedRoute allowedRoles={[RoleCode.Doctor, RoleCode.Secretary]}>
+            <RoleBasedPlanning />
+          </ProtectedRoute>
+        )
       },
       {
         path: 'rechercher',
-        element: <AgentHome />
+        element: (
+          <ProtectedRoute allowedRoles={[RoleCode.Agent]}>
+            <AgentHome />
+          </ProtectedRoute>
+        )
       },
       {
         path: 'dossiers',
-        element: <DossierBrowser />
+        element: (
+          <ProtectedRoute allowedRoles={[RoleCode.Doctor]}>
+            <DossierBrowser />
+          </ProtectedRoute>
+        )
       },
       {
         path: 'patient/:patientId/dossier',
-        element: <Dossier />
+        element: (
+          <ProtectedRoute allowedRoles={[RoleCode.Doctor]}>
+            <Dossier />
+          </ProtectedRoute>
+        )
       },
       {
         path: 'admin',

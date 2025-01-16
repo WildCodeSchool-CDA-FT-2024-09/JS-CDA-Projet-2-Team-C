@@ -1,10 +1,10 @@
-import { Consultation } from '../entities.index';
-import { Resolver, Query, Arg } from 'type-graphql';
+import { Consultation, RoleCode } from '../entities.index';
+import { Resolver, Query, Arg, Authorized } from 'type-graphql';
 import { Between } from 'typeorm';
 
 @Resolver(Consultation)
 export default class ConsultationResolver {
-  // TODO : rescrtict access to role === doctor
+  @Authorized([RoleCode.DOCTOR])
   @Query(() => [Consultation])
   async dossier(@Arg('patientId') patientId: string) {
     return await Consultation.find({
@@ -21,6 +21,7 @@ export default class ConsultationResolver {
 
   // TODO : talk amongst ourselves on how to restrict the dates ? Maybe refetch based on the calendar's view ?
   // in this case, it should also take a end date
+  @Authorized([RoleCode.DOCTOR, RoleCode.SECRETARY])
   @Query(() => [Consultation])
   async consultationsByDoctorId(@Arg('doctorId') doctorId: string) {
     return await Consultation.find({
@@ -33,6 +34,8 @@ export default class ConsultationResolver {
       }
     });
   }
+
+  @Authorized([RoleCode.AGENT])
   @Query(() => [Consultation])
   async restrictedConsultationsByDoctorId(@Arg('doctorId') doctorId: string) {
     const now = new Date();

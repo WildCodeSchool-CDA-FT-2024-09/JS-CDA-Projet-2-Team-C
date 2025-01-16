@@ -45,14 +45,14 @@ export default class ConsultationResolver {
     const timePlus55MinString = timePlus55Min
       .toISOString()
       .split('T')[1]
-      .slice(0, 5); // Format "HH:mm:ss"
+      .slice(0, 5); // Format "HH:mm:"
 
     const timePlus3Hours = new Date(now);
     timePlus3Hours.setHours(timePlus3Hours.getHours() + 3);
     const timePlus3HoursString = timePlus3Hours
       .toISOString()
       .split('T')[1]
-      .slice(0, 5); // Format "HH:mm:ss"
+      .slice(0, 5); // Format "HH:mm:"
 
     const todayDateString = now.toISOString().split('T')[0]; // "YYYY-MM-DD" format
     const startDateTime = new Date(`${todayDateString}T${timePlus55MinString}`);

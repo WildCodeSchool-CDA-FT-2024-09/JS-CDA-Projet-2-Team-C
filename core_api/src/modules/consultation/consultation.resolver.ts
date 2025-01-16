@@ -2,13 +2,6 @@ import { Consultation, RoleCode, Patient } from '../entities.index';
 import { Resolver, Query, Arg, Authorized } from 'type-graphql';
 import { Between, FindOperator } from 'typeorm';
 
-interface WhereCondition {
-  consultationDate?: FindOperator<Date>;
-  startTime?: FindOperator<string>;
-  doctor?: { id: string };
-  patient?: { id: string };
-}
-
 @Resolver(Consultation)
 export default class ConsultationResolver {
   @Authorized([RoleCode.DOCTOR])
@@ -85,7 +78,12 @@ export default class ConsultationResolver {
       }
     }
 
-    const whereCondition: WhereCondition = {
+    const whereCondition: {
+      consultationDate?: FindOperator<Date>;
+      startTime?: FindOperator<string>;
+      doctor?: { id: string };
+      patient?: { id: string };
+    } = {
       consultationDate: Between(startDateTime, endDateTime),
       startTime: Between(startTimeFilter, endTimeFilter)
     };

@@ -5,7 +5,7 @@ import {
   useRestrictedConsultationsByDoctorIdQuery
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
-import AgentChoiceList from '../../components/AgentChoiceList/AgentChoiceList';
+import AgentChoiceList from '../../components/agent_components/AgentChoiceList/AgentChoiceList';
 import AgentPatientSearchBar from '../../components/agent_components/AgentPatientSearchBar/AgentPatientSearchBar';
 
 export default function AgentHome() {
@@ -74,6 +74,7 @@ export default function AgentHome() {
         renderItem={(department) => department.label}
         onItemClick={(department) => handleServiceClick(department.label)}
         emptyMessage="Aucun service disponible."
+        openModalOnItemClick={false}
       />
       <button
         className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
@@ -96,6 +97,7 @@ export default function AgentHome() {
         renderItem={(doctor) => `DR. ${doctor.firstname} ${doctor.lastname}`}
         onItemClick={(doctor) => handleDoctorClick(doctor.id)}
         emptyMessage="Aucun docteur trouvé pour ce service."
+        openModalOnItemClick={false}
       />
       <button
         className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
@@ -116,6 +118,7 @@ export default function AgentHome() {
         renderItem={(doctor) => `DR. ${doctor.firstname} ${doctor.lastname}`}
         onItemClick={(doctor) => handleDoctorClick(doctor.id)}
         emptyMessage="Aucun docteur disponible."
+        openModalOnItemClick={false}
       />
       <button
         className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
@@ -162,6 +165,7 @@ export default function AgentHome() {
           </>
         )}
         emptyMessage="Aucun rendez-vous trouvé."
+        openModalOnItemClick={true}
       />
       <button
         className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"

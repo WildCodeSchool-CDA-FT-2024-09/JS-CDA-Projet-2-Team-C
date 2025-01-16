@@ -5,4 +5,5 @@ export interface AgentChoiceListProps<T> {
   emptyMessage: string;
   renderItem: (item: T) => React.ReactNode;
   onItemClick?: (item: T) => void;
+  openModalOnItemClick?: boolean;
 }

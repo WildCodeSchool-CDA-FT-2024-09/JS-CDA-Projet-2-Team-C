@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useGetRestrictedPatientsBySsnLazyQuery } from '../../../generated/graphql-types';
-import AgentSearchBar from '../AgentSearchBar.tsx/AgentSearchBar';
+import AgentSearchBar from '../AgentSearchBar/AgentSearchBar';
 import AgentPatientSearchBarProps from './AgentPatientSearchBar.type';
 
 export default function AgentPatientSearchBar({

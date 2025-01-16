@@ -213,6 +213,7 @@ export default class UserResolver {
       .leftJoinAndSelect('user.role', 'role')
       .leftJoinAndSelect('user.department', 'department')
       .leftJoinAndSelect('user.gender', 'gender')
+      .leftJoinAndSelect('user.workingHours', 'workingHours')
       .skip(skip)
       .take(take);
 
@@ -235,6 +236,25 @@ export default class UserResolver {
       total,
       hasMore: skip + take < total
     };
+  }
+
+  @Authorized([RoleCode.ADMIN])
+  @Query(() => User, {
+    description: 'Fetch a doctor by ID with their working hours'
+  })
+  async getDoctorById(
+    @Arg('id', () => String) id: string
+  ): Promise<User | null> {
+    const doctor = await User.findOne({
+      where: { id: id },
+      relations: ['role', 'workingHours']
+    });
+
+    if (!doctor || doctor.role.code !== RoleCode.DOCTOR) {
+      throw new Error('Doctor not found or not a doctor');
+    }
+
+    return doctor;
   }
 
   @Authorized([

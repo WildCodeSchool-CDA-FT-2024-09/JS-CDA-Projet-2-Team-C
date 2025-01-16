@@ -56,7 +56,9 @@ export default function SecretaryHome() {
       setConsultationDateTime({
         consultationDate: start.toString(),
         startTime: start.getTime().toString(),
-        durationMinutes: (end.getTime() - start.getTime()) / 60000
+        durationMinutes: (end.getTime() - start.getTime()) / 60000,
+        start: start,
+        end: end
       });
     },
     [setConsultationDateTime]
@@ -98,6 +100,7 @@ export default function SecretaryHome() {
       <section>
         <Agenda
           consultations={consultations}
+          newConsultation={consultationDateTime}
           handleSelectSlot={handleSelectSlot}
         />
       </section>

@@ -1,4 +1,4 @@
-import { frenchDate } from '../../../utils/dates.utils';
+import { frenchDate, frenchTime } from '../../../utils/dates.utils';
 import { TimeSelectorProps } from './TimeSelector.types';
 
 export default function TimeSelector({
@@ -6,5 +6,11 @@ export default function TimeSelector({
 }: TimeSelectorProps) {
   if (consultationDateTime === null)
     return <> sélectionnez un créneau sur l'agenda</>;
-  else return <> {frenchDate(consultationDateTime.consultationDate)} </>;
+  else
+    return (
+      <>
+        {' '}
+        {`${frenchDate(consultationDateTime.start)}, de ${frenchTime(consultationDateTime.start)} à ${frenchTime(consultationDateTime.end)}`}{' '}
+      </>
+    );
 }

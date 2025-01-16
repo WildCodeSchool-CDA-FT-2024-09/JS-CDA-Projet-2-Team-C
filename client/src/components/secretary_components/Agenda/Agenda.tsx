@@ -13,6 +13,7 @@ import { AgendaProps } from './Agenda.types';
 
 export default function Agenda({
   consultations,
+  newConsultation,
   handleSelectSlot
 }: AgendaProps) {
   const localizer: DateLocalizer = dateFnsLocalizer({
@@ -27,8 +28,9 @@ export default function Agenda({
 
   useEffect(() => {
     const newEvents = convertToCalendarEvents(consultations);
-    setEvents(newEvents);
-  }, [consultations]);
+
+    setEvents([...newEvents, newConsultation]);
+  }, [consultations, newConsultation]);
 
   // TODO : this is the function that triggers when an event is clicked, useful in the future for RDV modification
   const handleSelectEvent = useCallback(

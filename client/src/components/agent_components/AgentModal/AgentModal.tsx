@@ -34,9 +34,9 @@ export default function AgentModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 backdrop-blur-md"></div>
-      <div
+      <article
         ref={modalRef}
-        className="relative rounded bg-blue-400 p-6 shadow-lg"
+        className="relative rounded border border-black bg-primary-lighter p-6 shadow-lg"
       >
         <button
           className="black absolute right-2 top-2 font-bold hover:text-black"
@@ -67,7 +67,7 @@ export default function AgentModal({
             </p>
           </>
         )}
-      </div>
+      </article>
     </div>
   );
 }

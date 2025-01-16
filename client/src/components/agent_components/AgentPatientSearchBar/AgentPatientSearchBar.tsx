@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useRestrictedConsultationsQuery } from '../../../generated/graphql-types'; // Importation de la query GraphQL
 import { useGetRestrictedPatientsBySsnLazyQuery } from '../../../generated/graphql-types';
 import AgentSearchBar from '../AgentSearchBar/AgentSearchBar';
-import AgentPatientSearchBarProps from './AgentPatientSearchBar.type';
+import {
+  AgentPatientSearchBarProps,
+  Patient
+} from './AgentPatientSearchBar.type';
+import AgentModal from '../AgentModal/AgentModal'; // Assurez-vous d'importer votre modal
 
 export default function AgentPatientSearchBar({
   handlePatientSelected
@@ -9,6 +14,15 @@ export default function AgentPatientSearchBar({
   const [search, setSearch] = useState<string>('');
   const [getPatientsByName, { data }] =
     useGetRestrictedPatientsBySsnLazyQuery();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+
+  const { data: dataAppointments } = useRestrictedConsultationsQuery({
+    variables: {
+      ssn: selectedPatient?.ssn ? selectedPatient.ssn.toString() : ''
+    }
+  });
 
   const formatSSN = (value: string): string => {
     const cleanedValue = value.replace(/\s+/g, '');
@@ -36,6 +50,19 @@ export default function AgentPatientSearchBar({
     }
   }, [search, getPatientsByName]);
 
+  const handlePatientClick = (patient: Patient) => {
+    setSelectedPatient(patient);
+    setIsModalOpen(true);
+    if (handlePatientSelected) {
+      handlePatientSelected(Number(patient.ssn));
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPatient(null);
+  };
+
   return (
     <div className="dropdown dropdown-end sm:w-auto md:w-[35rem]">
       <AgentSearchBar handleChange={handleChange} search={search} />
@@ -49,9 +76,7 @@ export default function AgentPatientSearchBar({
             data.restrictedPatients[0] ? (
               <li key={`patient-${data.restrictedPatients[0].ssn}`}>
                 <button
-                  onClick={() =>
-                    handlePatientSelected(data.restrictedPatients[0].ssn)
-                  }
+                  onClick={() => handlePatientClick(data.restrictedPatients[0])}
                 >
                   <strong>Accéder au rendez-vous</strong>
                 </button>
@@ -61,6 +86,13 @@ export default function AgentPatientSearchBar({
             )
           ) : null}
         </ul>
+      )}
+      {selectedPatient && isModalOpen && dataAppointments && (
+        <AgentModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          selectedItem={dataAppointments.restrictedConsultations[0]}
+        />
       )}
     </div>
   );

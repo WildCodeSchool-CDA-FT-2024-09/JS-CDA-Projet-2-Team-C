@@ -1,6 +1,13 @@
 import { Consultation, RoleCode, Patient } from '../entities.index';
 import { Resolver, Query, Arg, Authorized } from 'type-graphql';
-import { Between } from 'typeorm';
+import { Between, FindOperator } from 'typeorm';
+
+interface WhereCondition {
+  consultationDate?: FindOperator<Date>;
+  startTime?: FindOperator<string>;
+  doctor?: { id: string };
+  patient?: { id: string };
+}
 
 @Resolver(Consultation)
 export default class ConsultationResolver {
@@ -78,7 +85,7 @@ export default class ConsultationResolver {
       }
     }
 
-    const whereCondition: unknown = {
+    const whereCondition: WhereCondition = {
       consultationDate: Between(startDateTime, endDateTime),
       startTime: Between(startTimeFilter, endTimeFilter)
     };
@@ -91,7 +98,7 @@ export default class ConsultationResolver {
       whereCondition.patient = { id: patient.id };
     }
 
-    return await Consultation.find({
+    const consultations = await Consultation.find({
       where: whereCondition,
       order: { consultationDate: 'DESC', startTime: 'ASC' },
       relations: {
@@ -99,5 +106,7 @@ export default class ConsultationResolver {
         patient: true
       }
     });
+
+    return consultations;
   }
 }

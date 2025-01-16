@@ -1,9 +1,9 @@
-import { Arg, Mutation, Resolver } from 'type-graphql';
-import { WorkingHours } from './workingHours.entity';
-import { User } from '../user/user.entity';
+import { Arg, Authorized, Mutation, Resolver } from 'type-graphql';
+import { User, RoleCode, WorkingHours } from '../entities.index';
 
 @Resolver()
 export default class WorkingHoursResolver {
+  @Authorized([RoleCode.ADMIN])
   @Mutation(() => Boolean, {
     description: "Add or update a doctor's schedule"
   })

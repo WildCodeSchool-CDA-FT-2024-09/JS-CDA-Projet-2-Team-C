@@ -238,6 +238,7 @@ export default class UserResolver {
     };
   }
 
+  @Authorized([RoleCode.ADMIN])
   @Query(() => User, {
     description: 'Fetch a doctor by ID with their working hours'
   })

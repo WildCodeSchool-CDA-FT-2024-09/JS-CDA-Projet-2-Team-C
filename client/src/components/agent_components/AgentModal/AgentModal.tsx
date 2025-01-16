@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
-import AgentModalProps from './AgentModal.type';
-export default function Modal({
+import { AgentModalProps } from './AgentModal.type';
+
+export default function AgentModal({
   isOpen,
   onClose,
   selectedItem

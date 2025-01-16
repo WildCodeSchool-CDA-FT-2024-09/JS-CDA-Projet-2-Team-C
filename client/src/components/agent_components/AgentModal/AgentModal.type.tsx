@@ -1,4 +1,4 @@
-export default interface AgentModalProps {
+export interface AgentModalProps {
   isOpen: boolean;
   onClose: () => void;
   selectedItem: Appointment;

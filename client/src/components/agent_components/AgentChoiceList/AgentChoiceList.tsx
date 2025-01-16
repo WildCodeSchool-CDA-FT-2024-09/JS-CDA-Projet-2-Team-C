@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Modal from '../AgentModal/AgentModal';
+import AgentModal from '../AgentModal/AgentModal';
 import { AgentChoiceListProps } from './AgentChoiceList.type';
 
 export default function AgentChoiceList<T>({
@@ -9,14 +9,14 @@ export default function AgentChoiceList<T>({
   emptyMessage,
   renderItem,
   onItemClick,
-  modal = false
+  openModalOnItemClick = false
 }: AgentChoiceListProps<T>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
 
   const handleItemClick = (item: T) => {
     setSelectedItem(item);
-    if (modal) {
+    if (openModalOnItemClick) {
       setIsModalOpen(true);
     }
     if (onItemClick) onItemClick(item);
@@ -44,8 +44,8 @@ export default function AgentChoiceList<T>({
           </li>
         ))}
       </ul>
-      {modal && (
-        <Modal
+      {openModalOnItemClick && selectedItem && (
+        <AgentModal
           isOpen={isModalOpen}
           onClose={closeModal}
           selectedItem={selectedItem}

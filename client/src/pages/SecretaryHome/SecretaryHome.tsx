@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Agenda from '../../components/secretary_components/Agenda/Agenda';
 import DoctorSelector from '../../components/secretary_components/DoctorSelector/DoctorSelector';
 import FormPanel from '../../components/secretary_components/FormPanel/FormPanel';
@@ -7,6 +7,8 @@ import {
   useConsultationsByDoctorIdLazyQuery
 } from '../../generated/graphql-types';
 import PatientSelector from '../../components/secretary_components/PatientSelector/PatientSelector';
+import TimeSelector from '../../components/secretary_components/TimeSelector/TimeSelector';
+import { ConsultationDateTime } from './SecretaryHome.types';
 
 export default function SecretaryHome() {
   // Doctor
@@ -43,9 +45,26 @@ export default function SecretaryHome() {
     }
   }, [patientDisplayMode]);
 
+  // TimeSlot
+  const [consultationDateTime, setConsultationDateTime] =
+    useState<ConsultationDateTime | null>(null);
+
+  //this is the function that triggers when an free slot is selected
+  const handleSelectSlot = useCallback(
+    ({ start, end }: { start: Date; end: Date }) => {
+      // console.log(start, end);
+      setConsultationDateTime({
+        consultationDate: start.getDay(),
+        startTime: start.getTime().toString(),
+        durationMinutes: (end.getTime() - start.getTime()) / 60000
+      });
+    },
+    [setConsultationDateTime]
+  );
+
   return (
     <div className="grid grid-cols-2 gap-8 p-8">
-      <section className="rounded-2xl bg-primary-lighter p-4">
+      <section className="flex flex-col gap-2 rounded-2xl bg-primary-lighter p-4">
         <FormPanel title={'Médecin'}>
           <DoctorSelector
             handleDoctorSelected={(doctor) => setDoctorId(doctor.id)}
@@ -66,11 +85,21 @@ export default function SecretaryHome() {
             setDisplayMode={setPatientDisplayMode}
           />
         </FormPanel>
-        <FormPanel title={'Horaire'}>partie motif</FormPanel>
+        <FormPanel title={'Horaire'}>
+          <TimeSelector consultationDateTime={consultationDateTime} />
+        </FormPanel>
         <FormPanel title={'Motif'}>partie motif</FormPanel>
+        <div></div>
+        <button className="btn" disabled={!doctorId || !patientId}>
+          {' '}
+          Valider le rendez-vous
+        </button>
       </section>
       <section>
-        <Agenda consultations={consultations} />
+        <Agenda
+          consultations={consultations}
+          handleSelectSlot={handleSelectSlot}
+        />
       </section>
     </div>
   );

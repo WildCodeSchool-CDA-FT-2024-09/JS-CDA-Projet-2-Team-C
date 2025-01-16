@@ -1,12 +1,12 @@
-import { Resolver, Query, Arg } from 'type-graphql';
+import { Resolver, Query, Arg, Authorized } from 'type-graphql';
 import { ILike } from 'typeorm';
-import { Patient } from '../entities.index';
+import { Patient, RoleCode } from '../entities.index';
 
 @Resolver(Patient)
 export default class PatientResolver {
-  // TODO : rescrtict access to role === doctor | secretary
+  @Authorized([RoleCode.DOCTOR, RoleCode.SECRETARY])
   @Query(() => Patient)
-  async patient(@Arg('patientId') patientId: number) {
+  async patient(@Arg('patientId') patientId: string) {
     return await Patient.findOne({
       where: { id: patientId },
       relations: {
@@ -15,9 +15,9 @@ export default class PatientResolver {
     });
   }
 
-  // TODO : rescrtict access to role === doctor | secretary
   // needed to browse patients by their firstname,lastname or SSN, case insensitive
   @Query(() => [Patient])
+  @Authorized([RoleCode.DOCTOR, RoleCode.SECRETARY])
   async patients(@Arg('search') search: string) {
     search = search.trim();
     if (!search) return [];
@@ -31,6 +31,14 @@ export default class PatientResolver {
       relations: {
         gender: true
       }
+    });
+  }
+  @Query(() => [Patient])
+  async restrictedPatients(@Arg('search') search: string) {
+    search = search.trim();
+    if (!search) return [];
+    return await Patient.find({
+      where: [{ ssn: ILike(`${search}%`) }]
     });
   }
 }

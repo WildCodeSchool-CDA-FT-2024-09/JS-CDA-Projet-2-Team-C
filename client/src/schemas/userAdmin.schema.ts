@@ -1,16 +1,78 @@
 import { gql } from '@apollo/client';
 
 export const GET_ALL_USERS = gql`
-  query GetAllUsers {
-    users {
+  query GetAllUsers(
+    $skip: Int!
+    $take: Int!
+    $roleCode: String
+    $searchByName: String
+  ) {
+    getAllUsers(
+      skip: $skip
+      take: $take
+      roleCode: $roleCode
+      searchByName: $searchByName
+    ) {
+      users {
+        id
+        firstname
+        lastname
+        email
+        role {
+          code
+          label
+        }
+        workingHours {
+          endTime
+          startTime
+          weekday
+        }
+        department {
+          label
+          id
+        }
+        gender {
+          id
+          label
+        }
+      }
+      total
+      hasMore
+    }
+  }
+`;
+
+export const UPDATE_DOCTOR_WORKING_HOURS = gql`
+  mutation UpdateDoctorWorkingHours(
+    $workingHours: [WorkingHoursInput!]!
+    $doctorId: String!
+  ) {
+    updateDoctorWorkingHours(workingHours: $workingHours, doctorId: $doctorId)
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser(
+    $id: String!
+    $firstname: String
+    $lastname: String
+    $email: String
+    $genderLabel: String
+  ) {
+    updateUser(
+      id: $id
+      firstname: $firstname
+      lastname: $lastname
+      email: $email
+      genderLabel: $genderLabel
+    ) {
       id
       firstname
       lastname
       email
-      role {
+      gender {
         id
         label
-        code
       }
     }
   }

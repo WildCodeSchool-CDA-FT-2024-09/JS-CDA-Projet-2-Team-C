@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import PatientSearchBar from '../../components/PatientSearchBar/PatientSearchBar';
+import PatientSearchBar from '../../components/shared_components/PatientSearchBar/PatientSearchBar';
 
 export default function DossierBrowser() {
   const navigate = useNavigate();
 
-  const handleRedirectToDossier = (patientId: number): void => {
+  const handleRedirectToDossier = (patientId: string): void => {
     navigate(`/patient/${patientId}/dossier`);
   };
 

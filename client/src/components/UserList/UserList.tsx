@@ -1,39 +1,95 @@
-import { GetAllUsersQuery } from '../../generated/graphql-types';
-import EditIcon from '../../icons/EditIcon';
-import ArchiveIcon from '../../icons/ArchiveIcon';
+import { RoleCode } from '../../generated/graphql-types';
+import { AllUser } from '../AdminPopupDoctorHour/AdminPopupDoctorHour.types';
+import alert from '/images/alert-icon.png';
+import { User } from '../../generated/graphql-types';
 
 export default function UserList({
-  filteredUsers
+  users,
+  loading,
+  error,
+  handleOpenModal,
+  openUpdateUserPopup
 }: {
-  filteredUsers: GetAllUsersQuery['users'];
+  users: AllUser[];
+  loading: boolean;
+  error: boolean | undefined;
+  handleOpenModal: (id: string, name: string) => void;
+  openUpdateUserPopup: (user: User) => void;
 }) {
+  if (loading)
+    return (
+      <tr>
+        <td colSpan={5}>Chargement...</td>
+      </tr>
+    );
+  if (error)
+    return (
+      <tr>
+        <td colSpan={5}>Erreur : Veuillez recharger la page</td>
+      </tr>
+    );
+
+  const checkWorkingHours = (user: AllUser): JSX.Element | null => {
+    if (user.role.code === RoleCode.Doctor) {
+      if (user.workingHours && user.workingHours.length === 0) {
+        return (
+          <>
+            <button
+              onClick={() =>
+                handleOpenModal(user.id, `${user.firstname} ${user.lastname}`)
+              }
+              type="button"
+              className="relative m-0 inline-flex items-center gap-2 rounded-lg bg-[#60DE8C] p-1 hover:bg-[#31B860] hover:text-white"
+            >
+              Planning
+              <img
+                src={alert}
+                alt="Alerte : Pas d'horaires de travail définis"
+                className="absolute right-[-10px] top-[-8px] w-6"
+              />
+            </button>
+          </>
+        );
+      }
+
+      return (
+        <button
+          onClick={() =>
+            handleOpenModal(user.id, `${user.firstname} ${user.lastname}`)
+          }
+          type="button"
+          className="m-0 inline-flex items-center gap-2 rounded-lg bg-[#60DE8C] p-1 hover:bg-[#31B860] hover:text-white"
+        >
+          Planning
+        </button>
+      );
+    }
+    return null;
+  };
+
   return (
     <>
-      {filteredUsers.map((user) => (
-        <tr
-          key={user.id}
-          id={user.id.toString()}
-          className="border-b border-gray-300"
-        >
+      {users.map((user) => (
+        <tr key={user.id} className="border-b border-gray-300">
           <td>{user.role.label}</td>
           <td>{user.firstname}</td>
           <td>{user.lastname}</td>
-          <td>{user.email}</td>
+          <td className="relative">{user.email}</td>
           <td className="flex gap-2">
             <button
               type="button"
               className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark hover:text-white"
+              onClick={() => openUpdateUserPopup(user as User)}
             >
-              <EditIcon />
               Modifier
             </button>
             <button
               type="button"
               className="m-0 inline-flex items-center gap-2 rounded-lg bg-danger-lighter p-2 hover:bg-danger-dark hover:text-white"
             >
-              <ArchiveIcon />
               Archiver
             </button>
+            {checkWorkingHours(user)}
           </td>
         </tr>
       ))}

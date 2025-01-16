@@ -1,9 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { sendMail } from '../utils/mailer.util';
+import { sendMail } from './utils/mailer.util';
 
 dotenv.config();
-const serverPort = process.env.PORT;
+const { MAILER_PORT } = process.env;
 
 const app = express();
 app.use(express.json());
@@ -26,6 +26,6 @@ app.post('/send-mail', async (req, res) => {
   }
 });
 
-app.listen(serverPort, () => {
-  console.info(`Listening on port ${serverPort}`);
+app.listen(MAILER_PORT, () => {
+  console.info(`Listening on port ${MAILER_PORT}`);
 });

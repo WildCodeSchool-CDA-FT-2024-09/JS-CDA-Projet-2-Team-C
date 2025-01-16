@@ -12,7 +12,7 @@ export default function DoctorSelector({
 
   // TODO : find the department of the user and use it a default department
   const defaultDoctor = {
-    id: 0,
+    id: '',
     firstname: 'docteur',
     lastname: 'non défini'
   };
@@ -51,9 +51,9 @@ export default function DoctorSelector({
     return (
       <>
         <div className="flex gap-2">
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full">
             <div className="label">
-              <span className="label-text text-primary">Service</span>
+              <span className="label-text text-primary-darker">Service</span>
             </div>
             <select
               className="select select-bordered"
@@ -72,9 +72,9 @@ export default function DoctorSelector({
             </select>
           </label>
 
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full">
             <div className="label">
-              <span className="label-text text-primary">Médecin</span>
+              <span className="label-text text-primary-darker">Médecin</span>
             </div>
             <select
               className="select select-bordered"
@@ -85,10 +85,11 @@ export default function DoctorSelector({
                 if (newDoctor?.id != doctor.id)
                   setDoctor(newDoctor || defaultDoctor);
               }}
+              defaultValue={`${doctor.firstname} ${doctor.lastname}`}
             >
               {doctors.length ? (
-                doctors.map((d, index) => (
-                  <option key={d.id} selected={index === 0}>
+                doctors.map((d) => (
+                  <option key={d.id}>
                     {d.firstname} {d.lastname}
                   </option>
                 ))

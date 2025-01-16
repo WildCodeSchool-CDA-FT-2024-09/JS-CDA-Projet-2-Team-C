@@ -1,19 +1,36 @@
 import * as dotenv from 'dotenv';
-import { Query, Resolver, Mutation, Arg } from 'type-graphql';
+import {
+  Query,
+  Resolver,
+  Mutation,
+  Arg,
+  Int,
+  Ctx,
+  Authorized
+} from 'type-graphql';
 import {
   User,
   AuthUser,
   Role,
   Department,
   Gender,
-  RoleCode
+  RoleCode,
+  PaginatedUsers
 } from '../entities.index';
 import { verifyPassword, generateToken } from '../../utils/auth.utils';
-import { hashPassword } from '../../utils/auth.utils';
+import {
+  hashPassword,
+  setTokenCookie,
+  clearCookie
+} from '../../utils/auth.utils';
+import { ContextType } from '../../types/ContextType';
+import { sendPasswordByEmail } from '../../utils/email.utils';
+
 dotenv.config();
 
 @Resolver(User)
 export default class UserResolver {
+  @Authorized([RoleCode.AGENT])
   @Query(() => [User], {
     description: 'Fetches all users with the role of doctor'
   })
@@ -33,6 +50,7 @@ export default class UserResolver {
     return doctors;
   }
 
+  @Authorized([RoleCode.AGENT])
   @Query(() => [Department], {
     description: 'Fetches departments by label and their doctors'
   })
@@ -61,6 +79,7 @@ export default class UserResolver {
     return departments;
   }
 
+  @Authorized([RoleCode.ADMIN])
   @Mutation(() => User)
   async addUser(
     @Arg('firstname') firstname: string,
@@ -70,6 +89,7 @@ export default class UserResolver {
     @Arg('departmentLabel', { nullable: true }) departmentLabel: string,
     @Arg('genderLabel', { nullable: true }) genderLabel: string
   ): Promise<User> {
+    // TODO : we need to implement a way to generate a random password before shipping this code
     const password = process.env.TEST_USER_PASSWORD || '';
 
     const hashedPassword = await hashPassword(password);
@@ -106,11 +126,22 @@ export default class UserResolver {
     });
 
     await user.save();
+
+    const emailSuccess = await sendPasswordByEmail(email, password);
+
+    if (!emailSuccess) {
+      throw new Error('Failed to send email');
+    }
+
     return user;
   }
 
-  @Query(() => AuthUser)
-  async login(@Arg('email') email: string, @Arg('password') password: string) {
+  @Mutation(() => AuthUser)
+  async login(
+    @Arg('email') email: string,
+    @Arg('password') password: string,
+    @Ctx() ctx: ContextType
+  ): Promise<AuthUser> {
     const user = await User.findOne({ where: { email }, relations: ['role'] });
 
     if (!user || !(await verifyPassword(password, user.password))) {
@@ -122,15 +153,128 @@ export default class UserResolver {
     authUser.id = user.id;
     authUser.email = user.email;
     authUser.role = user.role;
-    authUser.token = generateToken(user);
+
+    const token = generateToken(user.id);
+    setTokenCookie(ctx.res, token);
 
     return authUser;
   }
 
   @Query(() => [User])
+  @Authorized([RoleCode.ADMIN])
   async users() {
     return await User.find({
-      relations: ['role', 'department', 'gender'] // Explicitly load the "role" relationship
+      // Explicitly load the "role" relationship
+      relations: ['role', 'department', 'gender']
     });
+  }
+
+  @Mutation(() => User)
+  async updateUser(
+    @Arg('id') id: string,
+    @Arg('firstname', { nullable: true }) firstname?: string,
+    @Arg('lastname', { nullable: true }) lastname?: string,
+    @Arg('email', { nullable: true }) email?: string,
+    @Arg('genderLabel', { nullable: true }) genderLabel?: string
+  ): Promise<User> {
+    const user = await User.findOne({ where: { id } });
+    if (!user) throw new Error('User not found');
+
+    if (email && email !== user.email) {
+      const duplicateUser = await User.findOne({ where: { email } });
+      if (duplicateUser) throw new Error('Cet email est déjà utilisé');
+      user.email = email;
+    }
+
+    if (firstname) user.firstname = firstname;
+    if (lastname) user.lastname = lastname;
+
+    if (genderLabel) {
+      const gender = await Gender.findOne({ where: { label: genderLabel } });
+      if (!gender) throw new Error('Gender not found');
+      user.gender = gender;
+    }
+
+    await user.save();
+    return user;
+  }
+
+  @Authorized([RoleCode.ADMIN])
+  @Query(() => PaginatedUsers, {
+    description: 'Fetch paginated users with optional role filtering'
+  })
+  async getAllUsers(
+    @Arg('skip', () => Int) skip: number,
+    @Arg('take', () => Int) take: number,
+    @Arg('roleCode', { nullable: true }) roleCode?: string,
+    @Arg('searchByName', { nullable: true }) searchByName?: string
+  ): Promise<PaginatedUsers> {
+    const queryBuilder = User.createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('user.department', 'department')
+      .leftJoinAndSelect('user.gender', 'gender')
+      .leftJoinAndSelect('user.workingHours', 'workingHours')
+      .skip(skip)
+      .take(take);
+
+    // Filtering by role if roleCode is set
+    if (roleCode) {
+      queryBuilder.where('role.code = :roleCode', { roleCode });
+    }
+
+    if (searchByName) {
+      queryBuilder.andWhere(
+        '(user.firstname ILIKE :search OR user.lastname ILIKE :search)',
+        { search: `%${searchByName}%` }
+      );
+    }
+
+    const [users, total] = await queryBuilder.getManyAndCount();
+
+    return {
+      users,
+      total,
+      hasMore: skip + take < total
+    };
+  }
+
+  @Authorized([RoleCode.ADMIN])
+  @Query(() => User, {
+    description: 'Fetch a doctor by ID with their working hours'
+  })
+  async getDoctorById(
+    @Arg('id', () => String) id: string
+  ): Promise<User | null> {
+    const doctor = await User.findOne({
+      where: { id: id },
+      relations: ['role', 'workingHours']
+    });
+
+    if (!doctor || doctor.role.code !== RoleCode.DOCTOR) {
+      throw new Error('Doctor not found or not a doctor');
+    }
+
+    return doctor;
+  }
+
+  @Authorized([
+    RoleCode.ADMIN,
+    RoleCode.DOCTOR,
+    RoleCode.SECRETARY,
+    RoleCode.AGENT
+  ])
+  @Query(() => AuthUser, {
+    description: 'Fetches the current authenticated user'
+  })
+  async getCurrentAuthUser(@Ctx() ctx: ContextType): Promise<User | null> {
+    return ctx.user;
+  }
+
+  @Mutation(() => Boolean, {
+    description: 'Logs out the user by clearing the medagendatoken cookie'
+  })
+  logout(@Ctx() ctx: ContextType): boolean {
+    clearCookie(ctx.res);
+    return true;
   }
 }

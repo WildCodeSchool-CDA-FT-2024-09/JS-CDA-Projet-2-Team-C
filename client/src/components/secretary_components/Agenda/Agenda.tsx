@@ -28,8 +28,8 @@ export default function Agenda({
 
   useEffect(() => {
     const newEvents = convertToCalendarEvents(consultations);
-
-    setEvents([...newEvents, newConsultation]);
+    if (newConsultation) setEvents([...newEvents, newConsultation]);
+    else setEvents(newEvents);
   }, [consultations, newConsultation]);
 
   // TODO : this is the function that triggers when an event is clicked, useful in the future for RDV modification

@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import Agenda from '../../components/secretary_components/Agenda/Agenda';
-import DoctorSelector from '../../components/secretary_components/DoctorSelector/DoctorSelector';
 import FormPanel from '../../components/secretary_components/FormPanel/FormPanel';
+import DoctorSelector from '../../components/secretary_components/DoctorSelector/DoctorSelector';
+import PatientSelector from '../../components/secretary_components/PatientSelector/PatientSelector';
+import TimeSelector from '../../components/secretary_components/TimeSelector/TimeSelector';
+import SubjectSelector from '../../components/secretary_components/SubjectSelector/SubjectSelector';
 import {
   ConsultationsByDoctorIdQuery,
   useConsultationsByDoctorIdLazyQuery
 } from '../../generated/graphql-types';
-import PatientSelector from '../../components/secretary_components/PatientSelector/PatientSelector';
-import TimeSelector from '../../components/secretary_components/TimeSelector/TimeSelector';
 import { ConsultationDateTime } from './SecretaryHome.types';
-import SubjectSelector from '../../components/secretary_components/SubjectSelector/SubjectSelector';
 
 export default function SecretaryHome() {
   // Doctor
@@ -46,7 +46,7 @@ export default function SecretaryHome() {
     }
   }, [patientDisplayMode]);
 
-  // TimeSlot
+  // TimeSlot (agenda selection of consultation date and time)
   const [consultationDateTime, setConsultationDateTime] =
     useState<ConsultationDateTime | null>(null);
 
@@ -65,15 +65,15 @@ export default function SecretaryHome() {
     [setConsultationDateTime]
   );
 
-  // Subject
+  // Subject & Description, named "details" here
   const [details, setDetails] = useState<Record<string, string> | null>(null);
 
-  const handleDescriptionChange = (e) => {
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDetails = { ...details, description: e.target.value };
     setDetails(newDetails);
   };
 
-  const handleSubjectSelected = (e) => {
+  const handleSubjectSelected = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newDetails = { ...details, subject: e.target.value };
     setDetails(newDetails);
   };

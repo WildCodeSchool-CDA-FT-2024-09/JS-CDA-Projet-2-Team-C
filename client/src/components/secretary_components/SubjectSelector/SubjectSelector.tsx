@@ -1,11 +1,12 @@
 import { useConsultationSubjectsQuery } from '../../../generated/graphql-types';
 import InputField from '../InputField/InputField';
+import { SubjectSelectorProps } from './SubjectSelector.types';
 
 export default function SubjectSelector({
   details,
   handleSubjectSelected,
   handleDescriptionChange
-}) {
+}: SubjectSelectorProps) {
   const { data, loading, error } = useConsultationSubjectsQuery();
 
   if (loading) return <p>Chargement ...</p>;

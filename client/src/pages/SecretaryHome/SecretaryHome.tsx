@@ -11,8 +11,11 @@ import {
   useCreateConsultationMutation
 } from '../../generated/graphql-types';
 import { ConsultationDateTime } from './SecretaryHome.types';
+import { useToast } from '../../contexts/toasts/useToast';
 
 export default function SecretaryHome() {
+  const { showToast } = useToast();
+
   // Doctor
   const [doctorId, setDoctorId] = useState<string>('');
   const [consultations, setConsultations] = useState<
@@ -84,21 +87,35 @@ export default function SecretaryHome() {
 
   const handleSubmit = async () => {
     try {
-      if (!doctorId || !patientId || !details || !consultationDateTime) {
-        // TODO : show a popup here
-        throw new Error('Missing data');
-      }
+      if (
+        !doctorId ||
+        !patientId ||
+        !details ||
+        !details.description ||
+        !details.subject ||
+        !consultationDateTime.start ||
+        !consultationDateTime.end
+      ) {
+        // TODO : enhance this part to show the missing fields
+        showToast('Données manquantes', 'error');
+      } else {
+        await createConsultation({
+          variables: {
+            description: details?.description,
+            end: consultationDateTime?.end as Date,
+            start: consultationDateTime?.start as Date,
+            doctorId: doctorId,
+            patientId: patientId,
+            subjectLabel: details.subject
+          }
+        });
+        showToast('Consultation planifiée avec succès!', 'success');
 
-      createConsultation({
-        variables: {
-          description: details?.description,
-          end: consultationDateTime.end,
-          start: consultationDateTime.start,
-          doctorId: doctorId,
-          patientId: patientId,
-          subjectLabel: details.subject
+        // perform a refetch of the consultations
+        if (doctorId) {
+          getConsultationsByDoctorId({ variables: { doctorId: doctorId } });
         }
-      });
+      }
     } catch {
       //TODO : show popup
     }

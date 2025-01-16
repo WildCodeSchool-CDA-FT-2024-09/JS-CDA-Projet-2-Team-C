@@ -11,7 +11,18 @@ services:
   staging-coreapi:
     image: acetoshi/core_api:latest
     env_file: .env-staging
-    command: npm run dev && npm run seed-dev
+    command: >
+      sh -c "
+      npm run dev &
+      until nc -z localhost 4000; 
+      do echo
+      'Waiting for coreapi to be ready...'; 
+      sleep 5; 
+      done;
+      echo 'Running seed script...';
+      npm run seed-dev;
+      wait
+      "
     depends_on:
       - staging-medapi_postgres
 

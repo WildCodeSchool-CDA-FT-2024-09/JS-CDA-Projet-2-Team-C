@@ -531,5 +531,6 @@ dotenv.config();
     await queryRunner.rollbackTransaction();
   } finally {
     await queryRunner.release();
+    console.info('Seeded successfully');
   }
 })();

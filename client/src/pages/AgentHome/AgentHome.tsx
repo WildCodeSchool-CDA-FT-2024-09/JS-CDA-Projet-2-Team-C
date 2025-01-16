@@ -77,7 +77,7 @@ export default function AgentHome() {
         openModalOnItemClick={false}
       />
       <button
-        className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
+        className="mb-16 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
         onClick={() => setSelectedView(null)}
       >
         Retour au menu principal
@@ -100,7 +100,7 @@ export default function AgentHome() {
         openModalOnItemClick={false}
       />
       <button
-        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
+        className="mb-16 mt-4 rounded bg-blue-500 px-4 py-2 text-white"
         onClick={handleBackClick}
       >
         Retour aux services
@@ -121,7 +121,7 @@ export default function AgentHome() {
         openModalOnItemClick={false}
       />
       <button
-        className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
+        className="mb-16 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
         onClick={() => setSelectedView(null)}
       >
         Retour au menu principal
@@ -138,7 +138,7 @@ export default function AgentHome() {
         }}
       />
       <button
-        className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
+        className="mb-16 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
         onClick={() => setSelectedView(null)}
       >
         Retour au menu principal
@@ -167,7 +167,7 @@ export default function AgentHome() {
         openModalOnItemClick={true}
       />
       <button
-        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
+        className="mb-16 mt-4 rounded bg-blue-500 px-4 py-2 text-white"
         onClick={() => setSelectedDoctor(null)}
       >
         Retour aux docteurs
@@ -195,6 +195,15 @@ export default function AgentHome() {
   };
 
   return (
-    <div className="mt-8 flex flex-col items-center gap-8">{renderView()}</div>
+    <div className="flex min-h-screen flex-col">
+      <div className="mt-8 flex flex-col items-center gap-8">
+        {renderView()}
+      </div>
+
+      {/* Footer ajouté ici */}
+      <footer className="fixed bottom-0 w-full bg-gray-800 p-4 text-center text-white">
+        <p>© 2025 Mon Application. Tous droits réservés.</p>
+      </footer>
+    </div>
   );
 }

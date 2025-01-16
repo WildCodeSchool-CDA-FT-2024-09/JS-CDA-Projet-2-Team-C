@@ -210,8 +210,6 @@ export default function AgentHome() {
       <div className="mt-8 flex flex-col items-center gap-8">
         {renderView()}
       </div>
-
-      {/* Footer ajouté ici */}
       <footer className="fixed bottom-0 flex w-full items-center justify-evenly rounded-t-xl bg-primary-light p-2">
         <button
           className="rounded text-white"

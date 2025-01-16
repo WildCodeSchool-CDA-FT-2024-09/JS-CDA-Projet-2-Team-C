@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useRestrictedConsultationsQuery } from '../../../generated/graphql-types'; // Importation de la query GraphQL
+import { useRestrictedConsultationsQuery } from '../../../generated/graphql-types';
 import { useGetRestrictedPatientsBySsnLazyQuery } from '../../../generated/graphql-types';
 import AgentSearchBar from '../AgentSearchBar/AgentSearchBar';
 import {
   AgentPatientSearchBarProps,
   Patient
 } from './AgentPatientSearchBar.type';
-import AgentModal from '../AgentModal/AgentModal'; // Assurez-vous d'importer votre modal
+import AgentModal from '../AgentModal/AgentModal';
 
 export default function AgentPatientSearchBar({
   handlePatientSelected

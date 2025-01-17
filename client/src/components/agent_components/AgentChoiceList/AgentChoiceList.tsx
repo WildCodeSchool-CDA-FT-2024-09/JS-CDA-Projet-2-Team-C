@@ -33,7 +33,7 @@ export default function AgentChoiceList<T>({
 
   return (
     <div>
-      <ul className="flex flex-col items-center gap-4">
+      <ul className="mb-20 flex flex-col items-center gap-4">
         {items.map((item) => (
           <li
             key={(item as { id: string | number }).id}

@@ -1,33 +1,21 @@
-import { useGetAllUsersQuery } from '../../generated/graphql-types';
+import { RoleCode } from '../../generated/graphql-types';
+import { AllUser } from '../AdminPopupDoctorHour/AdminPopupDoctorHour.types';
+import alert from '/images/alert-icon.png';
+import { User } from '../../generated/graphql-types';
 
 export default function UserList({
-  currentPage,
-  perPage,
-  role,
-  debouncedSearch,
-  onPaginationData
+  users,
+  loading,
+  error,
+  handleOpenModal,
+  openUpdateUserPopup
 }: {
-  currentPage: number;
-  perPage: number;
-  role: string;
-  debouncedSearch: string;
-  onPaginationData: (total: number, hasMoreData: boolean) => void;
+  users: AllUser[];
+  loading: boolean;
+  error: boolean | undefined;
+  handleOpenModal: (id: string, name: string) => void;
+  openUpdateUserPopup: (user: User) => void;
 }) {
-  const { data, loading, error } = useGetAllUsersQuery({
-    variables: {
-      skip: currentPage * perPage,
-      take: perPage,
-      roleCode: role || null,
-      searchByName: debouncedSearch || null
-    },
-    fetchPolicy: 'cache-and-network',
-    onCompleted: (fetchedData) => {
-      const total = fetchedData?.getAllUsers?.total || 0;
-      const hasMoreData = fetchedData?.getAllUsers?.hasMore || false;
-      onPaginationData(total, hasMoreData);
-    }
-  });
-
   if (loading)
     return (
       <tr>
@@ -41,7 +29,43 @@ export default function UserList({
       </tr>
     );
 
-  const users = data?.getAllUsers.users || [];
+  const checkWorkingHours = (user: AllUser): JSX.Element | null => {
+    if (user.role.code === RoleCode.Doctor) {
+      if (user.workingHours && user.workingHours.length === 0) {
+        return (
+          <>
+            <button
+              onClick={() =>
+                handleOpenModal(user.id, `${user.firstname} ${user.lastname}`)
+              }
+              type="button"
+              className="relative m-0 inline-flex items-center gap-2 rounded-lg bg-[#60DE8C] p-1 hover:bg-[#31B860] hover:text-white"
+            >
+              Planning
+              <img
+                src={alert}
+                alt="Alerte : Pas d'horaires de travail définis"
+                className="absolute right-[-10px] top-[-8px] w-6"
+              />
+            </button>
+          </>
+        );
+      }
+
+      return (
+        <button
+          onClick={() =>
+            handleOpenModal(user.id, `${user.firstname} ${user.lastname}`)
+          }
+          type="button"
+          className="m-0 inline-flex items-center gap-2 rounded-lg bg-[#60DE8C] p-1 hover:bg-[#31B860] hover:text-white"
+        >
+          Planning
+        </button>
+      );
+    }
+    return null;
+  };
 
   return (
     <>
@@ -50,11 +74,12 @@ export default function UserList({
           <td>{user.role.label}</td>
           <td>{user.firstname}</td>
           <td>{user.lastname}</td>
-          <td>{user.email}</td>
+          <td className="relative">{user.email}</td>
           <td className="flex gap-2">
             <button
               type="button"
               className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark hover:text-white"
+              onClick={() => openUpdateUserPopup(user as User)}
             >
               Modifier
             </button>
@@ -64,6 +89,7 @@ export default function UserList({
             >
               Archiver
             </button>
+            {checkWorkingHours(user)}
           </td>
         </tr>
       ))}

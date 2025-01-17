@@ -9,7 +9,7 @@ export type FormInputs = {
   gender: string;
 };
 
-export type AdminPopupProps = {
+export type CreateUserPopupProps = {
   close: () => void;
   refetchUsers: () => void;
 };
@@ -41,7 +41,8 @@ export interface RoleSpecificFieldsProps {
   ) => void;
   departments?: { id: number; label: string }[];
   genders?: { id: number; label: string }[];
-  disabled: boolean;
+  disabled?: boolean;
+  isUpdate?: boolean;
 }
 
 export interface RoleSelectorProps {

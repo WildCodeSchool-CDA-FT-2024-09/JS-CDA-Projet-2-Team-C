@@ -1,18 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/auth/useAuth';
+import { useLogout } from '../../../contexts/auth/useLogout';
 import { HeaderProps } from './Header.types';
 import Logo from '/images/logo-main-white.png';
 import { RoleCode } from '../../../generated/graphql-types';
 
 export const Header = ({ page, pageNames }: HeaderProps) => {
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const currentRole = user?.role.code;
   const navigate = useNavigate();
   const currentPageName = pageNames[page];
-  const handeLogout = () => {
-    setUser(null);
-    navigate('/');
-  };
+  const logout = useLogout();
 
   const navItems = (
     <>
@@ -38,7 +36,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
         </li>
       )}
       <li>
-        <button onClick={handeLogout}>Déconnexion</button>
+        <button onClick={logout}>Déconnexion</button>
       </li>
     </>
   );
@@ -53,7 +51,10 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
           </span>
         )}
       </section>
-      <h1 role="title" className="navbar-center text-2xl text-white">
+      <h1
+        role="title"
+        className="navbar-center ml-[50px] text-2xl text-white sm:ml-0"
+      >
         {currentPageName}
       </h1>
       <nav role="navigation-desktop" className="navbar-end hidden md:flex">

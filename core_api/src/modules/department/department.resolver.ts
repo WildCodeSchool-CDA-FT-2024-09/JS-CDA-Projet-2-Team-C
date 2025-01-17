@@ -1,8 +1,9 @@
 import { Department, Role, RoleCode } from '../entities.index';
-import { Resolver, Query } from 'type-graphql';
+import { Resolver, Query, Authorized } from 'type-graphql';
 
 @Resolver(Department)
 export default class DepartmentResolver {
+  @Authorized([RoleCode.ADMIN, RoleCode.AGENT])
   @Query(() => [Department])
   async departments() {
     return await Department.find({
@@ -10,6 +11,7 @@ export default class DepartmentResolver {
     });
   }
 
+  @Authorized([RoleCode.SECRETARY])
   @Query(() => [Department], {
     description: 'Fetches all departments and their doctors'
   })

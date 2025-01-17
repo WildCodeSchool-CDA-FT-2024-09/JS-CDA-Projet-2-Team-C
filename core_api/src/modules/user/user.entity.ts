@@ -91,9 +91,6 @@ export class AuthUser {
 
   @Field(() => Role)
   role: Role;
-
-  @Field(() => String)
-  token: string;
 }
 
 @ObjectType()

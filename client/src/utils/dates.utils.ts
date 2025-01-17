@@ -19,6 +19,21 @@ export const frenchDate = (
   }
 };
 
+export const frenchTime = (inputDate: Date | string | undefined): string => {
+  try {
+    if (!inputDate) throw new Error();
+
+    const date = new Date(inputDate);
+    if (isNaN(date.getTime())) throw new Error();
+
+    return date
+      .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+      .replace(':', 'h');
+  } catch {
+    return 'heure inconnue';
+  }
+};
+
 export const getAge = (date: Date | string | undefined): string => {
   try {
     const today = new Date();

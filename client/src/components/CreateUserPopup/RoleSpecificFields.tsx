@@ -1,6 +1,6 @@
 import { isVisibleToRole } from '../../utils/roles.utils';
 import { SelectField, InputField } from './Fields';
-import { RoleSpecificFieldsProps } from './AdminPopup.types';
+import { RoleSpecificFieldsProps } from './CreateUserPopup.types';
 
 const RoleSpecificFields = ({
   role,
@@ -8,7 +8,8 @@ const RoleSpecificFields = ({
   handleInputChange,
   departments,
   genders,
-  disabled
+  disabled,
+  isUpdate
 }: RoleSpecificFieldsProps) => {
   const { name, firstname, email, service, gender } = formInputs;
 
@@ -43,7 +44,7 @@ const RoleSpecificFields = ({
         disabled={!role || disabled}
         type="email"
       />
-      {isVisibleToRole(role, 'service') && (
+      {isVisibleToRole(role, 'service') && !isUpdate && (
         <SelectField
           name="service"
           label="Service"

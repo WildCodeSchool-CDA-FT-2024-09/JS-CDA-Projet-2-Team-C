@@ -5,19 +5,28 @@ import Return from '/images/return.svg';
 const Footer = ({ handleReturn, resetView }: AgentFooterProps) => {
   return (
     <footer className="fixed bottom-0 left-0 flex w-full items-center justify-evenly rounded-t-xl bg-primary-light p-2">
-      <img
-        src={Home}
-        alt="Retour à la maison"
-        className="h-12 w-12 cursor-pointer fill-white"
+      <button
+        className="flex items-center justify-center rounded text-white"
         onClick={resetView}
-      />
-
-      <img
-        src={Return}
-        alt="Retour en arrière"
-        className="h-12 w-12 cursor-pointer"
+        aria-label="Retour à la maison"
+      >
+        <img
+          src={Home}
+          alt="Maison de retour"
+          className="h-12 w-12 cursor-pointer fill-white"
+        />
+      </button>
+      <button
+        className="flex items-center justify-center rounded text-white"
         onClick={handleReturn}
-      />
+        aria-label="Retour en arrière"
+      >
+        <img
+          src={Return}
+          alt="Fléche de retour en arrière"
+          className="h-12 w-12 cursor-pointer"
+        />
+      </button>
     </footer>
   );
 };

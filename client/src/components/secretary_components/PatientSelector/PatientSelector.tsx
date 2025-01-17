@@ -103,7 +103,7 @@ export default function PatientSelector({
       <div className="flex items-center gap-2">
         <PatientSearchBar handlePatientSelected={handlePatientSelected} />
         <button
-          className="btn w-40 border-none bg-primary text-white"
+          className="btn w-40 border-none bg-primary text-white hover:bg-primary-dark"
           onClick={() => setDisplayMode('form')}
         >
           + nouveau patient

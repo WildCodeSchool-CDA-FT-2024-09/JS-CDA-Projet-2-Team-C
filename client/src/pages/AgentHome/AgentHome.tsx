@@ -92,7 +92,8 @@ export default function AgentHome() {
   const renderDoctorsByService = () => (
     <>
       <h1 className="text-center text-3xl font-bold">
-        Docteurs pour {selectedService || 'ce service'}
+        Docteurs pour{' '}
+        {selectedService ? `le service de ${selectedService}` : 'ce service'}
       </h1>
       <AgentChoiceList
         isLoading={loadingDoctors}
@@ -144,7 +145,9 @@ export default function AgentHome() {
         items={dataAppointments?.restrictedConsultations || []}
         renderItem={(appointment) => (
           <>
-            <div className="px-[2px]">{appointment.startTime.slice(0, 5)}</div>
+            <div className="px-[2px] text-stone-700">
+              {appointment.startTime.slice(0, 5)}
+            </div>
             <div className="px-[2px]">{appointment.patient.firstname}</div>
             <div className="px-[2px]">{appointment.patient.lastname}</div>
           </>
@@ -175,7 +178,7 @@ export default function AgentHome() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex flex-col">
       <div className="mt-8 flex flex-col items-center gap-8">
         {renderView()}
       </div>

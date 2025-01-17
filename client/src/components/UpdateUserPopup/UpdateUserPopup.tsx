@@ -147,7 +147,7 @@ const UpdateUserPopup = forwardRef<HTMLDialogElement, UpdateUserPopupProps>(
             <button
               type="submit"
               disabled={buttonDisabled || loading}
-              className="btn btn-md w-5/6 bg-secondary text-white"
+              className="h-12 w-5/6 rounded-lg bg-secondary text-white hover:opacity-85"
             >
               {loading ? 'Chargement...' : 'Modifier'}
             </button>

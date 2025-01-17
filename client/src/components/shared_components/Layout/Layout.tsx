@@ -12,7 +12,11 @@ export const PageLayout = ({ children, page }: PageLayoutProps) => {
       ) : (
         <Header page={page} pageNames={pageNames} />
       )}
-      <main className="layout-content container mx-auto">{children}</main>
+      <main
+        className={`layout-content container relative ${isLoginPage ? '' : 'top-20'} mx-auto`}
+      >
+        {children}
+      </main>
     </>
   );
 };

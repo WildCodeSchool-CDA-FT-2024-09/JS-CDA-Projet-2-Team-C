@@ -78,14 +78,14 @@ export default function UserList({
           <td className="flex gap-2">
             <button
               type="button"
-              className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark hover:text-white"
+              className="m-0 inline-flex items-center gap-2 rounded-lg bg-primary-light p-2 hover:bg-primary-dark"
               onClick={() => openUpdateUserPopup(user as User)}
             >
               Modifier
             </button>
             <button
               type="button"
-              className="m-0 inline-flex items-center gap-2 rounded-lg bg-danger-lighter p-2 hover:bg-danger-dark hover:text-white"
+              className="m-0 inline-flex items-center gap-2 rounded-lg bg-danger-lighter p-2 hover:bg-danger-light"
             >
               Archiver
             </button>

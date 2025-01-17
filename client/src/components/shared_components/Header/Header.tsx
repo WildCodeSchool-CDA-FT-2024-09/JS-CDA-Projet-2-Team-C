@@ -53,7 +53,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
         {currentPageName}
       </h1>
       <nav role="navigation-desktop" className="navbar-end hidden md:flex">
-        <ul className="menu menu-horizontal px-1">{navItems}</ul>
+        <ul className="menu menu-horizontal px-1 text-white">{navItems}</ul>
       </nav>
       <div className="navbar-end gap-2 md:hidden">
         <nav role="navigation-mobile" className="dropdown dropdown-end">

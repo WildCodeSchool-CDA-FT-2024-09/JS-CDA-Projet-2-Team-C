@@ -181,7 +181,7 @@ export default function AdminPopupDoctorHour({
           <form onSubmit={handleSubmit}>
             <div className="form-control w-full max-w-xs">
               <label className="label">
-                <span className="label-text">
+                <span className="label-text text-slate-500">
                   Sélectionner les jours et les horaires de travail
                 </span>
               </label>

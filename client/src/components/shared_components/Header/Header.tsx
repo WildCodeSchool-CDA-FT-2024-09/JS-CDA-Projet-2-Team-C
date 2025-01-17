@@ -45,11 +45,6 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
     <header className="navbar bg-primary">
       <section className="navbar-start">
         <img src={Logo} className="navbar-start w-16" />
-        {currentRole && (
-          <span data-testid="connected-role" className="text-xs">
-            Connecté en tant que {user?.role.label}
-          </span>
-        )}
       </section>
       <h1
         role="title"

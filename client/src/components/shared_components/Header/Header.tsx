@@ -27,7 +27,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
       )}
       <li>
         <button
-          className="rounded-3xl border border-solid border-white"
+          className="rounded-3xl border border-solid border-white bg-primary hover:bg-primary-dark"
           onClick={logout}
         >
           Déconnexion

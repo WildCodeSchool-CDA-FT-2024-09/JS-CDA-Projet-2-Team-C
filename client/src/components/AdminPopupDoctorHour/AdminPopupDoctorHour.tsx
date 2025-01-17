@@ -241,7 +241,7 @@ export default function AdminPopupDoctorHour({
             </div>
             <button
               type="submit"
-              className={`btn btn-md w-full ${saving ? 'btn-disabled' : ''} bg-secondary text-white`}
+              className={`w-full ${saving ? 'btn-disabled' : ''} h-12 w-5/6 rounded-lg bg-secondary text-white hover:opacity-85`}
             >
               {saving
                 ? 'Enregistrement...'

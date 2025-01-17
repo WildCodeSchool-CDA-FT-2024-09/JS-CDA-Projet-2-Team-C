@@ -178,7 +178,7 @@ export default function AgentHome() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex flex-col">
       <div className="mt-8 flex flex-col items-center gap-8">
         {renderView()}
       </div>

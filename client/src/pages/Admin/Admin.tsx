@@ -137,7 +137,7 @@ export default function Admin() {
             </p>
             <button
               type="button"
-              className="basis-1/4 rounded-lg bg-danger-lighter p-2 hover:bg-danger-dark hover:text-white"
+              className="basis-1/4 rounded-lg bg-danger-lighter p-2 hover:bg-danger-light hover:text-white"
             >
               Afficher
             </button>
@@ -148,7 +148,7 @@ export default function Admin() {
           </h2>
           <button
             type="button"
-            className="basis-1/4 rounded-lg bg-primary-dark p-2 text-white hover:bg-secondary"
+            className="basis-1/4 rounded-lg bg-primary-dark p-2 text-white hover:opacity-85"
             onClick={handleCreateUserPopupOpen}
           >
             Ajouter un utilisateur

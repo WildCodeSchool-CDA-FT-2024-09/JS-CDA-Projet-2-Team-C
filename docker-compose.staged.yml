@@ -1,0 +1,50 @@
+services:
+  staging-medapi_postgres:
+    image: postgres
+    env_file: .env-staging
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d postgres -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  staging-coreapi:
+    image: acetoshi/core_api:latest
+    env_file: .env-staging
+    command: >
+      sh -c "
+      npm run dev &
+      until nc -z localhost 4000; 
+      do echo
+      'Waiting for coreapi to be ready...'; 
+      sleep 5; 
+      done;
+      echo 'Running seed script...';
+      npm run seed-dev;
+      wait
+      "
+    depends_on:
+      - staging-medapi_postgres
+
+  staging-client:
+    image: acetoshi/client:latest
+    environment:
+      - VITE_API_URL=/coreapi
+    command: npm run dev
+
+  staging-mailer:
+    build: ./mailer
+    env_file: .env-staging
+    volumes:
+      - ./mailer/src/:/app/src/
+    command: npm run dev
+
+  staging-gateway:
+    image: nginx
+    ports:
+      - 8000:80
+    volumes:
+      - ./nginx.staging.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - staging-client
+      - staging-coreapi

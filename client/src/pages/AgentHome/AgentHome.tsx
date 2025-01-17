@@ -86,12 +86,6 @@ export default function AgentHome() {
         emptyMessage="Aucun service disponible."
         openModalOnItemClick={false}
       />
-      <button
-        className="mb-20 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
-        onClick={() => setSelectedView(null)}
-      >
-        Retour au menu principal
-      </button>
     </>
   );
 
@@ -109,12 +103,6 @@ export default function AgentHome() {
         emptyMessage="Aucun docteur trouvé pour ce service."
         openModalOnItemClick={false}
       />
-      <button
-        className="mb-20 mt-4 rounded bg-blue-500 px-4 py-2 text-white"
-        onClick={handleBackClick}
-      >
-        Retour aux services
-      </button>
     </>
   );
 
@@ -130,12 +118,6 @@ export default function AgentHome() {
         emptyMessage="Aucun docteur disponible."
         openModalOnItemClick={false}
       />
-      <button
-        className="mb-20 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
-        onClick={() => setSelectedView(null)}
-      >
-        Retour au menu principal
-      </button>
     </>
   );
 
@@ -147,12 +129,6 @@ export default function AgentHome() {
           console.info(`Patient ID sélectionné  : ${patientId}`);
         }}
       />
-      <button
-        className="mb-20 mt-4 rounded bg-gray-500 px-4 py-2 text-white"
-        onClick={() => setSelectedView(null)}
-      >
-        Retour au menu principal
-      </button>
     </>
   );
 
@@ -176,12 +152,6 @@ export default function AgentHome() {
         emptyMessage="Aucun rendez-vous trouvé."
         openModalOnItemClick={true}
       />
-      <button
-        className="mb-20 mt-4 rounded bg-blue-500 px-4 py-2 text-white"
-        onClick={() => setSelectedDoctor(null)}
-      >
-        Retour aux docteurs
-      </button>
     </>
   );
 

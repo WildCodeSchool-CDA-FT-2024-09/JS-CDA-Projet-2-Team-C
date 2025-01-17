@@ -17,26 +17,21 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
       {(currentRole === RoleCode.Doctor ||
         currentRole === RoleCode.Secretary) && (
         <li>
-          <a
-            onClick={() => navigate('/planning')}
-            className={currentPageName === 'Planning' ? `underline` : ''}
-          >
-            Planning
-          </a>
+          <a onClick={() => navigate('/planning')}>Planning</a>
         </li>
       )}
       {currentRole === RoleCode.Doctor && (
         <li>
-          <a
-            onClick={() => navigate('dossiers')}
-            className={currentPageName === 'Dossier patient' ? `underline` : ''}
-          >
-            Dossiers
-          </a>
+          <a onClick={() => navigate('dossiers')}>Dossiers</a>
         </li>
       )}
       <li>
-        <button onClick={logout}>Déconnexion</button>
+        <button
+          className="rounded-3xl border border-solid border-white"
+          onClick={logout}
+        >
+          Déconnexion
+        </button>
       </li>
     </>
   );
@@ -53,7 +48,9 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
         {currentPageName}
       </h1>
       <nav role="navigation-desktop" className="navbar-end hidden md:flex">
-        <ul className="menu menu-horizontal px-1 text-white">{navItems}</ul>
+        <ul className="menu menu-horizontal gap-4 px-1 text-white">
+          {navItems}
+        </ul>
       </nav>
       <div className="navbar-end gap-2 md:hidden">
         <nav role="navigation-mobile" className="dropdown dropdown-end">

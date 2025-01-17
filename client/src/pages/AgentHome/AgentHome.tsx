@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {
   useDepartmentsAndDoctorsQuery,
   useGetDoctorByDepartmentQuery,
-  useRestrictedConsultationsByDoctorIdQuery
+  useRestrictedConsultationsQuery
 } from '../../generated/graphql-types';
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/agent_components/AgentChoiceList/AgentChoiceList';
@@ -32,7 +32,7 @@ export default function AgentHome() {
     error: errorAppointments,
     data: dataAppointments,
     refetch: refetchAppointments
-  } = useRestrictedConsultationsByDoctorIdQuery({
+  } = useRestrictedConsultationsQuery({
     variables: { doctorId: selectedDoctor || '' },
     skip: !selectedDoctor
   });
@@ -150,13 +150,12 @@ export default function AgentHome() {
     <>
       <h1 className="text-center text-3xl font-bold">
         Rendez-vous pour le docteur{' '}
-        {dataAppointments?.restrictedConsultationsByDoctorId[0]?.doctor
-          ?.firstname || ''}
+        {dataAppointments?.restrictedConsultations[0]?.doctor?.firstname || ''}
       </h1>
       <AgentChoiceList
         isLoading={loadingAppointments}
         error={errorAppointments}
-        items={dataAppointments?.restrictedConsultationsByDoctorId || []}
+        items={dataAppointments?.restrictedConsultations || []}
         renderItem={(appointment) => (
           <>
             <div className="px-[2px]">{appointment.startTime.slice(0, 5)}</div>

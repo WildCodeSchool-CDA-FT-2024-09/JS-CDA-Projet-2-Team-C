@@ -169,7 +169,7 @@ export type Query = {
   getDoctors: Array<User>;
   patient: Patient;
   patients: Array<Patient>;
-  restrictedConsultationsByDoctorId: Array<Consultation>;
+  restrictedConsultations: Array<Consultation>;
   restrictedPatients: Array<Patient>;
   roles: Array<Role>;
   users: Array<User>;
@@ -206,8 +206,9 @@ export type QueryPatientsArgs = {
   search: Scalars['String']['input'];
 };
 
-export type QueryRestrictedConsultationsByDoctorIdArgs = {
-  doctorId: Scalars['String']['input'];
+export type QueryRestrictedConsultationsArgs = {
+  doctorId?: InputMaybe<Scalars['String']['input']>;
+  ssn?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type QueryRestrictedPatientsArgs = {
@@ -278,13 +279,14 @@ export type DepartmentsAndGendersAndRolesQuery = {
   }>;
 };
 
-export type RestrictedConsultationsByDoctorIdQueryVariables = Exact<{
-  doctorId: Scalars['String']['input'];
+export type RestrictedConsultationsQueryVariables = Exact<{
+  doctorId?: InputMaybe<Scalars['String']['input']>;
+  ssn?: InputMaybe<Scalars['String']['input']>;
 }>;
 
-export type RestrictedConsultationsByDoctorIdQuery = {
+export type RestrictedConsultationsQuery = {
   __typename?: 'Query';
-  restrictedConsultationsByDoctorId: Array<{
+  restrictedConsultations: Array<{
     __typename?: 'Consultation';
     startTime: string;
     consultationDate: any;
@@ -731,9 +733,9 @@ export type DepartmentsAndGendersAndRolesQueryResult = Apollo.QueryResult<
   DepartmentsAndGendersAndRolesQuery,
   DepartmentsAndGendersAndRolesQueryVariables
 >;
-export const RestrictedConsultationsByDoctorIdDocument = gql`
-  query RestrictedConsultationsByDoctorId($doctorId: String!) {
-    restrictedConsultationsByDoctorId(doctorId: $doctorId) {
+export const RestrictedConsultationsDocument = gql`
+  query RestrictedConsultations($doctorId: String, $ssn: String) {
+    restrictedConsultations(doctorId: $doctorId, ssn: $ssn) {
       doctor {
         firstname
         department {
@@ -751,58 +753,52 @@ export const RestrictedConsultationsByDoctorIdDocument = gql`
 `;
 
 /**
- * __useRestrictedConsultationsByDoctorIdQuery__
+ * __useRestrictedConsultationsQuery__
  *
- * To run a query within a React component, call `useRestrictedConsultationsByDoctorIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useRestrictedConsultationsByDoctorIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRestrictedConsultationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRestrictedConsultationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRestrictedConsultationsByDoctorIdQuery({
+ * const { data, loading, error } = useRestrictedConsultationsQuery({
  *   variables: {
  *      doctorId: // value for 'doctorId'
+ *      ssn: // value for 'ssn'
  *   },
  * });
  */
-export function useRestrictedConsultationsByDoctorIdQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    RestrictedConsultationsByDoctorIdQuery,
-    RestrictedConsultationsByDoctorIdQueryVariables
-  > &
-    (
-      | {
-          variables: RestrictedConsultationsByDoctorIdQueryVariables;
-          skip?: boolean;
-        }
-      | { skip: boolean }
-    )
+export function useRestrictedConsultationsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    RestrictedConsultationsQuery,
+    RestrictedConsultationsQueryVariables
+  >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
-    RestrictedConsultationsByDoctorIdQuery,
-    RestrictedConsultationsByDoctorIdQueryVariables
-  >(RestrictedConsultationsByDoctorIdDocument, options);
+    RestrictedConsultationsQuery,
+    RestrictedConsultationsQueryVariables
+  >(RestrictedConsultationsDocument, options);
 }
-export function useRestrictedConsultationsByDoctorIdLazyQuery(
+export function useRestrictedConsultationsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    RestrictedConsultationsByDoctorIdQuery,
-    RestrictedConsultationsByDoctorIdQueryVariables
+    RestrictedConsultationsQuery,
+    RestrictedConsultationsQueryVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
-    RestrictedConsultationsByDoctorIdQuery,
-    RestrictedConsultationsByDoctorIdQueryVariables
-  >(RestrictedConsultationsByDoctorIdDocument, options);
+    RestrictedConsultationsQuery,
+    RestrictedConsultationsQueryVariables
+  >(RestrictedConsultationsDocument, options);
 }
-export function useRestrictedConsultationsByDoctorIdSuspenseQuery(
+export function useRestrictedConsultationsSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
     | Apollo.SuspenseQueryHookOptions<
-        RestrictedConsultationsByDoctorIdQuery,
-        RestrictedConsultationsByDoctorIdQueryVariables
+        RestrictedConsultationsQuery,
+        RestrictedConsultationsQueryVariables
       >
 ) {
   const options =
@@ -810,21 +806,22 @@ export function useRestrictedConsultationsByDoctorIdSuspenseQuery(
       ? baseOptions
       : { ...defaultOptions, ...baseOptions };
   return Apollo.useSuspenseQuery<
-    RestrictedConsultationsByDoctorIdQuery,
-    RestrictedConsultationsByDoctorIdQueryVariables
-  >(RestrictedConsultationsByDoctorIdDocument, options);
+    RestrictedConsultationsQuery,
+    RestrictedConsultationsQueryVariables
+  >(RestrictedConsultationsDocument, options);
 }
-export type RestrictedConsultationsByDoctorIdQueryHookResult = ReturnType<
-  typeof useRestrictedConsultationsByDoctorIdQuery
+export type RestrictedConsultationsQueryHookResult = ReturnType<
+  typeof useRestrictedConsultationsQuery
 >;
-export type RestrictedConsultationsByDoctorIdLazyQueryHookResult = ReturnType<
-  typeof useRestrictedConsultationsByDoctorIdLazyQuery
+export type RestrictedConsultationsLazyQueryHookResult = ReturnType<
+  typeof useRestrictedConsultationsLazyQuery
 >;
-export type RestrictedConsultationsByDoctorIdSuspenseQueryHookResult =
-  ReturnType<typeof useRestrictedConsultationsByDoctorIdSuspenseQuery>;
-export type RestrictedConsultationsByDoctorIdQueryResult = Apollo.QueryResult<
-  RestrictedConsultationsByDoctorIdQuery,
-  RestrictedConsultationsByDoctorIdQueryVariables
+export type RestrictedConsultationsSuspenseQueryHookResult = ReturnType<
+  typeof useRestrictedConsultationsSuspenseQuery
+>;
+export type RestrictedConsultationsQueryResult = Apollo.QueryResult<
+  RestrictedConsultationsQuery,
+  RestrictedConsultationsQueryVariables
 >;
 export const DepartmentsDocument = gql`
   query Departments {

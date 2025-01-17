@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_RESTRICTED_CONSULTATIONS_BY_DOCTOR_ID = gql`
-  query RestrictedConsultationsByDoctorId($doctorId: String!) {
-    restrictedConsultationsByDoctorId(doctorId: $doctorId) {
+  query RestrictedConsultations($doctorId: String, $ssn: String) {
+    restrictedConsultations(doctorId: $doctorId, ssn: $ssn) {
       doctor {
         firstname
         department {

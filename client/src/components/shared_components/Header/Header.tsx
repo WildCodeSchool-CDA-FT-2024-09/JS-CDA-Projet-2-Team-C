@@ -37,7 +37,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
   );
 
   return (
-    <header className="navbar bg-primary">
+    <header className="navbar fixed top-0 z-10 bg-primary">
       <section className="navbar-start">
         <img src={Logo} className="navbar-start w-16" />
       </section>

@@ -29,6 +29,7 @@ export type Scalars = {
   Int: { input: number; output: number };
   Float: { input: number; output: number };
   Date: { input: any; output: any };
+  DateTimeISO: { input: Date; output: Date };
 };
 
 export type Attachment = {
@@ -91,6 +92,7 @@ export type Gender = {
 export type Mutation = {
   __typename?: 'Mutation';
   addUser: User;
+  createConsultation: Consultation;
   login: AuthUser;
   /** Logs out the user by clearing the medagendatoken cookie */
   logout: Scalars['Boolean']['output'];
@@ -106,6 +108,15 @@ export type MutationAddUserArgs = {
   genderLabel?: InputMaybe<Scalars['String']['input']>;
   lastname: Scalars['String']['input'];
   roleCode: Scalars['String']['input'];
+};
+
+export type MutationCreateConsultationArgs = {
+  description: Scalars['String']['input'];
+  doctorId: Scalars['String']['input'];
+  end: Scalars['DateTimeISO']['input'];
+  patientId: Scalars['String']['input'];
+  start: Scalars['DateTimeISO']['input'];
+  subjectLabel: Scalars['String']['input'];
 };
 
 export type MutationLoginArgs = {
@@ -153,6 +164,7 @@ export type Query = {
   __typename?: 'Query';
   /** Fetches all departments and their doctors */
   allDepartmentsWithDoctors: Array<Department>;
+  consultationSubjects: Array<ConsultationSubject>;
   consultationsByDoctorId: Array<Consultation>;
   departments: Array<Department>;
   dossier: Array<Consultation>;
@@ -500,6 +512,33 @@ export type ConsultationsByDoctorIdQuery = {
     };
     subject: { __typename?: 'ConsultationSubject'; label: string; id: number };
   }>;
+};
+
+export type ConsultationSubjectsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type ConsultationSubjectsQuery = {
+  __typename?: 'Query';
+  consultationSubjects: Array<{
+    __typename?: 'ConsultationSubject';
+    id: number;
+    label: string;
+  }>;
+};
+
+export type CreateConsultationMutationVariables = Exact<{
+  description: Scalars['String']['input'];
+  end: Scalars['DateTimeISO']['input'];
+  start: Scalars['DateTimeISO']['input'];
+  patientId: Scalars['String']['input'];
+  subjectLabel: Scalars['String']['input'];
+  doctorId: Scalars['String']['input'];
+}>;
+
+export type CreateConsultationMutation = {
+  __typename?: 'Mutation';
+  createConsultation: { __typename?: 'Consultation'; id: string };
 };
 
 export type GetDoctorByDepartmentQueryVariables = Exact<{
@@ -1800,6 +1839,153 @@ export type ConsultationsByDoctorIdSuspenseQueryHookResult = ReturnType<
 export type ConsultationsByDoctorIdQueryResult = Apollo.QueryResult<
   ConsultationsByDoctorIdQuery,
   ConsultationsByDoctorIdQueryVariables
+>;
+export const ConsultationSubjectsDocument = gql`
+  query ConsultationSubjects {
+    consultationSubjects {
+      id
+      label
+    }
+  }
+`;
+
+/**
+ * __useConsultationSubjectsQuery__
+ *
+ * To run a query within a React component, call `useConsultationSubjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useConsultationSubjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useConsultationSubjectsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useConsultationSubjectsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    ConsultationSubjectsQuery,
+    ConsultationSubjectsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    ConsultationSubjectsQuery,
+    ConsultationSubjectsQueryVariables
+  >(ConsultationSubjectsDocument, options);
+}
+export function useConsultationSubjectsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ConsultationSubjectsQuery,
+    ConsultationSubjectsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    ConsultationSubjectsQuery,
+    ConsultationSubjectsQueryVariables
+  >(ConsultationSubjectsDocument, options);
+}
+export function useConsultationSubjectsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ConsultationSubjectsQuery,
+        ConsultationSubjectsQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    ConsultationSubjectsQuery,
+    ConsultationSubjectsQueryVariables
+  >(ConsultationSubjectsDocument, options);
+}
+export type ConsultationSubjectsQueryHookResult = ReturnType<
+  typeof useConsultationSubjectsQuery
+>;
+export type ConsultationSubjectsLazyQueryHookResult = ReturnType<
+  typeof useConsultationSubjectsLazyQuery
+>;
+export type ConsultationSubjectsSuspenseQueryHookResult = ReturnType<
+  typeof useConsultationSubjectsSuspenseQuery
+>;
+export type ConsultationSubjectsQueryResult = Apollo.QueryResult<
+  ConsultationSubjectsQuery,
+  ConsultationSubjectsQueryVariables
+>;
+export const CreateConsultationDocument = gql`
+  mutation CreateConsultation(
+    $description: String!
+    $end: DateTimeISO!
+    $start: DateTimeISO!
+    $patientId: String!
+    $subjectLabel: String!
+    $doctorId: String!
+  ) {
+    createConsultation(
+      description: $description
+      end: $end
+      start: $start
+      patientId: $patientId
+      subjectLabel: $subjectLabel
+      doctorId: $doctorId
+    ) {
+      id
+    }
+  }
+`;
+export type CreateConsultationMutationFn = Apollo.MutationFunction<
+  CreateConsultationMutation,
+  CreateConsultationMutationVariables
+>;
+
+/**
+ * __useCreateConsultationMutation__
+ *
+ * To run a mutation, you first call `useCreateConsultationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateConsultationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createConsultationMutation, { data, loading, error }] = useCreateConsultationMutation({
+ *   variables: {
+ *      description: // value for 'description'
+ *      end: // value for 'end'
+ *      start: // value for 'start'
+ *      patientId: // value for 'patientId'
+ *      subjectLabel: // value for 'subjectLabel'
+ *      doctorId: // value for 'doctorId'
+ *   },
+ * });
+ */
+export function useCreateConsultationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateConsultationMutation,
+    CreateConsultationMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateConsultationMutation,
+    CreateConsultationMutationVariables
+  >(CreateConsultationDocument, options);
+}
+export type CreateConsultationMutationHookResult = ReturnType<
+  typeof useCreateConsultationMutation
+>;
+export type CreateConsultationMutationResult =
+  Apollo.MutationResult<CreateConsultationMutation>;
+export type CreateConsultationMutationOptions = Apollo.BaseMutationOptions<
+  CreateConsultationMutation,
+  CreateConsultationMutationVariables
 >;
 export const GetDoctorByDepartmentDocument = gql`
   query GetDoctorByDepartment($label: String!) {

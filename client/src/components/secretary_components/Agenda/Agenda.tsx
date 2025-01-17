@@ -11,7 +11,11 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { convertToCalendarEvents } from './events.utils';
 import { AgendaProps } from './Agenda.types';
 
-export default function Agenda({ consultations }: AgendaProps) {
+export default function Agenda({
+  consultations,
+  newConsultation,
+  handleSelectSlot
+}: AgendaProps) {
   const localizer: DateLocalizer = dateFnsLocalizer({
     format,
     parse,
@@ -24,23 +28,13 @@ export default function Agenda({ consultations }: AgendaProps) {
 
   useEffect(() => {
     const newEvents = convertToCalendarEvents(consultations);
-    setEvents(newEvents);
-  }, [consultations]);
+    if (newConsultation) setEvents([...newEvents, newConsultation]);
+    else setEvents(newEvents);
+  }, [consultations, newConsultation]);
 
-  const handleSelectSlot = useCallback(
-    ({ start, end }: { start: Date; end: Date }) => {
-      // After calendar was clicked, we're here !
-      const title = window.prompt('New Event name');
-      if (title) {
-        setEvents((prev) => [...prev, { start, end, title }]);
-      }
-    },
-    [setEvents]
-  );
-
-  // TODO : pass this as a prop
+  // TODO : this is the function that triggers when an event is clicked, useful in the future for RDV modification
   const handleSelectEvent = useCallback(
-    (event) => window.alert(event.title),
+    (event: Event) => window.alert(event.title),
     []
   );
 
@@ -55,6 +49,7 @@ export default function Agenda({ consultations }: AgendaProps) {
   return (
     <div style={{ height: '700px', width: '800px' }}>
       <Calendar
+        defaultView="week"
         localizer={localizer}
         culture="fr"
         events={events}

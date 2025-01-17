@@ -1,5 +1,11 @@
-import { Consultation, RoleCode, Patient } from '../entities.index';
-import { Resolver, Query, Arg, Authorized } from 'type-graphql';
+import {
+  Consultation,
+  ConsultationSubject,
+  Patient,
+  RoleCode,
+  User
+} from '../entities.index';
+import { Resolver, Query, Arg, Authorized, Mutation } from 'type-graphql';
 import { Between, FindOperator } from 'typeorm';
 
 @Resolver(Consultation)
@@ -106,5 +112,63 @@ export default class ConsultationResolver {
     });
 
     return consultations;
+  }
+
+  @Authorized([RoleCode.SECRETARY])
+  @Mutation(() => Consultation)
+  async createConsultation(
+    @Arg('doctorId') doctorId: string,
+    @Arg('subjectLabel') subjectLabel: string,
+    @Arg('patientId') patientId: string, // TODO : this shall become nullable when we have the patient creation
+    @Arg('start') start: Date, // important : these two need to be ISOstrings.
+    @Arg('end') end: Date,
+    @Arg('description') description: string
+  ): Promise<Consultation> {
+    try {
+      const doctor = await User.findOne({ where: { id: doctorId } });
+      if (!doctor) throw new Error(`Ce médecin n'existe pas`);
+
+      const patient = await Patient.findOne({ where: { id: patientId } });
+      if (!patient) throw new Error(`Ce patient n'existe pas`);
+
+      const subject = await ConsultationSubject.findOne({
+        where: { label: subjectLabel }
+      });
+      if (!subject) throw new Error(`Ce motif n'existe pas`);
+
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+
+      const startTime = startDate.toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+
+      const durationMinutes = (endDate.getTime() - startDate.getTime()) / 60000;
+
+      if (durationMinutes < 0)
+        throw new Error('La durée de la consultation est négative');
+      //TODO : maybe perform some other checks here, like if the doctor is available at this time, etc.
+
+      const newConsultation = new Consultation();
+      newConsultation.doctor = doctor;
+      newConsultation.patient = patient;
+      newConsultation.consultationDate = startDate;
+      newConsultation.startTime = startTime;
+      newConsultation.durationMinutes = durationMinutes;
+      newConsultation.subject = subject;
+      newConsultation.description = description;
+      //TODO : need to extract the author from the token
+
+      await newConsultation.save();
+
+      return newConsultation;
+    } catch (e) {
+      const errorMessage =
+        e instanceof Error ? e.message : 'Erreur indéterminée';
+      throw new Error(errorMessage);
+    }
   }
 }

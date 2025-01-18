@@ -1,9 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { upload } from './imageUpload.utils';
+import { addAttachment } from './coreapiConnexion.utils';
 
 dotenv.config();
-const {UPLOAD_PORT}=process.env;
+const { UPLOAD_PORT } = process.env;
 
 const app = express();
 app.use(express.json());
@@ -14,7 +15,21 @@ app.use(express.json());
 app.post('/document', upload, async (req, res) => {
   try {
     console.info('received a post request');
-    
+
+    const { fileDisplayName, filePath, note, consultationId } = req.body;
+    const cookie = req.headers.cookie;
+
+    console.log(cookie, fileDisplayName, filePath, note, consultationId)
+
+    const result = await addAttachment(
+      fileDisplayName,
+      "/file.tst",
+      note,
+      consultationId,
+      cookie as string
+    );
+
+    console.info(result);
 
     res.status(201).send('Document uploaded');
   } catch {

@@ -329,7 +329,6 @@ WITH new_consultations AS (
     raw.id_doctor,
     raw.id_patient,
     (
-      -- Pull the first user who has role code 'secretary'
       SELECT
         u.id
       FROM
@@ -338,7 +337,7 @@ WITH new_consultations AS (
       WHERE
         r.code = 'secretary'
       ORDER BY
-        u.id -- or some other criterion
+        u.id
       LIMIT
         1
     ) AS authorId,
@@ -348,15 +347,14 @@ WITH new_consultations AS (
       FROM
         consultation_subject
       WHERE
-        label = raw.consultation_motif -- map motif -> subjectId
+        label = raw.consultation_motif
     )
   FROM
     raw_data raw
   WHERE
     raw.id_doctor IS NOT NULL
     AND raw.id_patient IS NOT NULL
-    AND raw.consultation_description IS NOT NULL -- etc. (additional checks if needed)
-    RETURNING id,
+    AND raw.consultation_description IS NOT NULL RETURNING id,
     description,
     "consultationDate",
     "startTime",
@@ -405,7 +403,6 @@ INSERT INTO
 SELECT
   r.id_consultation,
   (
-    -- Grab the first "secretary" user
     SELECT
       u.id
     FROM
@@ -427,7 +424,7 @@ FROM
     VALUES
       (r.attachment_file_1, r.attachment_description_1),
       (r.attachment_file_2, r.attachment_description_2)
-  ) AS x(FILE, note) ON TRUE -- Only insert rows if the file name is not null/empty:
+  ) AS x(FILE, note) ON TRUE
 WHERE
   x.file IS NOT NULL
   AND x.file <> ''

@@ -1,3 +1,7 @@
+# Env
+include .env
+export
+
 # Target: Build dev environnement
 build:
 	docker compose -f docker-compose.dev.yml build
@@ -22,3 +26,9 @@ seed-dev:
 
 codegen:
 	docker compose -f docker-compose.dev.yml run client npm run codegen
+
+seed-full:
+	docker compose -f docker-compose.dev.yml run --rm \
+	-e PGPASSWORD=${POSTGRES_PASSWORD} \
+	-v ./postgres/seed_scripts/full_seed.sql:/seed.sql \
+	${DB_HOST} psql -U postgres -d postgres -h ${DB_HOST} -f /seed.sql

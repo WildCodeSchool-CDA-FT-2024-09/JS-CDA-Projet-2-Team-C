@@ -14,18 +14,8 @@ headers {
   Set-Cookie: medagendatoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIyYmI4OTNjLWQ4ODUtNGY2ZS05NGE0LTk2ZTI1MjJhZDAzZCIsImlhdCI6MTczNzIxMTg4NSwiZXhwIjoxNzM3Mjk4Mjg1fQ.hXFwF3mW0uPwa91U-APjsjd7XWxp-w1IB3WpyjSxuKk; HttpOnly; Secure; SameSite=Strict; expires=Sun, 19 Jan 2025 14:51:25 GMT, Max-Age=86400
 }
 
-body:json {
-  {"to":"test@test.org",
-   "subject":"this is an email",
-  "text":"this email is a test"}
-}
-
-body:form-urlencoded {
-  : 
-}
-
 body:multipart-form {
-  attachments: @file(/home/acetone/Downloads/1621944652555.jpg)
+  attachments: @file(/somefile.jpg)
   note: le patient a mal sous le pied
   fileDisplayName: radio_pied_MmeSouffre
   consultationId: c2136921-821b-48e4-90cf-4d1912876958

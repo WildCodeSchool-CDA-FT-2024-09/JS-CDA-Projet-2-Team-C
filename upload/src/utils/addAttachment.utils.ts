@@ -1,5 +1,9 @@
 const COREAPI_URL = 'http://coreapi:4000/graphql'; // Replace with your coreapi container's GraphQL endpoint
 
+import dotenv from 'dotenv';
+
+
+
 export const addAttachment = async (
   fileDisplayName: string,
   filePath: string,

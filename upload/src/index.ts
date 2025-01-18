@@ -1,20 +1,27 @@
 import express from 'express';
+import path from 'path';
 import dotenv from 'dotenv';
-import { upload } from './imageUpload.utils';
-import { addAttachment } from './coreapiConnexion.utils';
+import { upload } from './utils/uploadFile.utils';
+import { addAttachment } from './utils/addAttachment.utils';
+import { verifyCookie } from './utils/auth.utils';
 
 dotenv.config();
-const { UPLOAD_PORT } = process.env;
+const { UPLOAD_HOST, UPLOAD_PORT } = process.env;
 
 const app = express();
 app.use(express.json());
 
-// TODO - Verify wether the user is authenticated before allowing the upload
-// TODO - Add a utils to send requests to coreAPI
+// TODO : this is weak because it grants access to all static files for any secretary or doctor. 
+// Improving this is needed for security reasons, we could maybe include the role into the JWT payload ? 
+app.use(verifyCookie)
 
-app.post('/document', upload, async (req, res) => {
+// Serve static files
+app.use('/attachments', express.static(path.join(__dirname, 'attachments')));
+
+// POST attachments
+app.post('/document',verifyCookie, upload, async (req, res) => {
   try {
-    console.info('received a post request');
+
     // retreive filePath from upload middleware
     let filePath = "";
     const basePath = "/attachments/";
@@ -23,11 +30,11 @@ app.post('/document', upload, async (req, res) => {
       filePath = `${basePath}${filename}`; // this is the path that the front end will need to fetch
     }
 
-
-    const { fileDisplayName, note, consultationId } = req.body;
+    // retrieve cookie from the request to forward it to the core api
     const cookie = req.headers.cookie;
 
-    console.log(cookie, fileDisplayName, filePath, note, consultationId)
+    // retrieve other fields from the request body
+    const { fileDisplayName, note, consultationId } = req.body;
 
     const result = await addAttachment(
       fileDisplayName,
@@ -46,5 +53,5 @@ app.post('/document', upload, async (req, res) => {
 });
 
 app.listen(UPLOAD_PORT, () => {
-  console.info(`Listening on port ${UPLOAD_PORT}`);
+  console.info(`Upload service listening on http://${UPLOAD_HOST}:${UPLOAD_PORT}`);
 });

@@ -39,6 +39,6 @@ const upload :RequestHandler = multer({
     }
     return null;
   }
-}).array('attachments',10); // 10 files max
+}).single('file'); // 1 file max per request
 
 export { upload };

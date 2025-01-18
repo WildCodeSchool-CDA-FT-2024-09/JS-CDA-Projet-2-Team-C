@@ -15,15 +15,23 @@ app.use(express.json());
 app.post('/document', upload, async (req, res) => {
   try {
     console.info('received a post request');
+    // retreive filePath from upload middleware
+    let filePath = "";
+    const basePath = "/attachments/";
+    if (req.file) {
+      const { filename } = req.file;
+      filePath = `${basePath}${filename}`; // this is the path that the front end will need to fetch
+    }
 
-    const { fileDisplayName, filePath, note, consultationId } = req.body;
+
+    const { fileDisplayName, note, consultationId } = req.body;
     const cookie = req.headers.cookie;
 
     console.log(cookie, fileDisplayName, filePath, note, consultationId)
 
     const result = await addAttachment(
       fileDisplayName,
-      "/file.tst",
+      filePath,
       note,
       consultationId,
       cookie as string

@@ -7,6 +7,7 @@ import {
 } from '../entities.index';
 import { Resolver, Query, Arg, Authorized, Mutation } from 'type-graphql';
 import { Between, FindOperator } from 'typeorm';
+import cacheClient from '../../services/cache/cacheService';
 
 @Resolver(Consultation)
 export default class ConsultationResolver {
@@ -30,7 +31,15 @@ export default class ConsultationResolver {
   @Authorized([RoleCode.DOCTOR, RoleCode.SECRETARY])
   @Query(() => [Consultation])
   async consultationsByDoctorId(@Arg('doctorId') doctorId: string) {
-    return await Consultation.find({
+    // Check Redis cache first
+    const cacheHit = await cacheClient.get(
+      `consultationsByDoctorId:${doctorId}`
+    );
+    if (cacheHit) {
+      return JSON.parse(cacheHit);
+    }
+
+    const result = await Consultation.find({
       where: { doctor: { id: doctorId } },
       order: { consultationDate: 'DESC', startTime: 'DESC' },
       relations: {
@@ -39,6 +48,14 @@ export default class ConsultationResolver {
         patient: { gender: true }
       }
     });
+
+    // Cache the result
+    await cacheClient.set(
+      `consultationsByDoctorId:${doctorId}`,
+      JSON.stringify(result),
+      { EX: 60 }
+    );
+    return result;
   }
 
   @Authorized([RoleCode.AGENT])

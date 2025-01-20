@@ -199,15 +199,56 @@ export default class UserResolver {
     return user;
   }
 
+  // @Authorized([RoleCode.ADMIN])
+  // @Query(() => PaginatedUsers, {
+  //   description: 'Fetch paginated users with optional role filtering'
+  // })
+  // async getAllUsers(
+  //   @Arg('skip', () => Int) skip: number,
+  //   @Arg('take', () => Int) take: number,
+  //   @Arg('roleCode', { nullable: true }) roleCode?: string,
+  //   @Arg('searchByName', { nullable: true }) searchByName?: string
+  // ): Promise<PaginatedUsers> {
+  //   const queryBuilder = User.createQueryBuilder('user')
+  //     .leftJoinAndSelect('user.role', 'role')
+  //     .leftJoinAndSelect('user.department', 'department')
+  //     .leftJoinAndSelect('user.gender', 'gender')
+  //     .leftJoinAndSelect('user.workingHours', 'workingHours')
+  //     .skip(skip)
+  //     .take(take);
+
+  //   // Filtering by role if roleCode is set
+  //   if (roleCode) {
+  //     queryBuilder.where('role.code = :roleCode', { roleCode });
+  //   }
+
+  //   if (searchByName) {
+  //     queryBuilder.andWhere(
+  //       '(user.firstname ILIKE :search OR user.lastname ILIKE :search)',
+  //       { search: `%${searchByName}%` }
+  //     );
+  //   }
+
+  //   const [users, total] = await queryBuilder.getManyAndCount();
+
+  //   return {
+  //     users,
+  //     total,
+  //     hasMore: skip + take < total
+  //   };
+  // }
+
   @Authorized([RoleCode.ADMIN])
   @Query(() => PaginatedUsers, {
-    description: 'Fetch paginated users with optional role filtering'
+    description:
+      'Fetch paginated users with optional role filtering and empty workingHours'
   })
   async getAllUsers(
     @Arg('skip', () => Int) skip: number,
     @Arg('take', () => Int) take: number,
     @Arg('roleCode', { nullable: true }) roleCode?: string,
-    @Arg('searchByName', { nullable: true }) searchByName?: string
+    @Arg('searchByName', { nullable: true }) searchByName?: string,
+    @Arg('workingHoursEmpty', { nullable: true }) workingHoursEmpty?: boolean
   ): Promise<PaginatedUsers> {
     const queryBuilder = User.createQueryBuilder('user')
       .leftJoinAndSelect('user.role', 'role')
@@ -217,16 +258,22 @@ export default class UserResolver {
       .skip(skip)
       .take(take);
 
-    // Filtering by role if roleCode is set
+    // Filtrage par rôle si roleCode est fourni
     if (roleCode) {
       queryBuilder.where('role.code = :roleCode', { roleCode });
     }
 
+    // Filtrage par nom si searchByName est fourni
     if (searchByName) {
       queryBuilder.andWhere(
         '(user.firstname ILIKE :search OR user.lastname ILIKE :search)',
         { search: `%${searchByName}%` }
       );
+    }
+
+    // Filtrage des médecins sans horaires de travail
+    if (workingHoursEmpty) {
+      queryBuilder.andWhere('workingHours.id IS NULL');
     }
 
     const [users, total] = await queryBuilder.getManyAndCount();
@@ -237,6 +284,8 @@ export default class UserResolver {
       hasMore: skip + take < total
     };
   }
+
+  /////////////////////////////////////
 
   @Authorized([RoleCode.ADMIN])
   @Query(() => User, {

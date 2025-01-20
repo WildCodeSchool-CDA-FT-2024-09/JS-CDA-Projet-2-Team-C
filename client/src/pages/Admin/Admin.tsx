@@ -94,7 +94,8 @@ export default function Admin() {
       skip: currentPage * perPage,
       take: perPage,
       roleCode: role || null,
-      searchByName: debouncedSearch || null
+      searchByName: debouncedSearch || null,
+      workingHoursEmpty: true
     },
     fetchPolicy: 'cache-and-network',
     onCompleted: (fetchedData) => {

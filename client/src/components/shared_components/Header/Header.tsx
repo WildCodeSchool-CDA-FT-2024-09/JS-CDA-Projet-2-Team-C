@@ -27,7 +27,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
       )}
       <li>
         <button
-          className="rounded-3xl border border-solid border-white"
+          className="rounded-3xl border border-solid border-white bg-primary hover:bg-primary-dark"
           onClick={logout}
         >
           Déconnexion
@@ -62,9 +62,9 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
-              fill="none"
+              fill="white"
               viewBox="0 0 24 24"
-              stroke="currentColor"
+              stroke="white"
             >
               <path
                 strokeLinecap="round"

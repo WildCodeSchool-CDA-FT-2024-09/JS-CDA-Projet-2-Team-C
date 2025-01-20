@@ -27,14 +27,46 @@ CREATE TABLE raw_data (
   code_postal_patient TEXT,
   ville_patient TEXT,
   id_user INT,
-  id_patient INT,
-  id_consultation INT,
+  id_patient UUID,
+  id_consultation UUID,
   id_attach_1 INT,
-  id_attach_2 INT
+  id_attach_2 INT,
+  id_doctor UUID
 );
 
-
-COPY raw_data
+COPY raw_data (
+  consultation_description,
+  consultation_motif,
+  attachment_file_1,
+  attachment_description_1,
+  consultation_date,
+  consultation_duration,
+  consultation_start_time,
+  fullname_medecin,
+  prenom_medecin,
+  nom_medecin,
+  email_medecin,
+  genre_medecin,
+  service_medecin,
+  workdays_medecin,
+  heure_debut_medecin,
+  heure_fin_medecin,
+  fullname_patient,
+  prenom_patient,
+  nom_patient,
+  sex_patient,
+  ssn_patient,
+  email_patient,
+  attachment_file_2,
+  attachment_description_2,
+  date_naissance_patient,
+  code_postal_patient,
+  ville_patient,
+  id_user,
+  id_patient,
+  id_consultation,
+  id_attach_1,
+  id_attach_2
+)
 FROM
-'/docker-entrypoint-initdb.d/med_data_v3.csv' 
-WITH (FORMAT csv, HEADER);
+  '/docker-entrypoint-initdb.d/med_data_v3.csv' WITH (FORMAT csv, HEADER);

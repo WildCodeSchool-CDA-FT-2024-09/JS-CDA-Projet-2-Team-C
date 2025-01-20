@@ -20,6 +20,6 @@ export class Department extends BaseEntity {
   label: string;
 
   @Field(() => [User])
-  @OneToMany(() => User, (user) => user.role)
+  @OneToMany(() => User, (user) => user.department)
   users: User[];
 }

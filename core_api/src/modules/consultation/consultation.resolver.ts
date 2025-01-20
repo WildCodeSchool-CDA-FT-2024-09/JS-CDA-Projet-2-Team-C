@@ -15,6 +15,7 @@ import {
 } from 'type-graphql';
 import { Between, FindOperator } from 'typeorm';
 import { WithCache } from '../../services/cache/cacheMiddleware';
+import cacheClient from '../../services/cache/cacheService';
 
 @Resolver(Consultation)
 export default class ConsultationResolver {
@@ -40,7 +41,7 @@ export default class ConsultationResolver {
   @UseMiddleware(
     WithCache<{ doctorId: string }>({
       key: (args) => `consultationsByDoctorId:${args.doctorId}`,
-      ttl: 20,
+      ttl: 60,
       refreshOnHit: false
     })
   )
@@ -181,6 +182,9 @@ export default class ConsultationResolver {
       //TODO : need to extract the author from the token
 
       await newConsultation.save();
+
+      // Invalidate the cache for this doctor's consultations
+      cacheClient.del('consultationsByDoctorId:' + doctorId);
 
       return newConsultation;
     } catch (e) {

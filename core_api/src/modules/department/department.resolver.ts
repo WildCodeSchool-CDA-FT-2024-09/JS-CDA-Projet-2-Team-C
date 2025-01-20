@@ -1,5 +1,6 @@
-import { Department, Role, RoleCode } from '../entities.index';
+import { Department, RoleCode } from '../entities.index';
 import { Resolver, Query, Authorized } from 'type-graphql';
+import cacheClient from '../../services/cache/cacheService';
 
 @Resolver(Department)
 export default class DepartmentResolver {
@@ -16,24 +17,25 @@ export default class DepartmentResolver {
     description: 'Fetches all departments and their doctors'
   })
   async allDepartmentsWithDoctors(): Promise<Department[]> {
-    const doctorRole = await Role.findOne({
-      where: { code: RoleCode.DOCTOR }
-    });
-    if (!doctorRole) {
-      throw new Error("Role 'doctor' not found.");
+    // Demo of basic Redis caching
+    const cacheKey = `allDepartmentsWithDoctors`;
+    // Check Redis cache first
+    const cacheHit = await cacheClient.get(cacheKey);
+    if (cacheHit) {
+      return JSON.parse(cacheHit);
     }
-    const departments = await Department.find({
-      relations: ['users', 'users.role']
+
+    const result = await Department.find({
+      relations: ['users', 'users.role'],
+      where: { users: { role: { code: RoleCode.DOCTOR } } }
     });
 
-    if (departments.length === 0) {
-      throw new Error(`No department found`);
-    }
-    departments.forEach((department) => {
-      department.users = department.users.filter(
-        (user) => user.role.id === doctorRole.id
-      );
+    // Cache the result
+    await cacheClient.set(cacheKey, JSON.stringify(result), {
+      // Expiry in seconds for the cache entry
+      EX: 30
     });
-    return departments;
+
+    return result;
   }
 }

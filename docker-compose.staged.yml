@@ -33,10 +33,14 @@ services:
     command: npm run dev
 
   staging-mailer:
-    build: ./mailer
+    image: acetoshi/mailer:latest
     env_file: .env-staging
-    volumes:
-      - ./mailer/src/:/app/src/
+    command: npm run dev
+
+  # no need for a volume here, uploaded files are expendable in staging branch
+  staging-upload:
+    image: acetoshi/upload:latest
+    env_file: .env-staging
     command: npm run dev
 
   staging-gateway:

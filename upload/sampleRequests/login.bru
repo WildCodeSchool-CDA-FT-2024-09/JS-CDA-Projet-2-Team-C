@@ -1,0 +1,30 @@
+meta {
+  name: login
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: http://localhost:5000/coreapi
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation Login($password: String!, $email: String!) {
+    login(password: $password, email: $email) {
+      id
+      role {
+        label
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+      "email": "fakesecretary@fake.com",
+      "password": "EnterPasswordHere"
+  }
+}

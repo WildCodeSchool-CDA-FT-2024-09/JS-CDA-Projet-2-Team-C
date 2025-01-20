@@ -1,0 +1,5 @@
+node_modules/
+.env
+
+#This is where uploaded files will be stored, no need to commit them to the repository
+attachments/

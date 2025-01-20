@@ -8,22 +8,22 @@ const Footer = ({ handleReturn, resetView }: AgentFooterProps) => {
       <button
         className="flex items-center justify-center rounded text-white"
         onClick={resetView}
-        aria-label="Retour à la maison"
+        aria-label="Revenir à l'écran d'accueil"
       >
         <img
           src={Home}
-          alt="Maison de retour"
+          alt="Icône maison pour revenir à l'accueil"
           className="h-12 w-12 cursor-pointer fill-white"
         />
       </button>
       <button
         className="flex items-center justify-center rounded text-white"
         onClick={handleReturn}
-        aria-label="Retour en arrière"
+        aria-label="Retourner à l'écran précédent"
       >
         <img
           src={Return}
-          alt="Fléche de retour en arrière"
+          alt="Icône flèche pour retourner en arrière"
           className="h-12 w-12 cursor-pointer"
         />
       </button>

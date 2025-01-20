@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   filename(_req, file, cb) {
     cb(
       null,
-      // TODO : find a consensus here, how should security be taken into account ?
+      // TODO : add the uploader's uuid here for later access control
       `${path.parse(file.originalname).name}-${Date.now()}${path.extname(file.originalname)}`
     );
   }
@@ -25,7 +25,6 @@ const upload: RequestHandler = multer({
   limits: { fileSize: FILE_SIZE_LIMIT },
   fileFilter: (_req, file, cb) => {
     if (
-      // these checks make sure that only these file types are allowed
       file.mimetype === 'image/png' ||
       file.mimetype === 'image/jpg' ||
       file.mimetype === 'image/jpeg' ||

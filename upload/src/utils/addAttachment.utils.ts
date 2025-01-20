@@ -1,17 +1,10 @@
-const COREAPI_URL = 'http://coreapi:4000/graphql'; // Replace with your coreapi container's GraphQL endpoint
-
 import dotenv from 'dotenv';
 
+dotenv.config();
 
+const {API_HOST, API_PORT} = process.env;
 
-export const addAttachment = async (
-  fileDisplayName: string,
-  filePath: string,
-  note: string,
-  consultationId: string,
-  cookie: string
-) => {
-  const query = `
+const query = `
     mutation AddAttachment(
       $fileDisplayName: String!,
       $filePath: String!,
@@ -29,21 +22,24 @@ export const addAttachment = async (
     }
   `;
 
-  const variables = {
-    fileDisplayName,
-    filePath,
-    note,
-    consultationId
-  };
-
+export const addAttachment = async (
+  fileDisplayName: string,
+  filePath: string,
+  note: string,
+  consultationId: string,
+  cookie: string
+) => {
   try {
-    const response = await fetch(COREAPI_URL, {
+    const response = await fetch(`http://${API_HOST}:${API_PORT}/graphql`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Set-Cookie': cookie, 'cookie': cookie },
-      body: JSON.stringify({ query, variables })
+      headers: { 'Content-Type': 'application/json', 'cookie':cookie },
+      body: JSON.stringify({ query, variables: {
+        fileDisplayName,
+        filePath,
+        note,
+        consultationId
+      } })
     });
-
-    //console.info('GraphQL Response:', response, 'JSON response',  jsonResponse );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

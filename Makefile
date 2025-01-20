@@ -30,5 +30,5 @@ codegen:
 seed-full:
 	docker compose -f docker-compose.dev.yml run --rm \
 	-e PGPASSWORD=${POSTGRES_PASSWORD} \
-	-v ./postgres/seed_scripts/full_seed.sql:/seed.sql \
+	-v $(shell pwd)/postgres/seed_scripts/full_seed.sql:/seed.sql \
 	${DB_HOST} psql -U postgres -d postgres -h ${DB_HOST} -f /seed.sql

@@ -37,7 +37,10 @@ export default function PatientSearchBar({
             {data.patients.length ? (
               data.patients.map((patient) => (
                 <li key={`patient-${patient.id}`}>
-                  <button onClick={() => handlePatientSelected(patient.id)}>
+                  <button
+                    onClick={() => handlePatientSelected(patient.id)}
+                    className="text-black"
+                  >
                     <strong>
                       {patient.firstname} {patient.lastname}
                     </strong>

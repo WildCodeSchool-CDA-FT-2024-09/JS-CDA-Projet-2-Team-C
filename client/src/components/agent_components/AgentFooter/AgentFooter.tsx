@@ -12,7 +12,7 @@ const Footer = ({ handleReturn, resetView }: AgentFooterProps) => {
       >
         <img
           src={Home}
-          alt="Icône maison pour revenir à l'accueil"
+          alt=""
           className="h-12 w-12 cursor-pointer fill-white"
         />
       </button>
@@ -21,11 +21,7 @@ const Footer = ({ handleReturn, resetView }: AgentFooterProps) => {
         onClick={handleReturn}
         aria-label="Retourner à l'écran précédent"
       >
-        <img
-          src={Return}
-          alt="Icône flèche pour retourner en arrière"
-          className="h-12 w-12 cursor-pointer"
-        />
+        <img src={Return} alt="" className="h-12 w-12 cursor-pointer" />
       </button>
     </footer>
   );

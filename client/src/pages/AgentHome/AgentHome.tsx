@@ -7,6 +7,7 @@ import {
 import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/agent_components/AgentChoiceList/AgentChoiceList';
 import AgentPatientSearchBar from '../../components/agent_components/AgentPatientSearchBar/AgentPatientSearchBar';
+import AgentFooter from '../../components/agent_components/AgentFooter/AgentFooter';
 
 export default function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
@@ -57,6 +58,15 @@ export default function AgentHome() {
     setSelectedDoctor(doctorId);
   };
 
+  const handleReturn = () => {
+    if (selectedDoctor) {
+      setSelectedDoctor(null);
+    } else if (selectedService) {
+      handleBackClick();
+    } else if (selectedView) {
+      setSelectedView(null);
+    }
+  };
   const renderInitialView = () => (
     <ViewButtons
       handleViewChange={handleViewChange}
@@ -76,19 +86,14 @@ export default function AgentHome() {
         emptyMessage="Aucun service disponible."
         openModalOnItemClick={false}
       />
-      <button
-        className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
-        onClick={() => setSelectedView(null)}
-      >
-        Retour au menu principal
-      </button>
     </>
   );
 
   const renderDoctorsByService = () => (
     <>
       <h1 className="text-center text-3xl font-bold">
-        Docteurs pour {selectedService || 'ce service'}
+        Docteurs pour{' '}
+        {selectedService ? `le service de ${selectedService}` : 'ce service'}
       </h1>
       <AgentChoiceList
         isLoading={loadingDoctors}
@@ -99,12 +104,6 @@ export default function AgentHome() {
         emptyMessage="Aucun docteur trouvé pour ce service."
         openModalOnItemClick={false}
       />
-      <button
-        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
-        onClick={handleBackClick}
-      >
-        Retour aux services
-      </button>
     </>
   );
 
@@ -120,12 +119,6 @@ export default function AgentHome() {
         emptyMessage="Aucun docteur disponible."
         openModalOnItemClick={false}
       />
-      <button
-        className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
-        onClick={() => setSelectedView(null)}
-      >
-        Retour au menu principal
-      </button>
     </>
   );
 
@@ -137,12 +130,6 @@ export default function AgentHome() {
           console.info(`Patient ID sélectionné  : ${patientId}`);
         }}
       />
-      <button
-        className="mt-4 rounded bg-gray-500 px-4 py-2 text-white"
-        onClick={() => setSelectedView(null)}
-      >
-        Retour au menu principal
-      </button>
     </>
   );
 
@@ -158,7 +145,9 @@ export default function AgentHome() {
         items={dataAppointments?.restrictedConsultations || []}
         renderItem={(appointment) => (
           <>
-            <div className="px-[2px]">{appointment.startTime.slice(0, 5)}</div>
+            <div className="px-[2px] text-stone-700">
+              {appointment.startTime.slice(0, 5)}
+            </div>
             <div className="px-[2px]">{appointment.patient.firstname}</div>
             <div className="px-[2px]">{appointment.patient.lastname}</div>
           </>
@@ -166,12 +155,6 @@ export default function AgentHome() {
         emptyMessage="Aucun rendez-vous trouvé."
         openModalOnItemClick={true}
       />
-      <button
-        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
-        onClick={() => setSelectedDoctor(null)}
-      >
-        Retour aux docteurs
-      </button>
     </>
   );
 
@@ -195,6 +178,14 @@ export default function AgentHome() {
   };
 
   return (
-    <div className="mt-8 flex flex-col items-center gap-8">{renderView()}</div>
+    <div className="flex flex-col">
+      <div className="mt-8 flex flex-col items-center gap-8">
+        {renderView()}
+      </div>
+      <AgentFooter
+        handleReturn={handleReturn}
+        resetView={() => setSelectedView(null)}
+      />
+    </div>
   );
 }

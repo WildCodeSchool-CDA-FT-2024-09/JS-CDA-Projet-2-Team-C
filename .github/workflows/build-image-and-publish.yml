@@ -27,6 +27,7 @@ jobs:
         name: Login to Docker Hub
         with:
           # generate some credentials from Dockerhub and store them into the repo secrets
+          # Those credentials are defined as github environment variables ($RepoURL/settings/secrets/actions)
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
@@ -34,7 +35,7 @@ jobs:
       - uses: docker/setup-buildx-action@v3
         name: Set up Docker Buildx
 
-      # build an push the newly created image
+      # build an push the client
       - uses: docker/build-push-action@v2
         name: Build and push
         with:
@@ -43,7 +44,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_CLIENT_IMAGE_NAME }}:latest
 
-        # build an push the newly created image
+        # build an push the core api
       - uses: docker/build-push-action@v2
         name: Build and push
         with:
@@ -51,3 +52,12 @@ jobs:
           file: ./core_api/dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_CORE_API_IMAGE_NAME }}:latest
+
+        # build an push the mailer
+      - uses: docker/build-push-action@v2
+        name: Build and push
+        with:
+          context: ./mailer
+          file: ./mailer/dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_MAILER_IMAGE_NAME }}:latest

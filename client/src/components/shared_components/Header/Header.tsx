@@ -17,39 +17,29 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
       {(currentRole === RoleCode.Doctor ||
         currentRole === RoleCode.Secretary) && (
         <li>
-          <a
-            onClick={() => navigate('/planning')}
-            className={currentPageName === 'Planning' ? `underline` : ''}
-          >
-            Planning
-          </a>
+          <a onClick={() => navigate('/planning')}>Planning</a>
         </li>
       )}
       {currentRole === RoleCode.Doctor && (
         <li>
-          <a
-            onClick={() => navigate('dossiers')}
-            className={currentPageName === 'Dossier patient' ? `underline` : ''}
-          >
-            Dossiers
-          </a>
+          <a onClick={() => navigate('dossiers')}>Dossiers</a>
         </li>
       )}
       <li>
-        <button onClick={logout}>Déconnexion</button>
+        <button
+          className="rounded-3xl border border-solid border-white bg-primary hover:bg-primary-dark"
+          onClick={logout}
+        >
+          Déconnexion
+        </button>
       </li>
     </>
   );
 
   return (
-    <header className="navbar bg-primary">
+    <header className="navbar fixed top-0 z-10 bg-primary">
       <section className="navbar-start">
         <img src={Logo} className="navbar-start w-16" />
-        {currentRole && (
-          <span data-testid="connected-role" className="text-xs">
-            Connecté en tant que {user?.role.label}
-          </span>
-        )}
       </section>
       <h1
         role="title"
@@ -58,7 +48,9 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
         {currentPageName}
       </h1>
       <nav role="navigation-desktop" className="navbar-end hidden md:flex">
-        <ul className="menu menu-horizontal px-1">{navItems}</ul>
+        <ul className="menu menu-horizontal gap-4 px-1 text-white">
+          {navItems}
+        </ul>
       </nav>
       <div className="navbar-end gap-2 md:hidden">
         <nav role="navigation-mobile" className="dropdown dropdown-end">
@@ -70,9 +62,9 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
-              fill="none"
+              fill="white"
               viewBox="0 0 24 24"
-              stroke="currentColor"
+              stroke="white"
             >
               <path
                 strokeLinecap="round"

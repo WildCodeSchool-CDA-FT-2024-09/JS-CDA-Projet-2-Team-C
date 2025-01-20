@@ -33,11 +33,11 @@ export default function AgentChoiceList<T>({
 
   return (
     <div>
-      <ul className="flex flex-col items-center gap-4">
+      <ul className="mb-20 flex flex-col items-center gap-4">
         {items.map((item) => (
           <li
             key={(item as { id: string | number }).id}
-            className="flex h-[60px] w-full cursor-pointer items-center justify-center rounded-[10px] bg-primary-lighter p-4 text-[24px] font-bold transition-opacity duration-300 hover:opacity-100"
+            className="flex h-[60px] w-full cursor-pointer items-center justify-center rounded-[10px] bg-primary-lighter p-4 text-[24px] font-bold text-white transition-opacity duration-300 hover:opacity-100"
             onClick={() => handleItemClick(item)}
           >
             {renderItem(item)}

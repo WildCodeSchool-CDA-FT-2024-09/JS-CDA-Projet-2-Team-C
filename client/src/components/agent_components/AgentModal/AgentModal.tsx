@@ -46,7 +46,7 @@ export default function AgentModal({
         </button>
         {selectedItem && (
           <>
-            <h2 className="mb-4 mt-1 text-xl font-bold text-black">
+            <h2 className="mb-4 mt-1 text-xl font-bold text-white">
               Détails du rendez-vous
             </h2>
             <p className="text-black">

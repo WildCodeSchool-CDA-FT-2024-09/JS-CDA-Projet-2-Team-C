@@ -1,0 +1,22 @@
+meta {
+  name: post a file (docker-dev)
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:5000/upload/document
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  cookie: medagendatoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIyYmI4OTNjLWQ4ODUtNGY2ZS05NGE0LTk2ZTI1MjJhZDAzZCIsImlhdCI6MTczNzM2NzIzNiwiZXhwIjoxNzM3NDUzNjM2fQ.Uzb33TcT7FkgK6sL43fgu5SwzXqPRJcCZW67zvk7MBE; HttpOnly; Secure; SameSite=Strict; expires=Tue, 21 Jan 2025 10:00:36 GMT, Max-Age=86400
+}
+
+body:multipart-form {
+  file: @file()
+  note: le patient a mal sous le pied
+  fileDisplayName: radio_pied_MmeSouffre
+  consultationId: c2136921-821b-48e4-90cf-4d1912876958
+}

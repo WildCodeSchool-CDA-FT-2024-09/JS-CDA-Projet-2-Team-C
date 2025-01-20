@@ -176,18 +176,19 @@ export default function AdminPopupDoctorHour({
             </button>
           </form>
           <h3 className="text-center text-lg font-bold text-primary">
-            horaire du médecin {nameDoctor} / id:{doctorId}
+            horaire du médecin {nameDoctor}
           </h3>
           <form onSubmit={handleSubmit}>
             <div className="form-control w-full max-w-xs">
               <label className="label">
-                <span className="label-text">
+                <span className="label-text text-slate-500">
                   Sélectionner les jours et les horaires de travail
                 </span>
               </label>
               {weekdays.map((day, index) => {
                 const workingHour = workingHours.find(
-                  (wh) => wh.weekday === index
+                  // weekday needs to be offset because SQL defines sun - sat as 0 - 6
+                  (wh) => wh.weekday === index + 1
                 );
 
                 return (
@@ -241,7 +242,7 @@ export default function AdminPopupDoctorHour({
             </div>
             <button
               type="submit"
-              className={`btn btn-md w-full ${saving ? 'btn-disabled' : ''} bg-secondary text-white`}
+              className={`w-full ${saving ? 'btn-disabled' : ''} h-12 w-5/6 rounded-lg bg-secondary text-white hover:opacity-85`}
             >
               {saving
                 ? 'Enregistrement...'

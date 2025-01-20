@@ -40,4 +40,9 @@ html {
   body {
     @apply font-lato;
   }
+
+  /* Temporary until we set a global daisyUI theme */
+  button {
+    color: white;
+  }
 }

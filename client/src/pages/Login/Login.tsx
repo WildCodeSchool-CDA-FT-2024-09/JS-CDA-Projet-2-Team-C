@@ -23,12 +23,9 @@ export default function Login() {
       className="flex w-80 flex-col place-items-center place-self-center"
     >
       <h1 className="text-center font-medium">Agenda Médical</h1>
-      <section className="flex w-full flex-col place-items-center gap-4">
+      <section className="mt-[12vh] flex w-full flex-col place-items-center gap-4">
         <img className="place-self-center" src={Logo} alt="Logo" />
         <h2 className="text-center">Connexion</h2>
-        <p className="text-balance text-center">
-          Veuillez rentrer vos informations de connexion
-        </p>
 
         <div className="w-full max-w-xs">
           <label
@@ -70,7 +67,10 @@ export default function Login() {
           </label>
         </div>
 
-        <button type="submit" className="btn w-40 bg-primary">
+        <button
+          type="submit"
+          className="mt-5 h-12 w-40 rounded-lg bg-primary p-2 text-white hover:bg-primary-dark"
+        >
           CONNEXION
         </button>
 

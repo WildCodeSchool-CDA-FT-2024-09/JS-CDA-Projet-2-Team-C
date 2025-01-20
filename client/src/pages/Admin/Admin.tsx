@@ -132,21 +132,23 @@ export default function Admin() {
           <div className="">{''}</div>
 
           <section className="flex w-48 rounded-lg bg-warning p-2">
-            <p className="text-[10px]">certain médecins n'ont pas d'horaires</p>
+            <p className="text-[10px]">
+              Certains médecins n'ont pas d'horaires
+            </p>
             <button
               type="button"
-              className="basis-1/4 rounded-lg bg-danger-lighter p-2 hover:bg-danger-dark hover:text-white"
+              className="basis-1/4 rounded-lg bg-danger-lighter p-2 hover:bg-danger-light hover:text-white"
             >
-              afficher
+              Afficher
             </button>
           </section>
 
-          <h2 className="basis-3/4 text-center font-bold">
+          <h2 className="flex basis-3/4 place-items-center justify-center text-center font-bold">
             Liste des utilisateurs
           </h2>
           <button
             type="button"
-            className="basis-1/4 rounded-lg bg-primary-dark p-2 text-white hover:bg-secondary"
+            className="basis-1/4 rounded-lg bg-primary-dark p-2 text-white hover:bg-primary"
             onClick={handleCreateUserPopupOpen}
           >
             Ajouter un utilisateur

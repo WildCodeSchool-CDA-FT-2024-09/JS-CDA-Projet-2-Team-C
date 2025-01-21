@@ -5,8 +5,17 @@ import {
   RoleCode,
   User
 } from '../entities.index';
-import { Resolver, Query, Arg, Authorized, Mutation } from 'type-graphql';
+import {
+  Resolver,
+  Query,
+  Arg,
+  Authorized,
+  Mutation,
+  UseMiddleware
+} from 'type-graphql';
 import { Between, FindOperator } from 'typeorm';
+import { WithCache } from '../../services/cache/cacheMiddleware';
+import cacheClient from '../../services/cache/cacheService';
 
 @Resolver(Consultation)
 export default class ConsultationResolver {
@@ -28,9 +37,17 @@ export default class ConsultationResolver {
   // TODO : talk amongst ourselves on how to restrict the dates ? Maybe refetch based on the calendar's view ?
   // in this case, it should also take a end date
   @Authorized([RoleCode.DOCTOR, RoleCode.SECRETARY])
+  // Demo of Redis caching with `WithCache` middleware
+  @UseMiddleware(
+    WithCache<{ doctorId: string }>({
+      key: (args) => `consultationsByDoctorId:${args.doctorId}`,
+      ttl: 60,
+      refreshOnHit: false
+    })
+  )
   @Query(() => [Consultation])
   async consultationsByDoctorId(@Arg('doctorId') doctorId: string) {
-    return await Consultation.find({
+    const result = await Consultation.find({
       where: { doctor: { id: doctorId } },
       order: { consultationDate: 'DESC', startTime: 'DESC' },
       relations: {
@@ -39,6 +56,8 @@ export default class ConsultationResolver {
         patient: { gender: true }
       }
     });
+
+    return result;
   }
 
   @Authorized([RoleCode.AGENT])
@@ -163,6 +182,9 @@ export default class ConsultationResolver {
       //TODO : need to extract the author from the token
 
       await newConsultation.save();
+
+      // Invalidate the cache for this doctor's consultations
+      cacheClient.del('consultationsByDoctorId:' + doctorId);
 
       return newConsultation;
     } catch (e) {

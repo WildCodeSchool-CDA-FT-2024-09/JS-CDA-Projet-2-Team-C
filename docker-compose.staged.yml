@@ -2,6 +2,8 @@ services:
   staging-medapi_postgres:
     image: postgres
     env_file: .env-staging
+    volumes:
+      - ./postgres/seed_data:/docker-entrypoint-initdb.d
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -d postgres -U postgres']
       interval: 5s

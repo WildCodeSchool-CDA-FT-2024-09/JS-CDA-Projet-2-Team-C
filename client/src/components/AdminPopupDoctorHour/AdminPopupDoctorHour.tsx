@@ -188,7 +188,7 @@ export default function AdminPopupDoctorHour({
               {weekdays.map((day, index) => {
                 const workingHour = workingHours.find(
                   // weekday needs to be offset because SQL defines sun - sat as 0 - 6
-                  (wh) => wh.weekday === index + 1
+                  (wh) => wh.weekday === index
                 );
 
                 return (

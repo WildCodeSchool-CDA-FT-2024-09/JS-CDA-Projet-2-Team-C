@@ -57,15 +57,18 @@ export default function DoctorSelector({
             </div>
             <select
               className="select select-bordered"
-              defaultValue={departments[0].label}
+              defaultValue=""
               onChange={(e) => {
                 const newDepartment = departments.find(
                   (d) => d.label === e.target.value
                 );
                 setDepartment(newDepartment || defaultDept);
-                setDoctor(newDepartment?.users[0] || defaultDoctor);
+                setDoctor(defaultDoctor);
               }}
             >
+              <option value="" disabled>
+                Sélectionnez un service
+              </option>
               {departments.map((d) => (
                 <option key={d.id}>{d.label}</option>
               ))}
@@ -82,11 +85,14 @@ export default function DoctorSelector({
                 const newDoctor = doctors.find(
                   (d) => `${d.firstname} ${d.lastname}` === e.target.value
                 );
-                if (newDoctor?.id != doctor.id)
-                  setDoctor(newDoctor || defaultDoctor);
+                setDoctor(newDoctor || defaultDoctor);
               }}
-              defaultValue={`${doctor.firstname} ${doctor.lastname}`}
+              value={doctor.id ? `${doctor.firstname} ${doctor.lastname}` : ''}
+              disabled={department.id === 0}
             >
+              <option value="" disabled>
+                Sélectionnez un médecin
+              </option>
               {doctors.length ? (
                 doctors.map((d) => (
                   <option key={d.id}>

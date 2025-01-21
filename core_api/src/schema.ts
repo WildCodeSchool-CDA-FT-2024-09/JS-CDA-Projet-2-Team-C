@@ -7,6 +7,7 @@ import UserResolver from './modules/user/user.resolver';
 import GenderResolver from './modules/gender/gender.resolver';
 import ConsultationSubjectResolver from './modules/consultation_subject/consultationSubject.resolver';
 import WorkingHoursResolver from './modules/working_hours/workingHours.resolver';
+import AttachmentResolver from './modules/attachment/attachment.resolver';
 import { ContextType } from './types/ContextType';
 import { RoleCode } from './modules/role/role.entity';
 
@@ -20,7 +21,8 @@ const getSchema = async () => {
       UserResolver,
       GenderResolver,
       ConsultationSubjectResolver,
-      WorkingHoursResolver
+      WorkingHoursResolver,
+      AttachmentResolver
     ],
     authChecker: (
       { context }: { context: ContextType },

@@ -61,3 +61,12 @@ jobs:
           file: ./mailer/dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_MAILER_IMAGE_NAME }}:latest
+          
+        # build an push the uploader
+      - uses: docker/build-push-action@v2
+        name: Build and push
+        with:
+          context: ./upload
+          file: ./upload/dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_UPLOAD_IMAGE_NAME }}:latest

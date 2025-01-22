@@ -2,7 +2,10 @@ import { Consultation } from '../../../generated/graphql-types';
 
 export const convertToCalendarEvent = (consultation: Consultation) => {
   const start = new Date(
-    `${consultation.consultationDate}T${consultation.startTime}`
+    new Date(
+      `${consultation.consultationDate}T${consultation.startTime}`
+    ).getTime() +
+      60 * 60 * 1000 // add 1h to convert backend UTC format to french GMT +1
   );
   const end = new Date(
     start.getTime() + consultation.durationMinutes * 60 * 1000

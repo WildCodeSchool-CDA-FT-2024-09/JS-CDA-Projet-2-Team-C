@@ -139,8 +139,8 @@ export default class ConsultationResolver {
     @Arg('doctorId') doctorId: string,
     @Arg('subjectLabel') subjectLabel: string,
     @Arg('patientId') patientId: string, // TODO : this shall become nullable when we have the patient creation
-    @Arg('start') start: Date, // important : these two need to be ISOstrings.
-    @Arg('end') end: Date,
+    @Arg('start') start: string, // important : these two need to be ISOstrings.
+    @Arg('end') end: string,
     @Arg('description') description: string
   ): Promise<Consultation> {
     try {

@@ -57,11 +57,7 @@ export default function SecretaryHome() {
   //this is the function that triggers when an free slot is selected
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
-      // console.log(start, end);
       setConsultationDateTime({
-        consultationDate: start.toString(),
-        startTime: start.getTime().toString(),
-        durationMinutes: (end.getTime() - start.getTime()) / 60000,
         start: start,
         end: end
       });
@@ -102,8 +98,8 @@ export default function SecretaryHome() {
         await createConsultation({
           variables: {
             description: details?.description,
-            end: consultationDateTime?.end as Date,
-            start: consultationDateTime?.start as Date,
+            end: consultationDateTime?.end.toISOString() as string,
+            start: consultationDateTime?.start.toISOString() as string,
             doctorId: doctorId,
             patientId: patientId,
             subjectLabel: details.subject

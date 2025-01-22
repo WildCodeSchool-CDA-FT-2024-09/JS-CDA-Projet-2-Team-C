@@ -176,7 +176,7 @@ export default function AdminPopupDoctorHour({
             </button>
           </form>
           <h3 className="text-center text-lg font-bold text-primary">
-            horaire du médecin {nameDoctor}
+            Horaires du médecin {nameDoctor}
           </h3>
           <form onSubmit={handleSubmit}>
             <div className="form-control w-full max-w-xs">
@@ -204,7 +204,7 @@ export default function AdminPopupDoctorHour({
                           setWorkingHours((prev) => [
                             ...prev,
                             {
-                              weekday: index,
+                              weekday: index + 1,
                               startTime: '',
                               endTime: ''
                             }
@@ -212,7 +212,7 @@ export default function AdminPopupDoctorHour({
                         } else {
                           // If unchecked, remove schedule for that day
                           setWorkingHours((prev) =>
-                            prev.filter((wh) => wh.weekday !== index)
+                            prev.filter((wh) => wh.weekday !== index + 1)
                           );
                         }
                       }}
@@ -222,7 +222,7 @@ export default function AdminPopupDoctorHour({
                     <TimeSelect
                       value={workingHour?.startTime || ''}
                       onChange={(value) =>
-                        updateWorkingHour(index, 'startTime', value)
+                        updateWorkingHour(index + 1, 'startTime', value)
                       }
                       options={timesAM}
                       label="Début de journée"
@@ -231,7 +231,7 @@ export default function AdminPopupDoctorHour({
                     <TimeSelect
                       value={workingHour?.endTime || ''}
                       onChange={(value) =>
-                        updateWorkingHour(index, 'endTime', value)
+                        updateWorkingHour(index + 1, 'endTime', value)
                       }
                       options={timesPM}
                       label="Fin de journée"

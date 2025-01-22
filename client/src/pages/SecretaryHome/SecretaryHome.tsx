@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import Agenda from '../../components/secretary_components/Agenda/Agenda';
+import Agenda from '../../components/shared_components/Agenda/Agenda';
 import FormPanel from '../../components/secretary_components/FormPanel/FormPanel';
 import DoctorSelector from '../../components/secretary_components/DoctorSelector/DoctorSelector';
 import PatientSelector from '../../components/secretary_components/PatientSelector/PatientSelector';

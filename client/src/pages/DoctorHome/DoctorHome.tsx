@@ -1,4 +1,4 @@
-import Agenda from '../../components/secretary_components/Agenda/Agenda';
+import Agenda from '../../components/shared_components/Agenda/Agenda';
 import { useAuth } from '../../contexts/auth/useAuth';
 import { useConsultationsByDoctorIdQuery } from '../../generated/graphql-types';
 

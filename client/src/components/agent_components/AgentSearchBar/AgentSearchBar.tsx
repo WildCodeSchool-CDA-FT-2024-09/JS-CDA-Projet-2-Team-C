@@ -19,7 +19,7 @@ export default function AgentSearchBar({
           className="focus:outline-none"
           onChange={(e) => handleChange(e.target.value)}
           aria-label="champ de recherche"
-          maxLength={22}
+          maxLength={21}
           value={search}
         />
       </label>

@@ -70,11 +70,9 @@ export default class ConsultationResolver {
       throw new Error("Vous devez fournir soit un 'doctorId', soit un 'ssn'.");
     }
 
-    // Obtenir la date et l'heure actuelles en UTC
     const now = new Date();
     const utcNow = new Date(now.toISOString());
 
-    // Calculer la plage horaire UTC : -5 minutes et +2 heures
     const minus5MinutesUTC = new Date(utcNow);
     minus5MinutesUTC.setMinutes(utcNow.getMinutes() - 5);
     const minus5MinutesString = minus5MinutesUTC.toTimeString().split(' ')[0];
@@ -83,11 +81,10 @@ export default class ConsultationResolver {
     plus2HoursUTC.setHours(utcNow.getHours() + 2);
     const plus2HoursString = plus2HoursUTC.toTimeString().split(' ')[0];
 
-    // Filtrer uniquement sur la date actuelle
     const todayStart = new Date(utcNow);
-    todayStart.setUTCHours(0, 0, 0, 0); // Début du jour (minuit UTC)
+    todayStart.setUTCHours(0, 0, 0, 0);
     const todayEnd = new Date(utcNow);
-    todayEnd.setUTCHours(23, 59, 59, 999); // Fin du jour (23:59:59 UTC)
+    todayEnd.setUTCHours(23, 59, 59, 999);
 
     let patient;
     if (ssn) {
@@ -103,8 +100,8 @@ export default class ConsultationResolver {
       doctor?: { id: string };
       patient?: { id: string };
     } = {
-      consultationDate: Between(todayStart, todayEnd), // Filtrer les consultations de la date actuelle
-      startTime: Between(minus5MinutesString, plus2HoursString) // Filtrer sur l'heure
+      consultationDate: Between(todayStart, todayEnd),
+      startTime: Between(minus5MinutesString, plus2HoursString)
     };
 
     if (doctorId) {

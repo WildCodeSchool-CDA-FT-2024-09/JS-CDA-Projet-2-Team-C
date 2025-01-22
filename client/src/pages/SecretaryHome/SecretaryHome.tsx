@@ -57,7 +57,7 @@ export default function SecretaryHome() {
   //this is the function that triggers when an free slot is selected
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
-      // console.log(start, end);
+      //console.log(start, end);
       setConsultationDateTime({
         consultationDate: start.toString(),
         startTime: start.getTime().toString(),
@@ -99,11 +99,20 @@ export default function SecretaryHome() {
         // TODO : enhance this part to show the missing fields
         showToast('Données manquantes', 'error');
       } else {
+        // Adjust the start and end times by adding 1 hour (3600000 milliseconds)
+        // to account for the UTC+1 timezone offset. This ensures the times sent
+        // to the backend are accurate for the desired timezone.
+        const adjustedStart = new Date(
+          consultationDateTime?.start.getTime() + 3600000
+        );
+        const adjustedEnd = new Date(
+          consultationDateTime?.end.getTime() + 3600000
+        );
         await createConsultation({
           variables: {
             description: details?.description,
-            end: consultationDateTime?.end as Date,
-            start: consultationDateTime?.start as Date,
+            end: adjustedEnd as Date,
+            start: adjustedStart as Date,
             doctorId: doctorId,
             patientId: patientId,
             subjectLabel: details.subject

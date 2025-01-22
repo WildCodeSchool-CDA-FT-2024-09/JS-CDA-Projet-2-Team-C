@@ -9,5 +9,11 @@ export default function DoctorHome() {
   });
   if (loading) return <p>Chargement de votre planning ...</p>;
   if (error) return <p>Erreur dans la récupération du plaaning</p>;
-  if (data) return <Agenda consultations={data?.consultationsByDoctorId} />;
+  if (data)
+    return (
+      <Agenda
+        consultations={data?.consultationsByDoctorId}
+        className="mt-8 h-[80vh] w-full"
+      />
+    );
 }

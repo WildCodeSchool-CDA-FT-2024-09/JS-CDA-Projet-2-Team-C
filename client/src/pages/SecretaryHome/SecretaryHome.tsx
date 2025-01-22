@@ -93,8 +93,8 @@ export default function SecretaryHome() {
         !details ||
         !details.description ||
         !details.subject ||
-        !consultationDateTime.start ||
-        !consultationDateTime.end
+        !consultationDateTime!.start ||
+        !consultationDateTime!.end
       ) {
         // TODO : enhance this part to show the missing fields
         showToast('Données manquantes', 'error');

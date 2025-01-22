@@ -14,8 +14,7 @@ export const Header = ({ page, pageNames }: HeaderProps) => {
 
   const navItems = (
     <>
-      {(currentRole === RoleCode.Doctor ||
-        currentRole === RoleCode.Secretary) && (
+      {currentRole === RoleCode.Doctor && (
         <li>
           <a onClick={() => navigate('/planning')}>Planning</a>
         </li>

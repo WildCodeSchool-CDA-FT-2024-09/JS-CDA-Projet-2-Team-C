@@ -14,7 +14,8 @@ import { AgendaProps } from './Agenda.types';
 export default function Agenda({
   consultations,
   newConsultation,
-  handleSelectSlot
+  handleSelectSlot,
+  className = 'w-[800px] h-[700px]'
 }: AgendaProps) {
   const localizer: DateLocalizer = dateFnsLocalizer({
     format,
@@ -47,7 +48,7 @@ export default function Agenda({
   );
 
   return (
-    <div style={{ height: '700px', width: '800px' }}>
+    <div className={className}>
       <Calendar
         defaultView="week"
         localizer={localizer}

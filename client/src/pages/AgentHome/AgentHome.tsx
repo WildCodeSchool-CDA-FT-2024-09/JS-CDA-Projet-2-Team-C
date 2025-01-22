@@ -67,6 +67,12 @@ export default function AgentHome() {
       setSelectedView(null);
     }
   };
+
+  const resetAll = () => {
+    setSelectedView(null);
+    setSelectedService(null);
+    setSelectedDoctor(null);
+  };
   const renderInitialView = () => (
     <ViewButtons
       handleViewChange={handleViewChange}
@@ -182,10 +188,7 @@ export default function AgentHome() {
       <div className="mt-8 flex flex-col items-center gap-8">
         {renderView()}
       </div>
-      <AgentFooter
-        handleReturn={handleReturn}
-        resetView={() => setSelectedView(null)}
-      />
+      <AgentFooter handleReturn={handleReturn} resetView={resetAll} />
     </div>
   );
 }

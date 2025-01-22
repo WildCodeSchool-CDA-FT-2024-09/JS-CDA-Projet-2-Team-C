@@ -176,7 +176,7 @@ export default function AdminPopupDoctorHour({
             </button>
           </form>
           <h3 className="text-center text-lg font-bold text-primary">
-            horaires du médecin {nameDoctor}
+            Horaires du médecin {nameDoctor}
           </h3>
           <form onSubmit={handleSubmit}>
             <div className="form-control w-full max-w-xs">

@@ -57,7 +57,6 @@ export default function SecretaryHome() {
   //this is the function that triggers when an free slot is selected
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
-      // console.log(start, end);
       setConsultationDateTime({
         start: start,
         end: end

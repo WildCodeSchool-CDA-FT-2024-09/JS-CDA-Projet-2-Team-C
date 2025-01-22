@@ -33,8 +33,8 @@ export const GET_CONSULTATIONS_SUBJECTS = gql`
 export const CREATE_CONSULTATION = gql`
   mutation CreateConsultation(
     $description: String!
-    $end: DateTimeISO!
-    $start: DateTimeISO!
+    $end: String!
+    $start: String!
     $patientId: String!
     $subjectLabel: String!
     $doctorId: String!

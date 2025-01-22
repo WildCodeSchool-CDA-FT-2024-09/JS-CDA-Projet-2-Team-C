@@ -29,7 +29,7 @@ export default function AgentPatientSearchBar({
   };
 
   useEffect(() => {
-    if (search.length === 22) {
+    if (search.length === 21) {
       getPatientsByName({ variables: { search } });
     }
   }, [search, getPatientsByName]);

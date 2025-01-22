@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { AgentModalProps } from './AgentModal.type';
+import { addOneHour } from '../../../utils/dates.utils';
 
 export default function AgentModal({
   isOpen,
@@ -58,8 +59,7 @@ export default function AgentModal({
               {selectedItem.doctor?.lastname || ''}
             </p>
             <p className="text-black">
-              <strong>Heure :</strong>{' '}
-              {selectedItem.startTime?.slice(0, 5) || 'Non spécifiée'}
+              <strong>Heure :</strong> {addOneHour(selectedItem.startTime)}
             </p>
             <p className="text-black">
               <strong>Patient :</strong> {selectedItem.patient?.firstname || ''}{' '}

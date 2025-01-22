@@ -9,7 +9,7 @@ export default function AgentSearchBar({
     <div className="flex w-full flex-col justify-center">
       <label
         htmlFor="search-input"
-        className={`flex w-full gap-4 rounded-lg p-1 ${search.length !== 22 ? 'border-red-500' : 'border-blue-500'} border`}
+        className={`flex w-full gap-4 rounded-lg p-1 ${search.length !== 21 ? 'border-red-500' : 'border-blue-500'} border`}
       >
         <SearchIcon aria-hidden="true" />
         <input
@@ -23,7 +23,7 @@ export default function AgentSearchBar({
           value={search}
         />
       </label>
-      <p className={`${search.length === 22 ? 'hidden' : 'text-red-500'}`}>
+      <p className={`${search.length === 21 ? 'hidden' : 'text-red-500'}`}>
         Le numéro doit contenir 15 chiffres.
       </p>
     </div>

@@ -70,34 +70,28 @@ export default class ConsultationResolver {
       throw new Error("Vous devez fournir soit un 'doctorId', soit un 'ssn'.");
     }
 
+    // Obtenir la date et l'heure actuelles en UTC
     const now = new Date();
-    const timePlus55Min = new Date(now);
-    timePlus55Min.setMinutes(timePlus55Min.getMinutes() + 55);
-    const timePlus55MinString = timePlus55Min
-      .toISOString()
-      .split('T')[1]
-      .slice(0, 5);
+    const utcNow = new Date(now.toISOString());
 
-    const timePlus3Hours = new Date(now);
-    timePlus3Hours.setHours(timePlus3Hours.getHours() + 3);
-    const timePlus3HoursString = timePlus3Hours
-      .toISOString()
-      .split('T')[1]
-      .slice(0, 5);
+    // Calculer la plage horaire UTC : -5 minutes et +2 heures
+    const minus5MinutesUTC = new Date(utcNow);
+    minus5MinutesUTC.setMinutes(utcNow.getMinutes() - 5);
+    const minus5MinutesString = minus5MinutesUTC.toTimeString().split(' ')[0];
 
-    const todayDateString = now.toISOString().split('T')[0];
-    const startDateTime = new Date(`${todayDateString}T${timePlus55MinString}`);
-    const endDateTime = new Date(`${todayDateString}T${timePlus3HoursString}`);
+    const plus2HoursUTC = new Date(utcNow);
+    plus2HoursUTC.setHours(utcNow.getHours() + 2);
+    const plus2HoursString = plus2HoursUTC.toTimeString().split(' ')[0];
 
-    const startTimeFilter = timePlus55MinString;
-    const endTimeFilter = timePlus3HoursString;
+    // Filtrer uniquement sur la date actuelle
+    const todayStart = new Date(utcNow);
+    todayStart.setUTCHours(0, 0, 0, 0); // Début du jour (minuit UTC)
+    const todayEnd = new Date(utcNow);
+    todayEnd.setUTCHours(23, 59, 59, 999); // Fin du jour (23:59:59 UTC)
 
     let patient;
     if (ssn) {
-      patient = await Patient.findOne({
-        where: { ssn }
-      });
-
+      patient = await Patient.findOne({ where: { ssn } });
       if (!patient) {
         throw new Error('Patient introuvable');
       }
@@ -109,8 +103,8 @@ export default class ConsultationResolver {
       doctor?: { id: string };
       patient?: { id: string };
     } = {
-      consultationDate: Between(startDateTime, endDateTime),
-      startTime: Between(startTimeFilter, endTimeFilter)
+      consultationDate: Between(todayStart, todayEnd), // Filtrer les consultations de la date actuelle
+      startTime: Between(minus5MinutesString, plus2HoursString) // Filtrer sur l'heure
     };
 
     if (doctorId) {
@@ -132,7 +126,6 @@ export default class ConsultationResolver {
 
     return consultations;
   }
-
   @Authorized([RoleCode.SECRETARY])
   @Mutation(() => Consultation)
   async createConsultation(

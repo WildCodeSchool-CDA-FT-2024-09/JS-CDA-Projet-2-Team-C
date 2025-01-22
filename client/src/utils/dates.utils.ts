@@ -56,3 +56,11 @@ export const getAge = (date: Date | string | undefined): string => {
     return 'age inconnu';
   }
 };
+
+export const addOneHour = (time: string | undefined): string => {
+  if (!time) return 'Non spécifiée';
+  const [hours, minutes] = time.split(':').map(Number);
+  const newDate = new Date();
+  newDate.setHours(hours + 1, minutes, 0); // add 1hour
+  return newDate.toTimeString().slice(0, 5);
+};

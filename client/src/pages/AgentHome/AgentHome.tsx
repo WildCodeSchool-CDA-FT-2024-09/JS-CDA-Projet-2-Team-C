@@ -8,6 +8,7 @@ import ViewButtons from '../../components/ViewButton/ViewButtons';
 import AgentChoiceList from '../../components/agent_components/AgentChoiceList/AgentChoiceList';
 import AgentPatientSearchBar from '../../components/agent_components/AgentPatientSearchBar/AgentPatientSearchBar';
 import AgentFooter from '../../components/agent_components/AgentFooter/AgentFooter';
+import { addOneHour } from '../../utils/dates.utils';
 
 export default function AgentHome() {
   const [selectedView, setSelectedView] = useState<string | null>(null);
@@ -152,7 +153,7 @@ export default function AgentHome() {
         renderItem={(appointment) => (
           <>
             <div className="px-[2px] text-stone-700">
-              {appointment.startTime.slice(0, 5)}
+              {addOneHour(appointment.startTime.slice(0, 5))}
             </div>
             <div className="px-[2px]">{appointment.patient.firstname}</div>
             <div className="px-[2px]">{appointment.patient.lastname}</div>

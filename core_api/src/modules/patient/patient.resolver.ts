@@ -1,5 +1,5 @@
 import { Resolver, Query, Arg, Authorized } from 'type-graphql';
-import { ILike } from 'typeorm';
+import { ILike, Raw } from 'typeorm';
 import { Patient, RoleCode } from '../entities.index';
 
 @Resolver(Patient)
@@ -25,7 +25,11 @@ export default class PatientResolver {
       where: [
         { firstname: ILike(`${search}%`) },
         { lastname: ILike(`${search}%`) },
-        { ssn: ILike(`${search}%`) }
+        {
+          ssn: Raw(
+            (originalSsn) => `REPLACE(${originalSsn}, ' ', '') ILIKE :${search}`
+          )
+        }
       ],
       take: 10,
       relations: {

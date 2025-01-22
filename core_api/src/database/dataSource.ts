@@ -44,7 +44,8 @@ if (NODE_ENV === 'test') {
     password: process.env.POSTGRES_PASSWORD,
     database: 'postgres',
     entities,
-    synchronize: true
+    synchronize: true,
+    migrations: ['src/migrations/*.ts']
   });
 }
 

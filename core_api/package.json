@@ -9,7 +9,12 @@
     "lint-full": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write",
     "format-full": "prettier --write \"*/**/*.{js,jsx,ts,tsx}\"",
-    "seed-dev": "ts-node-dev ./src/database/seed.dev.ts"
+    "seed-dev": "ts-node-dev ./src/database/seed.dev.ts",
+    "migration:create": "typeorm-ts-node-commonjs migration:create src/migrations/initial.ts",
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate src/migrations/version -d src/database/dataSource.ts",
+    "migration:up": "typeorm-ts-node-commonjs migration:run -d src/database/dataSource.ts",
+    "migration:down": "typeorm-ts-node-commonjs migration:revert -d src/database/dataSource.ts",
+    "migration:show": "typeorm-ts-node-commonjs migration:show -d src/database/dataSource.ts"
   },
   "author": "",
   "license": "ISC",

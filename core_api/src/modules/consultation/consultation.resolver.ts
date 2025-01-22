@@ -11,11 +11,14 @@ import {
   Arg,
   Authorized,
   Mutation,
-  UseMiddleware
+  UseMiddleware,
+  Ctx
 } from 'type-graphql';
 import { Between, FindOperator } from 'typeorm';
 import { WithCache } from '../../services/cache/cacheMiddleware';
 import cacheClient from '../../services/cache/cacheService';
+import { ContextType } from '../../types/ContextType';
+import { CreateConsultationInput } from './consultation.input';
 
 @Resolver(Consultation)
 export default class ConsultationResolver {
@@ -136,14 +139,13 @@ export default class ConsultationResolver {
   @Authorized([RoleCode.SECRETARY])
   @Mutation(() => Consultation)
   async createConsultation(
-    @Arg('doctorId') doctorId: string,
-    @Arg('subjectLabel') subjectLabel: string,
-    @Arg('patientId') patientId: string, // TODO : this shall become nullable when we have the patient creation
-    @Arg('start') start: string, // important : these two need to be ISOstrings.
-    @Arg('end') end: string,
-    @Arg('description') description: string
+    @Ctx() context: ContextType,
+    @Arg('consultationDetails') consultationDetails: CreateConsultationInput
   ): Promise<Consultation> {
     try {
+      const { doctorId, patientId, subjectLabel, start, end, description } =
+        consultationDetails;
+
       const doctor = await User.findOne({ where: { id: doctorId } });
       if (!doctor) throw new Error(`Ce médecin n'existe pas`);
 
@@ -171,6 +173,8 @@ export default class ConsultationResolver {
         throw new Error('La durée de la consultation est négative');
       //TODO : maybe perform some other checks here, like if the doctor is available at this time, etc.
 
+      const { user } = context;
+
       const newConsultation = new Consultation();
       newConsultation.doctor = doctor;
       newConsultation.patient = patient;
@@ -179,7 +183,7 @@ export default class ConsultationResolver {
       newConsultation.durationMinutes = durationMinutes;
       newConsultation.subject = subject;
       newConsultation.description = description;
-      //TODO : need to extract the author from the token
+      newConsultation.author = user as User; // user is always defined because we're inside a @authorized() resolver
 
       await newConsultation.save();
 

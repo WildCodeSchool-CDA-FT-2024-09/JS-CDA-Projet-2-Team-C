@@ -26,9 +26,9 @@ export default class PatientResolver {
         { firstname: ILike(`${search}%`) },
         { lastname: ILike(`${search}%`) },
         {
-          ssn: Raw(
-            (originalSsn) => `REPLACE(${originalSsn}, ' ', '') ILIKE :${search}`
-          )
+          ssn: Raw((ssn) => `REPLACE(${ssn}, ' ', '') ILIKE :search`, {
+            search: `${search}%`
+          })
         }
       ],
       take: 10,

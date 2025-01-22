@@ -31,22 +31,8 @@ export const GET_CONSULTATIONS_SUBJECTS = gql`
 `;
 
 export const CREATE_CONSULTATION = gql`
-  mutation CreateConsultation(
-    $description: String!
-    $end: String!
-    $start: String!
-    $patientId: String!
-    $subjectLabel: String!
-    $doctorId: String!
-  ) {
-    createConsultation(
-      description: $description
-      end: $end
-      start: $start
-      patientId: $patientId
-      subjectLabel: $subjectLabel
-      doctorId: $doctorId
-    ) {
+  mutation CreateConsultation($consultationDetails: CreateConsultationInput!) {
+    createConsultation(consultationDetails: $consultationDetails) {
       id
     }
   }

@@ -97,12 +97,14 @@ export default function SecretaryHome() {
       } else {
         await createConsultation({
           variables: {
-            description: details?.description,
-            end: consultationDateTime?.end.toISOString() as string,
-            start: consultationDateTime?.start.toISOString() as string,
-            doctorId: doctorId,
-            patientId: patientId,
-            subjectLabel: details.subject
+            consultationDetails: {
+              description: details?.description,
+              end: consultationDateTime?.end.toISOString() as string,
+              start: consultationDateTime?.start.toISOString() as string,
+              doctorId: doctorId,
+              patientId: patientId,
+              subjectLabel: details.subject
+            }
           }
         });
         showToast('Consultation planifiée avec succès!', 'success');

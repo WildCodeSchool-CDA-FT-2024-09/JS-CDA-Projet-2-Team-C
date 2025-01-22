@@ -26,7 +26,7 @@ export default class PatientResolver {
         { firstname: ILike(`${search}%`) },
         { lastname: ILike(`${search}%`) },
         {
-          ssn: Raw((ssn) => `REPLACE(${ssn}, ' ', '') ILIKE :search`, {
+          ssn: Raw((ssn) => `REPLACE(${ssn}, ' ', '') LIKE :search`, {
             search: `${search}%`
           })
         }
@@ -37,6 +37,7 @@ export default class PatientResolver {
       }
     });
   }
+
   @Query(() => [Patient])
   async restrictedPatients(@Arg('search') search: string) {
     search = search.trim();

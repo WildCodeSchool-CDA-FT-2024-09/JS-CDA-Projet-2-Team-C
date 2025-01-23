@@ -13,7 +13,7 @@ import {
 } from '../modules/entities.index';
 
 dotenv.config();
-const { NODE_ENV } = process.env;
+const { NODE_ENV, APP_ENV } = process.env;
 
 let dataSource: DataSource;
 const entities = [
@@ -44,7 +44,7 @@ if (NODE_ENV === 'test') {
     password: process.env.POSTGRES_PASSWORD,
     database: 'postgres',
     entities,
-    synchronize: true,
+    synchronize: APP_ENV === 'development' ? true : false,
     migrations: ['src/migrations/*.ts']
   });
 }

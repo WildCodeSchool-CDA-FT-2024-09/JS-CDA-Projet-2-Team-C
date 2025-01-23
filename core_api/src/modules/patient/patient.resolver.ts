@@ -38,12 +38,19 @@ export default class PatientResolver {
     });
   }
 
+  @Authorized([RoleCode.AGENT])
   @Query(() => [Patient])
   async restrictedPatients(@Arg('search') search: string) {
     search = search.trim();
     if (!search) return [];
     return await Patient.find({
-      where: [{ ssn: ILike(`${search}%`) }]
+      where: [
+        {
+          ssn: Raw((alias) => `REPLACE(${alias}, ' ', '') LIKE :search`, {
+            search: `${search.replace(/\s+/g, '')}%`
+          })
+        }
+      ]
     });
   }
 }

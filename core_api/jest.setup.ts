@@ -7,6 +7,7 @@ jest.mock('./src/services/cache/cacheService', () => {
     get: jest.fn().mockResolvedValue(null), // Simulate no cache hit by default
     set: jest.fn().mockResolvedValue('OK'), // Simulate successful cache set
     expire: jest.fn().mockResolvedValue(true), // Simulate expiry reset
+    del: jest.fn().mockResolvedValue(true), // Simulate expiry reset
     connect: jest.fn().mockResolvedValue(undefined) // Simulate successful connection
   };
 });

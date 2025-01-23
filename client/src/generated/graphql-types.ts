@@ -73,6 +73,15 @@ export type ConsultationSubject = {
   label: Scalars['String']['output'];
 };
 
+export type CreateConsultationInput = {
+  description: Scalars['String']['input'];
+  doctorId: Scalars['String']['input'];
+  end: Scalars['String']['input'];
+  patientId: Scalars['String']['input'];
+  start: Scalars['String']['input'];
+  subjectLabel: Scalars['String']['input'];
+};
+
 export type Department = {
   __typename?: 'Department';
   id: Scalars['Int']['output'];
@@ -118,12 +127,7 @@ export type MutationAddUserArgs = {
 };
 
 export type MutationCreateConsultationArgs = {
-  description: Scalars['String']['input'];
-  doctorId: Scalars['String']['input'];
-  end: Scalars['String']['input'];
-  patientId: Scalars['String']['input'];
-  start: Scalars['String']['input'];
-  subjectLabel: Scalars['String']['input'];
+  consultationDetails: CreateConsultationInput;
 };
 
 export type MutationLoginArgs = {
@@ -535,12 +539,7 @@ export type ConsultationSubjectsQuery = {
 };
 
 export type CreateConsultationMutationVariables = Exact<{
-  description: Scalars['String']['input'];
-  end: Scalars['String']['input'];
-  start: Scalars['String']['input'];
-  patientId: Scalars['String']['input'];
-  subjectLabel: Scalars['String']['input'];
-  doctorId: Scalars['String']['input'];
+  consultationDetails: CreateConsultationInput;
 }>;
 
 export type CreateConsultationMutation = {
@@ -1926,22 +1925,8 @@ export type ConsultationSubjectsQueryResult = Apollo.QueryResult<
   ConsultationSubjectsQueryVariables
 >;
 export const CreateConsultationDocument = gql`
-  mutation CreateConsultation(
-    $description: String!
-    $end: String!
-    $start: String!
-    $patientId: String!
-    $subjectLabel: String!
-    $doctorId: String!
-  ) {
-    createConsultation(
-      description: $description
-      end: $end
-      start: $start
-      patientId: $patientId
-      subjectLabel: $subjectLabel
-      doctorId: $doctorId
-    ) {
+  mutation CreateConsultation($consultationDetails: CreateConsultationInput!) {
+    createConsultation(consultationDetails: $consultationDetails) {
       id
     }
   }
@@ -1964,12 +1949,7 @@ export type CreateConsultationMutationFn = Apollo.MutationFunction<
  * @example
  * const [createConsultationMutation, { data, loading, error }] = useCreateConsultationMutation({
  *   variables: {
- *      description: // value for 'description'
- *      end: // value for 'end'
- *      start: // value for 'start'
- *      patientId: // value for 'patientId'
- *      subjectLabel: // value for 'subjectLabel'
- *      doctorId: // value for 'doctorId'
+ *      consultationDetails: // value for 'consultationDetails'
  *   },
  * });
  */

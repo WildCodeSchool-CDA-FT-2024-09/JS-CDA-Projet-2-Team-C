@@ -38,7 +38,7 @@ export default class PatientResolver {
     });
   }
 
-  // @Authorized([RoleCode.AGENT])
+  @Authorized([RoleCode.AGENT])
   @Query(() => [Patient])
   async restrictedPatients(@Arg('search') search: string) {
     search = search.trim();

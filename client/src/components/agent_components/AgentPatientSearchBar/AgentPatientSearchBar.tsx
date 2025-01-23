@@ -24,8 +24,23 @@ export default function AgentPatientSearchBar({
     }
   });
 
+  const formatSSN = (value: string): string => {
+    const cleanedValue = value.replace(/\s+/g, '');
+    let formattedValue = '';
+
+    for (let i = 0; i < cleanedValue.length; i++) {
+      formattedValue += cleanedValue[i];
+      if ([0, 2, 4, 6, 9, 12].includes(i)) {
+        formattedValue += ' ';
+      }
+    }
+
+    return formattedValue.trim();
+  };
+
   const handleChange = (value: string): void => {
-    setSearch(value);
+    const sanitisedValue = formatSSN(value);
+    setSearch(sanitisedValue);
   };
 
   useEffect(() => {

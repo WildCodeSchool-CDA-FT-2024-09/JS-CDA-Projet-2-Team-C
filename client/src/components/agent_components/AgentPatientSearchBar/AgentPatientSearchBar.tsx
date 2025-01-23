@@ -76,6 +76,7 @@ export default function AgentPatientSearchBar({
             data.restrictedPatients[0] ? (
               <li key={`patient-${data.restrictedPatients[0].ssn}`}>
                 <button
+                  className="text-black"
                   onClick={() => handlePatientClick(data.restrictedPatients[0])}
                 >
                   <strong>Accéder au rendez-vous</strong>

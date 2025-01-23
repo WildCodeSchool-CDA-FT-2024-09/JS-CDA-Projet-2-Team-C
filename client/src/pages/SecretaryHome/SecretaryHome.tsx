@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import Agenda from '../../components/secretary_components/Agenda/Agenda';
+import Agenda from '../../components/shared_components/Agenda/Agenda';
 import FormPanel from '../../components/secretary_components/FormPanel/FormPanel';
 import DoctorSelector from '../../components/secretary_components/DoctorSelector/DoctorSelector';
 import PatientSelector from '../../components/secretary_components/PatientSelector/PatientSelector';
@@ -57,11 +57,7 @@ export default function SecretaryHome() {
   //this is the function that triggers when an free slot is selected
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
-      // console.log(start, end);
       setConsultationDateTime({
-        consultationDate: start.toString(),
-        startTime: start.getTime().toString(),
-        durationMinutes: (end.getTime() - start.getTime()) / 60000,
         start: start,
         end: end
       });
@@ -93,20 +89,22 @@ export default function SecretaryHome() {
         !details ||
         !details.description ||
         !details.subject ||
-        !consultationDateTime.start ||
-        !consultationDateTime.end
+        !consultationDateTime!.start ||
+        !consultationDateTime!.end
       ) {
         // TODO : enhance this part to show the missing fields
         showToast('Données manquantes', 'error');
       } else {
         await createConsultation({
           variables: {
-            description: details?.description,
-            end: consultationDateTime?.end as Date,
-            start: consultationDateTime?.start as Date,
-            doctorId: doctorId,
-            patientId: patientId,
-            subjectLabel: details.subject
+            consultationDetails: {
+              description: details?.description,
+              end: consultationDateTime?.end.toISOString() as string,
+              start: consultationDateTime?.start.toISOString() as string,
+              doctorId: doctorId,
+              patientId: patientId,
+              subjectLabel: details.subject
+            }
           }
         });
         showToast('Consultation planifiée avec succès!', 'success');

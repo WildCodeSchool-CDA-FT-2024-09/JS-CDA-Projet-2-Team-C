@@ -1,5 +1,5 @@
 import { Resolver, Query, Arg, Authorized } from 'type-graphql';
-import { ILike } from 'typeorm';
+import { ILike, Raw } from 'typeorm';
 import { Patient, RoleCode } from '../entities.index';
 
 @Resolver(Patient)
@@ -25,7 +25,11 @@ export default class PatientResolver {
       where: [
         { firstname: ILike(`${search}%`) },
         { lastname: ILike(`${search}%`) },
-        { ssn: ILike(`${search}%`) }
+        {
+          ssn: Raw((ssn) => `REPLACE(${ssn}, ' ', '') LIKE :search`, {
+            search: `${search}%`
+          })
+        }
       ],
       take: 10,
       relations: {
@@ -33,12 +37,20 @@ export default class PatientResolver {
       }
     });
   }
+
+  @Authorized([RoleCode.AGENT])
   @Query(() => [Patient])
   async restrictedPatients(@Arg('search') search: string) {
     search = search.trim();
     if (!search) return [];
     return await Patient.find({
-      where: [{ ssn: ILike(`${search}%`) }]
+      where: [
+        {
+          ssn: Raw((alias) => `REPLACE(${alias}, ' ', '') LIKE :search`, {
+            search: `${search.replace(/\s+/g, '')}%`
+          })
+        }
+      ]
     });
   }
 }

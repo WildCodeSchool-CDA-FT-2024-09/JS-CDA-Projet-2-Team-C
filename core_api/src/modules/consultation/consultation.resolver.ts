@@ -1,21 +1,24 @@
 import {
+  Resolver,
+  Query,
+  Arg,
+  Authorized,
+  Mutation,
+  UseMiddleware,
+  Ctx
+} from 'type-graphql';
+import { Between, FindOperator } from 'typeorm';
+import {
   Consultation,
   ConsultationSubject,
   Patient,
   RoleCode,
   User
 } from '../entities.index';
-import {
-  Resolver,
-  Query,
-  Arg,
-  Authorized,
-  Mutation,
-  UseMiddleware
-} from 'type-graphql';
-import { Between, FindOperator } from 'typeorm';
 import { WithCache } from '../../services/cache/cacheMiddleware';
 import cacheClient from '../../services/cache/cacheService';
+import { ContextType } from '../../types/ContextType';
+import { CreateConsultationInput } from './consultation.input';
 
 @Resolver(Consultation)
 export default class ConsultationResolver {
@@ -41,8 +44,7 @@ export default class ConsultationResolver {
   @UseMiddleware(
     WithCache<{ doctorId: string }>({
       key: (args) => `consultationsByDoctorId:${args.doctorId}`,
-      ttl: 60,
-      refreshOnHit: false
+      ttl: 60
     })
   )
   @Query(() => [Consultation])
@@ -71,33 +73,24 @@ export default class ConsultationResolver {
     }
 
     const now = new Date();
-    const timePlus55Min = new Date(now);
-    timePlus55Min.setMinutes(timePlus55Min.getMinutes() + 55);
-    const timePlus55MinString = timePlus55Min
-      .toISOString()
-      .split('T')[1]
-      .slice(0, 5);
+    const utcNow = new Date(now.toISOString());
 
-    const timePlus3Hours = new Date(now);
-    timePlus3Hours.setHours(timePlus3Hours.getHours() + 3);
-    const timePlus3HoursString = timePlus3Hours
-      .toISOString()
-      .split('T')[1]
-      .slice(0, 5);
+    const minus5MinutesUTC = new Date(utcNow);
+    minus5MinutesUTC.setMinutes(utcNow.getMinutes() - 5);
+    const minus5MinutesString = minus5MinutesUTC.toTimeString().split(' ')[0];
 
-    const todayDateString = now.toISOString().split('T')[0];
-    const startDateTime = new Date(`${todayDateString}T${timePlus55MinString}`);
-    const endDateTime = new Date(`${todayDateString}T${timePlus3HoursString}`);
+    const plus2HoursUTC = new Date(utcNow);
+    plus2HoursUTC.setHours(utcNow.getHours() + 2);
+    const plus2HoursString = plus2HoursUTC.toTimeString().split(' ')[0];
 
-    const startTimeFilter = timePlus55MinString;
-    const endTimeFilter = timePlus3HoursString;
+    const todayStart = new Date(utcNow);
+    todayStart.setUTCHours(0, 0, 0, 0);
+    const todayEnd = new Date(utcNow);
+    todayEnd.setUTCHours(23, 59, 59, 999);
 
     let patient;
     if (ssn) {
-      patient = await Patient.findOne({
-        where: { ssn }
-      });
-
+      patient = await Patient.findOne({ where: { ssn } });
       if (!patient) {
         throw new Error('Patient introuvable');
       }
@@ -109,8 +102,8 @@ export default class ConsultationResolver {
       doctor?: { id: string };
       patient?: { id: string };
     } = {
-      consultationDate: Between(startDateTime, endDateTime),
-      startTime: Between(startTimeFilter, endTimeFilter)
+      consultationDate: Between(todayStart, todayEnd),
+      startTime: Between(minus5MinutesString, plus2HoursString)
     };
 
     if (doctorId) {
@@ -132,18 +125,16 @@ export default class ConsultationResolver {
 
     return consultations;
   }
-
   @Authorized([RoleCode.SECRETARY])
   @Mutation(() => Consultation)
   async createConsultation(
-    @Arg('doctorId') doctorId: string,
-    @Arg('subjectLabel') subjectLabel: string,
-    @Arg('patientId') patientId: string, // TODO : this shall become nullable when we have the patient creation
-    @Arg('start') start: Date, // important : these two need to be ISOstrings.
-    @Arg('end') end: Date,
-    @Arg('description') description: string
+    @Ctx() context: ContextType,
+    @Arg('consultationDetails') consultationDetails: CreateConsultationInput
   ): Promise<Consultation> {
     try {
+      const { doctorId, patientId, subjectLabel, start, end, description } =
+        consultationDetails;
+
       const doctor = await User.findOne({ where: { id: doctorId } });
       if (!doctor) throw new Error(`Ce médecin n'existe pas`);
 
@@ -171,6 +162,8 @@ export default class ConsultationResolver {
         throw new Error('La durée de la consultation est négative');
       //TODO : maybe perform some other checks here, like if the doctor is available at this time, etc.
 
+      const { user } = context;
+
       const newConsultation = new Consultation();
       newConsultation.doctor = doctor;
       newConsultation.patient = patient;
@@ -179,7 +172,7 @@ export default class ConsultationResolver {
       newConsultation.durationMinutes = durationMinutes;
       newConsultation.subject = subject;
       newConsultation.description = description;
-      //TODO : need to extract the author from the token
+      newConsultation.author = user as User; // user is always defined because we're inside a @authorized() resolver
 
       await newConsultation.save();
 

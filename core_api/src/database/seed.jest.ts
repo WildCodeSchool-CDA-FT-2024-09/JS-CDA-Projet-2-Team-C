@@ -122,7 +122,7 @@ const seed = async () => {
     // DOCTORS
     const doctors = [
       {
-        id: uuidv4(),
+        id: 'aa0032bc-7ac2-431f-9d3a-41df0024edd3',
         firstname: 'Cyril',
         lastname: 'Convergence',
         email: 'fakedoctor@fake.com',
@@ -232,7 +232,7 @@ const seed = async () => {
     // SECRETARIES
     const secretaries = [
       {
-        id: uuidv4(),
+        id: 'affa2e42-5b4b-4ccd-b977-a612cb89192b',
         firstname: 'Samuel',
         lastname: 'Secretary',
         email: 'fakesecretary@fake.com',
@@ -324,7 +324,7 @@ const seed = async () => {
 
     const patients = [
       {
-        id: uuidv4(),
+        id: '619871ac-4e94-47a1-bc43-ad9a2bce827a',
         firstname: 'Pedro',
         lastname: 'Patient',
         email: await fakeEmail(),

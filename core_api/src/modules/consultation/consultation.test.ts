@@ -106,7 +106,79 @@ describe('Consultation Resolver', () => {
     expect(result.data).toBeNull();
   });
 
-  // Search functionality
+  // Data validation
+
+  it('Will not allow misformated start date input', async () => {
+    mockUser.role.code = RoleCode.SECRETARY;
+    const result: ExecutionResult = await graphql({
+      schema: schema,
+      source: print(CREATE_CONSULTATION),
+      contextValue,
+      variableValues: {
+        consultationDetails: {
+          ...validConsultationDetails,
+          start: '16 janvier 2011 10h'
+        }
+      }
+    });
+
+    expect(result.errors).toEqual(expect.any(Array));
+    expect(result.data).toBeNull();
+  });
+
+  it('Will not allow misformated end date input', async () => {
+    mockUser.role.code = RoleCode.SECRETARY;
+    const result: ExecutionResult = await graphql({
+      schema: schema,
+      source: print(CREATE_CONSULTATION),
+      contextValue,
+      variableValues: {
+        consultationDetails: {
+          ...validConsultationDetails,
+          end: '16 janvier 2011 10h'
+        }
+      }
+    });
+
+    expect(result.errors).toEqual(expect.any(Array));
+    expect(result.data).toBeNull();
+  });
+
+  it('Will not allow misformated doctorId input', async () => {
+    mockUser.role.code = RoleCode.SECRETARY;
+    const result: ExecutionResult = await graphql({
+      schema: schema,
+      source: print(CREATE_CONSULTATION),
+      contextValue,
+      variableValues: {
+        consultationDetails: {
+          ...validConsultationDetails,
+          doctorId: '4565464sdfsd-sdfsdf74'
+        }
+      }
+    });
+
+    expect(result.errors).toEqual(expect.any(Array));
+    expect(result.data).toBeNull();
+  });
+
+  it('Will not allow misformated patientID input', async () => {
+    mockUser.role.code = RoleCode.SECRETARY;
+    const result: ExecutionResult = await graphql({
+      schema: schema,
+      source: print(CREATE_CONSULTATION),
+      contextValue,
+      variableValues: {
+        consultationDetails: {
+          ...validConsultationDetails,
+          patientId: '4565464sdfsd-sdfsdf74'
+        }
+      }
+    });
+
+    expect(result.errors).toEqual(expect.any(Array));
+    expect(result.data).toBeNull();
+  });
 
   // Edge cases
 });

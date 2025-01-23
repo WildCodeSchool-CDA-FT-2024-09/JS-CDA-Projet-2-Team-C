@@ -12,15 +12,6 @@ export const CREATE_CONSULTATION = gql`
   }
 `;
 
-// variableValues: { consultationDetails: {
-//   description: details?.description,
-//   end: consultationDateTime?.end.toISOString() as string,
-//   start: consultationDateTime?.start.toISOString() as string,
-//   doctorId: doctorId,
-//   patientId: patientId,
-//   subjectLabel: details.subject
-// } }
-
 const mockUser: MockUser = {
   id: 'affa2e42-5b4b-4ccd-b977-a612cb89192b',
   role: {
@@ -46,10 +37,6 @@ describe('Consultation Resolver', () => {
 
   beforeAll(async () => {
     schema = await getSchema();
-  });
-
-  beforeEach(() => {
-    jest.resetAllMocks(); // Reset mocks to avoid side effects between tests
   });
 
   // Intended functionnality
@@ -179,6 +166,4 @@ describe('Consultation Resolver', () => {
     expect(result.errors).toEqual(expect.any(Array));
     expect(result.data).toBeNull();
   });
-
-  // Edge cases
 });

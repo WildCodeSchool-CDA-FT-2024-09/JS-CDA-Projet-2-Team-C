@@ -39,13 +39,14 @@ export default function AgentPatientSearchBar({
   };
 
   const handleChange = (value: string): void => {
-    const sanitisedValue = formatSSN(value);
+    const sanitisedValue = formatSSN(value.replace(/\D/g, ''));
     setSearch(sanitisedValue);
   };
 
   useEffect(() => {
-    if (search.length === 21) {
-      getPatientsByName({ variables: { search } });
+    const sanitisedSearch = search.replace(/\s+/g, '');
+    if (sanitisedSearch.length === 15) {
+      getPatientsByName({ variables: { search: sanitisedSearch } });
     }
   }, [search, getPatientsByName]);
 

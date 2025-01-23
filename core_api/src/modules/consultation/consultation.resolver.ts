@@ -41,8 +41,7 @@ export default class ConsultationResolver {
   @UseMiddleware(
     WithCache<{ doctorId: string }>({
       key: (args) => `consultationsByDoctorId:${args.doctorId}`,
-      ttl: 60,
-      refreshOnHit: false
+      ttl: 60
     })
   )
   @Query(() => [Consultation])

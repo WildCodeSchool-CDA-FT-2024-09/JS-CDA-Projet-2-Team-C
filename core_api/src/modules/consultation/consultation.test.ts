@@ -22,7 +22,7 @@ export const CREATE_CONSULTATION = gql`
 // } }
 
 const mockUser: MockUser = {
-  id: '1',
+  id: 'affa2e42-5b4b-4ccd-b977-a612cb89192b',
   role: {
     code: null // to change for each test
   }
@@ -32,6 +32,15 @@ const contextValue = {
   user: mockUser
 };
 
+const validConsultationDetails = {
+  doctorId: 'aa0032bc-7ac2-431f-9d3a-41df0024edd3', // these are hard-coded into the seed script
+  patientId: '619871ac-4e94-47a1-bc43-ad9a2bce827a',
+  subjectLabel: 'Routine check-up',
+  description: 'this consultation is only a test',
+  start: '2025-01-01T10:00:00Z',
+  end: '2025-02-01T12:00:00Z' // this is hard-coded to avoid flaky behaviour in the future when more checks are implemented
+};
+
 describe('Consultation Resolver', () => {
   let schema: GraphQLSchema;
 
@@ -39,48 +48,32 @@ describe('Consultation Resolver', () => {
     schema = await getSchema();
   });
 
+  beforeEach(() => {
+    jest.resetAllMocks(); // Reset mocks to avoid side effects between tests
+  });
+
   // Intended functionnality
   // Role access checks
   it('Can create consultations as a SECRETARY', async () => {
     mockUser.role.code = RoleCode.SECRETARY;
-    const expectedResult = {
-      firstname: 'Penelope',
-      lastname: 'Patient'
-    };
 
     const result: ExecutionResult = (await graphql({
       schema: schema,
       source: print(CREATE_CONSULTATION),
       contextValue,
       variableValues: {
-        consultationDetails: {
-          description: 'test description',
-          end: 'test description',
-          start: 'test description',
-          doctorId: 'test description',
-          patientId: 'test description',
-          subjectLabel: 'test description'
-        }
+        consultationDetails: validConsultationDetails
       }
     })) as {
       data: {
-        patients: Array<{ id: string; firstname: string; lastname: string }>;
+        createConsultation: { id: string };
       };
     };
 
-    expect(result.data?.patients).toContainEqual(
-      expect.objectContaining(expectedResult)
-    );
-    (
-      result.data?.patients as Array<{
-        id: string;
-        firstname: string;
-        lastname: string;
-      }>
-    ).forEach((patient) => {
-      expect(patient).toHaveProperty('id');
-      expect(typeof patient.id).toBe('string');
-    });
+    // Assert that the consultation was created successfully
+    expect(result.errors).toBeUndefined();
+    expect(result.data).toBeDefined();
+    expect(result.data?.createConsultation).toHaveProperty('id');
   });
 
   it('Cannot create consultations if not logged in', async () => {
@@ -90,14 +83,7 @@ describe('Consultation Resolver', () => {
       source: print(CREATE_CONSULTATION),
       contextValue,
       variableValues: {
-        consultationDetails: {
-          description: 'test description',
-          end: 'test description',
-          start: 'test description',
-          doctorId: 'test description',
-          patientId: 'test description',
-          subjectLabel: 'test description'
-        }
+        consultationDetails: validConsultationDetails
       }
     });
 
@@ -112,14 +98,7 @@ describe('Consultation Resolver', () => {
       source: print(CREATE_CONSULTATION),
       contextValue,
       variableValues: {
-        consultationDetails: {
-          description: 'test description',
-          end: 'test description',
-          start: 'test description',
-          doctorId: 'test description',
-          patientId: 'test description',
-          subjectLabel: 'test description'
-        }
+        consultationDetails: validConsultationDetails
       }
     });
 

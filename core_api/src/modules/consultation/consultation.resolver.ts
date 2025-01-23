@@ -1,10 +1,4 @@
-import {
-  Consultation,
-  ConsultationSubject,
-  Patient,
-  RoleCode,
-  User
-} from '../entities.index';
+import * as dotenv from 'dotenv';
 import {
   Resolver,
   Query,
@@ -15,10 +9,20 @@ import {
   Ctx
 } from 'type-graphql';
 import { Between, FindOperator } from 'typeorm';
+import {
+  Consultation,
+  ConsultationSubject,
+  Patient,
+  RoleCode,
+  User
+} from '../entities.index';
 import { WithCache } from '../../services/cache/cacheMiddleware';
 import cacheClient from '../../services/cache/cacheService';
 import { ContextType } from '../../types/ContextType';
 import { CreateConsultationInput } from './consultation.input';
+
+dotenv.config();
+const { NODE_ENV } = process.env;
 
 @Resolver(Consultation)
 export default class ConsultationResolver {
@@ -188,7 +192,8 @@ export default class ConsultationResolver {
       await newConsultation.save();
 
       // Invalidate the cache for this doctor's consultations
-      cacheClient.del('consultationsByDoctorId:' + doctorId);
+      if (NODE_ENV !== 'test')
+        cacheClient.del('consultationsByDoctorId:' + doctorId);
 
       return newConsultation;
     } catch (e) {
